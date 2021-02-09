@@ -39,11 +39,18 @@ const tableList = [
 
 
 const GeoLocation=() => {
-  const [show,setShow]= useState(true)
+  const [show,setShow]=useState(true);
+  const widget = {
+   height: "300px",
+  };
+
+  const color = {
+   color: "red",
+  };
   return (
     <div className="row">
     <div className="col-xl-5 col-lg-5 col-md-12 col-12 card-height">
-        <Widget>
+        <Widget style={widget}>
        
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Country</h4>
@@ -51,7 +58,7 @@ const GeoLocation=() => {
          <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span>
           </div>
           {
-            show?<h1>this is test</h1>:null 
+            show? <h1 style={color}>this is test</h1>:null 
          }
        
           
@@ -99,7 +106,7 @@ const GeoLocation=() => {
 
     <div className="col-xl-7 col-lg-7 col-md-12 col-12">
 
-          <Widget >
+          <Widget  style={widget}>
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Country</h4>
         <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
