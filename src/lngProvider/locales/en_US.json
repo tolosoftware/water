@@ -4,7 +4,7 @@
   "sidebar.dashboard.misc": "Misc",
   "sidebar.dashboard.news": "News",
   "sidebar.dashboard.intranet": "Intranet",
-  "sidebar.components": "New Project",
+  "sidebar.newproject": "New Project",
   "sidebar.components.alerts": "Alerts",
   "sidebar.components.appbar": "App Bar",
   "sidebar.components.autocomplete": "AutoComplete",
