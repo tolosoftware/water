@@ -1,7 +1,9 @@
-import React from "react";
+import React ,{useState} from "react";
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
 import Avatar from '@material-ui/core/Avatar';
+
+import './style.css';
 
 
 const tableList = [
@@ -35,16 +37,24 @@ const tableList = [
   }
 ];
 
-const GeoLocation = () => {
+
+const GeoLocation=() => {
+  const [show,setShow]= useState(true)
   return (
     <div className="row">
-    <div className="col-xl-5 col-lg-5 col-md-12 col-12">
-      <Widget >
+    <div className="col-xl-5 col-lg-5 col-md-12 col-12 card-height">
+        <Widget>
+       
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Country</h4>
-        <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
-                    <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
-      </div>
+            <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setShow(!show)}>
+         <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span>
+          </div>
+          {
+            show?<h1>this is test</h1>:null 
+         }
+       
+          
       <div className="table-responsive-material">
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">
