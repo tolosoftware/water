@@ -28,6 +28,10 @@ import Tour from '../components/Tour/index';
 import Setting from './routes/setting';
 import Systemmangment from './routes/systemmangment';
 import Knowledgebase from './routes/knowledgebase';
+import Activities from './routes/activities';
+import Newproject from './routes/newproject';
+
+
 
 
 //end custom component
@@ -79,7 +83,11 @@ class App extends React.Component {
                 {/* custom route */}
                 <Route path={`${match.url}/setting`} component={Setting} />
                 <Route path={`${match.url}/systemmangment`} component={Systemmangment} />
-                 <Route path={`${match.url}/Knowledgebase`} component={Knowledgebase} />
+                <Route path={`${match.url}/Knowledgebase`} component={Knowledgebase} />
+                <Route path={`${match.url}/activities`} component={Activities} />
+                <Route path={`${match.url}/newproject`} component={Newproject} />
+                
+                
                 
                 {/* end custom route component  */}
                 <Route path={`${match.url}/dashboard`} component={Dashboard}/>

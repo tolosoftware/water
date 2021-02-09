@@ -94,15 +94,15 @@ class Menu extends Component {
 
           <li className="nav-item mega-menu">
            
-             <NavLink className="prepend-icon" to="/app/dashboard/news">
-                      <span className="nav-text"><IntlMessages id="sidebar.components"/></span>
+             <NavLink className="prepend-icon" to="/app/newproject">
+                      <span className="nav-text"><IntlMessages id="sidebar.newproject"/></span>
               </NavLink>
 
              
           </li>
 
           <li className="nav-item">
-             <NavLink className="prepend-icon" to="/app/dashboard/news">
+             <NavLink className="prepend-icon" to="/app/activities">
                       <span className="nav-text"><IntlMessages id="sidebar.activities"/></span>
               </NavLink>
           </li>

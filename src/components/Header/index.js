@@ -14,12 +14,12 @@ import {
   INSIDE_THE_HEADER
 } from 'constants/ActionTypes';
 import SearchBox from 'components/SearchBox';
-import MailNotification from '../MailNotification/index';
-import AppNotification from '../AppNotification/index';
-import CardHeader from 'components/dashboard/Common/CardHeader/index';
+
+
+
 import {switchLanguage, toggleCollapsedNav} from 'actions/Setting';
 import IntlMessages from 'util/IntlMessages';
-import LanguageSwitcher from 'components/LanguageSwitcher/index';
+
 import Menu from 'components/TopNav/Menu';
 import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
 
@@ -136,7 +136,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const {drawerType, locale, navigationStyle, horizontalNavPosition} = this.props;
+    const {drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
 
     return (
@@ -211,75 +211,8 @@ class Header extends React.Component {
                 </DropdownMenu>
               </Dropdown>
             </li>
-            <li className="list-inline-item">
-              <Dropdown
-                className="quick-menu"
-                isOpen={this.state.langSwitcher}
-                toggle={this.onLangSwitcherSelect.bind(this)}>
-
-                <DropdownToggle
-                  className="d-inline-block"
-                  tag="span"
-                  data-toggle="dropdown">
-                  <IconButton className="icon-btn">
-                    <i className={`flag flag-24 flag-${locale.icon}`}/>
-                  </IconButton>
-                </DropdownToggle>
-
-                <DropdownMenu right className="w-50">
-                  <LanguageSwitcher switchLanguage={this.props.switchLanguage}
-                                    handleRequestClose={this.handleRequestClose}/>
-                </DropdownMenu>
-              </Dropdown>
-
-
-            </li>
-            <li className="list-inline-item app-tour">
-              <Dropdown
-                className="quick-menu"
-                isOpen={this.state.appNotification}
-                toggle={this.onAppNotificationSelect.bind(this)}>
-
-                <DropdownToggle
-                  className="d-inline-block"
-                  tag="span"
-                  data-toggle="dropdown">
-                  <IconButton className="icon-btn">
-                    <i className="zmdi zmdi-notifications-none icon-alert animated infinite wobble"/>
-                  </IconButton>
-                </DropdownToggle>
-
-                <DropdownMenu right>
-                  <CardHeader styleName="align-items-center"
-                              heading={<IntlMessages id="appNotification.title"/>}/>
-                  <AppNotification/>
-                </DropdownMenu>
-              </Dropdown>
-            </li>
-            <li className="list-inline-item mail-tour">
-              <Dropdown
-                className="quick-menu"
-                isOpen={this.state.mailNotification}
-                toggle={this.onMailNotificationSelect.bind(this)}
-              >
-                <DropdownToggle
-                  className="d-inline-block"
-                  tag="span"
-                  data-toggle="dropdown">
-
-                  <IconButton className="icon-btn">
-                    <i className="zmdi zmdi-comment-alt-text zmdi-hc-fw"/>
-                  </IconButton>
-                </DropdownToggle>
-
-
-                <DropdownMenu right>
-                  <CardHeader styleName="align-items-center"
-                              heading={<IntlMessages id="mailNotification.title"/>}/>
-                  <MailNotification/>
-                </DropdownMenu>
-              </Dropdown>
-            </li>
+          
+        
 
             {navigationStyle === HORIZONTAL_NAVIGATION &&
             <li className="list-inline-item user-nav">
@@ -318,8 +251,8 @@ class Header extends React.Component {
 
 
 const mapStateToProps = ({settings}) => {
-  const {drawerType, locale, navigationStyle, horizontalNavPosition} = settings;
-  return {drawerType, locale, navigationStyle, horizontalNavPosition}
+  const {drawerType, navigationStyle, horizontalNavPosition} = settings;
+  return {drawerType, navigationStyle, horizontalNavPosition}
 };
 
 export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, switchLanguage})(Header));
