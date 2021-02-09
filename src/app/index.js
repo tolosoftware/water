@@ -27,6 +27,8 @@ import Tour from '../components/Tour/index';
 //custom component
 import Setting from './routes/setting';
 import Systemmangment from './routes/systemmangment';
+import Knowledgebase from './routes/knowledgebase';
+
 
 //end custom component
 import {
@@ -76,7 +78,9 @@ class App extends React.Component {
               <Switch>
                 {/* custom route */}
                 <Route path={`${match.url}/setting`} component={Setting} />
-                 <Route path={`${match.url}/systemmangment`} component={Systemmangment} />
+                <Route path={`${match.url}/systemmangment`} component={Systemmangment} />
+                 <Route path={`${match.url}/Knowledgebase`} component={Knowledgebase} />
+                
                 {/* end custom route component  */}
                 <Route path={`${match.url}/dashboard`} component={Dashboard}/>
                 <Route path={`${match.url}/social-apps`} component={SocialApps}/>
