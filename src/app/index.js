@@ -30,6 +30,9 @@ import Systemmangment from './routes/systemmangment';
 import Knowledgebase from './routes/knowledgebase';
 import Activities from './routes/activities';
 import Newproject from './routes/newproject';
+import Usermangment from './routes/usermangment';
+
+
 
 
 
@@ -86,6 +89,9 @@ class App extends React.Component {
                 <Route path={`${match.url}/Knowledgebase`} component={Knowledgebase} />
                 <Route path={`${match.url}/activities`} component={Activities} />
                 <Route path={`${match.url}/newproject`} component={Newproject} />
+                <Route path={`${match.url}/usermangment`} component={Usermangment} />
+
+                
                 
                 
                 
