@@ -8,8 +8,9 @@ import GeoLocation from "./GeoLocation";
 import WaterPump from "./WaterPump";
 import SolarPanel from "./SolarPanel";
 import Accessories from "./Accessories";
+import Divider from '@material-ui/core/Divider';
 
-
+import './style.css';
 
 const Systemmangment = ({match}) => (
     <div className="app-wrapper">
@@ -19,17 +20,19 @@ const Systemmangment = ({match}) => (
     <span>
       <GeoLocation/>
     </span>
-    
+    <Divider /> <br/>
+
     <h3><b>Water Pumps</b></h3>
     <span>
       <WaterPump/>
     </span>
+    <Divider /><br/>
 
      <h3><b>Solar Panels</b></h3>
     <span>
       <SolarPanel/>
     </span>
-
+    <Divider /><br/>
   
       <CardBox styleName="col-12" cardStyle="p-0" heading={<IntlMessages id="Accessories"/>}
                 headerOutside>

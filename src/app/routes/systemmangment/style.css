@@ -1,0 +1,10 @@
+.MuiDivider-root{
+    background-color: #4a5bb9 !important;
+    height: 2px !important;
+}
+.simpleBtn{
+    border-color: #4a5bb9 !important;
+}
+.MuiFormControl-root.MuiTextField-root{
+    margin-left: 10px im !important;
+}
