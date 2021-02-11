@@ -1,6 +1,6 @@
 .MuiDivider-root{
     background-color: #4a5bb9 !important;
-    height: 2px !important;
+    height: 30px !important;
 }
 .simpleBtn{
     border-color: #4a5bb9 !important;
@@ -8,3 +8,17 @@
 .MuiFormControl-root.MuiTextField-root{
     margin-left: 10px im !important;
 }
+.MuiAutocomplete-root{
+    display: inline-block !important;
+    margin-right: 15px !important;
+}
+.waterPumpPanel .MuiBox-root{
+    padding: 0px !important;
+}
+ .paddingTopForm{
+     padding-top: 20px !important;
+ }
+ .minWidth{
+     width: 300px !important;
+ }
+ 
