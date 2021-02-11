@@ -142,7 +142,7 @@ const [show,setShow]=useState(true);
         <Button variant="contained" color="primary" >Primary</Button>
         </form>
       </p>
-      <button type="button" className={classes.simpleBtn} onClick={handleClose}>Open Modal</button>
+      <button type="button" className="simpleBtn" onClick={handleClose}>Open Modal</button>
       {/* <GeoLocation /> */}
     </div>
   );
