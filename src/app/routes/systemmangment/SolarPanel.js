@@ -4,12 +4,10 @@ import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
 import Avatar from '@material-ui/core/Avatar';
 
-
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Add from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-
 
 
 const tableList = [
@@ -42,6 +40,8 @@ const tableList = [
     action: 'Pay'
   }
 ];
+
+
 
 const SolarPanel = () => {
   return (
