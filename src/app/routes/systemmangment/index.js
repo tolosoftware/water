@@ -14,7 +14,7 @@ import './style.css';
 
 const Systemmangment = ({match}) => (
     <div className="app-wrapper">
-    <ContainerHeader match={match} title={<IntlMessages id="System Mangment" />} /> 
+    <ContainerHeader match={match} title={<IntlMessages id="System Mangment"/>} /> 
   
     <h3><b>Geo-Location Mangment</b></h3>
     <span>

@@ -4,7 +4,7 @@ import IntlMessages from "util/IntlMessages";
 
 const Knowledgebase = ({match}) => (
     <div className="app-wrapper">
-   <ContainerHeader match={match} title={<IntlMessages id="Knowledge Base"/>}/>      
+   <ContainerHeader match={match} title={<IntlMessages id="knowledge Base"/>}/>      
       <h1>This is Knowledgebase</h1>
   </div>
 );
