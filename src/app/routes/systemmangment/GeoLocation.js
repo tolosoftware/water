@@ -382,6 +382,7 @@ const GeoLocation=() => {
 
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -389,7 +390,20 @@ const GeoLocation=() => {
     setOpen(false);
   };
 // end dialog code for modal 
+// start form sumbit
+const [district, setDistrict] = React.useState({});
+const [country, setCountry] = React.useState({});
+const handleChange = (value, key) => {
+  setDistrict({...district, ...{[key]: value}})
+}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(district);
+    console.log(country);
+    
 
+  }
+// end form sumbit
   
   return (
     <div className="row">
@@ -402,7 +416,7 @@ const GeoLocation=() => {
          <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span>
       </div>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-      <form autoComplete="off">
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Add Geo-Location Country with City
         </DialogTitle>
@@ -413,7 +427,7 @@ const GeoLocation=() => {
           </Typography>
           
           <Autocomplete
-      id="country-select-demo"
+      id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
       style={{ width: 300 }}
       options={countries}
       classes={{
@@ -428,7 +442,7 @@ const GeoLocation=() => {
         </React.Fragment>
       )}
       renderInput={(params) => (
-        <TextField
+        <TextField id="countryName" name="country"  
           {...params}
           label="Choose a country"
           variant="outlined"
@@ -437,13 +451,13 @@ const GeoLocation=() => {
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
         />
-      )}
+      )} 
     /> 
-        <TextField id="outlined-basic" label="District" variant="outlined" />
+        <TextField id="outlined-basic" value={district['district']} onChange={e => handleChange(e.target.value, 'district')} id="districtName" label="District" name='district' variant="outlined" />
        
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button type="submit" autoFocus color="primary">
             Save
           </Button>
         </DialogActions>
