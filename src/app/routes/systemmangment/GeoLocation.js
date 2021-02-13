@@ -13,7 +13,6 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import './style.css';
 
-
 const tableList = [
   {
     id: 1,
@@ -44,6 +43,7 @@ const tableList = [
     action: 'Pay'
   }
 ];
+
 // for modal code
 function rand() {
   return Math.round(Math.random() * 20) - 10;
