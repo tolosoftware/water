@@ -442,6 +442,26 @@ const WaterPump = () => {
     setOpen(false);
   };
   // end code of dialog modal for water pump
+// start form sumbit
+const [brand, setBrand] = React.useState({});
+const [country, setCountry] = React.useState({});
+const [description, setDescription] = React.useState({});
+const handleChangeBrand = (value, key) => {
+  setBrand({...brand, ...{[key]: value}})
+}
+const handleChangeDescription = (value, key) => {
+  setDescription({...description, ...{[key]: value}})
+}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(brand);
+    console.log(country);
+    console.log(description);
+    
+
+  }
+// end form sumbit
+
   // start popove code
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handlePopoverOpen = (event) => {
@@ -453,6 +473,7 @@ const WaterPump = () => {
   const open1 = Boolean(anchorEl);
   // end popover code
 
+   
   
 
 
@@ -460,179 +481,195 @@ const WaterPump = () => {
   <div className="row">
     <div className="col-xl-6 col-lg-6 col-md-12 col-12">
       <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            aria-label="full width tabs example"
-          >
-            <Tab label="Add Water Pump" {...a11yProps(0)} />
-            <Tab label="List Water Pumps" {...a11yProps(1)} />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={value}
-          onChangeIndex={handleChangeIndex}
-        >
-          <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
-            <Widget styleName={`bg-grey darken-4 text-white`} >
-              <div className="d-flex flex-row justify-content-center mb-3">
-                <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/>
-              </div>
-              <div className="text-center">
-                <h3 className="jr-font-weight-medium mb-3">Refer and Get Reward</h3>
-                <p className="mb-3">Reffer us to your friends and
-                  earn bonus when they join.</p>
-                <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Add Water Pump</Button>
-              </div>
-            </Widget>
-            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-              <form autoComplete="off">
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                Add Water Pump Information
+        <Widget styleName={`bg-grey darken-4 text-white`} >
+          <div className="d-flex flex-row justify-content-center mb-3">
+            <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/>
+          </div>
+          <div className="text-center">
+            <h3 className="jr-font-weight-medium mb-3">Refer and Get Reward</h3>
+            <p className="mb-3">Reffer us to your friends and
+              earn bonus when they join.</p>
+            <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage Water Pump</Button>
+          </div>
+        </Widget>
+        
+          
+            
+            <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={open}>
+              
+                <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
+                <AppBar position="static" color="default">
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="fullWidth"
+                    aria-label="full width tabs example"
+                  >
+                    <Tab label="Add Water Pump" {...a11yProps(0)} />
+                    <Tab label="List Water Pumps" {...a11yProps(1)} />
+                  </Tabs>
+                </AppBar>
+                
                 </DialogTitle>
                 <DialogContent dividers>
+                <SwipeableViews
+                  axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                  index={value}
+                  onChangeIndex={handleChangeIndex}
+                >
+                <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
+                <form autoComplete="off" onSubmit={handleSubmit}>
                   <Typography gutterBottom>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
                 <div className="row ">
-                <div className="col-xl-5 col-lg-5 col-md-12 col-12">
-                  <TextField id="outlined-basic" label="Brand Name" variant="outlined" />
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+                    <TextField id="outlined-basic" value={brand['brand']} onChange={e => handleChangeBrand(e.target.value, 'brand')} name='brand' id='brand' label="Brand Name" variant="outlined" />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">  
+                    <Autocomplete
+                      id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+                      style={{ width: 300 }}
+                      options={countries}
+                      classes={{
+                        option: classes.option,
+                      }}
+                      autoHighlight
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{countryToFlag(option.code)}</span>
+                          {option.label} ({option.code}) +{option.phone}
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Choose a country"
+                          variant="outlined"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    /> 
+                  </div>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-md-12 col-12">  
-                  <Autocomplete
-              id="country-select-demo"
-              style={{ width: 300 }}
-              options={countries}
-              classes={{
-                option: classes.option,
-              }}
-              autoHighlight
-              getOptionLabel={(option) => option.label}
-              renderOption={(option) => (
-                <React.Fragment>
-                  <span>{countryToFlag(option.code)}</span>
-                  {option.label} ({option.code}) +{option.phone}
-                </React.Fragment>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose a country"
-                  variant="outlined"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'new-password', // disable autocomplete and autofill
-                  }}
-                />
-              )}
-            /> 
-            </div>
-            </div>
-            <div className="row paddingTopForm">
-            <div className="col-xl-5 col-lg-5 col-md-12 col-12">
-                {/* <input type="file" name="brand_logo" placeholder="Upload the brand logo"/> */}
+                <div className="row paddingTopForm">
+                  <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                    <TextareaAutosize value={description['description']} onChange={e => handleChangeDescription(e.target.value, 'description')} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
+                  </div>
+                </div>
+                <div className="row paddingTopForm">
+                  
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+                    {/* <input type="file" name="brand_logo" placeholder="Upload the brand logo"/> */}
 
-                <div className="file-upload-wrapper" data-text="Upload the brand logo!">
-                  <input name="file-upload-field" type="file" className="file-upload-field" value=""/>
-                </div>
-            </div>
-                 <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-                  <TextareaAutosize aria-label="minimum height" rowsMin={3} className="minWidth" placeholder="Short Description" />
-                </div>
-                </div>
-                </DialogContent>
-                <DialogActions>
-                  <Button autoFocus onClick={handleClose} color="primary">
+                    <div className="file-upload-wrapper" data-text="Upload the brand logo!">
+                      <input name="file-upload-field" type="file" className="file-upload-field" value=""/>
+                    </div>
+                  </div>
+                  <Button autoFocus type='submit' color="primary">
                     Save
                   </Button>
-                </DialogActions>
+                </div>
                 </form>
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                  <div className="row">
+                    <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <div className="table-responsive-material">
+                        <Table className="default-table table-unbordered table table-sm table-hover">
+                          <thead className="table-head-sm th-border-b">
+                            <tr>
+                              <th>Brand</th>
+                              <th>Coutry</th>
+                              <th>logo</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {tableList.map((data, index) => {
+                            return <tr key={index}>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="user-detail">
+                                    
+                                    <h5 className="user-name">
+                                    <Typography
+                                      aria-owns={open1 ? 'mouse-over-popover' : undefined}
+                                      aria-haspopup="true"
+                                      onMouseEnter={handlePopoverOpen}
+                                      onMouseLeave={handlePopoverClose}
+                                    >
+                                      {data.name}
+                                    </Typography>
+                                    </h5>
+                                    <Popover
+                                      id="mouse-over-popover"
+                                      className={classes.popover}
+                                      classes={{
+                                        paper: classes.paper,
+                                      }}
+                                      open={open1}
+                                      anchorEl={anchorEl}
+                                      anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                      }}
+                                      transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                      }}
+                                      onClose={handlePopoverClose}
+                                      disableRestoreFocus
+                                    >
+                                      <Typography>{data.name}.</Typography>
+                                    </Popover>
+                                  </div>
+                                </div>
+                              </td>
+                              
+                              <td>{data.lastTransfer}</td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  {data.image === '' ? null :
+                                    <Avatar className="user-avatar size-30" src={data.image}/>}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="pointer text-primary">
+                                  <IconButton size="small" aria-label="delete"  color="secondary">
+                                    <DeleteIcon />
+                                  </IconButton>
+                                <IconButton size="small" color="primary" aria-label="edit an alarm">
+                                    <Edit />
+                                </IconButton>
+                              
+                                </div>
+                              </td>
+                            </tr>
+                          })}
+                          </tbody>
+                        </Table>
+                      </div>
+                    </div>
+                  </div>
+                </TabPanel>
+                </SwipeableViews>
+                </DialogContent>
+                <DialogActions>
+                  
+                </DialogActions>
+                
               </Dialog>
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            <div className="table-responsive-material">
-              <Table className="default-table table-unbordered table table-sm table-hover">
-                <thead className="table-head-sm th-border-b">
-                  <tr>
-                    <th>Brand</th>
-                    <th>Coutry</th>
-                    <th>logo</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {tableList.map((data, index) => {
-                  return <tr key={index}>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <div className="user-detail">
-                          
-                          <h5 className="user-name">
-                          <Typography
-                            aria-owns={open1 ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="true"
-                            onMouseEnter={handlePopoverOpen}
-                            onMouseLeave={handlePopoverClose}
-                          >
-                            {data.name}
-                          </Typography>
-                          </h5>
-                          <Popover
-                            id="mouse-over-popover"
-                            className={classes.popover}
-                            classes={{
-                              paper: classes.paper,
-                            }}
-                            open={open1}
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'left',
-                            }}
-                            transformOrigin={{
-                              vertical: 'top',
-                              horizontal: 'left',
-                            }}
-                            onClose={handlePopoverClose}
-                            disableRestoreFocus
-                          >
-                            <Typography>{data.name}.</Typography>
-                          </Popover>
-                        </div>
-                      </div>
-                    </td>
-                    
-                    <td>{data.lastTransfer}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        {data.image === '' ? null :
-                          <Avatar className="user-avatar size-30" src={data.image}/>}
-                      </div>
-                    </td>
-                    <td>
-                      <div className="pointer text-primary">
-                        <IconButton size="small" aria-label="delete"  color="secondary">
-                          <DeleteIcon />
-                        </IconButton>
-                      <IconButton size="small" color="primary" aria-label="edit an alarm">
-                          <Edit />
-                      </IconButton>
-                    
-                      </div>
-                    </td>
-                  </tr>
-                })}
-                </tbody>
-              </Table>
-            </div>
-          </TabPanel>
-        </SwipeableViews>
+          
+          
+        
       </div>
       
     </div>
