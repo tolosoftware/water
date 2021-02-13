@@ -138,8 +138,8 @@ const [show,setShow]=useState(true);
             <option value={3}>India</option>
           </Select>
         </FormControl> 
-        <TextField id="standard-basic"  label="Standard" />
-        <Button variant="contained" color="primary" >Primary</Button>
+        <TextField id="standard-basic"  label="District" />
+        <Button variant="contained" color="primary" >Save</Button>
         </form>
       </p>
       <button type="button" className={classes.simpleBtn} onClick={handleClose}>Open Modal</button>
