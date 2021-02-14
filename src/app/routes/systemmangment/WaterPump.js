@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
@@ -76,19 +77,19 @@ const DialogActions = withStyles((theme) => ({
 // start code for country selection 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
-function countryToFlag(isoCode) {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode;
-}
+// function countryToFlag(isoCode) {
+//   return typeof String.fromCodePoint !== 'undefined'
+//     ? isoCode
+//         .toUpperCase()
+//         .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+//     : isoCode;
+// }
 
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
 const countries = [
+  { code: 'AF', label: 'Afghanistan', phone: '93' },
   { code: 'AD', label: 'Andorra', phone: '376' },
   { code: 'AE', label: 'United Arab Emirates', phone: '971' },
-  { code: 'AF', label: 'Afghanistan', phone: '93' },
   { code: 'AG', label: 'Antigua and Barbuda', phone: '1-268' },
   { code: 'AI', label: 'Anguilla', phone: '1-264' },
   { code: 'AL', label: 'Albania', phone: '355' },
@@ -479,17 +480,17 @@ const handleChangeDescription = (value, key) => {
 
   return (
   <div className="row">
-    <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+    <div className="col-xl-4 col-lg-4 col-md-5 col-12">
       <div className={classes.root}>
-        <Widget styleName={`bg-grey darken-4 text-white`} >
+        <Widget styleName={`text-white waterPumpPanelBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
-            <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/>
+            {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
+            <LocalDrinkIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
-            <h3 className="jr-font-weight-medium mb-3">Refer and Get Reward</h3>
-            <p className="mb-3">Reffer us to your friends and
-              earn bonus when they join.</p>
-            <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage Water Pump</Button>
+            <h3 className="jr-font-weight-medium mb-3">Water Pump Brands</h3>
+            <p className="mb-3">List of Current Water Pump Brands</p>
+            <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
         
@@ -526,12 +527,12 @@ const handleChangeDescription = (value, key) => {
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
                 <div className="row ">
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-                    <TextField id="outlined-basic" value={brand['brand']} onChange={e => handleChangeBrand(e.target.value, 'brand')} name='brand' id='brand' label="Brand Name" variant="outlined" />
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <TextField id="outlined-basic" value={brand['brand']} onChange={e => handleChangeBrand(e.target.value, 'brand')} name='brand' label="Brand Name" variant="outlined" />
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">  
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
                     <Autocomplete
-                      id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+                      id="country-select-demo" onChange={(event, newValue) => {setCountry(newValue);}}
                       style={{ width: 300 }}
                       options={countries}
                       classes={{
@@ -541,8 +542,9 @@ const handleChangeDescription = (value, key) => {
                       getOptionLabel={(option) => option.label}
                       renderOption={(option) => (
                         <React.Fragment>
-                          <span>{countryToFlag(option.code)}</span>
-                          {option.label} ({option.code}) +{option.phone}
+                          {/* <span>{countryToFlag(option.code)}</span> */}
+                          {/* {option.label} ({option.code}) +{option.phone} */}
+                          {option.label}
                         </React.Fragment>
                       )}
                       renderInput={(params) => (
@@ -560,13 +562,13 @@ const handleChangeDescription = (value, key) => {
                   </div>
                 </div>
                 <div className="row paddingTopForm">
-                  <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <TextareaAutosize value={description['description']} onChange={e => handleChangeDescription(e.target.value, 'description')} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+                  <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                     {/* <input type="file" name="brand_logo" placeholder="Upload the brand logo"/> */}
 
                     <div className="file-upload-wrapper" data-text="Upload the brand logo!">
@@ -674,7 +676,7 @@ const handleChangeDescription = (value, key) => {
       
     </div>
 
-    <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+    <div className="col-xl-8 col-lg-8 col-md-7 col-12">
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> Cities and Sunshine</h4>

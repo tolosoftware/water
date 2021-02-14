@@ -4,11 +4,10 @@ import Widget from "components/Widget/index";
 import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import './style.css';
 
 // start dialog import file 
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -97,13 +96,13 @@ const DialogActions = withStyles((theme) => ({
 // start code for country selection 
 // ISO 3166-1 alpha-2
 // ⚠️ No support for IE 11
-function countryToFlag(isoCode) {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode;
-}
+// function countryToFlag(isoCode) {
+//   return typeof String.fromCodePoint !== 'undefined'
+//     ? isoCode
+//         .toUpperCase()
+//         .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+//     : isoCode;
+// }
 const useStyles = makeStyles({
   option: {
     fontSize: 15,
@@ -115,9 +114,9 @@ const useStyles = makeStyles({
 });
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
 const countries = [
+  { code: 'AF', label: 'Afghanistan', phone: '93' },
   { code: 'AD', label: 'Andorra', phone: '376' },
   { code: 'AE', label: 'United Arab Emirates', phone: '971' },
-  { code: 'AF', label: 'Afghanistan', phone: '93' },
   { code: 'AG', label: 'Antigua and Barbuda', phone: '1-268' },
   { code: 'AI', label: 'Anguilla', phone: '1-264' },
   { code: 'AL', label: 'Albania', phone: '355' },
@@ -411,7 +410,7 @@ const handleChange = (value, key) => {
         <Widget style={widget}>
        
       <div className="d-flex flex-row mb-3">
-        <h4 className="mb-0"> Country</h4>
+        <h4 className="mb-0"> Areas</h4>
             <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={handleClickOpen}>
          <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span>
       </div>
@@ -425,36 +424,41 @@ const handleChange = (value, key) => {
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
             in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
           </Typography>
-          
-          <Autocomplete
-      id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
-      style={{ width: 300 }}
-      options={countries}
-      classes={{
-        option: classes.option,
-      }}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
-      renderOption={(option) => (
-        <React.Fragment>
-          <span>{countryToFlag(option.code)}</span>
-          {option.label} ({option.code}) +{option.phone}
-        </React.Fragment>
-      )}
-      renderInput={(params) => (
-        <TextField id="countryName" name="country"  
-          {...params}
-          label="Choose a country"
-          variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
-        />
-      )} 
-    /> 
-        <TextField id="outlined-basic" value={district['district']} onChange={e => handleChange(e.target.value, 'district')} id="districtName" label="District" name='district' variant="outlined" />
-       
+          <div className="row">
+            <div className="col-xl-6 col-gl-6 col-md-6 col-sm-16 col-12">
+            <Autocomplete
+              id="country-select-demo"  onChange={(event, newValue) => {setCountry(newValue);}}
+              style={{ width: 300 }}
+              options={countries}
+              classes={{
+                option: classes.option,
+              }}
+              autoHighlight
+              getOptionLabel={(option) => option.label}
+              renderOption={(option) => (
+                <React.Fragment>
+                  {/* <span>{countryToFlag(option.code)}</span> */}
+                  {/* {option.label} ({option.code}) +{option.phone} */}
+                  {option.label} 
+                </React.Fragment>
+              )}
+              renderInput={(params) => (
+                <TextField id="countryName" name="country"  
+                  {...params}
+                  label="Choose a country"
+                  variant="outlined"
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: 'new-password', // disable autocomplete and autofill
+                  }}
+                />
+              )} 
+            /> 
+            </div>
+            <div className="col-xl-6 col-gl-6 col-md-6 col-sm-16 col-12">
+              <TextField id="outlined-basic" value={district['district']} onChange={e => handleChange(e.target.value, 'district')} label="District" name='district' variant="outlined" />
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button type="submit" autoFocus color="primary">
