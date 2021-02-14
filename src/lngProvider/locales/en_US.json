@@ -1,5 +1,6 @@
 {
   "sidebar.main": "Dashbord",
+  "sidebar.usermangment": "User Managment",
   "sidebar.dashboard": "Dashboard",
   "sidebar.dashboard.misc": "Misc",
   "sidebar.dashboard.news": "News",
