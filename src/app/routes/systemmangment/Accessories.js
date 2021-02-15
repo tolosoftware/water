@@ -12,6 +12,7 @@ import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
+import AccessoriesForm from './commentElement/AccessoriesForm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,14 +53,11 @@ function Accessories() {
     <TabContext value={value}>
       <AppBar position="static">
         <TabList onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Add New Accessory" value="1" />
-          <Tab label="List of Accessories" value="2" />
+          <Tab label="List of Accessories" value="1" />
+          <Tab label="Add New Accessory" value="2" />
         </TabList>
       </AppBar>
       <TabPanel value="1">
-        
-      </TabPanel>
-      <TabPanel value="2">
         <div className="table-responsive-material">
           <Table>
             <TableHead>
@@ -86,6 +84,10 @@ function Accessories() {
             </TableBody>
           </Table>
         </div>
+      </TabPanel>
+      <TabPanel value="2">
+      <AccessoriesForm />
+        
       </TabPanel>
     </TabContext>
   </div>

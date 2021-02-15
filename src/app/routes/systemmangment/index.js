@@ -19,19 +19,19 @@ const Systemmangment = ({match}) => (
       <span>
         <GeoLocation/>
       </span>
-      <Divider /> <br/>
+      <Divider className='diver-sys' /> <br/>
 
       <h3><b>Water Pumps</b></h3>
       <span>
         <WaterPump/>
       </span>
-      <Divider /><br/>
+      <Divider  className='diver-sys' /><br/>
 
       <h3><b>Solar Panels</b></h3>
       <span>
         <SolarPanel/>
       </span>
-      <Divider /><br/>
+      <Divider  className='diver-sys' /><br/>
       <div className="row mb-md-3">
         <CardBox styleName="col-12" cardStyle="p-0" heading={<IntlMessages id="Accessories"/>}
                   headerOutside>
