@@ -25,6 +25,7 @@ import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import './style.css';
 import './style.scss';
+import DialogWaterP from './commentElement/DialogWaterP'
 // end import for taps
 
 // start import for dialog
@@ -439,6 +440,8 @@ const WaterPump = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const [openD, setOpenD] = React.useState(false);
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -667,20 +670,22 @@ const handleChangeDescription = (value, key) => {
                 <DialogActions>
                   
                 </DialogActions>
-                
               </Dialog>
-          
-          
-        
       </div>
       
     </div>
 
     <div className="col-xl-8 col-lg-8 col-md-7 col-12">
+      {/* imported dialog form another file */}
+      <DialogWaterP 
+        openD={openD}
+        setOpenD={setOpenD}
+      />
+
       <Widget>
         <div className="d-flex flex-row mb-3">
-          <h4 className="mb-0"> Cities and Sunshine</h4>
-          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
+          <h4 className="mb-0"> List of Water Pumps</h4>
+          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
         </div>
         <div className="table-responsive-material">
