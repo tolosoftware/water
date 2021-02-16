@@ -461,7 +461,7 @@ export default function AccessoriesForm() {
                         </div>
                     </div>
                     <div className="col-xl-2 col-lg-2 col-md-2 col-12">
-                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">primary</Button>
+                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>
             </form>

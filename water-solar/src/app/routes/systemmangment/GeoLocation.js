@@ -513,16 +513,16 @@ const handleChange = (value, key) => {
 
           <Widget  style={widget}>
       <div className="d-flex flex-row mb-3">
-        <h4 className="mb-0"> Country</h4>
+        <h4 className="mb-0"> Irradiation</h4>
         <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
-                    <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
+                    <i className="zmdi zmdi-plus-circle-o mr-1"/>New Record</span>
       </div>
       <div className="table-responsive-material">
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">
           <tr>
-            <th>Account Holder Name</th>
-            <th>Last Transfer</th>
+            <th>City</th>
+            <th>Irradiation (now)</th>
             <th>Action</th>
           </tr>
           </thead>

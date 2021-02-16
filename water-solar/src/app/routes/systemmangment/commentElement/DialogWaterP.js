@@ -51,9 +51,9 @@ const styles = (theme) => ({
 export default function DialogWaterP(props){
     // start code of dialog modal for water pump
     const {openD, setOpenD} = props;
-    const handleClickOpen = () => {
-        setOpenD(true);
-    };
+    // const handleClickOpen = () => {
+    //     setOpenD(true);
+    // };
     const handleClose = () => {
         setOpenD(false);
     };
@@ -61,8 +61,8 @@ export default function DialogWaterP(props){
     return (
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openD}>
             
-            <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
-            
+            <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
+              Add Water Pump Device
             </DialogTitle>
             <DialogContent dividers>
                 <WaterPumpDeviceForm />
