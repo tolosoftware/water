@@ -72,3 +72,7 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
     right: 15px !important;
     position: absolute !important;
 }
+.waterPumFile .dropzone-file-btn{
+    height: 100px !important;
+    width: 240px !important;
+}

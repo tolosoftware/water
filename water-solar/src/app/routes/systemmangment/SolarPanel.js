@@ -510,7 +510,7 @@ const handleChangeDescription = (value, key) => {
                     aria-label="full width tabs example"
                   >
                     <Tab label="Add Solar" {...a11yProps(0)} />
-                    <Tab label="List Solar Device" {...a11yProps(1)} />
+                    <Tab label="List of Solar Device" {...a11yProps(1)} />
                   </Tabs>
                 </AppBar>
                 
@@ -570,7 +570,17 @@ const handleChangeDescription = (value, key) => {
                 <div className="row paddingTopForm">
                   
                   <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                    {/* <input type="file" name="brand_logo" placeholder="Upload the brand logo"/> */}
+                  {/* <div className="dropzone-card">
+                            <div className="dropzone">
+                                <div {...getRootProps({className: 'dropzone-file-btn'})}>
+                                    <input {...getInputProps()} />
+                                    <p>Drag 'n' drop Solar Panel image</p>
+                                </div>
+                            </div>
+                            <div className="dropzone-content" style={thumbsContainer}>
+                                {thumbs}
+                            </div>
+                        </div> */}
 
                     <div className="file-upload-wrapper" data-text="Upload the brand logo!">
                       <input name="file-upload-field" type="file" className="file-upload-field" value=""/>

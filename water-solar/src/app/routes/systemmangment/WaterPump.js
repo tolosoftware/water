@@ -511,8 +511,8 @@ const handleChangeDescription = (value, key) => {
                     variant="fullWidth"
                     aria-label="full width tabs example"
                   >
-                    <Tab label="Add Water Pump" {...a11yProps(0)} />
-                    <Tab label="List Water Pumps" {...a11yProps(1)} />
+                    <Tab label="Add Brand" {...a11yProps(0)} />
+                    <Tab label="List of Brand" {...a11yProps(1)} />
                   </Tabs>
                 </AppBar>
                 
@@ -686,20 +686,22 @@ const handleChangeDescription = (value, key) => {
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> List of Water Pumps</h4>
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
-            <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
+            <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
               <tr>
-                <th>Country</th>
-                <th>City</th>
+                <th>ID</th>
+                <th>Name/Model</th>
+                <th>Power (KW)</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
             {tableList.map((data, index) => {
               return <tr key={index}>
+                <td>{data.id}</td>
                 <td>
                   <div className="d-flex align-items-center">
                     {data.image === '' ? null :
@@ -709,6 +711,7 @@ const handleChangeDescription = (value, key) => {
                     </div>
                   </div>
                 </td>
+                
                 <td>{data.lastTransfer}</td>
                 <td>
                   <div className="pointer text-primary">

@@ -51,9 +51,9 @@ const styles = (theme) => ({
 export default function DialogWaterP(props){
     // start code of dialog modal for water pump
     const {openD, setOpenD} = props;
-    const handleClickOpen = () => {
-        setOpenD(true);
-    };
+    // const handleClickOpen = () => {
+    //     setOpenD(true);
+    // };
     const handleClose = () => {
         setOpenD(false);
     };
