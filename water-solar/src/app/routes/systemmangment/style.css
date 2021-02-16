@@ -1,4 +1,4 @@
-.MuiDivider-root{
+.diver-sys{
     background-color: #4a5bb9 !important;
     height: 30px !important;
 }
@@ -28,10 +28,47 @@
  .customizedDialog1 header{
     padding: 8px 24px !important;
  }
- .waterPumpPanel .MuiFormControl-root{
+ .waterPumpPanel .MuiFormControl-root, .fullWidthInput{
     width: 100%;
  }
  .waterPumpPanel .MuiButton-textPrimary:hover{
     background-color: #4356c3;
     color: #ffffff;
  }
+ .react-swipeable-view-container > div:first-child, .react-swipeable-view-container > div:last-child{
+    width: 549px !important;
+    overflow: inherit !important;
+ }
+.sunnyIcon, .lDrinkIcon{
+    height: 2em !important;
+    width: 2em !important;
+}
+.waterPumpPanelBackGrad{
+    background: rgb(0,121,254);
+background: linear-gradient(90deg, rgba(0,121,254,1) 0%, rgba(5,198,253,1) 100%);
+}
+.solarPanalBackGrad{
+    background: rgb(104,44,48);
+background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%, rgba(53,110,216,1) 77%, rgba(30,85,177,1) 100%);
+}
+.insideFormBP{
+    padding-bottom: 15px;
+}
+.accessory_file .dropzone{
+    display: flow-root !important;
+    float: left;
+    margin-right: 30px;
+    margin-bottom: 0px;
+} 
+.accessory_file .dropzone-file-btn{
+    height: 100px !important;
+    width: 240px !important;
+}
+.accessory_file .dropzone-card{
+    margin-top: -15px;
+}
+.accessBtn{
+    bottom: 5px !important;
+    right: 15px !important;
+    position: absolute !important;
+}

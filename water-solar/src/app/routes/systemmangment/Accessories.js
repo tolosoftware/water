@@ -5,6 +5,24 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+// Taps Start Code 
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tab from '@material-ui/core/Tab';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
+import AccessoriesForm from './commentElement/AccessoriesForm'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+// Taps End code
+
 let id = 0;
 
 function createData(name, calories, fat, carbs, protein) {
@@ -21,34 +39,60 @@ const data = [
 ];
 
 function Accessories() {
+  // start code for taps 
+  const classes = useStyles();
+  const [value, setValue] = React.useState('1');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  // end code for taps 
 
   return (
-    <div className="table-responsive-material">
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat (g)</TableCell>
-            <TableCell align="right">Carbs (g)</TableCell>
-            <TableCell align="right">Protein (g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(n => {
-            return (
-              <TableRow key={n.id}>
-                <TableCell>{n.name}</TableCell>
-                <TableCell align="right">{n.calories}</TableCell>
-                <TableCell align="right">{n.fat}</TableCell>
-                <TableCell align="right">{n.carbs}</TableCell>
-                <TableCell align="right">{n.protein}</TableCell>
+    <div className={classes.root}>
+    <TabContext value={value}>
+      <AppBar position="static">
+        <TabList onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="List of Accessories" value="1" />
+          <Tab label="Add New Accessory" value="2" />
+        </TabList>
+      </AppBar>
+      <TabPanel value="1">
+        <div className="table-responsive-material">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Dessert (100g serving)</TableCell>
+                <TableCell align="right">Calories</TableCell>
+                <TableCell align="right">Fat (g)</TableCell>
+                <TableCell align="right">Carbs (g)</TableCell>
+                <TableCell align="right">Protein (g)</TableCell>
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+            </TableHead>
+            <TableBody>
+              {data.map(n => {
+                return (
+                  <TableRow key={n.id}>
+                    <TableCell>{n.name}</TableCell>
+                    <TableCell align="right">{n.calories}</TableCell>
+                    <TableCell align="right">{n.fat}</TableCell>
+                    <TableCell align="right">{n.carbs}</TableCell>
+                    <TableCell align="right">{n.protein}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </TabPanel>
+      <TabPanel value="2">
+      <AccessoriesForm />
+        
+      </TabPanel>
+    </TabContext>
+  </div>
+
+    
   );
 }
 
