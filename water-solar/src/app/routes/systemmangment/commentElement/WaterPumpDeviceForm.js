@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TextField from '@material-ui/core/TextField';
 import {useDropzone} from "react-dropzone";
 import Button from '@material-ui/core/Button';
@@ -6,6 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import clsx from 'clsx';
+import {UUID} from "uuid";
+import  './CommentEleStyle.css';
+// import {useDropzone} from "react-dropzone";
 // end of dialog modal for water pump
  
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
             fontSize: 18,
         },
     },
+    
+      
   }));
 // start code for dropzone
   const thumbsContainer = {
@@ -57,15 +64,52 @@ const useStyles = makeStyles((theme) => ({
   };
 // end code for dropzone
 
+// function component lifecycle hook
+const useComponentWillMount = func => {
+    const willMount = useRef(true);
+    if (willMount.current) {
+      func();
+    }
+    useComponentDidMount(() => {
+      willMount.current = false;
+    });
+  };
+  
+  const useComponentDidMount = func => useEffect(func, []);
+  
+  const useInputState = initial => {
+    const [state, setState] = useState(initial);
+    const setInputState = e => {
+      setState(e.target.value);
+    };
+    return [state, setInputState];
+  };
+// end function lifecycle hook
+
 export default function WaterPumpDeviceForm() {
+    let val
+    useComponentWillMount(() => {
+        console.log("willMount");
+        // val = UUID.v4();
+    });
+    useComponentDidMount(() => console.log("didMount"));
+    
+    console.log("rendering");
   const [brand, setBrand] = useState("");
   const handleChange1 = (event) => {
     setBrand(event.target.value);
   };
+  const [cableType, setCableType] = useState("");
+  const handleChangeCable = (event) => {
+    setCableType(event.target.value);
+  };
   const [name, setName] = useState("");
-  const [model, setModel] = useState("");
+  const [powerKg, setPowerKg] = useState("");
+  const [powerHp, setPowerHp] = useState("");
+  const [outlet, setOutlet] = useState("");
+  const [current, setCurrent] = useState("");
+  const [diameter, setDiameter] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
   const classes = useStyles();
   
 // dropzone code
@@ -98,7 +142,7 @@ export default function WaterPumpDeviceForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-        brand, name, model, description, price, ...files
+        brand, name, powerKg, description, ...files
     }
     console.log(brand);
     console.log(data);
@@ -112,8 +156,18 @@ export default function WaterPumpDeviceForm() {
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="row">
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
-                        {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type" value={type} onChange={(e) => setType(e.target.value)} variant="outlined" /> */}
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                        <TextField size="small"
+                            id="outlined-read-only-input"
+                            label="ID"
+                            defaultValue={val}
+                            InputProps={{
+                            readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                    </div>
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel htmlFor="outlined-age-native-simple" size="small" >Brand</InputLabel>
                             <Select size="small"
@@ -133,32 +187,99 @@ export default function WaterPumpDeviceForm() {
                             </Select>
                         </FormControl>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                        <TextField size="small"
+                            label="Power to Kw" value={powerKg} onChange={(e) => setPowerKg(e.target.value)}
+                            id="outlined-start-adornment"
+                            className={clsx(classes.margin, classes.textField)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="end">Kw</InputAdornment>,
+                            }}
+                            variant="outlined"
+                        />
                     </div>
                     
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 ">
-                        {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Origin" value={origin} onChange={(e) => setOrigin(e.target.value)} variant="outlined" /> */}
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                        <TextField size="small"
+                            label="Power to Hp" value={powerHp} onChange={(e) => setPowerHp(e.target.value)}
+                            id="outlined-start-adornment"
+                            className={clsx(classes.margin, classes.textField)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="end">Hp</InputAdornment>,
+                            }}
+                            variant="outlined"
+                        /> 
                     </div>
                     
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12">
-                        <TextField id="outlined-basic" size="small" type="number" className="fullWidthInput" label="Price" value={price} onChange={(e) => setPrice(e.target.value)} variant="outlined" />
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                        <TextField size="small"
+                            label="Outlet" value={outlet} onChange={(e) => setOutlet(e.target.value)}
+                            id="outlined-start-adornment"
+                            className={clsx(classes.margin, classes.textField)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                            }}
+                            variant="outlined"
+                        />  
                     </div>
-                        
-                    <div className="col-xl-9 col-lg-9 col-md-9 col-12">
+                    
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                        <TextField size="small"
+                            label="Current" value={current} onChange={(e) => setCurrent(e.target.value)}
+                            id="outlined-start-adornment"
+                            className={clsx(classes.margin, classes.textField)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                            }}
+                            variant="outlined"
+                        />  
+                    </div>
+                    
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                        <TextField size="small"
+                            label="Diameter" value={diameter} onChange={(e) => setDiameter(e.target.value)}
+                            id="outlined-start-adornment"
+                            className={clsx(classes.margin, classes.textField)}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                            }}
+                            variant="outlined"
+                        />  
+                    </div>
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                        <FormControl variant="outlined" size="small" className={classes.formControl}>
+                            <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
+                            <Select size="small"
+                                native
+                                value={cableType}
+                                onChange={handleChangeCable}
+                                label="Cable Type"
+                                inputProps={{
+                                name: 'cableType',
+                                id: 'outlined-age-native-simple',
+                                }}
+                            >
+                                <option aria-label="None" value="" />
+                                <option value={10}>Cable Type 1</option>
+                                <option value={20}>Cable Type 2</option>
+                                <option value={30}>Cable Type 3</option>
+                            </Select>
+                        </FormControl>
+                    </div>    
+                    <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                         <div class="form-group">
                             <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                         </div>
                     </div>
-                    <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file">
+                    <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
                         <div className="dropzone-card">
                             <div className="dropzone">
                                 <div {...getRootProps({className: 'dropzone-file-btn'})}>
                                     <input {...getInputProps()} />
-                                    <p>Drag 'n' drop Accessory images</p>
+                                    <p>Drag 'n' drop Water Pump Device image</p>
                                 </div>
                             </div>
                             <div className="dropzone-content" style={thumbsContainer}>
@@ -167,7 +288,7 @@ export default function WaterPumpDeviceForm() {
                         </div>
                     </div>
                     <div className="col-xl-2 col-lg-2 col-md-2 col-12">
-                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">primary</Button>
+                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>
             </form>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link, withRouter, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
@@ -214,9 +214,13 @@ class Header extends React.Component {
             </li>
           
             <li className="list-inline-item mail-tour">
-               <IconButton aria-label="delete" className="icon-btn">
+            <NavLink className="prepend-icon" to="/app/Knowledgebase">
+                      {/* <span className="nav-text"><IntlMessages id="sidebar.knowledge"/></span> */}
+              <IconButton aria-label="delete" className="icon-btn">
                 <DeleteIcon fontSize="small" className="zmdi zmdi-comment-alt-text zmdi-hc-fw"/>
               </IconButton>
+            </NavLink>
+               
             </li>
 
             {navigationStyle === HORIZONTAL_NAVIGATION &&

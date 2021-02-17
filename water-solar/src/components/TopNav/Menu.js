@@ -107,12 +107,12 @@ class Menu extends Component {
               </NavLink>
           </li>
 
-          <li className="nav-item">
+          {/* <li className="nav-item">
            
                 <NavLink className="prepend-icon" to="/app/Knowledgebase">
                       <span className="nav-text"><IntlMessages id="sidebar.knowledge"/></span>
-              </NavLink>
-          </li>
+               </NavLink>
+          </li> */}
 
           <li className="nav-item">  
               <NavLink className="prepend-icon" to="/app/systemmangment">
