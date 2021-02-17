@@ -10,7 +10,7 @@ import {UserList} from "./UserList";
 
 const Usermangment = ({match}) => (
     <div className="app-wrapper">
-   <ContainerHeader match={match} title={<IntlMessages id="User Managment"/>}/>  
+   <ContainerHeader match={match} title={<IntlMessages id="sidebar.usermangment"/>}/>  
     
    
      <UserList/>

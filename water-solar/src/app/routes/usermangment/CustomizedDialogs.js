@@ -176,7 +176,8 @@ export default function CustomizedDialogs(props) {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-   const { register, handleSubmit,errors  } = useForm(); // initialize the hook
+  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  
   const onSubmit = (data) => {
   
     var userimage = '';

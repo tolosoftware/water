@@ -4,8 +4,8 @@ import IntlMessages from "util/IntlMessages";
 
 const Newproject = ({match}) => (
     <div className="app-wrapper">
-   <ContainerHeader match={match} title={<IntlMessages id="Knowledge Base"/>}/>      
-      <h1>This is Knowledgebase</h1>
+   <ContainerHeader match={match} title={<IntlMessages id="New Project"/>}/>      
+      <h1>This is New Project</h1>
   </div>
 );
 

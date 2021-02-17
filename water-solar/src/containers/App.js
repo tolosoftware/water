@@ -46,22 +46,23 @@ import asyncComponent from 'util/asyncComponent';
 import {setDarkTheme, setThemeColor} from "../actions/Setting";
 
 const RestrictedRoute = ({component: Component, authUser, ...rest}) =>
-  <Route
+<Route
     {...rest}
     render={props =>
-      authUser
-        ? <Component {...props} />
-        : <Redirect
-          to={{
-            pathname: '/signin',
-            state: {from: props.location}
-          }}
-        />}
-  />;
-
-class App extends Component {
-
-  componentWillMount() {
+      //localStorage.getItem('token')
+      true
+      ? <Component {...props} />
+      : <Redirect
+      to={{
+        pathname: '/signin',
+        state: {from: props.location}
+      }}
+     />}
+    />;
+      
+      class App extends Component {
+        
+        componentWillMount() {
     window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
     if (this.props.initURL === '') {
       this.props.setInitUrl(this.props.history.location.pathname);
@@ -147,6 +148,8 @@ class App extends Component {
   }
 
   render() {
+ 
+    
     const {match, location, isDarkTheme, locale, authUser, initURL, isDirectionRTL} = this.props;
     let {themeColor} = this.props;
     let applyTheme = createMuiTheme(indigoTheme);
@@ -156,15 +159,24 @@ class App extends Component {
     } else {
       applyTheme = this.getColorTheme(themeColor, applyTheme);
     }
-    if (location.pathname === '/') {
-      if (authUser === null) {
-        return ( <Redirect to={'/signin'}/> );
-      } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
-        return ( <Redirect to={'/app/dashboard/crypto'}/> );
+
+    if(location.pathname==='/') {
+      const token=localStorage.getItem('token');
+      if (token === null) {
+         return ( <Redirect to={'/signin'}/> );
+      } else if(initURL===''||initURL==='/'||initURL==='/signin') {
+       const user=JSON.parse(localStorage.getItem('UserData'));
+        if(user.system==1) {
+           return ( <Redirect to={'/app/dashboard/crypto'}/> );
+        } else {
+           return ( <Redirect to={'/app/dashboard/intranet'}/> );
+        }
+       
       } else {
         return ( <Redirect to={initURL}/> );
       }
     }
+
     if (isDirectionRTL) {
       applyTheme.direction = 'rtl';
       document.body.classList.add('rtl')
@@ -201,7 +213,8 @@ class App extends Component {
 
 const mapStateToProps = ({settings, auth}) => {
   const {themeColor, sideNavColor, darkTheme, locale, isDirectionRTL} = settings;
-  const {authUser, initURL} = auth;
+  const {authUser,initURL}=auth;
+
   return {themeColor, sideNavColor, isDarkTheme: darkTheme, locale, isDirectionRTL, authUser, initURL}
 };
 
