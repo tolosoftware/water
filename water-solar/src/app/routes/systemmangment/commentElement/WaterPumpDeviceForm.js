@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
-import {UUID} from "uuid";
+// import {UUID} from "uuid";
 import  './CommentEleStyle.css';
 // import {useDropzone} from "react-dropzone";
 // end of dialog modal for water pump
@@ -77,13 +77,13 @@ const useComponentWillMount = func => {
   
   const useComponentDidMount = func => useEffect(func, []);
   
-  const useInputState = initial => {
-    const [state, setState] = useState(initial);
-    const setInputState = e => {
-      setState(e.target.value);
-    };
-    return [state, setInputState];
-  };
+//   const useInputState = initial => {
+//     const [state, setState] = useState(initial);
+//     const setInputState = e => {
+//       setState(e.target.value);
+//     };
+//     return [state, setInputState];
+//   };
 // end function lifecycle hook
 
 export default function WaterPumpDeviceForm() {
@@ -232,7 +232,7 @@ export default function WaterPumpDeviceForm() {
                             id="outlined-start-adornment"
                             className={clsx(classes.margin, classes.textField)}
                             InputProps={{
-                                startAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                                startAdornment: <InputAdornment position="end">A</InputAdornment>,
                             }}
                             variant="outlined"
                         />  

@@ -34,6 +34,8 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 // end import for dialog 
+import DialogSolarP from './commentElement/DialogSolarP'
+
 
 // start of dialog modal for water pump
 const styles = (theme) => ({
@@ -437,6 +439,7 @@ const SolarPanel = () => {
   };
   // start code of dialog modal for water pump
   const [open, setOpen] = React.useState(false);
+  const [openD, setOpenD] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -688,10 +691,15 @@ const handleChangeDescription = (value, key) => {
     </div>
 
     <div className="col-xl-8 col-lg-8 col-md-7 col-12">
+      {/* imported dialog form another file */}
+      <DialogSolarP 
+        openD={openD}
+        setOpenD={setOpenD}
+      />
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> Cities and Sunshine</h4>
-          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
+          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
         </div>
         <div className="table-responsive-material">
