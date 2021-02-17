@@ -50,16 +50,16 @@ const styles = (theme) => ({
   // end of dialog modal for Solar Panal 
 export default function DialogSolarP(props){
     // start code of dialog modal for Solar Panal 
-    const {openD, setOpenD} = props;
+    const {openS, setOpenS} = props;
     // const handleClickOpen = () => {
     //     setOpenD(true);
     // };
     const handleClose = () => {
-        setOpenD(false);
+        setOpenS(false);
     };
     // end code of dialog modal for Solar Panal 
     return (
-        <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openD}>
+        <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openS}>
             
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
               Add Solar Panal  Device
