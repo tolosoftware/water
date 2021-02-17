@@ -2,8 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {userSignOut} from 'actions/Auth';
 import IntlMessages from 'util/IntlMessages';
+import {Redirect, Route, Switch} from 'react-router-dom';
 
 class UserInfoPopup extends React.Component {
+
+  logout() {
+      console.log("Try to logoput");
+      localStorage.removeItem('token');
+      localStorage.removeItem('UserData');
+      //this.props.history.push('/signin');
+     return ( <Redirect to={'/'}/> );
+  }
   render() {
     return (
       <div>
@@ -24,10 +33,7 @@ class UserInfoPopup extends React.Component {
           <i className="zmdi zmdi-settings zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.setting"/>
         </span>
-        <span className="jr-link dropdown-item text-muted" onClick={() => {
-          console.log("Try to logoput");
-          this.props.userSignOut()
-        }}>
+        <span className="jr-link dropdown-item text-muted" onClick={this.logout}>
           <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.logout"/>
         </span>

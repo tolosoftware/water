@@ -191,6 +191,7 @@ export function* signInUser() {
 }
 
 export function* signOutUser() {
+  console.log('ok ta inja');
   yield takeEvery(SIGNOUT_USER, signOut);
 }
 
