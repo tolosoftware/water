@@ -6,8 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -26,6 +26,7 @@ import Popover from '@material-ui/core/Popover';
 import './style.css';
 import './style.scss';
 import DialogWaterP from './commentElement/DialogWaterP'
+import DialogSettingWD from './commentElement/DialogSettingWD'
 // end import for taps
 
 // start import for dialog
@@ -441,6 +442,7 @@ const WaterPump = () => {
     setOpen(true);
   };
   const [openD, setOpenD] = React.useState(false);
+  const [openWSD, setOpenWSD] = React.useState(false);
   
   const handleClose = () => {
     setOpen(false);
@@ -654,6 +656,7 @@ const handleChangeDescription = (value, key) => {
                                 <IconButton size="small" color="primary" aria-label="edit an alarm">
                                     <Edit />
                                 </IconButton>
+                               
                               
                                 </div>
                               </td>
@@ -680,6 +683,10 @@ const handleChangeDescription = (value, key) => {
       <DialogWaterP 
         openD={openD}
         setOpenD={setOpenD}
+      />
+      <DialogSettingWD 
+        openWSD={openWSD}
+        setOpenWSD={setOpenWSD}
       />
 
       <Widget>
@@ -718,10 +725,12 @@ const handleChangeDescription = (value, key) => {
                     <IconButton size="small" aria-label="delete"  color="secondary">
                       <DeleteIcon />
                     </IconButton>
-                  <IconButton size="small" color="primary" aria-label="add an alarm">
-                      <Add />
+                  <IconButton size="small" color="primary" aria-label="edit an alarm">
+                    <Edit />
                   </IconButton>
-                
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>setOpenWSD(true)}>
+                    <SettingsIcon />
+                  </IconButton>
                   </div>
                 </td>
               </tr>
