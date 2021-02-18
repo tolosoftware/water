@@ -8,7 +8,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import SolarPanalDeviceForm from './SolarPanalDeviceForm';
+import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -48,24 +48,24 @@ const styles = (theme) => ({
     },
   }))(MuiDialogActions);
   // end of dialog modal for Solar Panal 
-export default function DialogSolarP(props){
+export default function DialogSettingWD(props){
     // start code of dialog modal for Solar Panal 
-    const {openS,   setOpenS} = props;
+    const {openWSD, setOpenWSD} = props;
     // const handleClickOpen = () => {
     //     setOpenD(true);
     // };
-    const handleCloseS = () => {
-          setOpenS(false);
+    const handleClose = () => {
+      setOpenWSD(false);
     };
     // end code of dialog modal for Solar Panal 
     return (
-        <Dialog onClose={handleCloseS}  aria-labelledby="customized-dialog-title" open={openS}>
+        <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openWSD}>
             
-            <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleCloseS}>
-              Add Solar Panal  Device
+            <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
+              Setup
             </DialogTitle>
             <DialogContent dividers>
-                <SolarPanalDeviceForm />
+                <WaterPumpDeviceSettingForm />
             </DialogContent>
             
             <DialogActions>

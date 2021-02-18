@@ -439,13 +439,13 @@ const SolarPanel = () => {
   };
   // start code of dialog modal for water pump
   const [open, setOpen] = React.useState(false);
-  const [openD, setOpenD] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+  const [openS, setOpenS] = React.useState(false);
   // end code of dialog modal for water pump
 // start form sumbit
 const [brand, setBrand] = React.useState({});
@@ -693,13 +693,13 @@ const handleChangeDescription = (value, key) => {
     <div className="col-xl-8 col-lg-8 col-md-7 col-12">
       {/* imported dialog form another file */}
       <DialogSolarP 
-        openD={openD}
-        setOpenD={setOpenD}
+        openS={openS}
+        setOpenS={setOpenS}
       />
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> Cities and Sunshine</h4>
-          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
+          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
         </div>
         <div className="table-responsive-material">

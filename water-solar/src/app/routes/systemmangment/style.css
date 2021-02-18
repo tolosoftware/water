@@ -76,3 +76,22 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
     height: 100px !important;
     width: 240px !important;
 }
+.cellPadding{
+    padding: 8px !important;
+}
+.MuiSlider-mark.MuiSlider-markActive {
+    background-color: #3f51b5 !important;
+}
+.MuiSlider-mark {
+    background-color: #fff !important;
+}
+.dialogWD .MuiDialog-paperWidthSm{
+    max-width: 1200px !important;
+    min-width: 900px !important;
+}
+.insideFormPadding{
+padding: 10px 25px;
+}
+.powerKW-PR{
+    padding: 0 35px 15px 40px !important;;
+}

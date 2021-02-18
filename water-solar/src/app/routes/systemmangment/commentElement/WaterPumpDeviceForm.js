@@ -12,6 +12,14 @@ import clsx from 'clsx';
 import  './CommentEleStyle.css';
 // import {useDropzone} from "react-dropzone";
 // end of dialog modal for water pump
+
+// code for small steps
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
+
+function valuetext(value) {
+  return `${value}KW`;
+}
  
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -28,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
             fontSize: 18,
         },
     },
-    
+    root: {
+        width: 300,
+      },
       
   }));
 // start code for dropzone
@@ -86,6 +96,17 @@ const useComponentWillMount = func => {
 //   };
 // end function lifecycle hook
 
+const marksKW = [
+    {
+      value: 0.75,
+      label: '0.75KW',
+    },
+    {
+      value: 30,
+      label: '30KW',
+    },
+  ];
+
 export default function WaterPumpDeviceForm() {
     let val
     useComponentWillMount(() => {
@@ -99,13 +120,9 @@ export default function WaterPumpDeviceForm() {
   const handleChange1 = (event) => {
     setBrand(event.target.value);
   };
-  const [cableType, setCableType] = useState("");
-  const handleChangeCable = (event) => {
-    setCableType(event.target.value);
-  };
+  
   const [name, setName] = useState("");
-  const [powerKg, setPowerKg] = useState("");
-  const [powerHp, setPowerHp] = useState("");
+  const [powerKW, setPowerKW] = useState("");
   const [outlet, setOutlet] = useState("");
   const [current, setCurrent] = useState("");
   const [diameter, setDiameter] = useState("");
@@ -142,7 +159,7 @@ export default function WaterPumpDeviceForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-        brand, name, powerKg, description, ...files
+        brand, name, powerKW, description, ...files
     }
     console.log(brand);
     console.log(data);
@@ -190,29 +207,6 @@ export default function WaterPumpDeviceForm() {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
-                        <TextField size="small"
-                            label="Power to Kw" value={powerKg} onChange={(e) => setPowerKg(e.target.value)}
-                            id="outlined-start-adornment"
-                            className={clsx(classes.margin, classes.textField)}
-                            InputProps={{
-                                startAdornment: <InputAdornment position="end">Kw</InputAdornment>,
-                            }}
-                            variant="outlined"
-                        />
-                    </div>
-                    
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
-                        <TextField size="small"
-                            label="Power to Hp" value={powerHp} onChange={(e) => setPowerHp(e.target.value)}
-                            id="outlined-start-adornment"
-                            className={clsx(classes.margin, classes.textField)}
-                            InputProps={{
-                                startAdornment: <InputAdornment position="end">Hp</InputAdornment>,
-                            }}
-                            variant="outlined"
-                        /> 
-                    </div>
                     
                     <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
                         <TextField size="small"
@@ -249,7 +243,24 @@ export default function WaterPumpDeviceForm() {
                             variant="outlined"
                         />  
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+
+                    <div className="col-xl-12 col-lg-12 col-md-12 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
+                        <Typography id="discrete-slider-small-steps" gutterBottom>
+                        Power to KW
+                        </Typography>
+                        <Slider onChange={(event, value) => setPowerKW(value)}
+                            defaultValue={15}
+                            getAriaValueText={valuetext}
+                            aria-labelledby="discrete-slider-small-steps"
+                            step={0.1}
+                            marks={marksKW}
+                            min={0.75}
+                            max={30}
+                            valueLabelDisplay="on"
+                        />
+                    </div>
+                    
+                    {/* <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
                             <Select size="small"
@@ -268,7 +279,7 @@ export default function WaterPumpDeviceForm() {
                                 <option value={30}>Cable Type 3</option>
                             </Select>
                         </FormControl>
-                    </div>    
+                    </div>     */}
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                         <div class="form-group">
                             <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>

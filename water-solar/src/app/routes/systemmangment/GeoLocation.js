@@ -390,15 +390,18 @@ const GeoLocation=() => {
   };
 // end dialog code for modal 
 // start form sumbit
-const [district, setDistrict] = React.useState({});
-const [country, setCountry] = React.useState({});
-const handleChange = (value, key) => {
-  setDistrict({...district, ...{[key]: value}})
-}
+const [district, setDistrict] = React.useState("");
+const [latitude, setLatitude] = React.useState("");
+const [longitude, setLongitude] = React.useState("");
+const [country, setCountry] = React.useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    let data = {
+      country, district, latitude, longitude
+    }
     console.log(district);
-    console.log(country);
+    console.log(data);
     
 
   }
@@ -422,10 +425,10 @@ const handleChange = (value, key) => {
         <DialogContent dividers>
           <Typography gutterBottom>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+            in, egestas eget quam. 
           </Typography>
           <div className="row">
-            <div className="col-xl-6 col-gl-6 col-md-6 col-sm-16 col-12">
+            <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12 cellPadding">
             <Autocomplete
               id="country-select-demo"  onChange={(event, newValue) => {setCountry(newValue);}}
               style={{ width: 300 }}
@@ -455,8 +458,16 @@ const handleChange = (value, key) => {
               )} 
             /> 
             </div>
-            <div className="col-xl-6 col-gl-6 col-md-6 col-sm-16 col-12">
-              <TextField id="outlined-basic" value={district['district']} onChange={e => handleChange(e.target.value, 'district')} label="District" name='district' variant="outlined" />
+            <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+              <TextField  id="outlined-basic" value={district} onChange={(e) => setDistrict(e.target.value)} label="District" name='district' variant="outlined" />
+            </div>
+          {/* </div>
+          <div className="row"> */}
+            <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+              <TextField id="outlined-basic" size="small" value={latitude} onChange={(e) => setLatitude(e.target.value)} label="Latitude" name='latitude' variant="outlined" />
+            </div>
+            <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+              <TextField id="outlined-basic" size="small" value={longitude} onChange={(e) => setLongitude(e.target.value)} label="Longitude" name='longitude' variant="outlined" />
             </div>
           </div>
         </DialogContent>
