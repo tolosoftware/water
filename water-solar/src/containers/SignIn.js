@@ -7,7 +7,9 @@ import Button from '@material-ui/core/Button';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
+import axios from 'axios';
+
 
 import {
   hideMessage,
@@ -40,10 +42,39 @@ class SignIn extends React.Component {
     }
   }
 
-  activateLasers() {
-    
-      return <Redirect to={'/app/dashboard/intranet'} />
+   state = {
+    redirect: false
   }
+
+
+   handlSubmit = e =>{
+        e.preventDefault();
+        const data ={
+            email: this.userName,
+            password: this.password, 
+        }
+     
+        this.props.showAuthLoader();
+        axios.post('http://localhost:8000/api/login', data)
+        .then(
+          res => {
+   
+            localStorage.setItem('token', res.data.token); 
+            localStorage.setItem('UserData',JSON.stringify(res.data.user));
+            if(res.data.user.system==1) {
+              this.props.history.push('app/dashboard/crypto');
+            }else {
+              this.props.history.push('app/dashboard/intranet');
+            }
+             
+          }
+        ).catch(
+            err =>{
+                alert('login faild !')
+            } 
+        )
+    };
+
 
   render() {
     const {
@@ -52,7 +83,13 @@ class SignIn extends React.Component {
       type
    
     } = this.state;
-    const {showMessage, loader, alertMessage} = this.props;
+    const {showMessage,loader,alertMessage}=this.props;
+    
+    const { redirect } = this.state;
+
+     if (redirect) {
+       return <Redirect to='/app/dashboard/intranet'/>;
+     }
     return (
       <div
         className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
@@ -79,13 +116,12 @@ class SignIn extends React.Component {
             </div>
 
             <div className="app-login-form">
-              <form>
+              <form onSubmit={this.handlSubmit}>
                 <fieldset>
                   <TextField
                     label="Email"
                     fullWidth
-                    onChange={(event) => this.setState({email: event.target.value})}
-                    defaultValue={email}
+                    onChange={e => this.userName = e.target.value}
                     margin="normal"
                     className="mt-1 my-sm-3"
                   />
@@ -93,32 +129,15 @@ class SignIn extends React.Component {
                     type="password"
                     label={<IntlMessages id="appModule.password"/>}
                     fullWidth
-                    onChange={(event) => this.setState({password: event.target.value})}
-                    defaultValue={password}
+                     onChange={e => this.password = e.target.value}
                     margin="normal"
                     className="mt-1 my-sm-3"
                   />
 
                   <div className="mb-3 d-flex align-items-center justify-content-between">
-                    <Button onClick={() => {
-                      this.props.showAuthLoader();
-                      this.props.userSignIn({email, password});
-                    }} variant="contained" color="primary">
+                    <Button variant="contained" color="primary" type="submit">
                       As Admin
                    </Button>
-
-                 
-                      <Button onClick={() => {
-                      this.props.showAuthLoader();
-                      this.props.userSignIn({email, password,type});
-                    }} variant="contained" color="primary">
-                      As USer
-                   </Button>
-                   
-                      {/* <Button  onClick={this.activateLasers} variant="contained" color="primary">
-                        As a User
-                      </Button> */}
-                                
 
                     <Link to="/signup">
                       <IntlMessages id="signIn.signUp"/>

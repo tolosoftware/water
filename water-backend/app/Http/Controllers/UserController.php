@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return User::all();
     }
 
     /**
@@ -51,6 +51,7 @@ class UserController extends Controller
 
          User::create([
             'name' => $request['name'],
+            'system' => 0,
             'companyname' => $request['companyname'],
             'email' => $request['email'],
             'phone' => $request['phone'],
@@ -110,6 +111,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
+        $user = User::findOrFail($id);
+        $user->delete();
+        return ['message' => 'User Deleted'];
     }
 }

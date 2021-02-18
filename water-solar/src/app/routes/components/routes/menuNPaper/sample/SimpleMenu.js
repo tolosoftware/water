@@ -17,6 +17,7 @@ class SimpleMenu extends Component {
     this.setState({open: false});
   };
 
+
   render() {
     return (
       <div>
