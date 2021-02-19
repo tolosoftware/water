@@ -85,13 +85,91 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
 .MuiSlider-mark {
     background-color: #fff !important;
 }
-.dialogWD .MuiDialog-paperWidthSm{
-    max-width: 1200px !important;
-    min-width: 900px !important;
+@media(min-width: 904px){
+    .dialogWD .MuiDialog-paperWidthSm{
+        max-width: 1200px !important;
+        min-width: 900px !important;
+    }
 }
-.insideFormPadding{
-padding: 10px 25px;
+
+.insideFormPadding, .insideFormPadding1, .insideFormPadding2, .insideFormPadding3{
+padding: 0px 15px 10px;
 }
+
+.insideFormBPCable{
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
+    left: 5% !important;
+}
+.insideFormPadding2 span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
+    left: 2% !important;
+}
+.insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
+    left: 90% !important;
+}
+.insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
+    left: 93% !important;
+}
+.insideFormPadding3 span[data-index="1"].MuiSlider-markLabel{
+    left: 95% !important;
+}
+.insideFormPaddingWPS{
+    padding: 0px 15px 0px;
+}
+@media(max-width:991px){
+    .insideFormPaddingWPS{
+        padding: 0px 15px 15px 15px;
+    }
+}
+.insideFormPaddingWPS span[data-index="0"].MuiSlider-markLabel {
+    left: 4% !important;
+}
+.insideFormPaddingWPS span[data-index="1"].MuiSlider-markLabel{
+    left: 93% !important;
+}
+.inWPS3 span[data-index="1"].MuiSlider-markLabel{
+    left: 90% !important;
+}
+.inWPST{
+    padding-top: 5px !important;
+}
+.MuiTypography-body1 {
+    font-size: 0.8rem !important;
+    margin-bottom: 0px !important;
+}
+.MuiSlider-markLabel{
+    font-size: 0.775rem !important;
+}
+.MuiSlider-marked {
+    margin-bottom: 0px !important;
+}
+
 .powerKW-PR{
-    padding: 0 35px 15px 40px !important;;
+    padding: 0 22px 22px 15px !important;
+}
+.powerKW-PR span[data-index="0"].MuiSlider-markLabel {
+    left: 4% !important;
+}
+.powerKW-PR span[data-index="12"].MuiSlider-markLabel {
+    left: 97% !important;
+}
+@media(max-width: 425px){
+    .accessory_file .dropzone-file-btn {
+        width: 160px !important;
+    }
+    .waterPumFile .dropzone-file-btn {
+        width: 120px !important;
+    }
+    .btnAccessory, .btn-WPDF{
+        height: 47px !important;
+    }
+    .accessory_file .dropzone{
+        margin-right: 5px;
+    }
+}
+.insideFormBP .MuiFormControl-root.MuiTextField-root{
+    width: 100%;
 }

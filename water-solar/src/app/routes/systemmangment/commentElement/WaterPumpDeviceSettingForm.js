@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -83,7 +82,7 @@ export default function WaterPumpDeviceSettingForm() {
             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                 <form autoComplete="off" onSubmit={handleSubmit}>
                     <div className="row">
-                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding inputAdornmentWrap">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Head 
                             </Typography>
@@ -95,10 +94,10 @@ export default function WaterPumpDeviceSettingForm() {
                                 marks={marksM}
                                 min={0}
                                 max={400}
-                                valueLabelDisplay="on"
+                                valueLabelDisplay="auto"
                             />
                         </div>
-                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding inputAdornmentWrap">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Discharge
                             </Typography>
@@ -110,10 +109,10 @@ export default function WaterPumpDeviceSettingForm() {
                                 marks={marksD}
                                 min={0}
                                 max={50}
-                                valueLabelDisplay="on"
+                                valueLabelDisplay="auto"
                             />
                         </div>
-                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding inputAdornmentWrap">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                                 Cable length
                             </Typography>
@@ -125,11 +124,10 @@ export default function WaterPumpDeviceSettingForm() {
                                 marks={marksCL}
                                 min={0}
                                 max={1000}
-                                valueLabelDisplay="on"
+                                valueLabelDisplay="auto"
                             />
                         </div>
-                        
-                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPadding inWPST">
                             <FormControl variant="outlined" size="small" className={classes.formControl}>
                                 <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
                                 <Select size="small"
@@ -150,7 +148,7 @@ export default function WaterPumpDeviceSettingForm() {
                             </FormControl>
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding">    
-                        <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
+                        
                         </div>
                     </div>
                 </form>

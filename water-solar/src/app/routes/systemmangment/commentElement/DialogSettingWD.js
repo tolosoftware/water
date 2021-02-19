@@ -8,6 +8,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
@@ -69,7 +70,7 @@ export default function DialogSettingWD(props){
             </DialogContent>
             
             <DialogActions>
-                
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>
             </DialogActions>
         </Dialog>
     );

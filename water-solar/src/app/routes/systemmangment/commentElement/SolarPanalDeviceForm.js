@@ -220,7 +220,7 @@ export default function SolarPanalDeviceForm() {
                     <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type/Model" value={typeModel} onChange={(e) => setTypeModel(e.target.value)} variant="outlined" />
                     </div>
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding inputAdornmentWrap">
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding1 inputAdornmentWrap">
                         <Typography id="discrete-slider-small-steps" gutterBottom>
                             Power
                             </Typography>
@@ -236,7 +236,7 @@ export default function SolarPanalDeviceForm() {
                             />
                     </div>
                     
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding inputAdornmentWrap">
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding2 inputAdornmentWrap">
                         <Typography id="discrete-slider-small-steps" gutterBottom>
                             Voltage
                             </Typography>
@@ -252,7 +252,7 @@ export default function SolarPanalDeviceForm() {
                             />
                     </div>
                     
-                    <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding inputAdornmentWrap">
+                    <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding3 inputAdornmentWrap">
                         <Typography id="discrete-slider-small-steps" gutterBottom>
                             Current
                             </Typography>
@@ -268,7 +268,7 @@ export default function SolarPanalDeviceForm() {
                             />
                     </div>
                      
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
                             <Select size="small"

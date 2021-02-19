@@ -484,7 +484,7 @@ const handleChangeDescription = (value, key) => {
 
   return (
   <div className="row">
-    <div className="col-xl-4 col-lg-4 col-md-5 col-12">
+    <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
         <Widget styleName={`solarPanalBackGrad text-white`} >
           <div className="d-flex flex-row justify-content-center mb-3">
@@ -690,7 +690,7 @@ const handleChangeDescription = (value, key) => {
       
     </div>
 
-    <div className="col-xl-8 col-lg-8 col-md-7 col-12">
+    <div className="col-xl-8 col-lg-8 col-md-12 col-12">
       {/* imported dialog form another file */}
       <DialogSolarP 
         openS={openS}
