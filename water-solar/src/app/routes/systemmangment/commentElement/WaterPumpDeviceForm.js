@@ -102,6 +102,50 @@ const marksKW = [
       label: '0.75KW',
     },
     {
+      value: 1.1,
+      // label: '1.1KW',
+    },
+    {
+      value: 1.5,
+      // label: '1.5KW',
+    },
+    {
+      value: 2.2,
+      // label: '2.2KW',
+    },
+    {
+      value: 3,
+      // label: '3KW',
+    },
+    {
+      value: 4,
+      // label: '4KW',
+    },
+    {
+      value: 5.5,
+      // label: '5.5KW',
+    },
+    {
+      value: 7.5,
+      label: '7.5KW',
+    },
+    {
+      value: 11,
+      label: '11KW',
+    },
+    {
+      value: 15,
+      label: '15KW',
+    },
+    {
+      value: 18.5,
+      label: '18.5KW',
+    },
+    {
+      value: 22,
+      label: '22KW',
+    },
+    {
       value: 30,
       label: '30KW',
     },
@@ -173,7 +217,7 @@ export default function WaterPumpDeviceForm() {
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="row">
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                         <TextField size="small"
                             id="outlined-read-only-input"
                             label="ID"
@@ -184,7 +228,7 @@ export default function WaterPumpDeviceForm() {
                             variant="outlined"
                         />
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel htmlFor="outlined-age-native-simple" size="small" >Brand</InputLabel>
                             <Select size="small"
@@ -204,11 +248,10 @@ export default function WaterPumpDeviceForm() {
                             </Select>
                         </FormControl>
                     </div>
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                     </div>
-                    
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                         <TextField size="small"
                             label="Outlet" value={outlet} onChange={(e) => setOutlet(e.target.value)}
                             id="outlined-start-adornment"
@@ -219,8 +262,7 @@ export default function WaterPumpDeviceForm() {
                             variant="outlined"
                         />  
                     </div>
-                    
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                         <TextField size="small"
                             label="Current" value={current} onChange={(e) => setCurrent(e.target.value)}
                             id="outlined-start-adornment"
@@ -231,8 +273,7 @@ export default function WaterPumpDeviceForm() {
                             variant="outlined"
                         />  
                     </div>
-                    
-                    <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP inputAdornmentWrap">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                         <TextField size="small"
                             label="Diameter" value={diameter} onChange={(e) => setDiameter(e.target.value)}
                             id="outlined-start-adornment"
@@ -243,7 +284,6 @@ export default function WaterPumpDeviceForm() {
                             variant="outlined"
                         />  
                     </div>
-
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
                         <Typography id="discrete-slider-small-steps" gutterBottom>
                         Power to KW
@@ -252,34 +292,13 @@ export default function WaterPumpDeviceForm() {
                             defaultValue={15}
                             getAriaValueText={valuetext}
                             aria-labelledby="discrete-slider-small-steps"
-                            step={0.1}
+                            step={null}
                             marks={marksKW}
                             min={0.75}
                             max={30}
-                            valueLabelDisplay="on"
+                            valueLabelDisplay="auto"
                         />
                     </div>
-                    
-                    {/* <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                        <FormControl variant="outlined" size="small" className={classes.formControl}>
-                            <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
-                            <Select size="small"
-                                native
-                                value={cableType}
-                                onChange={handleChangeCable}
-                                label="Cable Type"
-                                inputProps={{
-                                name: 'cableType',
-                                id: 'outlined-age-native-simple',
-                                }}
-                            >
-                                <option aria-label="None" value="" />
-                                <option value={10}>Cable Type 1</option>
-                                <option value={20}>Cable Type 2</option>
-                                <option value={30}>Cable Type 3</option>
-                            </Select>
-                        </FormControl>
-                    </div>     */}
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                         <div class="form-group">
                             <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
@@ -298,7 +317,7 @@ export default function WaterPumpDeviceForm() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-12 btn-WPDF">
                      <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>
