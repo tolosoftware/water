@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
 // import {UUID} from "uuid";
@@ -229,24 +230,41 @@ export default function WaterPumpDeviceForm() {
                         />
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
-                        <FormControl variant="outlined" size="small" className={classes.formControl}>
-                            <InputLabel htmlFor="outlined-age-native-simple" size="small" >Brand</InputLabel>
-                            <Select size="small"
-                                native
-                                value={brand}
-                                onChange={handleChange1}
-                                label="Brand"
-                                inputProps={{
-                                name: 'Brand',
-                                id: 'outlined-age-native-simple',
-                                }}
-                            >
-                                <option aria-label="None" value="" />
-                                <option value={10}>Brand 1</option>
-                                <option value={20}>Brand 2</option>
-                                <option value={30}>Brand 3</option>
-                            </Select>
-                        </FormControl>
+                      <FormControl variant="outlined" size="small" className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={brand}
+                        onChange={handleChange1}
+                        label="Brand"
+                        >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Brand 1</MenuItem>
+                        <MenuItem value={20}>Brand 2</MenuItem>
+                        <MenuItem value={30}>Brand 2</MenuItem>
+                        </Select>
+                    </FormControl>
+                      {/* <FormControl variant="outlined" size="small" className={classes.formControl}>
+                          <InputLabel htmlFor="outlined-age-native-simple" size="small" >Brand</InputLabel>
+                          <Select size="small"
+                              native
+                              value={brand}
+                              onChange={handleChange1}
+                              label="Brand"
+                              inputProps={{
+                              name: 'Brand',
+                              id: 'outlined-age-native-simple',
+                              }}
+                          >
+                              <option aria-label="None" value="" />
+                              <option value={10}>Brand 1</option>
+                              <option value={20}>Brand 2</option>
+                              <option value={30}>Brand 3</option>
+                          </Select>
+                      </FormControl> */}
                     </div>
                     <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
@@ -309,7 +327,7 @@ export default function WaterPumpDeviceForm() {
                             <div className="dropzone">
                                 <div {...getRootProps({className: 'dropzone-file-btn'})}>
                                     <input {...getInputProps()} />
-                                    <p>Drag 'n' drop Water Pump Device image</p>
+                                    <p>Upload image</p>
                                 </div>
                             </div>
                             <div className="dropzone-content" style={thumbsContainer}>

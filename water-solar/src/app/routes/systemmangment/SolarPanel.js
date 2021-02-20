@@ -6,8 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -35,6 +35,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 // end import for dialog 
 import DialogSolarP from './commentElement/DialogSolarP'
+import DialogSettingSP from './commentElement/DialogSettingSP'
 
 
 // start of dialog modal for water pump
@@ -446,6 +447,7 @@ const SolarPanel = () => {
     setOpen(false);
   };
   const [openS, setOpenS] = React.useState(false);
+  const [openSPD, setOpenSPD] = React.useState(false);
   // end code of dialog modal for water pump
 // start form sumbit
 const [brand, setBrand] = React.useState({});
@@ -696,11 +698,16 @@ const handleChangeDescription = (value, key) => {
         openS={openS}
         setOpenS={setOpenS}
       />
+      
+      <DialogSettingSP 
+        openSPD={openSPD}
+        setOpenSPD={setOpenSPD}
+      />
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> Cities and Sunshine</h4>
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
-            <i className="zmdi zmdi-plus-circle-o mr-1"/>Add New Account</span>
+            <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
@@ -730,9 +737,11 @@ const handleChangeDescription = (value, key) => {
                       <DeleteIcon />
                     </IconButton>
                   <IconButton size="small" color="primary" aria-label="add an alarm">
-                      <Add />
+                      <Edit />
                   </IconButton>
-                
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>setOpenSPD(true)}>
+                    <SettingsIcon />
+                  </IconButton>
                   </div>
                 </td>
               </tr>
@@ -740,9 +749,9 @@ const handleChangeDescription = (value, key) => {
             </tbody>
           </Table>
         </div>
-        <span className="text-primary mt-2 pointer d-block d-sm-none">
+        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenS(true)}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
-              Add New Account</span>
+        Register New Device</span>
         
       </Widget>
     </div>

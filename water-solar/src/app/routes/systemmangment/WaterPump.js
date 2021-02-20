@@ -738,9 +738,9 @@ const handleChangeDescription = (value, key) => {
             </tbody>
           </Table>
         </div>
-        <span className="text-primary mt-2 pointer d-block d-sm-none">
+        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenD(true)}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
-              Add New Account</span>
+        Register New Device</span>
         
       </Widget>
     </div>
