@@ -3,7 +3,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-
+import MenuItem from '@material-ui/core/MenuItem';
 // code for small steps
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -129,6 +129,23 @@ export default function WaterPumpDeviceSettingForm() {
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPadding inWPST">
                             <FormControl variant="outlined" size="small" className={classes.formControl}>
+                                <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={cableType}
+                                onChange={(e) => setCableType(e.target.value)}
+                                label="Cable Type"
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Cable Type 1</MenuItem>
+                                <MenuItem value={20}>Cable Type 2</MenuItem>
+                                <MenuItem value={30}>Cable Type 2</MenuItem>
+                                </Select>
+                            </FormControl>
+                            {/* <FormControl variant="outlined" size="small" className={classes.formControl}>
                                 <InputLabel htmlFor="outlined-age-native-simple" size="small" >Cable Type</InputLabel>
                                 <Select size="small"
                                     native
@@ -145,7 +162,7 @@ export default function WaterPumpDeviceSettingForm() {
                                     <option value={20}>Cable Type 2</option>
                                     <option value={30}>Cable Type 3</option>
                                 </Select>
-                            </FormControl>
+                            </FormControl> */}
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormPadding">    
                         

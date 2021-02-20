@@ -74,7 +74,7 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
 }
 .waterPumFile .dropzone-file-btn{
     height: 100px !important;
-    width: 240px !important;
+    width: 120px !important;
 }
 .cellPadding{
     padding: 8px !important;
@@ -102,19 +102,19 @@ padding: 0px 15px 10px;
 }
 
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
-    left: 5% !important;
+    left: 4% !important;
 }
 .insideFormPadding2 span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
     left: 2% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
-    left: 90% !important;
+    left: 94% !important;
 }
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
-    left: 93% !important;
+    left: 95% !important;
 }
 .insideFormPadding3 span[data-index="1"].MuiSlider-markLabel{
-    left: 95% !important;
+    left: 96% !important;
 }
 .insideFormPaddingWPS{
     padding: 0px 15px 0px;
@@ -172,4 +172,76 @@ padding: 0px 15px 10px;
 }
 .insideFormBP .MuiFormControl-root.MuiTextField-root{
     width: 100%;
+}
+.insideFormPaddingWPS .bd-example>.btn-group {
+    margin: .25rem .125rem;
+}
+.insideFormPaddingWPS .btn-group, .insideFormPaddingWPS .btn-group-vertical {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+}
+.insideFormPaddingWPS .btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.insideFormPaddingWPS input{
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+.insideFormPaddingWPS .btn-group>.btn-group:not(:last-child)>.btn, .insideFormPaddingWPS .btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0 !important;;
+    border-bottom-right-radius: 0 !important;;
+}
+.insideFormPaddingWPS .btn-group>.btn-check:checked+.btn{
+    z-index: 1;
+}
+.insideFormPaddingWPS .btn-group>.btn-group:not(:first-child), .insideFormPaddingWPS .btn-group>.btn:not(:first-child) {
+    margin-left: -1px;
+}
+.insideFormPaddingWPS .btn-check:active+.btn-outline-primary, .insideFormPaddingWPS .btn-check:checked+.btn-outline-primary,.insideFormPaddingWPS .btn-outline-primary.active, .insideFormPaddingWPS .btn-outline-primary.dropdown-toggle.show, .insideFormPaddingWPS .btn-outline-primary:active {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+.insideFormPaddingWPS .btn-group-vertical>.btn, .insideFormPaddingWPS .btn-group>.btn {
+    position: relative;
+    flex: 1 1 auto;
+}
+.insideFormPaddingWPS .btn-group>.btn-group:not(:first-child)>.btn, .insideFormPaddingWPS .btn-group>.btn:nth-child(n+3), .insideFormPaddingWPS .btn-group>:not(.btn-check)+.btn{
+    border-top-left-radius: 0 !important;;
+    border-bottom-left-radius: 0 !important;;
+}
+.insideFormPaddingWPS .btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+.insideFormPaddingWPS .bd-example>.btn, .insideFormPaddingWPS .bd-example>.btn-group {
+    margin: .25rem .125rem !important;
+}
+.insideFormPaddingWPS .btn {
+    border-radius: .25rem !important;
+    padding: 0.375rem 0.35rem !important;
+}
+.insideFormPaddingWPS .btn-group label:first-child{
+    border-top-right-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;
+}
+.insideFormPaddingWPS .btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+}
+.insideSPDS .insideFormPaddingWPS {
+    padding: 0px 8px 0px;
+}
+.insideSPDS .dropzone{
+    margin-right: 15px;
+}
+.insideSPDS .dropzone-file-btn {
+    height: 40px !important;
+    width: 70px !important;
 }
