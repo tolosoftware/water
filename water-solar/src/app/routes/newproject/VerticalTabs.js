@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -28,7 +28,8 @@ import ReactDOM from "react-dom";
 import { CircleSlider } from "react-circle-slider";
 
 
-//slider data and style 
+//daynamic form
+import { v4 as uuidv4 } from 'uuid';
 
 
 function valuetext(value) {
@@ -88,9 +89,6 @@ const countries = [
 
 ];
 
-
-
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -134,7 +132,7 @@ const useStyles=makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
-    height: 500,
+    mainHieght: 600,
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -151,10 +149,7 @@ const useStyles=makeStyles((theme) => ({
     padding: '0px',
     boxShadow: 'none',
 } 
-  
-
 }));
-
 
 const imagehieght = {
   height: '420px',
@@ -164,19 +159,15 @@ const panalwidth = {
     width: '1000px',
 };
 
-
-
-
 export default function VerticalTabs() {
 
 //slider
-
   const options = {
-    dots: true,
+    // dots: true,
     infinite: true,
     arrows: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 3,
     marginRight: 10,
     slidesToScroll: 1,
     responsive: [
@@ -273,6 +264,23 @@ export default function VerticalTabs() {
         });
   };
   
+
+  //daynamic form
+    const [inputFields, setInputFields] = useState([
+      {id: uuidv4(),name: '',x: '',y: ''},
+      {id: uuidv4(),name: '',x: '',y: ''},
+      { id: uuidv4(), name: '', x: '', y: ''},
+  ]);
+  
+   const handleAddFields = () => {
+      setInputFields([...inputFields, { id: uuidv4(), name: '', x: '', y: ''}])
+  }
+  
+     const handleRemoveFields = () => {
+      const values  = [...inputFields];
+      values.splice(values.length-1, 1);
+      setInputFields(values);
+    }
 
 
   return (
@@ -402,12 +410,15 @@ export default function VerticalTabs() {
                 helperText="Full width!"
                 placeholder="Discription About Project  !"
                     margin="normal"
-                name="project_name"    
+                    name="project_name"    
+                multiline    
                 InputLabelProps={{
                   shrink: true,
                 }}
               inputRef={register}/>
-                </FormControl>  
+                </FormControl> 
+
+             
                 
               <Button onClick={() => navigate(1)} color="primary" variant="contained">Next</Button>              
             </div>  
@@ -471,7 +482,7 @@ export default function VerticalTabs() {
                 <div className="col-md-6 row">
                   
                   <div className={classes.rootslider} styleName={`ml-4`}>
-                      <Typography id="vertical-slider" gutterBottom>
+                      <Typography id="vertical-slider" gutterBottom className="pb-3">
                       Dirt Loss
                     </Typography>
                       <Slider
@@ -482,7 +493,7 @@ export default function VerticalTabs() {
                       marks={dirtloss}
                       step={1}
                       getAriaValueText={valuetext}
-                       valueLabelDisplay="on"
+                       valueLabelDisplay="auto"
                       />
                    
                       
@@ -490,7 +501,7 @@ export default function VerticalTabs() {
                   
                    <div className={classes.rootslider}>
                     
-                   <Typography id="vertical-slider" gutterBottom>
+                   <Typography id="vertical-slider" gutterBottom className="pb-3">
                      Water Temp
                     </Typography>
                   
@@ -502,14 +513,16 @@ export default function VerticalTabs() {
                       marks={marks}
                       step={1}
                       getAriaValueText={valuetext}
-                       valueLabelDisplay="on"
+                       valueLabelDisplay="auto"
                     />
                
                     </div>
                
                 </div>  
+              
                <Button onClick={() => navigate(2)} color="primary" variant="contained" className="mt-2">Next</Button>
-              <Button  onClick={() => navigateback(0)} variant="contained" color="secondary"className="mt-2">Previous</Button>
+                  <Button onClick={() => navigateback(0)} variant="contained" color="secondary" className="mt-2">Previous</Button>
+            
               </div>  
 
           </div>
@@ -530,22 +543,24 @@ export default function VerticalTabs() {
               </div>
             </div> 
 
-              <div className="row ml-5 mb-5">    
+              <div className="row ml-4 mb-5">    
                <CircleSlider
                   value={valueCircalslider}
-                  size={200}
+                  size={240}
                   onChange={handleChangeCircalslider}
                   knobRadius={15}
                   progressWidth={10}
                   circleWidth={25}
                   showTooltip={true}
                   tooltipSize={26}
+                  max={30}
                   />
 
               </div>  
-
+          <span className="ml-5">
               <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
-              <Button  onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button>   
+                <Button onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button> 
+              </span>  
           </div>
           
             
@@ -614,10 +629,7 @@ export default function VerticalTabs() {
                </div>
             </div>
           </Sliderr>        
-
-                </CardBox>  
-
-      
+        </CardBox>  
                 <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center"
                   heading="Water pump Brand">
        
@@ -665,17 +677,13 @@ export default function VerticalTabs() {
                </div>
             </div>
           </Sliderr>        
-
       </CardBox>          
                 
-         
-            
-              </div>  
+          </div>  
               <Button  color="primary" variant="contained">Submit</Button>
               <Button  onClick={() => navigateback(2)} variant="contained" color="secondary">Previous</Button>    
           </div>
           
-            
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
             <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
             </div> 
@@ -693,46 +701,96 @@ export default function VerticalTabs() {
               </div>
             </div> 
 
+
+            { inputFields.map(inputField => (              
               <div className="row">  
               <div className="col-md-12">
-              <FormControl fullWidth className="col-md-12">  
-              <TextField id="outlined-basic" label="Poject Name" variant="outlined"
-              
-                placeholder="complate Project name !"
-                    margin="normal"
-                name="project_name"    
+              <FormControl fullWidth >  
+              <Autocomplete  
+            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            style={{ width: 300 }}
+            options={countries}
+            classes={{
+            option: classes.option,
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option.label}
+            renderOption={(option) => (
+            <React.Fragment>
+                {option.label}
+            </React.Fragment>
+            )}
+            renderInput={(params) => (
+            <TextField size="small" 
+                {...params}
+                label="Item"
+                variant="outlined"
+                helperText="Full width!"
+                placeholder="pick item !"
+                margin="normal"
+                name="location"
+                size="small"
                 InputLabelProps={{
                   shrink: true,
-                    }}
-                size="small"    
-              inputRef={register}/>
-                  </FormControl>  
+                }}
+
+                inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+                }}
+                inputRef={register}/>
+                )}
+              />  
+              </FormControl>
                 </div>  
 
                 <div className="col-md-6">
-                   <FormControl fullWidth >  
-              <TextField id="outlined-basic" label="Poject Name" variant="outlined"
-              
-                placeholder="complate Project name !"
-                    margin="normal"
-                name="project_name"    
+                 <FormControl fullWidth >  
+              <Autocomplete  
+            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            style={{ width: 300 }}
+            options={countries}
+            classes={{
+            option: classes.option,
+            }}
+            autoHighlight
+            getOptionLabel={(option) => option.label}
+            renderOption={(option) => (
+            <React.Fragment>
+                {option.label}
+            </React.Fragment>
+            )}
+            renderInput={(params) => (
+            <TextField size="small" 
+                {...params}
+                label="UoM"
+                variant="outlined"
+                placeholder="pick UoM!"
+                margin="normal"
+                name="location"
+                size="small"
                 InputLabelProps={{
                   shrink: true,
-                      }}
-                  size="small"          
-              inputRef={register}/>
-                </FormControl> 
+                }}
+
+                inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+                }}
+                inputRef={register}/>
+                )}
+              />  
+              </FormControl>
                 </div>
                 <div className="col-md-6">
 
               <FormControl fullWidth >  
               <TextField id="outlined-basic" label="Poject Name" variant="outlined"
-               
                 placeholder="complate Project name !"
                 margin="normal"
                 name="project_name"    
                 InputLabelProps={{
-                  shrink: true,
+                shrink: true,
                       }}
                 
               size="small"    
@@ -740,16 +798,18 @@ export default function VerticalTabs() {
                 </FormControl>   
                 </div>
 
-              </div>  
+                </div>  
+              
+                )) }  
           
 
-               <IconButton color="primary" aria-label="upload picture" component="span">
+               <IconButton color="primary" aria-label="upload picture" component="span"  onClick={handleAddFields}>
                  <span class="material-icons">
                           add_circle_outline
                           </span>
               </IconButton>
 
-               <IconButton color="primary" aria-label="upload picture" component="span">
+              <IconButton color="primary" aria-label="upload picture" component="span" onClick={handleRemoveFields} disabled={inputFields.length<=1}>
                  <span class="material-icons">
                           remove_circle_outline
                           </span>

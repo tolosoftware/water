@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
 import Avatar from '@material-ui/core/Avatar';
@@ -6,8 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import Add from '@material-ui/icons/Add';
 import Edit from '@material-ui/icons/Edit';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -24,8 +24,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import './style.css';
-import './style.scss';
+import {useDropzone} from "react-dropzone";
 import DialogWaterP from './commentElement/DialogWaterP'
+import DialogSettingWD from './commentElement/DialogSettingWD'
 // end import for taps
 
 // start import for dialog
@@ -424,7 +425,38 @@ const tableList = [
     action: 'Pay'
   }
 ];
+// start code for dropzone
+const thumbsContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginTop: 16
+};
 
+const thumb = {
+  display: 'inline-flex',
+  borderRadius: 2,
+  border: '1px solid #eaeaea',
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: 'border-box'
+};
+
+const thumbInner = {
+  display: 'flex',
+  minWidth: 0,
+  overflow: 'hidden'
+};
+
+const img = {
+  display: 'block',
+  width: 'auto',
+  height: '100%'
+};
+// end code for dropzone
 const WaterPump = () => {
   const classes = useStyles();
   const theme = useTheme();
@@ -441,29 +473,56 @@ const WaterPump = () => {
     setOpen(true);
   };
   const [openD, setOpenD] = React.useState(false);
+  const [openWSD, setOpenWSD] = React.useState(false);
   
   const handleClose = () => {
     setOpen(false);
   };
   // end code of dialog modal for water pump
-// start form sumbit
-const [brand, setBrand] = React.useState({});
-const [country, setCountry] = React.useState({});
-const [description, setDescription] = React.useState({});
-const handleChangeBrand = (value, key) => {
-  setBrand({...brand, ...{[key]: value}})
-}
-const handleChangeDescription = (value, key) => {
-  setDescription({...description, ...{[key]: value}})
-}
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(brand);
-    console.log(country);
-    console.log(description);
-    
-
+  // dropzone code
+const [files, setFiles] = useState([]);
+const {getRootProps, getInputProps} = useDropzone({
+  accept: 'image/*',
+  onDrop: acceptedFiles => {
+    setFiles(acceptedFiles.map(file => Object.assign(file, {
+      preview: URL.createObjectURL(file)
+    })));
   }
+});
+
+const thumbs = files.map(file => (
+  <div style={thumb} key={file.name}>
+    <div style={thumbInner}>
+      <img alt={file.name}
+           src={file.preview}
+           style={img}
+      />
+    </div>
+  </div>
+));
+
+useEffect(() => () => {
+  // Make sure to revoke the data uris to avoid memory leaks
+  files.forEach(file => URL.revokeObjectURL(file.preview));
+}, [files]);
+// end dropzone code
+   
+// start form sumbit
+const [brand, setBrand] = React.useState("");
+const [country, setCountry] = React.useState("");
+const [description, setDescription] = React.useState("");
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  let data = {
+    brand, country, description, files
+  }
+  console.log(data);
+  console.log(country);
+  console.log(description);
+  
+
+}
 // end form sumbit
 
   // start popove code
@@ -477,13 +536,12 @@ const handleChangeDescription = (value, key) => {
   const open1 = Boolean(anchorEl);
   // end popover code
 
-   
   
 
 
   return (
   <div className="row">
-    <div className="col-xl-4 col-lg-4 col-md-5 col-12">
+    <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
         <Widget styleName={`text-white waterPumpPanelBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
@@ -496,11 +554,8 @@ const handleChangeDescription = (value, key) => {
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
-        
-          
-            
             <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={open}>
-              
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
                 <AppBar position="static" color="default">
                   <Tabs
@@ -524,14 +579,14 @@ const handleChangeDescription = (value, key) => {
                   onChangeIndex={handleChangeIndex}
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
-                <form autoComplete="off" onSubmit={handleSubmit}>
+                
                   <Typography gutterBottom>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
                 <div className="row ">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <TextField id="outlined-basic" value={brand['brand']} onChange={e => handleChangeBrand(e.target.value, 'brand')} name='brand' label="Brand Name" variant="outlined" />
+                    <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
                     <Autocomplete
@@ -566,23 +621,27 @@ const handleChangeDescription = (value, key) => {
                 </div>
                 <div className="row paddingTopForm">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <TextareaAutosize value={description['description']} onChange={e => handleChangeDescription(e.target.value, 'description')} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
+                    <TextareaAutosize value={description} onChange={e => setDescription(e.target.value)} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   
-                  <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                    {/* <input type="file" name="brand_logo" placeholder="Upload the brand logo"/> */}
-
-                    <div className="file-upload-wrapper" data-text="Upload the brand logo!">
-                      <input name="file-upload-field" type="file" className="file-upload-field" value=""/>
-                    </div>
+                  <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
+                      <div className="dropzone-card">
+                        <div className="dropzone">
+                            <div {...getRootProps({className: 'dropzone-file-btn'})}>
+                                <input {...getInputProps()} />
+                                <p>Upload image</p>
+                            </div>
+                        </div>
+                        <div className="dropzone-content" style={thumbsContainer}>
+                            {thumbs}
+                        </div>
+                      </div>
                   </div>
-                  <Button autoFocus type='submit' color="primary">
-                    Save
-                  </Button>
+                   
                 </div>
-                </form>
+                
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
                   <div className="row">
@@ -654,6 +713,7 @@ const handleChangeDescription = (value, key) => {
                                 <IconButton size="small" color="primary" aria-label="edit an alarm">
                                     <Edit />
                                 </IconButton>
+                               
                               
                                 </div>
                               </td>
@@ -668,18 +728,23 @@ const handleChangeDescription = (value, key) => {
                 </SwipeableViews>
                 </DialogContent>
                 <DialogActions>
-                  
+                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>): null}
                 </DialogActions>
+                </form>
               </Dialog>
       </div>
       
     </div>
 
-    <div className="col-xl-8 col-lg-8 col-md-7 col-12">
+    <div className="col-xl-8 col-lg-8 col-md-12 col-12">
       {/* imported dialog form another file */}
       <DialogWaterP 
         openD={openD}
         setOpenD={setOpenD}
+      />
+      <DialogSettingWD 
+        openWSD={openWSD}
+        setOpenWSD={setOpenWSD}
       />
 
       <Widget>
@@ -718,10 +783,12 @@ const handleChangeDescription = (value, key) => {
                     <IconButton size="small" aria-label="delete"  color="secondary">
                       <DeleteIcon />
                     </IconButton>
-                  <IconButton size="small" color="primary" aria-label="add an alarm">
-                      <Add />
+                  <IconButton size="small" color="primary" aria-label="edit an alarm">
+                    <Edit />
                   </IconButton>
-                
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>setOpenWSD(true)}>
+                    <SettingsIcon />
+                  </IconButton>
                   </div>
                 </td>
               </tr>
@@ -729,9 +796,9 @@ const handleChangeDescription = (value, key) => {
             </tbody>
           </Table>
         </div>
-        <span className="text-primary mt-2 pointer d-block d-sm-none">
+        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenD(true)}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
-              Add New Account</span>
+        Register New Device</span>
         
       </Widget>
     </div>

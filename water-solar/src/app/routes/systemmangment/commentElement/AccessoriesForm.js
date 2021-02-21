@@ -378,7 +378,7 @@ export default function AccessoriesForm() {
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="row">
             
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type" value={type} onChange={(e) => setType(e.target.value)} variant="outlined" /> */}
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel htmlFor="outlined-age-native-simple" size="small" >Type</InputLabel>
@@ -399,14 +399,14 @@ export default function AccessoriesForm() {
                             </Select>
                         </FormControl>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
                     </div>
                     
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 ">
+                    <div className="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12 insideFormBP">
                         {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Origin" value={origin} onChange={(e) => setOrigin(e.target.value)} variant="outlined" /> */}
                         <Autocomplete size="small" 
                             id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
@@ -438,16 +438,16 @@ export default function AccessoriesForm() {
                         /> 
                     </div>
                     
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" type="number" className="fullWidthInput" label="Price" value={price} onChange={(e) => setPrice(e.target.value)} variant="outlined" />
                     </div>
                         
-                    <div className="col-xl-9 col-lg-9 col-md-9 col-12">
+                    <div className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="form-group">
                             <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                         </div>
                     </div>
-                    <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file">
+                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 accessory_file">
                         <div className="dropzone-card">
                             <div className="dropzone">
                                 <div {...getRootProps({className: 'dropzone-file-btn'})}>
@@ -460,7 +460,7 @@ export default function AccessoriesForm() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-2 col-lg-2 col-md-2 col-12">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 btnAccessory">
                      <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>

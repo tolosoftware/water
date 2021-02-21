@@ -13,10 +13,10 @@
 .inputAdornmentWrap .MuiOutlinedInput-adornedStart {
     padding-left: 0px;
 }
-.waterPumFile .dropzone-file-btn{
+/* .waterPumFile .dropzone-file-btn{
     height: 100px !important;
     width: 190px !important;
-}
+} */
 .inputAdornmentWrap .MuiOutlinedInput-inputAdornedStart {
     padding-left: 4px !important;
 }
