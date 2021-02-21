@@ -123,13 +123,29 @@ export default function DialogSettingWD(props){
       setOpenWSD(false);
     };
     // end code of dialog modal for Solar Panal 
-    // const [head, setHead] = useState("");
-    // const [discharge, setDischarge] = useState("");
-    // const [cableLength, setCableLength] = useState("");
-    // const [cableType, setCableType] = useState("");
+  
     const [inputFields, setInputFields] = useState([
       { id: uuidv4(), head: '', discharge: '', cableLength: '', cableType: ''},
     ]);
+    const handleChangeStep = (id, event, value, name) => {
+      const newInputFields = inputFields.map(i => {
+        if(id === i.id) {
+          if('head' === name){
+            i['head'] = value;
+          }
+          if('discharge' === name){
+            i['discharge'] = value;
+          }
+          if('cableLength' === name){
+            i['cableLength'] = value;
+          }
+          
+        }
+        return i;
+      })
+      
+      setInputFields(newInputFields);
+    }
     const handleChangeInput = (id, event) => {
       const newInputFields = inputFields.map(i => {
         if(id === i.id) {
@@ -153,7 +169,7 @@ export default function DialogSettingWD(props){
         e.preventDefault();
         console.log("InputFields", inputFields);
     }
-    let id_field: any;
+    let id_field;
     
     return (
         <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openWSD}>
@@ -167,13 +183,12 @@ export default function DialogSettingWD(props){
             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
               { inputFields.map(inputField => (
                 <div key={id_field = inputField.id}>
-                  {/* <p>{id_field = inputField.id}</p> */}
-                    <div className="row">
+                    <div className="row paddingBottom">
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Head 
                             </Typography>
-                            <Slider name="head" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider name="head" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'head')}
                                 defaultValue={200}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
@@ -188,7 +203,7 @@ export default function DialogSettingWD(props){
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Discharge
                             </Typography>
-                            <Slider name="discharge" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider name="discharge" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'discharge')}
                                 defaultValue={25}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
@@ -203,7 +218,7 @@ export default function DialogSettingWD(props){
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                                 Cable length
                             </Typography>
-                            <Slider name="cableLength" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider name="cableLength" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'cableLength')}
                                 defaultValue={500}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
