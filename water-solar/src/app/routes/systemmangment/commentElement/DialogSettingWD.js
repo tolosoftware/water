@@ -125,7 +125,7 @@ export default function DialogSettingWD(props){
     // end code of dialog modal for Solar Panal 
   
     const [inputFields, setInputFields] = useState([
-      { id: uuidv4(), head: '', discharge: '', cableLength: '', cableType: ''},
+      { id: uuidv4(), head: [20, 300], discharge: [10, 30], cableLength: [300, 800], cableType: ''},
     ]);
     const handleChangeStep = (id, event, value, name) => {
       const newInputFields = inputFields.map(i => {
@@ -157,7 +157,7 @@ export default function DialogSettingWD(props){
       setInputFields(newInputFields);
     }
     const handleAddFields = () => {
-      setInputFields([...inputFields, { id: uuidv4(), head: '', discharge: '', cableLength: '', cableType: ''}])
+      setInputFields([...inputFields, { id: uuidv4(), head: [20, 300], discharge: [10, 30], cableLength: [300, 800], cableType: ''}])
     }
     const handleRemoveFields = id => {
       const values  = [...inputFields];
@@ -189,10 +189,10 @@ export default function DialogSettingWD(props){
                             Head 
                             </Typography>
                             <Slider name="head" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'head')}
-                                defaultValue={200}
+                                // defaultValue={200}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
-                                step={5}
+                                // step={5}
                                 marks={marksM}
                                 min={0}
                                 max={400}
@@ -204,10 +204,10 @@ export default function DialogSettingWD(props){
                             Discharge
                             </Typography>
                             <Slider name="discharge" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'discharge')}
-                                defaultValue={25}
+                                // defaultValue={25}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
-                                step={1}
+                                // step={1}
                                 marks={marksD}
                                 min={0}
                                 max={50}
@@ -219,10 +219,10 @@ export default function DialogSettingWD(props){
                                 Cable length
                             </Typography>
                             <Slider name="cableLength" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'cableLength')}
-                                defaultValue={500}
+                                // defaultValue={500}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
-                                step={10}
+                                // step={10}
                                 marks={marksCL}
                                 min={0}
                                 max={1000}

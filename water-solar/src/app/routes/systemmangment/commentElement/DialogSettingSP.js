@@ -10,15 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import {useDropzone} from "react-dropzone";
 import { v4 as uuidv4 } from 'uuid';
@@ -189,7 +181,7 @@ export default function DialogSettingWD(props){
   const handleChangeRadio = (id, event) => {
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        console.log("base value", event.target.value);
+        // console.log("base value", event.target.value);
         i['base'] = event.target.value
       }
       return i;
@@ -211,7 +203,9 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    setInputFields([...inputFields, { id: uuidv4(), power: [20, 37], base: 'on', quantity: '', panal: ''}])
+    let newElement = inputFields[inputFields.length-1];
+    newElement.id = uuidv4();
+    setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {
     const values  = [...inputFields];
@@ -255,9 +249,9 @@ export default function DialogSettingWD(props){
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1"+id_field} id={"btnradio1"+id_field} autocomplete="off" checked={(inputField.base)=='on'} value="on" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <input type="radio" class="btn-check" name={"btnradio1"+id_field} id={"btnradio1"+id_field} autocomplete="off" checked={(inputField.base)==='on'} value="on" onChange={event => handleChangeRadio(inputField.id, event)}/>
                                   <label class="btn btn-outline-primary" for={"btnradio1"+id_field}>Radio 1</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2"+id_field} id={"btnradio2"+id_field} autocomplete="off" checked={(inputField.base)=='off'} value="off" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <input type="radio" class="btn-check" name={"btnradio2"+id_field} id={"btnradio2"+id_field} autocomplete="off" checked={(inputField.base)==='off'} value="off" onChange={event => handleChangeRadio(inputField.id, event)}/>
                                   <label class="btn btn-outline-primary" for={"btnradio2"+id_field}>Radio 2</label>
                               </div>
                           </div>
