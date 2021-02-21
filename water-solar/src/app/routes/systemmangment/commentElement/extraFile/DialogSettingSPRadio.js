@@ -174,11 +174,12 @@ export default function DialogSettingWD(props){
   // const [panal, setPanal] = useState("");
 
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: [20, 37], base: 'on', quantity: '', panal: ''},
+    { id: uuidv4(), power: [20, 37], base: '', quantity: '', panal: ''},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
+        console.log("base value", event.target.value);
         i[event.target.name] = event.target.value
       }
       return i;
@@ -255,10 +256,10 @@ export default function DialogSettingWD(props){
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1"+id_field} id={"btnradio1"+id_field} autocomplete="off" checked={(inputField.base)=='on'} value="on" onChange={event => handleChangeRadio(inputField.id, event)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio1"+id_field}>Radio 1</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2"+id_field} id={"btnradio2"+id_field} autocomplete="off" checked={(inputField.base)=='off'} value="off" onChange={event => handleChangeRadio(inputField.id, event)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio2"+id_field}>Radio 2</label>
+                                  <input type="radio" class="btn-check" name="base" id="btnradio1" autocomplete="off" checked={inputField.base==='on'} value="on" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+                                  <input type="radio" class="btn-check" name="base" id="btnradio2" autocomplete="off" checked={inputField.base==='off'} value="off" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
                               </div>
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
