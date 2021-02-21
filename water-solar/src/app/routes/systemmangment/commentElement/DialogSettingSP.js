@@ -188,7 +188,7 @@ export default function DialogSettingWD(props){
                 <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                     <div className="row insideSPDS">
-                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
+                        <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                            <Typography id="range-slider" gutterBottom>
                                 Power
                             </Typography>
@@ -210,7 +210,7 @@ export default function DialogSettingWD(props){
                                 <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
                             </div>
                         </div>
-                        <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
                             <TextField size="small" value={quantity} onChange={(e) => setQuantity(e.target.value)}
                                 id="outlined-number"
                                 label="Quantity"
@@ -221,7 +221,7 @@ export default function DialogSettingWD(props){
                                 variant="outlined"
                             />
                         </div>
-                        <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
                             <TextField size="small" value={panal} onChange={(e) => setPanal(e.target.value)}
                                 id="outlined-number"
                                 label="Panal"
@@ -232,7 +232,7 @@ export default function DialogSettingWD(props){
                                 variant="outlined"
                             />
                         </div>
-                        <div className="col-xl-3 col-lg-3 col-md-6 col-12 accessory_file waterPumFile">
+                        {/* <div className="col-xl-3 col-lg-3 col-md-6 col-12 accessory_file waterPumFile">
                                 <div className="dropzone-card">
                                     <div className="dropzone">
                                         <div {...getRootProps({className: 'dropzone-file-btn'})}>
@@ -244,7 +244,7 @@ export default function DialogSettingWD(props){
                                         {thumbs}
                                     </div>
                                 </div>
-                        </div>
+                        </div> */}
                     </div>
               </div>
           </div>

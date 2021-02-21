@@ -15,7 +15,6 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import Select from '@material-ui/core/Select';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
-import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
 // import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
@@ -116,44 +115,27 @@ const useStyles = makeStyles((theme) => ({
   ];
   
 export default function DialogSettingWD(props){
-  const classes = useStyles();
     // start code of dialog modal for Solar Panal 
     const {openWSD, setOpenWSD} = props;
     const handleClose = () => {
       setOpenWSD(false);
     };
     // end code of dialog modal for Solar Panal 
-    // const [head, setHead] = useState("");
-    // const [discharge, setDischarge] = useState("");
-    // const [cableLength, setCableLength] = useState("");
-    // const [cableType, setCableType] = useState("");
-    const [inputFields, setInputFields] = useState([
-      { id: uuidv4(), head: '', discharge: '', cableLength: '', cableType: ''},
-    ]);
-    const handleChangeInput = (id, event) => {
-      const newInputFields = inputFields.map(i => {
-        if(id === i.id) {
-          i[event.target.name] = event.target.value
-        }
-        return i;
-      })
-      
-      setInputFields(newInputFields);
-    }
-    const handleAddFields = () => {
-      setInputFields([...inputFields, { id: uuidv4(), head: '', discharge: '', cableLength: '', cableType: ''}])
-    }
-    const handleRemoveFields = id => {
-      const values  = [...inputFields];
-      values.splice(values.findIndex(value => value.id === id), 1);
-      setInputFields(values);
-    }
+    const [cableType, setCableType] = useState("");
+    const [head, setHead] = useState("");
+    const [discharge, setDischarge] = useState("");
+    const [cableLength, setCableLength] = useState("");
+
+    const classes = useStyles();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("InputFields", inputFields);
+        let data = {
+            head, discharge, cableLength, cableType
+        }
+        console.log(data);
     }
-    let id_field: any;
+
     
     return (
         <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openWSD}>
@@ -165,15 +147,13 @@ export default function DialogSettingWD(props){
                 {/* <WaterPumpDeviceSettingForm /> */}
                 <div className="row">
             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-              { inputFields.map(inputField => (
-                <div key={id_field = inputField.id}>
-                  {/* <p>{id_field = inputField.id}</p> */}
+               
                     <div className="row">
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Head 
                             </Typography>
-                            <Slider name="head" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider onChange={(event, value) => setHead(value)}
                                 defaultValue={200}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
@@ -188,7 +168,7 @@ export default function DialogSettingWD(props){
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                             Discharge
                             </Typography>
-                            <Slider name="discharge" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider onChange={(event, value) => setDischarge(value)}
                                 defaultValue={25}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
@@ -203,7 +183,7 @@ export default function DialogSettingWD(props){
                             <Typography id="discrete-slider-small-steps" gutterBottom>
                                 Cable length
                             </Typography>
-                            <Slider name="cableLength" onChange={event => handleChangeInput(inputField.id, event)}
+                            <Slider onChange={(event, value) => setCableLength(value)}
                                 defaultValue={500}
                                 getAriaValueText={valuetext}
                                 aria-labelledby="discrete-slider-small-steps"
@@ -217,11 +197,11 @@ export default function DialogSettingWD(props){
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPadding inWPST">
                             <FormControl variant="outlined" size="small" className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
-                                <Select name="cableType"
+                                <Select
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
-                                value={inputField.cableType}
-                                onChange={event => handleChangeInput(inputField.id, event)}
+                                value={cableType}
+                                onChange={(e) => setCableType(e.target.value)}
                                 label="Cable Type"
                                 >
                                 <MenuItem value="">
@@ -234,17 +214,16 @@ export default function DialogSettingWD(props){
                             </FormControl>
                         </div>
                     </div>
-                  </div>
-                )) }
+                    
               </div>
           </div>
             </DialogContent>
             
             <DialogActions>
-              <IconButton size="small" color="primary" aria-label="remove alarm" disabled={inputFields.length === 1} onClick={() => handleRemoveFields(id_field)}>
+              <IconButton size="small" color="primary" aria-label="remove alarm">
                 <RemoveCircleOutlineIcon />
               </IconButton>
-              <IconButton size="small" color="primary" aria-label="remove alarm" onClick={handleAddFields}>
+              <IconButton size="small" color="primary" aria-label="remove alarm">
                 <AddCircleOutlineIcon />
               </IconButton>
               <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>
