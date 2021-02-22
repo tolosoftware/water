@@ -571,8 +571,8 @@ const [description, setDescription] = React.useState("");
                     variant="fullWidth"
                     aria-label="full width tabs example"
                   >
-                    <Tab label="Add Solar" {...a11yProps(0)} />
-                    <Tab label="List of Solar Device" {...a11yProps(1)} />
+                    <Tab label="Add New Solar Brand" {...a11yProps(0)} />
+                    <Tab label="List of Solar Brand" {...a11yProps(1)} />
                   </Tabs>
                 </AppBar>
                 
@@ -756,7 +756,7 @@ const [description, setDescription] = React.useState("");
       />
       <Widget>
         <div className="d-flex flex-row mb-3">
-          <h4 className="mb-0"> Cities and Sunshine</h4>
+          <h4 className="mb-0"> List of Solar Panals</h4>
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
