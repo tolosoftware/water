@@ -1,42 +1,20 @@
-import React, {Component} from 'react';
-import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
+import React from 'react';
+import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import data from './data';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const UserInside = () => (
+  <ResponsiveContainer width="100%" height={200}>
+    <ComposedChart data={data}
+                   margin={{top: 10, right: 0, left: -25, bottom: 0}}>
+      <XAxis dataKey="name"/>
+      <YAxis/>
+      <Tooltip/>
+      <Legend/>
+      <CartesianGrid stroke='#f5f5f5'/>
+      <Bar dataKey='uv' barSize={15} fill='#3367d6'/>
+      <Line type='monotone' dataKey='uv' stroke='#59AA2B'/>
+    </ComposedChart>
+  </ResponsiveContainer>
+);
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
-
-class UserInside extends Component {
-  render() {
-    return (
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart onMouseEnter={this.onPieEnter}>
-          <Pie dataKey="value"
-               data={data}
-               labelLine={false}
-               label={renderCustomizedLabel}
-               outerRadius={80}
-               fill="#3367d6"
-          >
-            {
-              data.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]}/>)
-            }
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    );
-  }
-}
-
-export default UserInside
+export default UserInside;
