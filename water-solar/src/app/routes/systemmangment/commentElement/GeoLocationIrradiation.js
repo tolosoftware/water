@@ -2,8 +2,6 @@ import React, { useState} from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -90,12 +88,29 @@ const styles = (theme) => ({
 export default function DialogWaterP(props){
     // start code of dialog modal for water pump
     const {openGeoIr, setOpenGeoIr} = props;
-    const {time6_7, setTime6_7} = useState('');
     const [inputFieldsIrr, setInputFieldsIrr] = useState([
-        { id: uuidv4(), month: '', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,
-      ]);
+        { id: uuidv4(), time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,
+    ]);
+
     const timeLable = ['(6:00-7:00)AM', '(7:00-8:00)AM', '(8:00-9:00)AM', '(9:00-10:00)AM', '(10:00-11:00)AM', '(11:00-12:00)AM', '(12:00-1:00)PM', '(1:00-2:00)PM','(2:00-3:00)PM','(3:00-4:00)PM','(4:00-5:00)PM','(5:00-6:00)PM'];
+    
     const timeName = ['time6_7', 'time7_8', 'time8_9', 'time9_10', 'time10_11', 'time11_12', 'time12_1', 'time1_2', 'time2_3', 'time3_4', 'time4_5', 'time5_6'];
+
+    const monthsInputFields=[
+        {id: 1, month: 'January'},
+        {id: 2, month: 'February'},
+        {id: 3, month: 'March'},
+        {id: 4, month: 'April'},
+        {id: 5, month: 'May'},
+        {id: 6, month: 'June'},
+        {id: 7, month: 'July'},
+        {id: 8, month: 'August'},
+        {id: 9, month: 'September'},
+        {id: 10, month: 'October'},
+        {id: 11, month: 'November'},
+        {id: 12, month: 'December'},
+    ];
+   
     const handleClose = () => {
         setOpenGeoIr(false);
     };
@@ -108,6 +123,9 @@ export default function DialogWaterP(props){
         console.log("IrradiationInputs", inputFieldsIrr);
     }
     const handleChangeInput = (id, event) => {
+        console.log(id);
+        console.log('whats up', event.target.name + " " + event.target.value);
+        console.log('inputsField', inputFieldsIrr);
         const newInputFieldsIrr = inputFieldsIrr.map(i => {
           if(id === i.id) {
             i[event.target.name] = event.target.value
@@ -116,7 +134,11 @@ export default function DialogWaterP(props){
         })
         
         setInputFieldsIrr(newInputFieldsIrr);
+    }
+    const handleAddFields = () => {
+        setInputFieldsIrr([...inputFieldsIrr, { id: uuidv4(), time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''}])
       }
+    let myVar;
     return (
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openGeoIr} maxWidth="xl" fullWidth='xl'>
             <form autoComplete="off" onSubmit={handleSubmit}>
@@ -125,55 +147,56 @@ export default function DialogWaterP(props){
             </DialogTitle>
             <DialogContent dividers>
                 <div className={classes.Acc}>
-                    <Accordion>
+                { monthsInputFields.map(monthInputFields => (
+                    <Accordion >
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         >
-                        <Typography className={classes.headingAcc}>January</Typography>
+                        <Typography className={classes.headingAcc}>{monthInputFields.month} {(monthInputFields.id !== 1) ? (()=> setInputFieldsIrr([...inputFieldsIrr, { id: uuidv4(), time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''}])) : ''}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                         <div className="row">
                             <div className="col-xl-6 col-lg-6 col-md-12 col-12">
                                 
                                 { inputFieldsIrr.map(inputField => (
-                                    <div className="row">
+                                    <div className="row" key={myVar = monthInputFields.month}>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputField.time6_7} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[0]} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputField.time6_7} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputField.time7_8} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[1]} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputField.time7_8} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputField.time8_9} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[2]} label={timeLable[2]} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputField.time8_9} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputField.time9_10} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[3]} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputField.time9_10} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputField.time10_11} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[4]} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputField.time10_11} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputField.time11_12} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[5]} label={timeLable[5]} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputField.time11_12} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputField.time12_1} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[6]} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputField.time12_1} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputField.time1_2} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[7]} size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputField.time1_2} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputField.time2_3} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[8]} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputField.time2_3} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputField.time3_4} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[9]} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputField.time3_4} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputField.time4_5} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[10]} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputField.time4_5} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
-                                            <TextField id="outlined-basic" size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputField.time5_6} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
+                                            <TextField id={timeName[11]} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputField.time5_6} onChange={(event) => handleChangeInput(inputField.id, event)} variant="outlined" />
                                         </div>
                                          
                                     </div>
@@ -185,23 +208,11 @@ export default function DialogWaterP(props){
 
                             </div>
                         </div>
+                        
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
-                        <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
-                        >
-                        <Typography className={classes.headingAcc}>February</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                            sit amet blandit leo lobortis eget.
-                        </Typography>
-                        </AccordionDetails>
-                    </Accordion>
+                    )) }
+                    
                 </div>
               
             </DialogContent>
