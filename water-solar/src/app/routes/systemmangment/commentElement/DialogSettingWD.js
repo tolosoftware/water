@@ -125,7 +125,7 @@ export default function DialogSettingWD(props){
     // end code of dialog modal for Solar Panal 
   
     const [inputFields, setInputFields] = useState([
-      { id: uuidv4(), head: [20, 300], discharge: [10, 30], cableLength: [300, 800], cableType: ''},
+      { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], cableType: ''},
     ]);
     const handleChangeStep = (id, event, value, name) => {
       const newInputFields = inputFields.map(i => {
@@ -157,7 +157,8 @@ export default function DialogSettingWD(props){
       setInputFields(newInputFields);
     }
     const handleAddFields = () => {
-      setInputFields([...inputFields, { id: uuidv4(), head: [20, 300], discharge: [10, 30], cableLength: [300, 800], cableType: ''}])
+      let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, cableType: inputFields[inputFields.length-1].cableType};
+      setInputFields([...inputFields, newElement])
     }
     const handleRemoveFields = id => {
       const values  = [...inputFields];
@@ -185,49 +186,82 @@ export default function DialogSettingWD(props){
                 <div key={id_field = inputField.id}>
                     <div className="row paddingBottom">
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
-                            <Typography id="discrete-slider-small-steps" gutterBottom>
+                              <Typography id="range-slider" gutterBottom>
+                              head
+                              </Typography>
+                              <Slider name="head" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'head')}
+                                  value={inputField.head}
+                                  valueLabelDisplay="auto"
+                                  aria-labelledby="range-slider"
+                                  getAriaValueText={valuetext}
+                                  min={0}
+                                  max={240}
+                                  marks={marksM}
+                              />
+                            {/* <Typography id="range-slider" gutterBottom>
                             Head 
                             </Typography>
                             <Slider name="head" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'head')}
-                                // defaultValue={200}
                                 getAriaValueText={valuetext}
-                                aria-labelledby="discrete-slider-small-steps"
-                                // step={5}
+                                aria-labelledby="range-slider"
                                 marks={marksM}
-                                min={0}
                                 max={400}
                                 valueLabelDisplay="auto"
-                            />
+                            /> */}
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
-                            <Typography id="discrete-slider-small-steps" gutterBottom>
+                              <Typography id="range-slider" gutterBottom>
+                              Discharge
+                              </Typography>
+                              <Slider name="discharge" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'discharge')}
+                                  value={inputField.discharge}
+                                  valueLabelDisplay="auto"
+                                  aria-labelledby="range-slider"
+                                  getAriaValueText={valuetext}
+                                  min={0}
+                                  max={50}
+                                  marks={marksD}
+                              />
+                            {/* <Typography id="range-slider" gutterBottom>
                             Discharge
                             </Typography>
                             <Slider name="discharge" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'discharge')}
                                 // defaultValue={25}
                                 getAriaValueText={valuetext}
-                                aria-labelledby="discrete-slider-small-steps"
+                                aria-labelledby="range-slider"
                                 // step={1}
                                 marks={marksD}
                                 min={0}
                                 max={50}
                                 valueLabelDisplay="auto"
-                            />
+                            /> */}
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
-                            <Typography id="discrete-slider-small-steps" gutterBottom>
+                              <Typography id="range-slider" gutterBottom>
+                              Cable length
+                              </Typography>
+                              <Slider name="cableLength" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'cableLength')}
+                                  value={inputField.cableLength}
+                                  valueLabelDisplay="auto"
+                                  aria-labelledby="range-slider"
+                                  getAriaValueText={valuetext}
+                                  min={0}
+                                  max={1000}
+                                  marks={marksCL}
+                              />
+                            {/* <Typography id="range-slider" gutterBottom>
                                 Cable length
                             </Typography>
                             <Slider name="cableLength" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'cableLength')}
                                 // defaultValue={500}
                                 getAriaValueText={valuetext}
-                                aria-labelledby="discrete-slider-small-steps"
+                                aria-labelledby="range-slider"
                                 // step={10}
                                 marks={marksCL}
                                 min={0}
                                 max={1000}
                                 valueLabelDisplay="auto"
-                            />
+                            /> */}
                         </div>
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPadding inWPST">
                             <FormControl variant="outlined" size="small" className={classes.formControl}>

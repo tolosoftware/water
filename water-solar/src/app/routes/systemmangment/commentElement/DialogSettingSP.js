@@ -160,10 +160,7 @@ export default function DialogSettingWD(props){
   }, [files]);
 // end dropzone code
   const classes = useStyles();
-  // const [power, setPower] = useState([20, 37]);
-  // const [base, setBase] = useState("");
-  // const [quantity, setQuantity] = useState("");
-  // const [panal, setPanal] = useState("");
+   
 
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), power: [20, 37], base: 'on', quantity: '', panal: ''},
@@ -203,8 +200,7 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    let newElement = inputFields[inputFields.length-1];
-    newElement.id = uuidv4();
+    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal};
     setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {
@@ -258,7 +254,7 @@ export default function DialogSettingWD(props){
                           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
                               <TextField size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
-                                  label="Quantity"
+                                  label="Solar Quantity"
                                   type="number"
                                   InputLabelProps={{
                                       shrink: true,
@@ -269,7 +265,7 @@ export default function DialogSettingWD(props){
                           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
                               <TextField size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
-                                  label="Panal"
+                                  label="Panal Quantity"
                                   type="number"
                                   InputLabelProps={{
                                       shrink: true,
