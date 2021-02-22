@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -10,9 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
+// import {useDropzone} from "react-dropzone";
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
@@ -62,26 +62,26 @@ function valuetext(value) {
   return `${value}KW`;
 } 
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(0),
-      minWidth: "100%",
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    option: {
-        fontSize: 15,
-        '& > span': {
-            marginRight: 10,
-            fontSize: 18,
-        },
-    },
-    root: {
-        width: 300,
-      },
+// const useStyles = makeStyles((theme) => ({
+//     formControl: {
+//       margin: theme.spacing(0),
+//       minWidth: "100%",
+//     },
+//     selectEmpty: {
+//       marginTop: theme.spacing(2),
+//     },
+//     option: {
+//         fontSize: 15,
+//         '& > span': {
+//             marginRight: 10,
+//             fontSize: 18,
+//         },
+//     },
+//     root: {
+//         width: 300,
+//       },
       
-  }));
+//   }));
   const marksP = [
     {
       value: 0,
@@ -159,7 +159,7 @@ export default function DialogSettingWD(props){
   //   files.forEach(file => URL.revokeObjectURL(file.preview));
   // }, [files]);
 // end dropzone code
-  const classes = useStyles();
+  // const classes = useStyles();
    
 
   const [inputFields, setInputFields] = useState([
