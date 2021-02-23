@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import  './CommentEleStyle.css';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
@@ -277,7 +277,18 @@ export default function DialogWaterP(props){
                                 <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
-                                <TextField size="small"
+                              <FormControl fullWidth >  
+                                <TextField size="small" id="outlined-basic" label="Outlet" variant="outlined"
+                                  name="outlet"  
+                                  InputProps={{
+                                    endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  value={outlet} onChange={(e) => setOutlet(e.target.value)}/>
+                              </FormControl>
+                                {/* <TextField size="small"
                                     label="Outlet" value={outlet} onChange={(e) => setOutlet(e.target.value)}
                                     id="outlined-start-adornment"
                                     className={clsx(classes.margin, classes.textField)}
@@ -285,10 +296,21 @@ export default function DialogWaterP(props){
                                         startAdornment: <InputAdornment position="end">inch</InputAdornment>,
                                     }}
                                     variant="outlined"
-                                />  
+                                />   */}
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
-                                <TextField size="small"
+                                <FormControl fullWidth >  
+                                  <TextField size="small" id="outlined-basic" label="Current" variant="outlined"
+                                    name="current"  
+                                    InputProps={{
+                                      endAdornment: <InputAdornment position="end">A</InputAdornment>,
+                                    }}
+                                    InputLabelProps={{
+                                      shrink: true,
+                                    }}
+                                    value={current} onChange={(e) => setCurrent(e.target.value)}/>
+                                </FormControl>
+                                {/* <TextField size="small"
                                     label="Current" value={current} onChange={(e) => setCurrent(e.target.value)}
                                     id="outlined-start-adornment"
                                     className={clsx(classes.margin, classes.textField)}
@@ -296,10 +318,21 @@ export default function DialogWaterP(props){
                                         startAdornment: <InputAdornment position="end">A</InputAdornment>,
                                     }}
                                     variant="outlined"
-                                />  
+                                />   */}
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
-                                <TextField size="small"
+                                <FormControl fullWidth >  
+                                  <TextField size="small" id="outlined-basic" label="Diameter" variant="outlined"
+                                    name="diameter"  
+                                    InputProps={{
+                                      endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                                    }}
+                                    InputLabelProps={{
+                                      shrink: true,
+                                    }}
+                                    value={diameter} onChange={(e) => setDiameter(e.target.value)}/>
+                                </FormControl>
+                                {/* <TextField size="small"
                                     label="Diameter" value={diameter} onChange={(e) => setDiameter(e.target.value)}
                                     id="outlined-start-adornment"
                                     className={clsx(classes.margin, classes.textField)}
@@ -307,7 +340,7 @@ export default function DialogWaterP(props){
                                         startAdornment: <InputAdornment position="end">inch</InputAdornment>,
                                     }}
                                     variant="outlined"
-                                />  
+                                />   */}
                             </div>
                             <div className="col-xl-12 col-lg-12 col-md-12 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>

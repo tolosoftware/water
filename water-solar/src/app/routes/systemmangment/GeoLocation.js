@@ -17,8 +17,9 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
 // end dialog import file 
-
+import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
 
 
 const tableList = [
@@ -370,18 +371,11 @@ const GeoLocation=() => {
   const widget = {
    height: "300px",
   };
-
-  
-
   const classes = useStyles();
   // form code 
-  
-
-
-
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [open, setOpen] = React.useState(false);
-
+  const [openGeoIr, setOpenGeoIr] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -402,8 +396,6 @@ const [country, setCountry] = React.useState("");
     }
     console.log(district);
     console.log(data);
-    
-
   }
 // end form sumbit
   
@@ -415,7 +407,7 @@ const [country, setCountry] = React.useState("");
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Areas</h4>
             <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={handleClickOpen}>
-         <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span>
+         <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span> 
       </div>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
       <form autoComplete="off" onSubmit={handleSubmit}>
@@ -513,20 +505,23 @@ const [country, setCountry] = React.useState("");
           </tbody>
         </Table>
       </div>
-      <span className="text-primary mt-2 pointer d-block d-sm-none">
+      <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={handleClickOpen}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
-              Add New Account</span>
+              New Location </span>
         
       </Widget>
     </div>
 
     <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-
+    <GeoLocationIrradiation 
+        openGeoIr={openGeoIr}
+        setOpenGeoIr={setOpenGeoIr}
+      />
           <Widget  style={widget}>
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Irradiation</h4>
-        <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
-                    <i className="zmdi zmdi-plus-circle-o mr-1"/>New Record</span>
+        {/* <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
+                    <i className="zmdi zmdi-plus-circle-o mr-1"/>New Record</span> */}
       </div>
       <div className="table-responsive-material">
         <Table className="default-table table-unbordered table table-sm table-hover">
@@ -553,9 +548,12 @@ const [country, setCountry] = React.useState("");
               <td>
                 <div className="pointer text-primary">
                   <span className="d-inline-block mr-1">
-                    <i className="zmdi zmdi-mail-reply zmdi-hc-fw zmdi-hc-flip-horizontal"/>
+                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>setOpenGeoIr(true)} >
+                    <SettingsBrightnessIcon />
+                  </IconButton>
+                    {/* <i className="zmdi zmdi-mail-reply zmdi-hc-fw zmdi-hc-flip-horizontal"/> */}
                   </span>
-                  <span className="d-inline-block">{data.action}</span>
+                  {/* <span className="d-inline-block">{data.action}</span> */}
                 </div>
               </td>
             </tr>
@@ -563,9 +561,9 @@ const [country, setCountry] = React.useState("");
           </tbody>
         </Table>
       </div>
-      <span className="text-primary mt-2 pointer d-block d-sm-none">
+      {/* <span className="text-primary mt-2 pointer d-block d-sm-none">
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
-              Add New Account</span>
+              Add New Account</span> */}
         
       </Widget>
 
