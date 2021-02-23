@@ -800,11 +800,8 @@ export default function VerticalTabs() {
               inputRef={register}/>
                 </FormControl>   
                 </div>
-
-             
-</div>             
-              
-                )) }  
+              </div>             
+            ))}  
           
 
                <IconButton color="primary" aria-label="upload picture" component="span"  onClick={handleAddFields}>
