@@ -34,7 +34,7 @@ export const UserList=() => {
   const deletUser = async (id) => {
  
     if(window.confirm('Are you sure you want to delet this !')) {
-        axios.delete('http://localhost:8000/api/user/'+id)
+        axios.delete('api/user/'+id)
             .then(
                 res => {
                   setUserdata(res.data)
@@ -93,10 +93,10 @@ export const UserList=() => {
           <div className="col-md-4">
            
             
-            <div className="pl-3 pr-3" onClick={()=> setOpen(true)}>  
+            <div className="" onClick={()=> setOpen(true)}>  
             
              <Widget styleName={`bg-blue darken-4 text-white`}>
-              <div className="d-flex flex-row justify-content-center mb-3">
+              <div className="d-flex flex-row justify-content-center">
                 <i className={`zmdi zmdi-plus-circle-o zmdi-hc-2x`}/>
               </div>
               <div className="text-center">
@@ -106,7 +106,7 @@ export const UserList=() => {
               </Widget>
             </div>  
             
-            <CardBox styleName="col-lg-12" heading="User Insides Chart">
+            <CardBox styleName="col-lg-12 p-0" heading="User Insides Chart" >
             <UserInside/>
            </CardBox>  
           </div>

@@ -26,8 +26,6 @@ import {products} from './data'
 //circal slider
 import ReactDOM from "react-dom";
 import { CircleSlider } from "react-circle-slider";
-
-
 //daynamic form
 import { v4 as uuidv4 } from 'uuid';
 
@@ -246,7 +244,6 @@ export default function VerticalTabs() {
 
 
   const [valueCircalslider,setValueCircalslider]=React.useState(0);
- 
 
   const handleChangeCircalslider = valueCircalslider => {
         //console.log(`Changed value ${value}`);
@@ -280,7 +277,13 @@ export default function VerticalTabs() {
       const values  = [...inputFields];
       values.splice(values.length-1, 1);
       setInputFields(values);
-    }
+  }
+  
+  // card slider togal
+  const [cardState,setCardState]=useState({
+    activObject: null,
+    objects: [{id: 1},{id: 2},{id: 3},{id: 4},{id: 5},{id: 6}]
+  });
 
 
   return (
@@ -558,7 +561,7 @@ export default function VerticalTabs() {
 
               </div>  
           <span className="ml-5">
-              <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
+                <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
                 <Button onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button> 
               </span>  
           </div>
@@ -679,8 +682,8 @@ export default function VerticalTabs() {
           </Sliderr>        
       </CardBox>          
                 
-          </div>  
-              <Button  color="primary" variant="contained">Submit</Button>
+              </div>  
+             <Button onClick={() => navigate(4)} color="primary" variant="contained">Next</Button>    
               <Button  onClick={() => navigateback(2)} variant="contained" color="secondary">Previous</Button>    
           </div>
           
@@ -704,7 +707,7 @@ export default function VerticalTabs() {
 
             { inputFields.map(inputField => (              
               <div className="row">  
-              <div className="col-md-12">
+              <div className="col-md-6">
               <FormControl fullWidth >  
               <Autocomplete  
             id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
@@ -744,7 +747,7 @@ export default function VerticalTabs() {
               </FormControl>
                 </div>  
 
-                <div className="col-md-6">
+                <div className="col-md-3">
                  <FormControl fullWidth >  
               <Autocomplete  
             id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
@@ -782,13 +785,13 @@ export default function VerticalTabs() {
               />  
               </FormControl>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-3">
 
               <FormControl fullWidth >  
-              <TextField id="outlined-basic" label="Poject Name" variant="outlined"
-                placeholder="complate Project name !"
+              <TextField id="outlined-basic" label="Quantity" variant="outlined"
+                placeholder="Quantity"
                 margin="normal"
-                name="project_name"    
+                name="Quantity"    
                 InputLabelProps={{
                 shrink: true,
                       }}
@@ -797,10 +800,8 @@ export default function VerticalTabs() {
               inputRef={register}/>
                 </FormControl>   
                 </div>
-
-                </div>  
-              
-                )) }  
+              </div>             
+            ))}  
           
 
                <IconButton color="primary" aria-label="upload picture" component="span"  onClick={handleAddFields}>
@@ -814,13 +815,13 @@ export default function VerticalTabs() {
                           remove_circle_outline
                           </span>
               </IconButton>
+              
 
-        
-
-                
-          </div>
+                <Button color="primary" variant="contained">Submit</Button>
+              <Button  onClick={() => navigateback(3)} variant="contained" color="secondary">Previous</Button> 
+            </div>
+             
           
-            
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
             <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
             </div> 

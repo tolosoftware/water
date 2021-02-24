@@ -22,3 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
+
+//uom
+Route::resource('uom', UomController::class);
+Route::resource('cabletype', CableTypeController::class);
+Route::resource('accessoriestype', AccessoriesTypeController::class);
+
