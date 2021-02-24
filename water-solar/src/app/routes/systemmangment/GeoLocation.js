@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import './style.css';
-
+import axios from 'axios';
 // start dialog import file 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -394,8 +394,18 @@ const [country, setCountry] = React.useState("");
     let data = {
       country, district, latitude, longitude
     }
-    console.log(district);
+    // console.log(district);
     console.log(data);
+    axios.post('http://localhost:8000/api/new_location', data)
+        .then(
+            res => {
+                console.log(res);
+            }
+        ).catch(
+            err =>{
+                console.log(err);
+            } 
+        )
   }
 // end form sumbit
   

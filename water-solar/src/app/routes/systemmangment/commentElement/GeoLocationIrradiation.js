@@ -172,7 +172,6 @@ export default function DialogWaterP(props){
       e.preventDefault();
       console.log("IrradiationInputs", InputFieldsIrr);
     }
-    
 
     const handleChangeInput = (month, event) => {
 
@@ -262,15 +261,10 @@ export default function DialogWaterP(props){
         })
         setInputFieldsIrr12(newInputFieldsIrr);
       }  
-      
     }
      
-    let myVar;
     const loadMyForm = (inputFieldsIrrs) => {
-      // console.log("In it the value of inputFieldsIrr: "+inputFieldsIrr);
-      
       return (
-
           <>
           {inputFieldsIrrs.map(inputFieldsIrr => (
           <form autoComplete="off" onSubmit={e => handleSubmit(e, inputFieldsIrr)} key={inputFieldsIrr.id}>
@@ -285,7 +279,7 @@ export default function DialogWaterP(props){
                         <AccordionDetails>
                         <div className="row barCharGeo">
                             <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-                                    <div className="row " key={myVar = inputFieldsIrr.month}>
+                                    <div className="row ">
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
                                             <TextField id={inputFieldsIrr.month+timeName[0]} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputFieldsIrr.time6_7} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
                                         </div>
