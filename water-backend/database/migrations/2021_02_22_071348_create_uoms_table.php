@@ -15,6 +15,7 @@ class CreateUomsTable extends Migration
     {
         Schema::create('uoms', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('acronym');
             $table->timestamps();
         });

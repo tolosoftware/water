@@ -14,7 +14,7 @@ class AccessoriesTypeController extends Controller
      */
     public function index()
     {
-        //
+        return Accessories_type::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class AccessoriesTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Accessories_type::create($request->all());
     }
 
     /**
@@ -78,8 +78,10 @@ class AccessoriesTypeController extends Controller
      * @param  \App\Models\Accessories_type  $accessories_type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accessories_type $accessories_type)
+    public function destroy($id)
     {
-        //
+        $accessories = Accessories_type::findOrFail($id);
+        $accessories->delete();
+        return ['message' => 'Cable type Deleted'];
     }
 }

@@ -14,7 +14,7 @@ class UomController extends Controller
      */
     public function index()
     {
-        //
+        return Uom::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class UomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

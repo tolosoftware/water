@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Cable_type extends Model
 {
     use HasFactory;
+
+      protected $fillable = [
+        'name'
+    ];
 }

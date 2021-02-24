@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UomSeeder extends Seeder
 {
@@ -17,31 +19,26 @@ class UomSeeder extends Seeder
            $data = [
            
             [
-                'acronym'=>'February',
+                'name'=>'Meter',
+                'acronym'=>'m',
+            ],
+
+            [
+                'name'=>'Piece',
+                'acronym'=>'pcs',
             ],
             [
-                'acronym'=>'March',
+                'name'=>'Carton',
+                'acronym'=>'crtn',
             ],
+
             [
-                'acronym'=>'April',
-            ],
-            [
-                'acronym'=>'May',
-            ],
-            [
-                'acronym'=>'June',
-            ],
-            [
-                'acronym'=>'July',
-            ],
-            [
-                'acronym'=>'August',
-            ],
-            [
-                'acronym'=>'September',
+                'name'=>'Kilogram',
+                'acronym'=>'kg',
             ],
           
-           
+          
+            
         ];
         DB::table('uoms')->insert($data);
     }

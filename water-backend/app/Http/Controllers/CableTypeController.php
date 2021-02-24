@@ -14,7 +14,7 @@ class CableTypeController extends Controller
      */
     public function index()
     {
-        //
+        return Cable_type::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class CableTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Cable_type::create($request->all());
     }
 
     /**
@@ -78,8 +78,10 @@ class CableTypeController extends Controller
      * @param  \App\Models\Cable_type  $cable_type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cable_type $cable_type)
+    public function destroy($id)
     {
-        //
+        $cabletype = Cable_type::findOrFail($id);
+        $cabletype->delete();
+        return ['message' => 'Cable type Deleted'];
     }
 }
