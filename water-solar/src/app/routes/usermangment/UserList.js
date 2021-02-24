@@ -34,7 +34,7 @@ export const UserList=() => {
   const deletUser = async (id) => {
  
     if(window.confirm('Are you sure you want to delet this !')) {
-        axios.delete('http://localhost:8000/api/user/'+id)
+        axios.delete('api/user/'+id)
             .then(
                 res => {
                   setUserdata(res.data)
