@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pump_brands;
 use Illuminate\Http\Request;
+use DB;
 
 class PumpBrandsController extends Controller
 {
@@ -35,7 +36,29 @@ class PumpBrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+     
+        DB::beginTransaction();
+        try {
+
+        if($request->image){
+            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('brand/pumpbrand/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+
+         Pump_brands::create([
+            'name' => $request['brand'], 
+            'country' => $request['country'], 
+            'discription' => $request['description'], 
+            'image' => $photoname, 
+        ]);
+
+        DB::commit();
+        return ['msg' => 'Pump brand succefully inserted'];
+        } catch (Exception $e) {
+            DB::rollback();
+        }
+
     }
 
     /**

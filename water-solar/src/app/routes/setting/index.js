@@ -12,7 +12,7 @@ const Setting = ({match}) => (
         <div className="row">
 
             <div className="col-md-4">
-              <Uom />
+              <Uom  />
             </div>  
              <div className="col-md-4">
               <CableType />

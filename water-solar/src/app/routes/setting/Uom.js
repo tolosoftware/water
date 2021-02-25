@@ -2,12 +2,13 @@ import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Spinner from 'react-spinner-material';
+import './style.css'
 
 const Uom=() => {
+ 
   const [visibility,setVisibility]= useState(false);
   const [uom,setUom]= useState([]);
   useEffect(() => {
@@ -30,7 +31,7 @@ const Uom=() => {
   };
   return (
     <>
-    <Widget>
+      <Widget styleName={`tableheight`}>
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Unit of Measurement</h4>
       </div>
@@ -56,7 +57,6 @@ const Uom=() => {
                {data.name}
               </td>
               <td>{data.acronym}</td>
-            
             </tr>
           })}
           </tbody>

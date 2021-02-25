@@ -13,16 +13,12 @@ import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
 import CardBox from 'components/CardBox';
 import IntlMessages from 'util/IntlMessages';
 import './custome.css';
 //slider
 import Slider from '@material-ui/core/Slider';
 import Sliderr from "react-slick";
-
-import ProductItem from "./ProductItem";
-import {products} from './data'
 //circal slider
 import ReactDOM from "react-dom";
 import { CircleSlider } from "react-circle-slider";

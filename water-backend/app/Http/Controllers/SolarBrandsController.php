@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Solar_brands;
 use Illuminate\Http\Request;
+use DB;
 
 class SolarBrandsController extends Controller
 {
@@ -35,7 +36,27 @@ class SolarBrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         DB::beginTransaction();
+        try {
+
+        if($request->image){
+            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('brand/solar/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+
+         Solar_brands::create([
+            'name' => $request['brand'], 
+            'country' => $request['country'], 
+            'discription' => $request['description'], 
+            'image' => $photoname, 
+        ]);
+
+        DB::commit();
+        return ['msg' => 'Solar brand succefully inserted'];
+        } catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
     /**
