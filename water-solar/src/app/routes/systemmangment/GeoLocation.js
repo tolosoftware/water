@@ -372,7 +372,8 @@ const countries = [
 
 const GeoLocation=() => {
   const [geoLocations,setGeoLocations]= useState([]);
-  const [geoLocationId,setGeoLocationId]= useState('');
+  const [geoLocationId,setGeoLocationId]= useState(0);
+  const [geoLocationCity,setGeoLocationCity]= useState('');
   useEffect(() => {
     getGeoLocations();
   },[])
@@ -590,6 +591,7 @@ const deletGeoLocation=(id) => {
         openGeoIr={openGeoIr}
         setOpenGeoIr={setOpenGeoIr}
         geoLocationId={geoLocationId}
+        geoLocationCity={geoLocationCity}
       />
           <Widget  styleName={`hiegthCard`}>
       <div className="d-flex flex-row mb-3">
@@ -622,7 +624,7 @@ const deletGeoLocation=(id) => {
               <td>
                 <div className="pointer text-primary">
                   <span className="d-inline-block mr-1">
-                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>{setOpenGeoIr(true); setGeoLocationId(data.id);}} >
+                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>{setOpenGeoIr(true); setGeoLocationId(data.id); setGeoLocationCity(data.city);}} >
                     <SettingsBrightnessIcon />
                   </IconButton>
                     {/* <i className="zmdi zmdi-mail-reply zmdi-hc-fw zmdi-hc-flip-horizontal"/> */}

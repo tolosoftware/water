@@ -23,6 +23,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import {NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 // start of dialog modal for water pump
 const styles = (theme) => ({
     root: {
@@ -97,50 +100,52 @@ const styles = (theme) => ({
   // end Accordation code
 export default function DialogWaterP(props){
   const [expanded, setExpanded] = useState('January');
-  // const geoLocationId = geoLocationId;
+  const geoLocationId = props.geoLocationId;
+  const geoLocationCity = props.geoLocationCity;
   const handleChangePanel = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
     // start code of dialog modal for water pump
-    const {openGeoIr, setOpenGeoIr} = props;
+    const {openGeoIr, setOpenGeoIr} =props;
     useEffect(() => {
-      console.log('inside modal:', props)
+      getIrradiations(geoLocationId, geoLocationCity);
+      // console.log('inside modal:', props)
     },[])
     const [inputFieldsIrr1, setInputFieldsIrr1] = useState([
-      { id: uuidv4(), month: 'January', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '' ,month: 'January', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr2, setInputFieldsIrr2] = useState([
-      { id: uuidv4(), month: 'February', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'February', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr3, setInputFieldsIrr3] = useState([
-      { id: uuidv4(), month: 'March', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'March', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr4, setInputFieldsIrr4] = useState([
-      { id: uuidv4(), month: 'April', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'April', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr5, setInputFieldsIrr5] = useState([
-      { id: uuidv4(), month: 'May', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'May', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr6, setInputFieldsIrr6] = useState([
-      { id: uuidv4(), month: 'June', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'June', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr7, setInputFieldsIrr7] = useState([
-      { id: uuidv4(), month: 'July', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'July', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr8, setInputFieldsIrr8] = useState([
-      { id: uuidv4(), month: 'August', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'August', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr9, setInputFieldsIrr9] = useState([
-      { id: uuidv4(), month: 'Sebtember', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'Sebtember', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr10, setInputFieldsIrr10] = useState([
-      { id: uuidv4(), month: 'October', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'October', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr11, setInputFieldsIrr11] = useState([
-      { id: uuidv4(), month: 'November', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'November', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr12, setInputFieldsIrr12] = useState([
-      { id: uuidv4(), month: 'December', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month: 'December', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const monthsInputFields=[
       'January','February','March','April','May','June','July','August','September','October', 'November', 'December'
@@ -171,22 +176,38 @@ export default function DialogWaterP(props){
      
     const classes = useStyles();
     const getIrradiations = async(geoLocationId) =>{
-      alert(geoLocationId);
-      // axios.get('api/irradiation')
-      //     .then(res => {  
-      //         // setVisibility(false)
-      //         console.log(res);
-      //       }
-      //   ).catch(err => {
-      //         // setVisibility(false)
-      //          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-      //             id="notification.titleHere"/>);
-      //         }
-      //     )
+      // alert(geoLocationId);
+      axios.get('api/irradiation/'+geoLocationId)
+          .then(res => {  
+              // setVisibility(false)
+              console.log(res);
+            }
+        ).catch(err => {
+              // setVisibility(false)
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                  id="notification.titleHere"/>);
+              }
+          )
     }
     const handleSubmit = (e, InputFieldsIrr) => {
       e.preventDefault();
       console.log("IrradiationInputs", InputFieldsIrr);
+      axios.post('api/irradiation', data)
+        .then(
+            res => {
+              // console.log(res);
+              getIrradiations(geoLocationId);
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+              handleClose();
+            }
+        ).catch(
+            err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+                console.log(err);
+            } 
+        )
     }
 
     const handleChangeInput = (month, event) => {
@@ -282,7 +303,7 @@ export default function DialogWaterP(props){
     const loadMyForm = (inputFieldsIrrs) => {
       return (
           <>
-          {inputFieldsIrrs.map(inputFieldsIrr => (
+          {inputFieldsIrrs.map((inputFieldsIrr, index) => (
           <form autoComplete="off" onSubmit={e => handleSubmit(e, inputFieldsIrr)} key={inputFieldsIrr.id}>
                     <Accordion defaultExpanded={inputFieldsIrr.month=== 'January'} expanded={expanded === inputFieldsIrr.month} onChange={handleChangePanel(inputFieldsIrr.month)}>
                         <AccordionSummary className={classes.rootAcc}
@@ -290,7 +311,7 @@ export default function DialogWaterP(props){
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         >
-                        <Typography >{inputFieldsIrr.month} </Typography>
+                        <Typography >{index}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                         <div className="row barCharGeo">
@@ -369,7 +390,7 @@ export default function DialogWaterP(props){
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openGeoIr} maxWidth="md" fullWidth='md'>
             {/* <form autoComplete="off" onSubmit={handleSubmit}> */}
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
-              Set Irradiation For: kabul
+              Set Irradiation For: {geoLocationCity}
             </DialogTitle>
             <DialogContent dividers>
                 <div className={classes.Acc}>
