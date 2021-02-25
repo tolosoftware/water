@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Pump_brands extends Model
 {
     use HasFactory;
+      protected $fillable = [
+       'name', 'country','discription','image'
+    ];
+
 }

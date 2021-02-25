@@ -185,10 +185,10 @@ export default function CustomizedDialogs(props) {
     var userimage = '';
     let file = files[0];
     let reader = new FileReader();
-     reader.onloadend = (file) => {
+    reader.onloadend = (file) => {
       userimage = reader.result;
       data['userimage'] = userimage;
-      axios.post('http://localhost:8000/api/user', data)
+      axios.post('api/user', data)
         .then(
             res => {
                 console.log(res);

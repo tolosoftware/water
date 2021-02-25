@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Accessories_list;
 use Illuminate\Http\Request;
-
+use DB;
 class AccessoriesListController extends Controller
 {
     /**
@@ -35,8 +35,29 @@ class AccessoriesListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+        if($request->image){
+            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('accessories/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+         Accessories_list::create([
+            'accessories_type_id' => $request['type'],
+            'name' => $request['name'],
+            'model' => $request['model'],
+            'country' => $request['country'],
+            'price' =>$request['price'],
+            'discription' => $request['description'],
+            'image' => $photoname,
+        ]);
+
+        DB::commit();
+        return ['msg' => 'Accessories Success full inserted'];
+    } catch (Exception $e) {
+        DB::rollback();
     }
+}
 
     /**
      * Display the specified resource.

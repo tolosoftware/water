@@ -23,10 +23,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
 
-//uom
+//setting
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
 Route::resource('accessoriestype', AccessoriesTypeController::class);
+
+//water pump brand
+Route::resource('pumpbrand', PumpBrandsController::class);
+Route::resource('solarbrand', SolarBrandsController::class);
+//accessories
+Route::resource('accessories', AccessoriesListController::class);
 
 // Start Route for System Management of Water Solar
 Route::resource('new_location', GeolocationController::class);
