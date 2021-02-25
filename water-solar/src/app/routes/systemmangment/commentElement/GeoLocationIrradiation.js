@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -97,12 +97,15 @@ const styles = (theme) => ({
   // end Accordation code
 export default function DialogWaterP(props){
   const [expanded, setExpanded] = useState('January');
+  // const geoLocationId = geoLocationId;
   const handleChangePanel = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
     // start code of dialog modal for water pump
     const {openGeoIr, setOpenGeoIr} = props;
-    
+    useEffect(() => {
+      console.log('inside modal:', props)
+    },[])
     const [inputFieldsIrr1, setInputFieldsIrr1] = useState([
       { id: uuidv4(), month: 'January', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
@@ -167,7 +170,20 @@ export default function DialogWaterP(props){
     // end code of dialog modal for water pump
      
     const classes = useStyles();
-   
+    const getIrradiations = async(geoLocationId) =>{
+      alert(geoLocationId);
+      // axios.get('api/irradiation')
+      //     .then(res => {  
+      //         // setVisibility(false)
+      //         console.log(res);
+      //       }
+      //   ).catch(err => {
+      //         // setVisibility(false)
+      //          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+      //             id="notification.titleHere"/>);
+      //         }
+      //     )
+    }
     const handleSubmit = (e, InputFieldsIrr) => {
       e.preventDefault();
       console.log("IrradiationInputs", InputFieldsIrr);
@@ -287,7 +303,7 @@ export default function DialogWaterP(props){
                                             <TextField id={inputFieldsIrr.month+timeName[1]} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputFieldsIrr.time7_8} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[2]} label={timeLable[2]} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={inputFieldsIrr.month+timeName[2]} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
                                             <TextField id={inputFieldsIrr.month+timeName[3]} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputFieldsIrr.time9_10} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
@@ -296,7 +312,7 @@ export default function DialogWaterP(props){
                                             <TextField id={inputFieldsIrr.month+timeName[4]} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputFieldsIrr.time10_11} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[5]} label={timeLable[5]} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={inputFieldsIrr.month+timeName[5]} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
                                             <TextField id={inputFieldsIrr.month+timeName[6]} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputFieldsIrr.time12_1} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />

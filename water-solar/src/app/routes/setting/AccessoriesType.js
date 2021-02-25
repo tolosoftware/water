@@ -1,10 +1,8 @@
 import React,{useEffect,useState} from 'react';
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 import {Button} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
@@ -38,7 +36,7 @@ const [visibility,setVisibility]= useState(false);
       )
   };
 
-  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  const {register,handleSubmit}=useForm(); // initialize the hook
   const onSubmit=(data) => {
       axios.post('api/accessoriestype', data)
         .then(res => {

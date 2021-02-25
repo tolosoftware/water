@@ -514,12 +514,13 @@ const [description, setDescription] = React.useState("");
 
 const handleSubmit = (e) => {
   e.preventDefault();
+ 
   let data = {
     brand, country, description, files
   }
-  console.log(data);
-  console.log(country);
-  console.log(description);
+  console.log(data.country.label);
+  // console.log(country);
+  // console.log(description);
   
 
 }
