@@ -34,4 +34,8 @@ Route::resource('solarbrand', SolarBrandsController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
 
+// Start Route for System Management of Water Solar
+Route::resource('new_location', GeolocationController::class);
+Route::resource('irradiation', IrradiationController::class);
+// End Routes of System Management of Water Soalr
 

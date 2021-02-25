@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Geolocation;
+use App\Models\GeoLocation;
 use Illuminate\Http\Request;
-
+use DB;
 class GeolocationController extends Controller
 {
     /**
@@ -14,7 +14,7 @@ class GeolocationController extends Controller
      */
     public function index()
     {
-        //
+        return GeoLocation::all();
     }
 
     /**
@@ -35,16 +35,30 @@ class GeolocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+       // return $request;
+    //    DB::beginTransaction();
+    //    try {
+            GeoLocation::create([
+                'country' => $request['countryName'],
+                'city' => $request['district'],
+                'latitude' => $request['latitude'],
+                'longtitude' => $request['longtitude'],
+            ]);
+    //         return GeoLocation::all();
+    //         DB::commit();
+    //   }catch (Exception $e) {
+    //     DB::rollback();
+    //   }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Geolocation  $geolocation
+     * @param  \App\Models\GeoLocation  $geolocation
      * @return \Illuminate\Http\Response
      */
-    public function show(Geolocation $geolocation)
+    public function show(GeoLocation $geolocation)
     {
         //
     }
@@ -52,10 +66,10 @@ class GeolocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Geolocation  $geolocation
+     * @param  \App\Models\GeoLocation  $geolocation
      * @return \Illuminate\Http\Response
      */
-    public function edit(Geolocation $geolocation)
+    public function edit(GeoLocation $geolocation)
     {
         //
     }
@@ -64,10 +78,10 @@ class GeolocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Geolocation  $geolocation
+     * @param  \App\Models\GeoLocation  $geolocation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Geolocation $geolocation)
+    public function update(Request $request, GeoLocation $geolocation)
     {
         //
     }
@@ -75,11 +89,13 @@ class GeolocationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Geolocation  $geolocation
+     * @param  \App\Models\GeoLocation  $geolocation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Geolocation $geolocation)
+    public function destroy($id)
     {
-        //
+        $geoLocation = GeoLocation::findOrFail($id);
+        $geoLocation->delete();
+        return ['message' => 'Geo Location Deleted'];
     }
 }
