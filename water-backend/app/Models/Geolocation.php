@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class GeoLocation extends Model
 {
     use HasFactory;
+    protected $table = "geolocations";
+    protected $primaryKey = "id";
+    protected $fillable = [
+        'country', 'city','latitude','longtitude'
+     ];
+
+ 
 }
