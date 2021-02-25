@@ -28,3 +28,8 @@ Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
 Route::resource('accessoriestype', AccessoriesTypeController::class);
 
+// Start Route for System Management of Water Solar
+Route::resource('new_location', GeolocationController::class);
+Route::resource('irradiation', IrradiationController::class);
+// End Routes of System Management of Water Soalr
+
