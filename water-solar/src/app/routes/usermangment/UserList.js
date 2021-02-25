@@ -3,7 +3,6 @@ import axios from 'axios';
 import MaterialTable from 'material-table';
 import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
-
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";

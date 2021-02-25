@@ -1,13 +1,12 @@
 import React,{useEffect,useState} from 'react';
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
+
 import {Button} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
-
-
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,12 +14,13 @@ import Swal from 'sweetalert2';
 import IntlMessages from 'util/IntlMessages';
 import Spinner from 'react-spinner-material';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
+import './style.css'
 
 
 
 const CableType=() => {
 
-
+const [addvisibility,setAddvisibility]=useState(false);
 const [visibility,setVisibility]= useState(false);
  const [cabletype,setCabletype]= useState([]);
   useEffect(() => {
@@ -94,12 +94,29 @@ const [visibility,setVisibility]= useState(false);
     
   return (
     <>
+       
+      <Widget styleName={`tableheight`}>
       
-      <Widget>
-        <div className="d-flex flex-row">
-        <form onSubmit={handleSubmit(onSubmit)}>
+            
+        <div className="d-flex flex-row mb-2">
+           <IconButton color="primary" aria-label="upload picture" component="span"
+            onClick={() => setAddvisibility(true)} hidden={addvisibility==true}>
+                 <span class="material-icons">
+                          add_circle_outline
+                          </span>
+          </IconButton>  
+          
+          <IconButton color="primary" aria-label="upload picture" component="span"
+            hidden={addvisibility==false} onClick={() => setAddvisibility(false)}>
+                <span class="material-icons">
+                        remove_circle_outline
+                        </span>
+            </IconButton>    
+          { 
+            addvisibility?
+          <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-             <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+             <div className="col-md-9 col-sm-9 col-lg-9 col-xs-12">
               <TextField id="outlined-basic" label="Cable type" variant="outlined"
                 placeholder="Cable type"
                 name="name"
@@ -108,7 +125,7 @@ const [visibility,setVisibility]= useState(false);
                 inputRef={register} />
             
             </div>
-            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+            <div className="col-md-3 col-sm-3 col-lg-3 col-xs-12">
               <Button color="primary"   variant="contained" size="medium" type="submit">
               <span className="material-icons">
                       add_circle_outline
@@ -117,7 +134,9 @@ const [visibility,setVisibility]= useState(false);
               
             </div>
             </div>
-        </form>
+              </form>
+            :null  
+         }     
         </div>
            
          <span className="row justify-content-center">
@@ -154,9 +173,10 @@ const [visibility,setVisibility]= useState(false);
             </tr>
           })}
           </tbody>
-        </Table>
+          </Table>
+        
       </div>
- 
+           
     </Widget>
      <NotificationContainer />
     </>

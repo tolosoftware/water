@@ -13,13 +13,11 @@ import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
 import CardBox from 'components/CardBox';
 import './custome.css';
 //slider
 import Slider from '@material-ui/core/Slider';
 import Sliderr from "react-slick";
-
 //circal slider
 import { CircleSlider } from "react-circle-slider";
 //daynamic form

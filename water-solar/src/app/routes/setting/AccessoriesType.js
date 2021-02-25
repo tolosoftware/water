@@ -11,10 +11,11 @@ import Spinner from 'react-spinner-material';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import './style.css'
 
 const AccessoriesType=() => {
-
+const [addvisibility,setAddvisibility]=useState(false);
 const [visibility,setVisibility]= useState(false);
  const [accessoriestype,setAccessoriestype]= useState([]);
   useEffect(() => {
@@ -89,11 +90,26 @@ const [visibility,setVisibility]= useState(false);
   return (
     <>
       
-      <Widget>
-        <div className="d-flex flex-row">
+      <Widget styleName={`tableheight`}>
+        <div className="d-flex flex-row mb-2">
+
+           <IconButton color="primary" aria-label="upload picture" component="span"
+            onClick={() => setAddvisibility(true)} hidden={addvisibility==true}>
+                 <span class="material-icons">
+                          add_circle_outline
+                  </span>
+          </IconButton>  
+          <IconButton color="primary" aria-label="upload picture" component="span"
+            hidden={addvisibility==false} onClick={() => setAddvisibility(false)}>
+                <span class="material-icons">
+                        remove_circle_outline
+                        </span>
+            </IconButton>    
+          { 
+            addvisibility?  
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-             <div className="col-md-10">
+             <div className="col-md-9">
               <TextField id="outlined-basic" label="Accessories type" variant="outlined"
                 placeholder="Accessories type"
                 name="name"
@@ -102,7 +118,7 @@ const [visibility,setVisibility]= useState(false);
                 inputRef={register} />
             
             </div>
-            <div className="col-md-2">
+            <div className="col-md-3">
               <Button color="primary"   variant="contained" size="medium" type="submit">
               <span className="material-icons">
                       add_circle_outline
@@ -111,7 +127,9 @@ const [visibility,setVisibility]= useState(false);
             
             </div>
             </div>
-        </form>
+                </form>
+          :null  
+         }         
         </div>
 
         <span className="row justify-content-center">
