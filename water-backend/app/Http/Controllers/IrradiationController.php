@@ -14,7 +14,7 @@ class IrradiationController extends Controller
      */
     public function index()
     {
-        //
+        return Irradiation::all();
     }
 
     /**
@@ -35,7 +35,23 @@ class IrradiationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Irradiation::create([
+            'geolocation_id' => $request[''],
+            'month_id' => $request[''],
+            '6am' => $request[''],
+            '7am' => $request[''],
+            '8am' => $request[''],
+            '9am' => $request[''],
+            '10am' => $request[''],
+            '11am' => $request[''],
+            '12am' => $request[''],
+            '1pm' => $request[''],
+            '2pm' => $request[''],
+            '3pm' => $request[''],
+            '4pm' => $request[''],
+            '5pm' => $request[''],
+            '6pm' => $request[''],
+        ]);
     }
 
     /**
@@ -44,9 +60,11 @@ class IrradiationController extends Controller
      * @param  \App\Models\Irradiation  $irradiation
      * @return \Illuminate\Http\Response
      */
-    public function show(Irradiation $irradiation)
+    public function show($id)
     {
-        //
+        $irradiation = Irradiation::select()->where('geolocation_id', $id)->get();
+        return $irradiation;
+
     }
 
     /**
