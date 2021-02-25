@@ -257,6 +257,7 @@ const [description, setDescription] = React.useState("");
 
 const handleSubmit = (e) => {
   e.preventDefault();
+ 
   let data = {
     brand, description
   }

@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import './style.css';
-
+import axios from 'axios';
 // start dialog import file 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +17,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
+import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
+import Swal from 'sweetalert2';
 // end dialog import file 
 import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
 
@@ -52,6 +54,7 @@ const tableList = [
     action: 'Pay'
   }
 ];
+
 // start dialog code
 const styles = (theme) => ({
   root: {
@@ -368,9 +371,11 @@ const countries = [
 
 
 const GeoLocation=() => {
-  const widget = {
-   height: "300px",
-  };
+  const [geoLocations,setGeoLocations]= useState([]);
+  const [geoLocationId,setGeoLocationId]= useState('');
+  useEffect(() => {
+    getGeoLocations();
+  },[])
   const classes = useStyles();
   // form code 
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -386,23 +391,87 @@ const GeoLocation=() => {
 // start form sumbit
 const [district, setDistrict] = React.useState("");
 const [latitude, setLatitude] = React.useState("");
-const [longitude, setLongitude] = React.useState("");
+const [longtitude, setLongtitude] = React.useState("");
 const [country, setCountry] = React.useState("");
+
+const getGeoLocations = async() =>{
+  axios.get('api/new_location')
+      .then(res => {  
+          // setVisibility(false)
+          // console.log(res);
+          setGeoLocations(res.data);
+        }
+    ).catch(err => {
+          // setVisibility(false)
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+      )
+}
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    var countryName = country.label;
     let data = {
-      country, district, latitude, longitude
+      countryName, district, latitude, longtitude
     }
-    console.log(district);
+    // console.log(district);
     console.log(data);
+    axios.post('api/new_location', data)
+        .then(
+            res => {
+              // console.log(res);
+              getGeoLocations();
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+              handleClose();
+            }
+        ).catch(
+            err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+                console.log(err);
+            } 
+        )
   }
 // end form sumbit
-  
+
+// Delete functions for geo location
+const deletGeoLocation=(id) => {
+  console.log("it is id of that geo location: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/new_location/'+id)
+        .then(res => {
+              // setGeoLocations(res.data)
+            setGeoLocations(geoLocations.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+
   return (
     <div className="row">
     <div className="col-xl-6 col-lg-6 col-md-12 col-12 card-height">
-        <Widget style={widget}>
+        <Widget styleName={`hiegthCard`}>
        
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Areas</h4>
@@ -459,7 +528,7 @@ const [country, setCountry] = React.useState("");
               <TextField id="outlined-basic" size="small" value={latitude} onChange={(e) => setLatitude(e.target.value)} label="Latitude" name='latitude' variant="outlined" />
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField id="outlined-basic" size="small" value={longitude} onChange={(e) => setLongitude(e.target.value)} label="Longitude" name='longitude' variant="outlined" />
+              <TextField id="outlined-basic" size="small" value={longtitude} onChange={(e) => setLongtitude(e.target.value)} label="Longtitude" name='Longtitude' variant="outlined" />
             </div>
           </div>
         </DialogContent>
@@ -475,27 +544,31 @@ const [country, setCountry] = React.useState("");
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">
           <tr>
+            <th>Id</th>
             <th>Country</th>
             <th>District</th>
+            <th>Latitude</th>
+            <th>Longtitude</th>
             <th>Action</th>
           </tr>
           </thead>
           <tbody>
-          {tableList.map((data, index) => {
+          {geoLocations.map((data, index) => {
             return <tr key={index}>
+              <td>{index+1}</td>
               <td>
                 <div className="d-flex align-items-center">
-                  {data.image === '' ? null :
-                    <Avatar className="user-avatar size-30" src={data.image}/>}
                   <div className="user-detail">
-                    <h5 className="user-name">{data.name}</h5>
+                    <h5 className="user-name">{data.country}</h5>
                   </div>
                 </div>
               </td>
-              <td>{data.lastTransfer}</td>
+              <td>{data.city}</td>
+              <td>{data.latitude}</td>
+              <td>{data.longtitude}</td>
               <td>
                 <div className="pointer text-primary">
-                <IconButton size="small" aria-label="delete"  color="secondary">
+                <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deletGeoLocation(data.id)} >
                   <DeleteIcon />
                 </IconButton>
                 </div>
@@ -516,8 +589,9 @@ const [country, setCountry] = React.useState("");
     <GeoLocationIrradiation 
         openGeoIr={openGeoIr}
         setOpenGeoIr={setOpenGeoIr}
+        geoLocationId={geoLocationId}
       />
-          <Widget  style={widget}>
+          <Widget  styleName={`hiegthCard`}>
       <div className="d-flex flex-row mb-3">
         <h4 className="mb-0"> Irradiation</h4>
         {/* <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
@@ -533,22 +607,22 @@ const [country, setCountry] = React.useState("");
           </tr>
           </thead>
           <tbody>
-          {tableList.map((data, index) => {
+          {geoLocations.map((data, index) => {
             return <tr key={index}>
+              <td>{index+1}</td>
               <td>
                 <div className="d-flex align-items-center">
-                  {data.image === '' ? null :
-                    <Avatar className="user-avatar size-30" src={data.image}/>}
                   <div className="user-detail">
-                    <h5 className="user-name">{data.name}</h5>
+                    <h5 className="user-name">{data.country}</h5>
                   </div>
                 </div>
               </td>
-              <td>{data.lastTransfer}</td>
+              <td>{data.latitude}</td>
+              
               <td>
                 <div className="pointer text-primary">
                   <span className="d-inline-block mr-1">
-                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>setOpenGeoIr(true)} >
+                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>{setOpenGeoIr(true); setGeoLocationId(data.id);}} >
                     <SettingsBrightnessIcon />
                   </IconButton>
                     {/* <i className="zmdi zmdi-mail-reply zmdi-hc-fw zmdi-hc-flip-horizontal"/> */}
@@ -566,7 +640,7 @@ const [country, setCountry] = React.useState("");
               Add New Account</span> */}
         
       </Widget>
-
+      <NotificationContainer />
       </div>
 
     </div>  

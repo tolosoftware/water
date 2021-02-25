@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -14,13 +14,11 @@ import {useForm} from 'react-hook-form';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CardBox from 'components/CardBox';
-import IntlMessages from 'util/IntlMessages';
 import './custome.css';
 //slider
 import Slider from '@material-ui/core/Slider';
 import Sliderr from "react-slick";
 //circal slider
-import ReactDOM from "react-dom";
 import { CircleSlider } from "react-circle-slider";
 //daynamic form
 import { v4 as uuidv4 } from 'uuid';
@@ -149,10 +147,7 @@ const imagehieght = {
   height: '420px',
   width: '420px',
 }
-const panalwidth = {
-    width: '1000px',
-};
-
+ 
 export default function VerticalTabs() {
 
 //slider
@@ -220,7 +215,7 @@ export default function VerticalTabs() {
   }
 
   
-  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  const {register,handleSubmit}=useForm(); // initialize the hook
   
   const onSubmit = (data) => {
       axios.post('http://localhost:8000/api/user', data)
@@ -248,14 +243,14 @@ export default function VerticalTabs() {
         setValueCircalslider({ valueCircalslider });
     };
  
-  const handleChangeRange=event => {
+  // const handleChangeRange=event => {
     
-    console.log(event);
+  //   console.log(event);
     
-        setValueCircalslider({
-            valueCircalslider: event.target.valueAsNumber,
-        });
-  };
+  //       setValueCircalslider({
+  //           valueCircalslider: event.target.valueAsNumber,
+  //       });
+  // };
   
 
   //daynamic form
@@ -276,10 +271,10 @@ export default function VerticalTabs() {
   }
   
   // card slider togal
-  const [cardState,setCardState]=useState({
-    activObject: null,
-    objects: [{id: 1},{id: 2},{id: 3},{id: 4},{id: 5},{id: 6}]
-  });
+  // const [cardState,setCardState]=useState({
+  //   activObject: null,
+  //   objects: [{id: 1},{id: 2},{id: 3},{id: 4},{id: 5},{id: 6}]
+  // });
 
 
   return (
@@ -466,7 +461,7 @@ export default function VerticalTabs() {
               <TextField id="outlined-basic" label="Motor Cable" variant="outlined"
                 helperText="Full width!"
                 placeholder="Motor cable!"
-                    margin="normal"
+                margin="normal"
                 name="motor_cable"    
                 InputLabelProps={{
                   shrink: true,
@@ -486,7 +481,6 @@ export default function VerticalTabs() {
                     </Typography>
                       <Slider
                         orientation="vertical"
-                        getAriaValueText={valuetext}
                         defaultValue={30}
                         aria-labelledby="vertical-slider"
                       marks={dirtloss}
@@ -508,7 +502,6 @@ export default function VerticalTabs() {
                         orientation="vertical"
                         defaultValue={[20, 37]}
                         aria-labelledby="vertical-slider"
-                        getAriaValueText={valuetext}
                       marks={marks}
                       step={1}
                       getAriaValueText={valuetext}
@@ -728,7 +721,6 @@ export default function VerticalTabs() {
                 placeholder="pick item !"
                 margin="normal"
                 name="location"
-                size="small"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -767,7 +759,6 @@ export default function VerticalTabs() {
                 placeholder="pick UoM!"
                 margin="normal"
                 name="location"
-                size="small"
                 InputLabelProps={{
                   shrink: true,
                 }}
