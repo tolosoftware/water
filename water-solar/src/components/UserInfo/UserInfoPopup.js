@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {userSignOut} from 'actions/Auth';
 import IntlMessages from 'util/IntlMessages';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 class UserInfoPopup extends React.Component {
 

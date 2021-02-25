@@ -1,12 +1,9 @@
 import React,{useEffect,useState}from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import PeopleOutlineTwoToneIcon from '@material-ui/icons/PeopleOutlineTwoTone';
 import CardBox from 'components/CardBox';
-import Button from '@material-ui/core/Button';
 import Widget from "components/Widget/index";
 
-import Icon from '@material-ui/core/Icon';
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";

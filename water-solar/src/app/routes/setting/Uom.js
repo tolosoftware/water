@@ -2,7 +2,6 @@ import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Spinner from 'react-spinner-material';

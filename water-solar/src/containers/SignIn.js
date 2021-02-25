@@ -61,7 +61,7 @@ class SignIn extends React.Component {
    
             localStorage.setItem('token', res.data.token); 
             localStorage.setItem('UserData',JSON.stringify(res.data.user));
-            if(res.data.user.system==1) {
+            if(res.data.user.system===1) {
               this.props.history.push('app/dashboard/crypto');
             }else {
               this.props.history.push('app/dashboard/intranet');
@@ -77,12 +77,12 @@ class SignIn extends React.Component {
 
 
   render() {
-    const {
-      email,
-      password,
-      type
+    // const {
+    //   email,
+    //   password,
+    //   type
    
-    } = this.state;
+    // } = this.state;
     const {showMessage,loader,alertMessage}=this.props;
     
     const { redirect } = this.state;

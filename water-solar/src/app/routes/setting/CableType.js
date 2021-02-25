@@ -1,10 +1,8 @@
 import React,{useEffect,useState} from 'react';
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 import {Button} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
 
@@ -44,7 +42,7 @@ const [visibility,setVisibility]= useState(false);
       )
   };
 
-  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  const {register,handleSubmit}=useForm(); // initialize the hook
   const onSubmit=(data) => {
       axios.post('api/cabletype', data)
         .then(res => {
@@ -101,7 +99,7 @@ const [visibility,setVisibility]= useState(false);
         <div className="d-flex flex-row">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-             <div className="col-md-10">
+             <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
               <TextField id="outlined-basic" label="Cable type" variant="outlined"
                 placeholder="Cable type"
                 name="name"
@@ -110,7 +108,7 @@ const [visibility,setVisibility]= useState(false);
                 inputRef={register} />
             
             </div>
-            <div className="col-md-2">
+            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
               <Button color="primary"   variant="contained" size="medium" type="submit">
               <span className="material-icons">
                       add_circle_outline
