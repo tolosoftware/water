@@ -99,7 +99,7 @@ const styles = (theme) => ({
     
   // end Accordation code
 export default function DialogWaterP(props){
-  const [expanded, setExpanded] = useState('January');
+  const [expanded, setExpanded] = useState(1);
   const geoLocationId = props.geoLocationId;
   const geoLocationCity = props.geoLocationCity;
   const handleChangePanel = (panel) => (event, newExpanded) => {
@@ -108,47 +108,47 @@ export default function DialogWaterP(props){
     // start code of dialog modal for water pump
     const {openGeoIr, setOpenGeoIr} =props;
     useEffect(() => {
-      getIrradiations(geoLocationId, geoLocationCity);
+      // getIrradiations(geoLocationId);
       // console.log('inside modal:', props)
     },[])
     const [inputFieldsIrr1, setInputFieldsIrr1] = useState([
-      { id: uuidv4(), geolocation_id: '' ,month: 'January', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '' ,month_id: 1, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr2, setInputFieldsIrr2] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'February', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 2, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr3, setInputFieldsIrr3] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'March', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 3, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr4, setInputFieldsIrr4] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'April', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 4, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr5, setInputFieldsIrr5] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'May', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 5, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr6, setInputFieldsIrr6] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'June', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 6, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr7, setInputFieldsIrr7] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'July', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 7, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr8, setInputFieldsIrr8] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'August', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 8, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr9, setInputFieldsIrr9] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'Sebtember', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 9, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr10, setInputFieldsIrr10] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'October', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 10, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr11, setInputFieldsIrr11] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'November', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 11, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const [inputFieldsIrr12, setInputFieldsIrr12] = useState([
-      { id: uuidv4(), geolocation_id: '', month: 'December', time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: '', month_id: 12, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
 
     const monthsInputFields=[
-      'January','February','March','April','May','June','July','August','September','October', 'November', 'December'
+      'January','February', 'March','April','May','June','July','August','September','October', 'November', 'December'
     ];
     const timeLable = ['6:00-7:00 AM', '7:00-8:00 AM', '8:00-9:00 AM', '9:00-10:00 AM', '10:00-11:00 AM', '11:00-12:00 AM', '12:00-1:00 PM', '1:00-2:00 PM','2:00-3:00 PM','3:00-4:00 PM','4:00-5:00 PM','5:00-6:00 PM'];
     
@@ -175,12 +175,14 @@ export default function DialogWaterP(props){
     // end code of dialog modal for water pump
      
     const classes = useStyles();
-    const getIrradiations = async(geoLocationId) =>{
+    
+    const getIrradiations = (geoLocationId) =>{
       // alert(geoLocationId);
       axios.get('api/irradiation/'+geoLocationId)
           .then(res => {  
               // setVisibility(false)
               console.log(res);
+              alert(res);
             }
         ).catch(err => {
               // setVisibility(false)
@@ -192,11 +194,12 @@ export default function DialogWaterP(props){
     const handleSubmit = (e, InputFieldsIrr) => {
       e.preventDefault();
       console.log("IrradiationInputs", InputFieldsIrr);
-      axios.post('api/irradiation', data)
+      
+      axios.post('api/irradiation', InputFieldsIrr)
         .then(
             res => {
-              // console.log(res);
-              getIrradiations(geoLocationId);
+              console.log(res);
+              // getIrradiations(geoLocationId);
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
               handleClose();
@@ -210,88 +213,88 @@ export default function DialogWaterP(props){
         )
     }
 
-    const handleChangeInput = (month, event) => {
+    const handleChangeInput = (month_id, event) => {
 
-      if(month === "January"){
+      if(month_id === 1){
         const newInputFieldsIrr = inputFieldsIrr1.map(i => {
           i[event.target.name] = event.target.value
           return i;
           // console.log("tartget name: " + i[event.target.name] + "target value" + event.target.value);
         })
         setInputFieldsIrr1(newInputFieldsIrr);
-        // console.log("month" + month + "event" + event );
+        // console.log("month_id" + month_id + "event" + event );
       }
-      if (month === "February"){
+      else if (month_id === 2){
         const newInputFieldsIrr = inputFieldsIrr2.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr2(newInputFieldsIrr);
       }  
-      if (month === "March"){
+      else if (month_id === 3){
         const newInputFieldsIrr = inputFieldsIrr3.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr3(newInputFieldsIrr);
       }  
-      if (month === "April"){
+      else if (month_id === 4){
         const newInputFieldsIrr = inputFieldsIrr4.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr4(newInputFieldsIrr);
       }  
-      if (month === "May"){
+      else if (month_id === 5){
         const newInputFieldsIrr = inputFieldsIrr5.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr5(newInputFieldsIrr);
       }  
-      if (month === "June"){
+      else if (month_id === 6){
         const newInputFieldsIrr = inputFieldsIrr6.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr6(newInputFieldsIrr);
       }  
-      if (month === "July"){
+      else if (month_id === 7){
         const newInputFieldsIrr = inputFieldsIrr7.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr7(newInputFieldsIrr);
       }  
-      if (month === "August"){
+      else if (month_id === 8){
         const newInputFieldsIrr = inputFieldsIrr8.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr8(newInputFieldsIrr);
       }  
-      if (month === "September"){
+      else if (month_id === 9){
         const newInputFieldsIrr = inputFieldsIrr9.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr9(newInputFieldsIrr);
       }  
-      if (month === "October"){
+      else if (month_id === 10){
         const newInputFieldsIrr = inputFieldsIrr10.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr10(newInputFieldsIrr);
       }  
-      if (month === "November"){
+      else if (month_id === 11){
         const newInputFieldsIrr = inputFieldsIrr11.map(i => {
           i[event.target.name] = event.target.value
           return i;
         })
         setInputFieldsIrr11(newInputFieldsIrr);
       }  
-      if (month === "December"){
+      else if (month_id === 12){
         const newInputFieldsIrr = inputFieldsIrr12.map(i => {
           i[event.target.name] = event.target.value
           return i;
@@ -303,55 +306,55 @@ export default function DialogWaterP(props){
     const loadMyForm = (inputFieldsIrrs) => {
       return (
           <>
-          {inputFieldsIrrs.map((inputFieldsIrr, index) => (
-          <form autoComplete="off" onSubmit={e => handleSubmit(e, inputFieldsIrr)} key={inputFieldsIrr.id}>
-                    <Accordion defaultExpanded={inputFieldsIrr.month=== 'January'} expanded={expanded === inputFieldsIrr.month} onChange={handleChangePanel(inputFieldsIrr.month)}>
+          {inputFieldsIrrs.map(inputFieldsIrr => (
+          <form autoComplete="off" onSubmit={e => handleSubmit(e, inputFieldsIrr)} key={inputFieldsIrr.id} key1={inputFieldsIrr.geolocation_id=geoLocationId}>
+                    <Accordion defaultExpanded={inputFieldsIrr.month_id===1} expanded={expanded === inputFieldsIrr.month_id} onChange={handleChangePanel(inputFieldsIrr.month_id)}>
                         <AccordionSummary className={classes.rootAcc}
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         >
-                        <Typography >{index}</Typography>
+                        <Typography >{monthsInputFields[inputFieldsIrr.month_id-1]}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                         <div className="row barCharGeo">
                             <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-                                    <div className="row ">
+                                    <div className="row row-paddding-top">
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[0]} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputFieldsIrr.time6_7} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[0]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputFieldsIrr.time6_7} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[1]} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputFieldsIrr.time7_8} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[1]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputFieldsIrr.time7_8} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[2]} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[2]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[3]} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputFieldsIrr.time9_10} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[3]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputFieldsIrr.time9_10} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[4]} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputFieldsIrr.time10_11} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[4]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputFieldsIrr.time10_11} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[5]} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[5]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[6]} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputFieldsIrr.time12_1} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[6]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputFieldsIrr.time12_1} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[7]} size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputFieldsIrr.time1_2} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[7]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputFieldsIrr.time1_2} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[8]} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputFieldsIrr.time2_3} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[8]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputFieldsIrr.time2_3} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[9]} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputFieldsIrr.time3_4} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[9]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputFieldsIrr.time3_4} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[10]} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputFieldsIrr.time4_5} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[10]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputFieldsIrr.time4_5} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={inputFieldsIrr.month+timeName[11]} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputFieldsIrr.time5_6} onChange={(event) => handleChangeInput(inputFieldsIrr.month, event)} variant="outlined" />
+                                            <TextField id={timeName[11]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputFieldsIrr.time5_6} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                          
                                     </div>
@@ -393,7 +396,7 @@ export default function DialogWaterP(props){
               Set Irradiation For: {geoLocationCity}
             </DialogTitle>
             <DialogContent dividers>
-                <div className={classes.Acc}>
+                <div className={classes.Acc} onLoad={()=>getIrradiations(geoLocationId)}>
                 {/* { monthsInputFields.map(monthInputFields => ( */}
                   <>
                    

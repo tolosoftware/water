@@ -31,6 +31,7 @@ Route::resource('accessoriestype', AccessoriesTypeController::class);
 //water pump brand
 Route::resource('pumpbrand', PumpBrandsController::class);
 Route::resource('solarbrand', SolarBrandsController::class);
+Route::resource('solarList', SolarListController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
 

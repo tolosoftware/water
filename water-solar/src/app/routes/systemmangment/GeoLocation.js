@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 // end dialog import file 
 import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
 
-
+/*
 const tableList = [
   {
     id: 1,
@@ -55,6 +55,7 @@ const tableList = [
   }
 ];
 
+*/
 // start dialog code
 const styles = (theme) => ({
   root: {
@@ -603,6 +604,7 @@ const deletGeoLocation=(id) => {
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">
           <tr>
+            <th>ID</th>
             <th>City</th>
             <th>Irradiation (now)</th>
             <th>Action</th>

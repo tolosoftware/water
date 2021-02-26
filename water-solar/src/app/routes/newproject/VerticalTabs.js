@@ -420,7 +420,7 @@ export default function VerticalTabs() {
           
           </div>
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/1.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
+            <img src="/images/1.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div>  
@@ -519,7 +519,7 @@ export default function VerticalTabs() {
 
           </div>
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/2.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
+            <img src="/images/2.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div>  
@@ -557,7 +557,7 @@ export default function VerticalTabs() {
           
             
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/3.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
+            <img src="/images/3.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
@@ -581,7 +581,7 @@ export default function VerticalTabs() {
             <div class="slick-slide-item">
                <div className="brand-logo">
                   <div className="brand-logo-inner">
-                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" />
+                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
                   </div>
                </div>
             </div>
@@ -629,7 +629,7 @@ export default function VerticalTabs() {
             <div class="slick-slide-item">
                <div className="brand-logo">
                   <div className="brand-logo-inner">
-                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" />
+                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
                   </div>
                </div>
             </div>
@@ -677,7 +677,7 @@ export default function VerticalTabs() {
           </div>
           
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
+            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
@@ -810,7 +810,7 @@ export default function VerticalTabs() {
              
           
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
+            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
