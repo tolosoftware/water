@@ -20,6 +20,10 @@ import Typography from '@material-ui/core/Typography';
 // import SolarPanalDeviceForm from './SolarPanalDeviceForm';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
+import axios from 'axios';
+import IntlMessages from 'util/IntlMessages';
+import {NotificationManager} from 'react-notifications';
+import { v4 as uuidv4 } from 'uuid';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -150,6 +154,7 @@ export default function DialogSolarP(props){
           setOpenS(false);
     };
     // end code of dialog modal for Solar Panal 
+  const solarBrands=props.solarBrands;
   const [brand, setBrand] = useState("");
   const [typeModel, setTypeModel] = useState("");
   const [powerW, setPowerW] = useState("");
@@ -188,12 +193,28 @@ export default function DialogSolarP(props){
 // end dropzone code
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data = {
-        brand, typeModel, powerW, voltage, current, cableType, description, ...files
+    let dataSolarList = {
+        brand, typeModel, powerW, voltage, current, cableType, description
     }
-    console.log(brand);
-    console.log(data);
-    console.log(files);
+    console.log(dataSolarList);
+    var image = '';
+    let file = files[0];
+    let reader = new FileReader();
+    reader.onloadend = (file) => {
+      image = reader.result;
+      dataSolarList['image'] = image;
+      dataSolarList['serial_no'] = uuidv4();
+      axios.post('api/solarList', dataSolarList)
+        .then(res => {
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+        }).catch(err =>{
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+        )
+    }
+    reader.readAsDataURL(file); 
     
 
   }
@@ -233,9 +254,9 @@ export default function DialogSolarP(props){
                                   <MenuItem value="">
                                       <em>None</em>
                                   </MenuItem>
-                                  <MenuItem value={10}>Brand 1</MenuItem>
-                                  <MenuItem value={20}>Brand 2</MenuItem>
-                                  <MenuItem value={30}>Brand 2</MenuItem>
+                                  {solarBrands.map(brand => 
+                                  <MenuItem value={brand.id}>{brand.name}</MenuItem>
+                                  )}
                                   </Select>
                                 </FormControl>
                             </div>
