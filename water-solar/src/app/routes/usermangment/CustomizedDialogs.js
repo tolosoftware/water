@@ -10,8 +10,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
 // form dependency
-import {Input,TextField,InputLabel,Select,MenuItem} from '@material-ui/core';
-import {FormControl,FormLabel,RadioGroup,FormControlLabel,Radio} from '@material-ui/core';
+import {TextField,InputLabel,Select} from '@material-ui/core';
+import {FormControl,RadioGroup,FormControlLabel,Radio} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import  './stayle.css';
 import axios from 'axios';
@@ -127,9 +127,9 @@ const DialogActions = withStyles((theme) => ({
 export default function CustomizedDialogs(props) {
     const {open,setOpen} = props;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
   const handleClose = () => {
     setOpen(false);
     };
@@ -167,6 +167,7 @@ export default function CustomizedDialogs(props) {
         <img
           src={file.preview}
           style={img}
+          alt="previews"
         />
       </div>
     </div>
@@ -177,17 +178,17 @@ export default function CustomizedDialogs(props) {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  const {register,handleSubmit}=useForm(); // initialize the hook
   
   const onSubmit = (data) => {
   
     var userimage = '';
     let file = files[0];
     let reader = new FileReader();
-     reader.onloadend = (file) => {
+    reader.onloadend = (file) => {
       userimage = reader.result;
       data['userimage'] = userimage;
-      axios.post('http://localhost:8000/api/user', data)
+      axios.post('api/user', data)
         .then(
             res => {
                 console.log(res);

@@ -35,8 +35,14 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 // end import for dialog 
-import DialogSolarP from './commentElement/DialogSolarP'
-import DialogSettingSP from './commentElement/DialogSettingSP'
+import DialogSolarP from './commentElement/DialogSolarP';
+import DialogSettingSP from './commentElement/DialogSettingSP';
+//form importas
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import IntlMessages from 'util/IntlMessages';
+import Spinner from 'react-spinner-material';
+import {NotificationContainer,NotificationManager} from 'react-notifications';
 
 
 // start of dialog modal for water pump
@@ -78,18 +84,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 // end of dialog modal for water pump
 
-// start code for country selection 
-// ISO 3166-1 alpha-2
-// ⚠️ No support for IE 11
-// function countryToFlag(isoCode) {
-//   return typeof String.fromCodePoint !== 'undefined'
-//     ? isoCode
-//         .toUpperCase()
-//         .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-//     : isoCode;
-// }
 
-// From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
 const countries = [
   { code: 'AF', label: 'Afghanistan', phone: '93' },
   { code: 'AD', label: 'Andorra', phone: '376' },
@@ -528,19 +523,32 @@ const [description, setDescription] = React.useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      brand, country, description, files
+    brand, description
+  }
+    data['country']=country.label;
+    var image = '';
+    let file = files[0];
+    let reader = new FileReader();
+    reader.onloadend = (file) => {
+      image = reader.result;
+      data['image'] = image;
+      axios.post('api/solarbrand', data)
+        .then(res => {
+        
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+            }
+        )
     }
-    console.log(data);
-    console.log(country);
-    console.log(description);
-    
+    reader.readAsDataURL(file); 
 
   }
 // end form sumbit
-   
   
-
-
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -805,7 +813,8 @@ const [description, setDescription] = React.useState("");
         Register New Device</span>
         
       </Widget>
-    </div>
+      </div>
+      <NotificationContainer />  
   </div>
     
 

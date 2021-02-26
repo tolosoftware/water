@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -13,21 +13,13 @@ import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
 import CardBox from 'components/CardBox';
-import IntlMessages from 'util/IntlMessages';
 import './custome.css';
 //slider
 import Slider from '@material-ui/core/Slider';
 import Sliderr from "react-slick";
-
-import ProductItem from "./ProductItem";
-import {products} from './data'
 //circal slider
-import ReactDOM from "react-dom";
 import { CircleSlider } from "react-circle-slider";
-
-
 //daynamic form
 import { v4 as uuidv4 } from 'uuid';
 
@@ -155,10 +147,7 @@ const imagehieght = {
   height: '420px',
   width: '420px',
 }
-const panalwidth = {
-    width: '1000px',
-};
-
+ 
 export default function VerticalTabs() {
 
 //slider
@@ -226,7 +215,7 @@ export default function VerticalTabs() {
   }
 
   
-  const {register,handleSubmit,errors}=useForm(); // initialize the hook
+  const {register,handleSubmit}=useForm(); // initialize the hook
   
   const onSubmit = (data) => {
       axios.post('http://localhost:8000/api/user', data)
@@ -246,7 +235,6 @@ export default function VerticalTabs() {
 
 
   const [valueCircalslider,setValueCircalslider]=React.useState(0);
- 
 
   const handleChangeCircalslider = valueCircalslider => {
         //console.log(`Changed value ${value}`);
@@ -255,14 +243,14 @@ export default function VerticalTabs() {
         setValueCircalslider({ valueCircalslider });
     };
  
-  const handleChangeRange=event => {
+  // const handleChangeRange=event => {
     
-    console.log(event);
+  //   console.log(event);
     
-        setValueCircalslider({
-            valueCircalslider: event.target.valueAsNumber,
-        });
-  };
+  //       setValueCircalslider({
+  //           valueCircalslider: event.target.valueAsNumber,
+  //       });
+  // };
   
 
   //daynamic form
@@ -280,7 +268,13 @@ export default function VerticalTabs() {
       const values  = [...inputFields];
       values.splice(values.length-1, 1);
       setInputFields(values);
-    }
+  }
+  
+  // card slider togal
+  // const [cardState,setCardState]=useState({
+  //   activObject: null,
+  //   objects: [{id: 1},{id: 2},{id: 3},{id: 4},{id: 5},{id: 6}]
+  // });
 
 
   return (
@@ -467,7 +461,7 @@ export default function VerticalTabs() {
               <TextField id="outlined-basic" label="Motor Cable" variant="outlined"
                 helperText="Full width!"
                 placeholder="Motor cable!"
-                    margin="normal"
+                margin="normal"
                 name="motor_cable"    
                 InputLabelProps={{
                   shrink: true,
@@ -487,7 +481,6 @@ export default function VerticalTabs() {
                     </Typography>
                       <Slider
                         orientation="vertical"
-                        getAriaValueText={valuetext}
                         defaultValue={30}
                         aria-labelledby="vertical-slider"
                       marks={dirtloss}
@@ -509,7 +502,6 @@ export default function VerticalTabs() {
                         orientation="vertical"
                         defaultValue={[20, 37]}
                         aria-labelledby="vertical-slider"
-                        getAriaValueText={valuetext}
                       marks={marks}
                       step={1}
                       getAriaValueText={valuetext}
@@ -558,7 +550,7 @@ export default function VerticalTabs() {
 
               </div>  
           <span className="ml-5">
-              <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
+                <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
                 <Button onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button> 
               </span>  
           </div>
@@ -679,8 +671,8 @@ export default function VerticalTabs() {
           </Sliderr>        
       </CardBox>          
                 
-          </div>  
-              <Button  color="primary" variant="contained">Submit</Button>
+              </div>  
+             <Button onClick={() => navigate(4)} color="primary" variant="contained">Next</Button>    
               <Button  onClick={() => navigateback(2)} variant="contained" color="secondary">Previous</Button>    
           </div>
           
@@ -704,7 +696,7 @@ export default function VerticalTabs() {
 
             { inputFields.map(inputField => (              
               <div className="row">  
-              <div className="col-md-12">
+              <div className="col-md-6">
               <FormControl fullWidth >  
               <Autocomplete  
             id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
@@ -729,7 +721,6 @@ export default function VerticalTabs() {
                 placeholder="pick item !"
                 margin="normal"
                 name="location"
-                size="small"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -744,7 +735,7 @@ export default function VerticalTabs() {
               </FormControl>
                 </div>  
 
-                <div className="col-md-6">
+                <div className="col-md-3">
                  <FormControl fullWidth >  
               <Autocomplete  
             id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
@@ -768,7 +759,6 @@ export default function VerticalTabs() {
                 placeholder="pick UoM!"
                 margin="normal"
                 name="location"
-                size="small"
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -782,13 +772,13 @@ export default function VerticalTabs() {
               />  
               </FormControl>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-3">
 
               <FormControl fullWidth >  
-              <TextField id="outlined-basic" label="Poject Name" variant="outlined"
-                placeholder="complate Project name !"
+              <TextField id="outlined-basic" label="Quantity" variant="outlined"
+                placeholder="Quantity"
                 margin="normal"
-                name="project_name"    
+                name="Quantity"    
                 InputLabelProps={{
                 shrink: true,
                       }}
@@ -797,10 +787,8 @@ export default function VerticalTabs() {
               inputRef={register}/>
                 </FormControl>   
                 </div>
-
-                </div>  
-              
-                )) }  
+              </div>             
+            ))}  
           
 
                <IconButton color="primary" aria-label="upload picture" component="span"  onClick={handleAddFields}>
@@ -814,13 +802,13 @@ export default function VerticalTabs() {
                           remove_circle_outline
                           </span>
               </IconButton>
+              
 
-        
-
-                
-          </div>
+                <Button color="primary" variant="contained">Submit</Button>
+              <Button  onClick={() => navigateback(3)} variant="contained" color="secondary">Previous</Button> 
+            </div>
+             
           
-            
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
             <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive image" style={imagehieght}/>
             </div> 

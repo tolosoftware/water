@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,7 +12,9 @@ import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import AccessoriesForm from './commentElement/AccessoriesForm'
+import AccessoriesForm from './commentElement/AccessoriesForm';
+//form importas
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,8 @@ function Accessories() {
     setValue(newValue);
   };
   // end code for taps 
+
+ 
 
   return (
     <div className={classes.root}>
