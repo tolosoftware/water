@@ -389,7 +389,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // end taps functions
-
+/*
 const tableList = [
   {
     id: 1,
@@ -420,6 +420,7 @@ const tableList = [
     action: 'Pay'
   }
 ];
+*/
 // start code for dropzone
 const thumbsContainer = {
   display: 'flex',
@@ -458,8 +459,10 @@ const SolarPanel = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [solarBrands, setSolarBrands] = useState([]);
+  const [solarLists, setSolarLists] = useState([])
   useEffect(() => {
     getSolarBrands();
+    getSolarLists();
   },[])
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -565,7 +568,56 @@ const getSolarBrands = async() =>{
           id="notification.titleHere"/>);
       }
   )
+}
+
+// start delete function solar panel list
+const deleteSolarList = (id) =>{
+  console.log("it is id of that water pump brand: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/solarList/'+id)
+        .then(res => {
+              // setSolarLists(res.data)
+            setSolarLists(solarLists.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+// End delete solar panal lists
+// start get solar panal list
+
+const getSolarLists = async() =>{
+  axios.get('api/solarList')
+  .then(res => {  
+      // console.log(res);
+      setSolarLists(res.data);
+    }
+).catch(err => {
+       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+      }
+  )
 }  
+
+// end get solar pabal list
 
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -582,6 +634,7 @@ const handleSubmit = (e) => {
       axios.post('api/solarbrand', data)
         .then(res => {
           getSolarBrands();
+          getSolarLists();
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -821,27 +874,43 @@ const handleSubmit = (e) => {
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
               <tr>
-                <th>Country</th>
-                <th>City</th>
+                <th>ID</th>
+                <th>Type/Model</th>
+                <th>Power</th>
+                <th>Voltage</th>
+                <th>Current</th>
+                <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-            {tableList.map((data, index) => {
+            {solarLists.map((solarList, index) => {
               return <tr key={index}>
+                <td>{index+1}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                    {data.image === '' ? null :
-                      <Avatar className="user-avatar size-30" src={data.image}/>}
                     <div className="user-detail">
-                      <h5 className="user-name">{data.name}</h5>
+                      <h5 className="user-name">{solarList.model}</h5>
                     </div>
                   </div>
                 </td>
-                <td>{data.lastTransfer}</td>
+                <td>{solarList.power}</td>
+                <td>{solarList.voltage}</td>
+                <td>{solarList.current}</td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    {solarList.image === '' ? null :
+                      <Avatar className="user-avatar size-30" src={solarList.image}/>}
+                    <div className="user-detail">
+                      <h5 className="user-name">{solarList.name}</h5>
+                    </div>
+                  </div>
+                </td>
+                
+               
                 <td>
                   <div className="pointer text-primary">
-                    <IconButton size="small" aria-label="delete"  color="secondary">
+                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteSolarList(solarList.id)}>
                       <DeleteIcon />
                     </IconButton>
                   <IconButton size="small" color="primary" aria-label="add an alarm">

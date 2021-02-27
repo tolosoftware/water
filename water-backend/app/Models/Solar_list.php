@@ -11,6 +11,6 @@ class Solar_list extends Model
     protected $table = 'solar_lists';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'serial_no','model','power','voltage','current', 'discription', 'image'
+        'serial_no','solar_brand_id','model','power','voltage','current', 'discription', 'image','cable_type_id'
     ];
 }

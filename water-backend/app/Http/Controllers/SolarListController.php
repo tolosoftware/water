@@ -16,7 +16,7 @@ class SolarListController extends Controller
      */
     public function index()
     {
-        //
+        return Solar_list::all();
     }
 
     /**
@@ -54,7 +54,7 @@ class SolarListController extends Controller
             'power' => $request['powerW'], 
             'voltage' => $request['voltage'], 
             'current' => $request['current'], 
-            'cable_type_id' => $request['cableType'], 
+            'cable_type_id' => 9, 
             'discription' => $request['description'], 
             'image' => $photoname, 
         ]);
@@ -106,8 +106,11 @@ class SolarListController extends Controller
      * @param  \App\Models\Solar_list  $solar_list
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Solar_list $solar_list)
+    public function destroy($id)
     {
-        //
+        $solar_list = Solar_list::findOrFail($id);
+        File::delete('brand/solar/solar_list/'.$solar_list->image);
+        $solar_list->delete();
+        return ['message' => 'Selected Solar list has been Deleted'];
     }
 }

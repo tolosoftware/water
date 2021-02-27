@@ -20,7 +20,7 @@ class CreatePumpListsTable extends Migration
             $table->foreign('pump_brand_id')->references('id')->on('pump_brands')->onDelete('cascade');
             $table->string('model');
             $table->decimal('outlet');
-            $table->decimal('Ampeier');
+            $table->decimal('ampeier');
             $table->decimal('diameter');
             $table->decimal('power');
             $table->string('discription');

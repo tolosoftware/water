@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // end taps functions
-
+/*
 const tableList = [
   {
     id: 1,
@@ -168,6 +168,7 @@ const tableList = [
     action: 'Pay'
   }
 ];
+*/
 // start code for dropzone
 const thumbsContainer = {
   display: 'flex',
@@ -205,8 +206,10 @@ const WaterPump = () => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [waterPumpBrands, setWaterPumpBrands] = useState([]);
+  const [waterPumpLists, setWaterPumpLists] = useState([])
   useEffect(() => {
     getWaterPumps();
+    getWaterPumpLists();
   },[])
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -258,6 +261,56 @@ useEffect(() => () => {
 const [brand, setBrand] = React.useState("");
 const [country, setCountry] = React.useState("");
 const [description, setDescription] = React.useState("");
+
+
+// start delete function Water Device list
+const deleteWaterList = (id) =>{
+  console.log("it is id of that water pump brand: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/pumpList/'+id)
+        .then(res => {
+              // setSolarLists(res.data)
+              setWaterPumpLists(waterPumpLists.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+// End delete Water Device lists
+// start get WaterPump panal list
+
+const getWaterPumpLists = async() =>{
+  axios.get('api/pumpList')
+  .then(res => {  
+      // console.log(res);
+      setWaterPumpLists(res.data);
+    }
+).catch(err => {
+       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+      }
+  )
+}  
+
+// end get solar pabal list
 
 const deleteWaterPumpBrand = (id) =>{
   console.log("it is id of that water pump brand: ", id);
@@ -319,6 +372,7 @@ const handleSubmit = (e) => {
       axios.post('api/pumpbrand', data)
         .then(res => {
               getWaterPumps();
+              getWaterPumpLists();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
             }
@@ -550,6 +604,7 @@ const handleSubmit = (e) => {
       <DialogWaterP 
         openD={openD}
         setOpenD={setOpenD}
+        waterPumpBrands={waterPumpBrands}
       />
       <DialogSettingWD 
         openWSD={openWSD}
@@ -568,28 +623,39 @@ const handleSubmit = (e) => {
               <tr>
                 <th>ID</th>
                 <th>Name/Model</th>
+                <th>Outlet (Inch)</th>
+                <th>Current (A)</th>
+                <th>Diameter (Inch)</th>
                 <th>Power (KW)</th>
+                <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-            {tableList.map((data, index) => {
+            {waterPumpLists.map((waterList, index) => {
               return <tr key={index}>
-                <td>{data.id}</td>
+                <td>{index+1}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                    {data.image === '' ? null :
-                      <Avatar className="user-avatar size-30" src={data.image}/>}
                     <div className="user-detail">
-                      <h5 className="user-name">{data.name}</h5>
+                      <h5 className="user-name">{waterList.model}</h5>
                     </div>
                   </div>
                 </td>
-                
-                <td>{data.lastTransfer}</td>
+                <td>{waterList.outlet}</td>
+                <td>{waterList.ampeier}</td>
+                <td>{waterList.diameter}</td>
+                <td>{waterList.power}</td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    {waterList.image === '' ? null :
+                      <Avatar className="user-avatar size-30" src={waterList.image}/>}
+                  </div>
+                </td>
+                 
                 <td>
                   <div className="pointer text-primary">
-                    <IconButton size="small" aria-label="delete"  color="secondary">
+                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterList(waterList.id)}>
                       <DeleteIcon />
                     </IconButton>
                   <IconButton size="small" color="primary" aria-label="edit an alarm">
