@@ -256,7 +256,11 @@ padding: 0px 15px 10px;
     border-color: #0d6efd !important;
 }
 .insideSPDS .insideFormPaddingWPS {
-    padding: 0px 8px 0px;
+    padding: 0px 10px 0px;
+}
+.inWPSG2{
+    padding-left: 15px !important;
+    padding-right: 0px !important;
 }
 .insideSPDS .dropzone{
     margin-right: 15px;
