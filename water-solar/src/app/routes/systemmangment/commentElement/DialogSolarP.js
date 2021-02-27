@@ -191,6 +191,24 @@ export default function DialogSolarP(props){
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 // end dropzone code
+// start get cable type
+useEffect(() => {
+  getCabletype();
+},[])
+const [cableTypesSelect,setCabletypesSelect]= useState([]);
+const getCabletype=async () => {
+  axios.get('api/cabletype')
+    .then(res => {  
+      setCabletypesSelect(res.data)
+      }
+  ).catch(err => {
+         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+        }
+    )
+};
+
+// end get cable type
   const handleSubmit = (e) => {
     e.preventDefault();
     let dataSolarList = {
@@ -206,6 +224,7 @@ export default function DialogSolarP(props){
       dataSolarList['serial_no'] = uuidv4();
       axios.post('api/solarList', dataSolarList)
         .then(res => {
+          setOpenS(false);
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -324,9 +343,9 @@ export default function DialogSolarP(props){
                                   <MenuItem value="">
                                       <em>None</em>
                                   </MenuItem>
-                                  <MenuItem value={10}>Cable Type 1</MenuItem>
-                                  <MenuItem value={20}>Cable Type 2</MenuItem>
-                                  <MenuItem value={30}>Cable Type 2</MenuItem>
+                                  {cableTypesSelect.map(cableOption => 
+                                  <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
+                                  )}
                                   </Select>
                               </FormControl>
                             </div>    

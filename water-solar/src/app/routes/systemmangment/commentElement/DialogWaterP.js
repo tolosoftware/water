@@ -12,6 +12,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import  './CommentEleStyle.css';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
+import axios from 'axios';
+import IntlMessages from 'util/IntlMessages';
+import {NotificationManager} from 'react-notifications';
+import { v4 as uuidv4 } from 'uuid';
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -181,6 +185,7 @@ export default function DialogWaterP(props){
     };
     // end code of dialog modal for water pump
     const [brand, setBrand] = useState("");
+    const waterPumpBrands=props.waterPumpBrands;
     const handleChange1 = (event) => {
       setBrand(event.target.value);
     };
@@ -222,13 +227,29 @@ export default function DialogWaterP(props){
   // end dropzone code
     const handleSubmit = (e) => {
       e.preventDefault();
-      let data = {
-          brand, name, outlet, current, diameter, powerKW, description, ...files
+      let dataWaterList = {
+          brand, name, outlet, current, diameter, powerKW, description,
       }
-      console.log(brand);
-      console.log(data);
-      console.log(files);
-      
+      console.log(dataWaterList);
+      var image = '';
+    let file = files[0];
+    let reader = new FileReader();
+    reader.onloadend = (file) => {
+      image = reader.result;
+      dataWaterList['image'] = image;
+      dataWaterList['serial_no'] = uuidv4();
+      axios.post('api/pumpList', dataWaterList)
+        .then(res => {
+          setOpenD(false);
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+        }).catch(err =>{
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+        )
+    }
+    reader.readAsDataURL(file); 
   
     }
     return (
@@ -267,9 +288,10 @@ export default function DialogWaterP(props){
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>Brand 1</MenuItem>
-                                <MenuItem value={20}>Brand 2</MenuItem>
-                                <MenuItem value={30}>Brand 2</MenuItem>
+                                {waterPumpBrands.map(wbrand => 
+                                  <MenuItem value={wbrand.id}>{wbrand.name}</MenuItem>
+                                  )}
+                              
                                 </Select>
                               </FormControl>
                             </div>

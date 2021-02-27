@@ -163,7 +163,7 @@ export default function DialogSettingWD(props){
    
 
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: [20, 37], base: 'on', quantity: '', panal: ''},
+    { id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: ''},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -218,7 +218,7 @@ export default function DialogSettingWD(props){
   }
   let id_field;
     return (
-        <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openSPD}>
+        <Dialog onClose={handleClose} className="dialogWD" fullWidth={'md'} maxWidth={'md'} aria-labelledby="customized-dialog-title" open={openSPD}>
            <form autoComplete="off" onSubmit={handleSubmit}>  
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
               Setup
@@ -229,7 +229,7 @@ export default function DialogSettingWD(props){
                     { inputFields.map(inputField => (
                     <div key={id_field = inputField.id}>
                       <div className="row insideSPDS paddingBottom">
-                          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
+                          <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
                             <Typography id="range-slider" gutterBottom>
                                   Power
                               </Typography>
@@ -243,15 +243,17 @@ export default function DialogSettingWD(props){
                                   marks={marksP}
                               />
                           </div>
-                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPSG2 inputAdornmentWrap">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1"+id_field} id={"btnradio1"+id_field} autocomplete="off" checked={(inputField.base)==='on'} value="on" onChange={event => handleChangeRadio(inputField.id, event)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio1"+id_field}>Radio 1</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2"+id_field} id={"btnradio2"+id_field} autocomplete="off" checked={(inputField.base)==='off'} value="off" onChange={event => handleChangeRadio(inputField.id, event)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio2"+id_field}>Radio 2</label>
+                                  <input type="radio" class="btn-check" name={"btnradio1"+id_field} id={"btnradio1"+id_field} autocomplete="off" checked={(inputField.base)==='Manual Tracker'} value="Manual Tracker" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <label class="btn btn-outline-primary" for={"btnradio1"+id_field}>Manual Tracker</label>
+                                  <input type="radio" class="btn-check" name={"btnradio2"+id_field} id={"btnradio2"+id_field} autocomplete="off" checked={(inputField.base)==='Ground Structure'} value="Ground Structure" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <label class="btn btn-outline-primary" for={"btnradio2"+id_field}>Ground Structure</label>
+                                  <input type="radio" class="btn-check" name={"btnradio3"+id_field} id={"btnradio3"+id_field} autocomplete="off" checked={(inputField.base)==='Ground Mounting'} value="Ground Mounting" onChange={event => handleChangeRadio(inputField.id, event)}/>
+                                  <label class="btn btn-outline-primary" for={"btnradio3"+id_field}>Ground Mounting</label>
                               </div>
                           </div>
-                          <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
+                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
                               <TextField size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
                                   label="Solar Quantity"
@@ -262,7 +264,7 @@ export default function DialogSettingWD(props){
                                   variant="outlined"
                               />
                           </div>
-                          <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
+                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
                               <TextField size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
                                   label="Panal Quantity"

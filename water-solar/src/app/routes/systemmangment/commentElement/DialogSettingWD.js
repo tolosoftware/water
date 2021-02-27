@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -18,6 +18,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
+import axios from 'axios';
+import {NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 // import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
@@ -123,10 +126,8 @@ export default function DialogSettingWD(props){
       setOpenWSD(false);
     };
     // end code of dialog modal for Solar Panal 
-  
-    const [inputFields, setInputFields] = useState([
-      { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], cableType: ''},
-    ]);
+    const [pumpListId, setPumpListId] = props.pumpListId;
+    const [inputFields, setInputFields] = props.inputFields;
     const handleChangeStep = (id, event, value, name) => {
       const newInputFields = inputFields.map(i => {
         if(id === i.id) {
@@ -157,7 +158,7 @@ export default function DialogSettingWD(props){
       setInputFields(newInputFields);
     }
     const handleAddFields = () => {
-      let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, cableType: inputFields[inputFields.length-1].cableType};
+      let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, pumpListId: inputFields[inputFields.length-1].pumpListId, cableType: inputFields[inputFields.length-1].cableType};
       setInputFields([...inputFields, newElement])
     }
     const handleRemoveFields = id => {
@@ -165,10 +166,56 @@ export default function DialogSettingWD(props){
       values.splice(values.findIndex(value => value.id === id), 1);
       setInputFields(values);
     }
+// start get cable type
+useEffect(() => {
+  getCabletype();
+},[])
+const [cableTypesSelect,setCabletypesSelect]= useState([]);
+const getCabletype=async () => {
+  axios.get('api/cabletype')
+    .then(res => {  
+      setCabletypesSelect(res.data)
+      }
+  ).catch(err => {
+         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+        }
+    )
+};
+
+// end get cable type
+  // const getWaterPDevices = async() =>{
+  //   axios.get('api/new_location')
+  //       .then(res => {  
+  //           setGeoLocations(res.data);
+  //         }
+  //     ).catch(err => {
+  //           // setVisibility(false)
+  //           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+  //               id="notification.titleHere"/>);
+  //           }
+  //     )
+  //   }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("InputFields", inputFields);
+        axios.post('api/pumpListSetting', inputFields)
+        .then(
+            res => {
+              console.log(res);
+              // getWaterPDevices();
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+              handleClose();
+            }
+        ).catch(
+            err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+                console.log(err);
+            } 
+        )
     }
     let id_field;
     
@@ -276,9 +323,9 @@ export default function DialogSettingWD(props){
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
-                                <MenuItem value={10}>Cable Type 1</MenuItem>
-                                <MenuItem value={20}>Cable Type 2</MenuItem>
-                                <MenuItem value={30}>Cable Type 2</MenuItem>
+                                {cableTypesSelect.map(cableOption => 
+                                  <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
+                                  )}
                                 </Select>
                             </FormControl>
                         </div>

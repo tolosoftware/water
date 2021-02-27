@@ -108,7 +108,7 @@ export default function DialogWaterP(props){
     // start code of dialog modal for water pump
     const {openGeoIr, setOpenGeoIr} =props;
     useEffect(() => {
-      // getIrradiations(geoLocationId);
+      getIrradiations(geoLocationId);
       // console.log('inside modal:', props)
     },[])
     const [inputFieldsIrr1, setInputFieldsIrr1] = useState([
@@ -182,7 +182,7 @@ export default function DialogWaterP(props){
           .then(res => {  
               // setVisibility(false)
               console.log(res);
-              alert(res);
+              // alert(res);
             }
         ).catch(err => {
               // setVisibility(false)

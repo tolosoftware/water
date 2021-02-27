@@ -31,7 +31,6 @@ class CreateIrradiationsTable extends Migration
             $table->string('3pm');
             $table->string('4pm');
             $table->string('5pm');
-            $table->string('6pm');
             $table->timestamps();
         });
     }

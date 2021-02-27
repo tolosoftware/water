@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Config_pump;
 use Illuminate\Http\Request;
+use DB;
 
 class ConfigPumpController extends Controller
 {
@@ -35,7 +36,34 @@ class ConfigPumpController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
+        DB::beginTransaction();
+       try {
+            $config_pump = Config_pump::create([
+                							
+                'min_head' => $request[''],
+                'max_head' => $request['district'],
+                'min_discharge' => $request['latitude'],
+                'max_discharge' => $request[''],
+                'min_cable_length' => $request[''],
+                'max_cable_length' => $request[''],
+                'pump_list_id' => $request[''],
+                'cable_type_id' => $request[''],
+            ]);
+            // $geolocation= new GeoLocation;
+            // $geoloaction->country = $request['countryName'];
+            // $geoloaction->city = $request['district'];
+            // $geoloaction->latitude = $request['latitude'];
+            // $geoloaction->longtitude = $request['longtitude'];
+            // $geoloaction->save();
+            for ($i=0; $i < 12; $i++) { 
+                
+            }
+
+            DB::commit();
+      }catch (Exception $e) {
+        DB::rollback();
+      }
     }
 
     /**

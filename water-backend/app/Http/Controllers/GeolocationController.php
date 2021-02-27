@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GeoLocation;
 use Illuminate\Http\Request;
 use DB;
+use App\Models\Irradiation;
 class GeolocationController extends Controller
 {
     /**
@@ -36,20 +37,43 @@ class GeolocationController extends Controller
     public function store(Request $request)
     {
 
-       // return $request;
-    //    DB::beginTransaction();
-    //    try {
-            GeoLocation::create([
+       DB::beginTransaction();
+       try {
+            $geolocation = GeoLocation::create([
                 'country' => $request['countryName'],
                 'city' => $request['district'],
                 'latitude' => $request['latitude'],
                 'longtitude' => $request['longtitude'],
             ]);
-    //         return GeoLocation::all();
-    //         DB::commit();
-    //   }catch (Exception $e) {
-    //     DB::rollback();
-    //   }
+            // $geolocation= new GeoLocation;
+            // $geoloaction->country = $request['countryName'];
+            // $geoloaction->city = $request['district'];
+            // $geoloaction->latitude = $request['latitude'];
+            // $geoloaction->longtitude = $request['longtitude'];
+            // $geoloaction->save();
+            for ($i=0; $i < 12; $i++) { 
+                Irradiation::create([
+                    'geolocation_id' => $geolocation->id,
+                    'month_id' => $i+1,
+                    't6am' => $request['time6_7'],
+                    't7am' => $request['time7_8'],
+                    't8am' => $request['time8_9'],
+                    't9am' => $request['time9_10'],
+                    't10am' => $request['time10_11'],
+                    't11am' => $request['time11_12'],
+                    't12am' => $request['time12_1'],
+                    't1pm' => $request['time1_2'],
+                    't2pm' => $request['time2_3'],
+                    't3pm' => $request['time3_4'],
+                    't4pm' => $request['time4_5'],
+                    't5pm' => $request['time5_6'],
+                ]);
+            }
+
+            DB::commit();
+      }catch (Exception $e) {
+        DB::rollback();
+      }
     }
 
     /**
