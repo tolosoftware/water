@@ -15,7 +15,7 @@ class PumpBrandsController extends Controller
      */
     public function index()
     {
-        //
+        return Pump_brands::all();
     }
 
     /**

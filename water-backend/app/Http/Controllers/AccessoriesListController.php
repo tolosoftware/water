@@ -14,7 +14,7 @@ class AccessoriesListController extends Controller
      */
     public function index()
     {
-        //
+        return Accessories_list::all();
     }
 
     /**

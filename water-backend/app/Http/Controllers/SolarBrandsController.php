@@ -15,7 +15,7 @@ class SolarBrandsController extends Controller
      */
     public function index()
     {
-        //
+        return Solar_brands::all();
     }
 
     /**

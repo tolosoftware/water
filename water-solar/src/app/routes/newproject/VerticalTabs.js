@@ -21,7 +21,9 @@ import Sliderr from "react-slick";
 //circal slider
 import { CircleSlider } from "react-circle-slider";
 //daynamic form
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+
+import GetData from './GetData'
 
 
 function valuetext(value) {
@@ -278,7 +280,9 @@ export default function VerticalTabs() {
 
 
   return (
+  
     <div className={classes.root}>
+      <GetData/>  
       <Tabs
         orientation="vertical"
         variant="scrollable"
