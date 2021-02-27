@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pump_brands;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
 
 class PumpBrandsController extends Controller
 {
@@ -101,8 +102,11 @@ class PumpBrandsController extends Controller
      * @param  \App\Models\Pump_brands  $pump_brands
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pump_brands $pump_brands)
+    public function destroy($id)
     {
-        //
+        $pump_brands = Pump_brands::findOrFail($id);
+        File::delete('brand/pumpbrand/'.$pump_brands->image);
+        $pump_brands->delete();
+        return ['message' => 'Geo Location Deleted'];
     }
 }

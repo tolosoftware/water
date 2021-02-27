@@ -100,14 +100,14 @@ const [visibility,setVisibility]= useState(false);
             
         <div className="d-flex flex-row mb-2">
            <IconButton color="primary" aria-label="upload picture" component="span"
-            onClick={() => setAddvisibility(true)} hidden={addvisibility==true}>
+            onClick={() => setAddvisibility(true)} hidden={addvisibility===true}>
                  <span class="material-icons">
                           add_circle_outline
                           </span>
           </IconButton>  
           
           <IconButton color="primary" aria-label="upload picture" component="span"
-            hidden={addvisibility==false} onClick={() => setAddvisibility(false)}>
+            hidden={addvisibility===false} onClick={() => setAddvisibility(false)}>
                 <span class="material-icons">
                         remove_circle_outline
                         </span>

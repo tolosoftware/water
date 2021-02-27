@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Solar_list;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\File;
 
 class SolarListController extends Controller
 {
@@ -35,7 +37,33 @@ class SolarListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+
+        if($request->image){
+            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+
+        // return $request;
+        Solar_list::create([
+            'serial_no' => 11, 
+            'solar_brand_id' => $request['brand'], 
+            'model' => $request['typeModel'], 
+            'power' => $request['powerW'], 
+            'voltage' => $request['voltage'], 
+            'current' => $request['current'], 
+            'cable_type_id' => $request['cableType'], 
+            'discription' => $request['description'], 
+            'image' => $photoname, 
+        ]);
+
+        DB::commit();
+        return ['msg' => 'Solar brand succefully inserted'];
+        } catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
     /**

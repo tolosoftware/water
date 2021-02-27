@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Solar_brands;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
 
 class SolarBrandsController extends Controller
 {
@@ -99,8 +100,11 @@ class SolarBrandsController extends Controller
      * @param  \App\Models\Solar_brands  $solar_brands
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Solar_brands $solar_brands)
+    public function destroy($id)
     {
-        //
+        $solar_brands = Solar_brands::findOrFail($id);
+        File::delete('brand/solar/'.$solar_brands->image);
+        $solar_brands->delete();
+        return ['message' => 'Geo Location Deleted'];
     }
 }

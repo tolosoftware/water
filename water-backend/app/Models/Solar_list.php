@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Solar_list extends Model
 {
     use HasFactory;
+    protected $table = 'solar_lists';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'serial_no','model','power','voltage','current', 'discription', 'image'
+    ];
 }

@@ -27,6 +27,7 @@ import './style.css';
 import {useDropzone} from "react-dropzone";
 import DialogWaterP from './commentElement/DialogWaterP'
 import DialogSettingWD from './commentElement/DialogSettingWD'
+
 // end import for taps
 
 // start import for dialog
@@ -38,10 +39,9 @@ import CloseIcon from '@material-ui/icons/Close';
 // end import for dialog 
 //form importas
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import IntlMessages from 'util/IntlMessages';
-import Spinner from 'react-spinner-material';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
+import Swal from 'sweetalert2';
 import countries from './commentElement/countries';
 
 // start of dialog modal for water pump
@@ -204,6 +204,10 @@ const WaterPump = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [waterPumpBrands, setWaterPumpBrands] = useState([]);
+  useEffect(() => {
+    getWaterPumps();
+  },[])
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -255,6 +259,50 @@ const [brand, setBrand] = React.useState("");
 const [country, setCountry] = React.useState("");
 const [description, setDescription] = React.useState("");
 
+const deleteWaterPumpBrand = (id) =>{
+  console.log("it is id of that water pump brand: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/pumpbrand/'+id)
+        .then(res => {
+              // setWaterPumpBrands(res.data)
+            setWaterPumpBrands(waterPumpBrands.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+const getWaterPumps = async() =>{
+  axios.get('api/pumpbrand')
+  .then(res => {  
+      // setVisibility(false)
+      // console.log(res);
+      setWaterPumpBrands(res.data);
+    }
+).catch(err => {
+      // setVisibility(false)
+       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+      }
+  )
+}
 const handleSubmit = (e) => {
   e.preventDefault();
  
@@ -270,7 +318,7 @@ const handleSubmit = (e) => {
       data['image'] = image;
       axios.post('api/pumpbrand', data)
         .then(res => {
-        
+              getWaterPumps();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
             }
@@ -337,7 +385,7 @@ const handleSubmit = (e) => {
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
                 
-                  <Typography gutterBottom>
+                  <Typography gutterBottom className={`p-Padding-bottom`}>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
@@ -407,6 +455,7 @@ const handleSubmit = (e) => {
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
                             <tr>
+                              <th>ID</th>
                               <th>Brand</th>
                               <th>Coutry</th>
                               <th>logo</th>
@@ -414,8 +463,9 @@ const handleSubmit = (e) => {
                             </tr>
                           </thead>
                           <tbody>
-                          {tableList.map((data, index) => {
+                          {waterPumpBrands.map((data, index) => {
                             return <tr key={index}>
+                              <td>{index+1}</td>
                               <td>
                                 <div className="d-flex align-items-center">
                                   <div className="user-detail">
@@ -449,22 +499,24 @@ const handleSubmit = (e) => {
                                       onClose={handlePopoverClose}
                                       disableRestoreFocus
                                     >
-                                      <Typography>{data.name}.</Typography>
+                                      <Typography>{data.discription}</Typography>
                                     </Popover>
                                   </div>
                                 </div>
                               </td>
                               
-                              <td>{data.lastTransfer}</td>
+                              <td>{data.country}</td>
+                              
                               <td>
                                 <div className="d-flex align-items-center">
                                   {data.image === '' ? null :
                                     <Avatar className="user-avatar size-30" src={data.image}/>}
+                                    <img src={`localhost:8000/brand/pumpbrand/${data.image}`} alt="brand logo"/>
                                 </div>
                               </td>
                               <td>
                                 <div className="pointer text-primary">
-                                  <IconButton size="small" aria-label="delete"  color="secondary">
+                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterPumpBrand(data.id)} >
                                     <DeleteIcon />
                                   </IconButton>
                                 <IconButton size="small" color="primary" aria-label="edit an alarm">

@@ -39,11 +39,9 @@ import DialogSolarP from './commentElement/DialogSolarP';
 import DialogSettingSP from './commentElement/DialogSettingSP';
 //form importas
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import IntlMessages from 'util/IntlMessages';
-import Spinner from 'react-spinner-material';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
-
+import Swal from 'sweetalert2';
 
 // start of dialog modal for water pump
 const styles = (theme) => ({
@@ -459,6 +457,10 @@ const img = {
 const SolarPanel = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const [solarBrands, setSolarBrands] = useState([]);
+  useEffect(() => {
+    getSolarBrands();
+  },[])
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -520,7 +522,52 @@ const [brand, setBrand] = React.useState("");
 const [country, setCountry] = React.useState("");
 const [description, setDescription] = React.useState("");
 
-  const handleSubmit = (e) => {
+const deleteSolarBrand = (id) =>{
+  console.log("it is id of that water pump brand: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/solarbrand/'+id)
+        .then(res => {
+              // setSolarBrands(res.data)
+            setSolarBrands(solarBrands.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+const getSolarBrands = async() =>{
+  axios.get('api/solarbrand')
+  .then(res => {  
+      // setVisibility(false)
+      // console.log(res);
+      setSolarBrands(res.data);
+    }
+).catch(err => {
+      // setVisibility(false)
+       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+      }
+  )
+}  
+
+const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
     brand, description
@@ -534,14 +581,13 @@ const [description, setDescription] = React.useState("");
       data['image'] = image;
       axios.post('api/solarbrand', data)
         .then(res => {
-        
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+          getSolarBrands();
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
-            }
-        ).catch(err =>{
-               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-            }
+        }).catch(err =>{
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
         )
     }
     reader.readAsDataURL(file); 
@@ -593,7 +639,7 @@ const [description, setDescription] = React.useState("");
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
                
-                  <Typography gutterBottom>
+                  <Typography gutterBottom className={`p-Padding-bottom`}>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
@@ -662,6 +708,7 @@ const [description, setDescription] = React.useState("");
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
                             <tr>
+                              <th>ID</th>
                               <th>Brand</th>
                               <th>Coutry</th>
                               <th>logo</th>
@@ -669,8 +716,9 @@ const [description, setDescription] = React.useState("");
                             </tr>
                           </thead>
                           <tbody>
-                          {tableList.map((data, index) => {
+                          {solarBrands.map((solarData, index) => {
                             return <tr key={index}>
+                              <td>{index+1}</td>
                               <td>
                                 <div className="d-flex align-items-center">
                                   <div className="user-detail">
@@ -682,7 +730,7 @@ const [description, setDescription] = React.useState("");
                                       onMouseEnter={handlePopoverOpen}
                                       onMouseLeave={handlePopoverClose}
                                     >
-                                      {data.name}
+                                      {solarData.name}
                                     </Typography>
                                     </h5>
                                     <Popover
@@ -704,22 +752,22 @@ const [description, setDescription] = React.useState("");
                                       onClose={handlePopoverClose}
                                       disableRestoreFocus
                                     >
-                                      <Typography>{data.name}.</Typography>
+                                      <Typography>{solarData.discription}</Typography>
                                     </Popover>
                                   </div>
                                 </div>
                               </td>
                               
-                              <td>{data.lastTransfer}</td>
+                              <td>{solarData.country}</td>
                               <td>
                                 <div className="d-flex align-items-center">
-                                  {data.image === '' ? null :
-                                    <Avatar className="user-avatar size-30" src={data.image}/>}
+                                  {solarData.image === '' ? null :
+                                    <Avatar className="user-avatar size-30" src={solarData.image}/>}
                                 </div>
                               </td>
                               <td>
                                 <div className="pointer text-primary">
-                                  <IconButton size="small" aria-label="delete"  color="secondary">
+                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteSolarBrand(solarData.id)} >
                                     <DeleteIcon />
                                   </IconButton>
                                 <IconButton size="small" color="primary" aria-label="edit an alarm">
@@ -756,6 +804,7 @@ const [description, setDescription] = React.useState("");
       <DialogSolarP 
         openS={openS}
         setOpenS={setOpenS}
+        solarBrands={solarBrands}
       />
       
       <DialogSettingSP 

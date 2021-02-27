@@ -1,3 +1,14 @@
+.p-Padding-bottom{
+    padding-bottom: 15px !important;
+}
+.row-paddding-top{
+    padding-top: 15px !important;
+}
+.swal2-container{
+    z-index: 99999 !important;
+}
+
+
 .sp-second-col .card, .wp-second-col .card{
     max-height: 256px;
 }
