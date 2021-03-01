@@ -15,6 +15,7 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('country');
             $table->unsignedBigInteger('city_id');
             $table->foreign('city_id')->references('id')->on('geolocations');
             $table->string('name');
@@ -22,7 +23,7 @@ class CreateProjectsTable extends Migration
             $table->decimal('dirt_loss');
             $table->decimal('motor_cable');
             $table->decimal('daynomic_head');
-            $table->decimal('water_temprature');
+            $table->string('water_temprature');
             $table->decimal('daily_output');
             $table->unsignedBigInteger('solar_brand_id');
             $table->foreign('solar_brand_id')->references('id')->on('solar_brands');

@@ -3,10 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projects;
+use App\Models\Project_accessories;
+use App\Models\GeoLocation;
+use App\Models\Pump_brands;
+use App\Models\Solar_brands;
+use App\Models\Uom;
+use App\Models\Accessories_list;
 use Illuminate\Http\Request;
-
+use DB;
 class ProjectsController extends Controller
 {
+
+    public function gitprojectdata(){
+        $geolocation = GeoLocation::all();
+        $pumpbrand = Pump_brands::all();
+        $solarbrand = Solar_brands::all();
+        $uom = Uom::all();
+        $accessories = Accessories_list::all();
+
+        return response()->json([
+            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand,
+            'uom'=>$uom , 'accessories'=>$accessories
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +54,39 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      
+        DB::beginTransaction();
+        try {
+        $project =  Projects::create([
+            'country' => $request['country']['country'],
+            'city_id' => $request['city']['id'],
+            'name' => $request['projectname'],
+            'discription' => $request['discription'],
+            'dirt_loss' => $request['dirtloss'],
+            'motor_cable' =>$request['motorcable'],
+            'daynomic_head' => $request['daynomichead'],
+            'water_temprature' => 'ok',
+            'daily_output' => $request['valueCircalslider'],
+            'solar_brand_id' => $request['solarvalue'],
+            'pump_brand_id' => $request['pumpvalue'],
+            
+        ]);
+
+        foreach($request->inputFields as $value){
+            Project_accessories::create([
+                'project_id' => $project->id,
+                'accessories_id' => $value['item'],
+                'uom_id' => $value['uomid'],
+                'quantity' => $value['quantity'],
+
+            ]);
+        }
+
+        DB::commit();
+        return ['msg' => 'Project Success full Inserted'];
+    } catch (Exception $e) {
+        DB::rollback();
+    }
     }
 
     /**

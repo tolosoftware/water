@@ -1,7 +1,9 @@
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
+import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 
-export default function getData() {
+export default function GetData() {
     const [location,setLocation]=useState([]);
     const [solar,setSolar]=useState([]);
     const [pump,setPump]=useState([]);
@@ -17,7 +19,7 @@ export default function getData() {
   },[])
   
   const getLocation=async () => {
-    axios.get('api/cabletype')
+    axios.get('api/new_location')
       .then(res => {  
          setLocation(res.data)
         }
@@ -52,8 +54,8 @@ export default function getData() {
       )
     };
   
-      const getAccessories=async () => {
-    axios.get('api/cabletype')
+    const getAccessories=async () => {
+    axios.get('api/accessories')
       .then(res => {  
          setAccessories(res.data)
         }
@@ -77,7 +79,7 @@ export default function getData() {
   };
     return (
         <div>
-            
+          <NotificationContainer />
         </div>
     )
 }
