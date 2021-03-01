@@ -41,14 +41,14 @@ class ConfigPumpController extends Controller
        try {
             $config_pump = Config_pump::create([
                 							
-                'min_head' => $request[''],
-                'max_head' => $request['district'],
-                'min_discharge' => $request['latitude'],
-                'max_discharge' => $request[''],
-                'min_cable_length' => $request[''],
-                'max_cable_length' => $request[''],
-                'pump_list_id' => $request[''],
-                'cable_type_id' => $request[''],
+                'min_head' => $request['head'][0],
+                'max_head' => $request['head'][1],
+                'min_discharge' => $request['discharge'][0],
+                'max_discharge' => $request['discharge'][1],
+                'min_cable_length' => $request['cableLength'][0],
+                'max_cable_length' => $request['cableLength'][1],
+                'pump_list_id' => $request['pumpListId'],
+                'cable_type_id' => $request['cableType'],
             ]);
             // $geolocation= new GeoLocation;
             // $geoloaction->country = $request['countryName'];
