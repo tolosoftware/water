@@ -525,6 +525,20 @@ const [brand, setBrand] = React.useState("");
 const [country, setCountry] = React.useState("");
 const [description, setDescription] = React.useState("");
 
+// Start code of Solar Panal List Setting 
+const [solarListId, setSolarListId] = useState('');
+const [solarListModel, setSolarListModel] = useState('');
+ 
+const onButtonClick = (listId, solarModel) => {
+   
+  setSolarListId(listId);
+  setSolarListModel(solarModel);
+  console.log("list id: ", listId);
+  setOpenSPD(true);
+}
+// End code of Solar Panal list setting 
+
+
 const deleteSolarBrand = (id) =>{
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
@@ -860,7 +874,9 @@ const handleSubmit = (e) => {
         solarBrands={solarBrands}
       />
       
-      <DialogSettingSP 
+      <DialogSettingSP
+        solarListId={solarListId}
+        solarListModel={solarListModel} 
         openSPD={openSPD}
         setOpenSPD={setOpenSPD}
       />
@@ -916,7 +932,7 @@ const handleSubmit = (e) => {
                   <IconButton size="small" color="primary" aria-label="add an alarm">
                       <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>setOpenSPD(true)}>
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{onButtonClick(solarList.id, solarList.model)}}>
                     <SettingsIcon />
                   </IconButton>
                   </div>

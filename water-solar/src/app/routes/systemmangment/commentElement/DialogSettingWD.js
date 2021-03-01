@@ -142,28 +142,55 @@ export default function DialogSettingWD(props){
     const {openWSD, setOpenWSD} = props;
     const handleClose = () => {
       setOpenWSD(false);
+      
     };
     // end code of dialog modal for Solar Panal 
     
     const pumpList_Id = props.pumpListId;
+    const pumpListModel = props.pumpListModel;
      
     const [inputFields, setInputFields] = useState([
       { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': pumpList_Id, cableType: ''},
     ]);
     useEffect(() => {
-      console.log("pumpList Id before if", props.pumpListId);
+      // console.log("pumpList Id before if", props.pumpListId);
       if(props.pumpListId!==0){
-        inputFields[0].pumpListId=props.pumpListId;
+        // inputFields[0].pumpListId=props.pumpListId;
         getWaterPumpSettings(props.pumpListId);
-        console.log("pumpList Id inside if", props.pumpListId);
+        // console.log("pumpList Id inside if", props.pumpListId);
       }
-      console.log("pumpList Id outside if", props.pumpListId); 
+      // console.log("pumpList Id outside if", props.pumpListId); 
        
-      console.log("pumpList Id outside if", props.pumpListId);  
+      // console.log("pumpList Id outside if", props.pumpListId);  
     },[props.pumpListId])
+    
     const getWaterPumpSettings = async(id) => {
       console.log("id: ", id);
+      if(id!==0 && id!==""){
+        console.log("ok it is not 0", id);
+        axios.get('api/pumpListSetting/'+id)
+        .then(res => { 
+          let mydata = res.data;
+          console.log("the result: "+mydata + "length"+ mydata.length);
+          const mainArray = []
+          if(mydata.length !== 0){
+            mydata.forEach(elem => {console.log(elem); 
+              mainArray.push({ id: elem.id, head: [elem.min_head,elem.max_head], discharge: [elem.min_discharge,elem.max_discharge], cableLength: [elem.min_cable_length,elem.max_cable_length], pumpListId: elem.pump_list_id, cableType: elem.cable_type_id});
+            });
+            // console.log('mainArray is: ',mainArray);
+          }else{
+            mainArray.push({ id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': id, cableType: ''});
+          }
+          setInputFields(mainArray);
+        }).catch(err => {
+          
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+            }
+          )
+      }
     }
+    
     // setInputFields(props.setInputFields);
     // inputFields[0].pump_list_id = pumpList_Id;
     const handleChangeStep = (id, event, value, name) => {
@@ -196,51 +223,38 @@ export default function DialogSettingWD(props){
       setInputFields(newInputFields);
     }
     const handleAddFields = () => {
-      console.log(inputFields);
+      // console.log(inputFields);
       inputFields[0].pumpListId = pumpList_Id;
       let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, pumpListId: pumpList_Id, cableType: inputFields[inputFields.length-1].cableType};
       setInputFields([...inputFields, newElement])
-      console.log(inputFields);
-      console.log(pumpList_Id);
+      // console.log(inputFields);
+      // console.log(pumpList_Id);
     }
     const handleRemoveFields = id => {
       const values  = [...inputFields];
       values.splice(values.findIndex(value => value.id === id), 1);
       setInputFields(values);
     }
-// start get cable type
-useEffect(() => {
-  getCabletype();
-  
-},[])
+    // start get cable type
+    useEffect(() => {
+      getCabletype();
+      
+    },[])
 
-const [cableTypesSelect,setCabletypesSelect]= useState([]);
-const getCabletype=async () => {
-  axios.get('api/cabletype')
-    .then(res => {  
-      setCabletypesSelect(res.data)
-      }
-  ).catch(err => {
-         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-        }
-    )
-};
+    const [cableTypesSelect,setCabletypesSelect]= useState([]);
+    const getCabletype=async () => {
+      axios.get('api/cabletype')
+        .then(res => {  
+          setCabletypesSelect(res.data)
+          }
+      ).catch(err => {
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+            }
+        )
+    };
 
 // end get cable type
-  // const getWaterPDevices = async() =>{
-  //   axios.get('api/new_location')
-  //       .then(res => {  
-  //           setGeoLocations(res.data);
-  //         }
-  //     ).catch(err => {
-  //           // setVisibility(false)
-  //           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-  //               id="notification.titleHere"/>);
-  //           }
-  //     )
-  //   }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("InputFields", inputFields);
@@ -270,7 +284,7 @@ const getCabletype=async () => {
         <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openWSD}>
            <form autoComplete="off" onSubmit={handleSubmit}>  
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
-              Setup
+              Setup of {pumpListModel}
             </DialogTitle>
             <DialogContent dividers>
                 {/* <WaterPumpDeviceSettingForm /> */}
