@@ -16,6 +16,7 @@ class ConfigPumpController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -36,34 +37,27 @@ class ConfigPumpController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        // return $request;
         DB::beginTransaction();
-       try {
-            $config_pump = Config_pump::create([
-                							
-                'min_head' => $request['head'][0],
-                'max_head' => $request['head'][1],
-                'min_discharge' => $request['discharge'][0],
-                'max_discharge' => $request['discharge'][1],
-                'min_cable_length' => $request['cableLength'][0],
-                'max_cable_length' => $request['cableLength'][1],
-                'pump_list_id' => $request['pumpListId'],
-                'cable_type_id' => $request['cableType'],
-            ]);
-            // $geolocation= new GeoLocation;
-            // $geoloaction->country = $request['countryName'];
-            // $geoloaction->city = $request['district'];
-            // $geoloaction->latitude = $request['latitude'];
-            // $geoloaction->longtitude = $request['longtitude'];
-            // $geoloaction->save();
-            for ($i=0; $i < 12; $i++) { 
-                
-            }
-
+        try {
+            $data = $request->all();
+            Config_pump::where('pump_list_id', $data[0]['pumpListId'])->delete();
+                foreach($data as $value){
+                    $config_pump = Config_pump::create([
+                        'min_head' => $value['head'][0],
+                        'max_head' => $value['head'][1],
+                        'min_discharge' => $value['discharge'][0],
+                        'max_discharge' => $value['discharge'][1],
+                        'min_cable_length' => $value['cableLength'][0],
+                        'max_cable_length' => $value['cableLength'][1],
+                        'pump_list_id' => $value['pumpListId'],
+                        'cable_type_id' => $value['cableType'],
+                    ]);     
+                }
             DB::commit();
-      }catch (Exception $e) {
-        DB::rollback();
-      }
+        }catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
     /**
@@ -72,9 +66,9 @@ class ConfigPumpController extends Controller
      * @param  \App\Models\Config_pump  $config_pump
      * @return \Illuminate\Http\Response
      */
-    public function show(Config_pump $config_pump)
+    public function show($pumpListId)
     {
-        //
+        return Config_pump::select()->where('pump_list_id', $pumpListId)->get();
     }
 
     /**

@@ -264,23 +264,13 @@ const [description, setDescription] = React.useState("");
 
 // Start code of water Pumps List Setting 
 const [pumpListId, setPumpListId] = useState('');
-// const [inputFields, setInputFields] = useState([
-//   { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': pumpListId, cableType: ''},]);
-const onButtonClick = (listId) => {
-  // setInputFields([
-  //   { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': listId, cableType: ''},]);
+const [pumpListModel, setPumpListModel] = useState('');
+ 
+const onButtonClick = (listId, pumpModel) => {
+   
   setPumpListId(listId);
+  setPumpListModel(pumpModel);
   console.log("list id: ", listId);
-  // axios.get('api/pumpList')
-  // .then(res => {  
-  //     // console.log(res);
-  //     setInputFields(res.data);
-  //   }
-  // ).catch(err => {
-  //      NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-  //         id="notification.titleHere"/>);
-  //     }
-  // )
   setOpenWSD(true);
 }
 // End code of water pumps list setting 
@@ -631,6 +621,7 @@ const handleSubmit = (e) => {
       />
       <DialogSettingWD 
         pumpListId={pumpListId}
+        pumpListModel={pumpListModel}
         openWSD={openWSD}
         setOpenWSD={setOpenWSD}
       />
@@ -685,7 +676,7 @@ const handleSubmit = (e) => {
                   <IconButton size="small" color="primary" aria-label="edit an alarm">
                     <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ onButtonClick(waterList.id)}}>
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ onButtonClick(waterList.id, waterList.model)}}>
                     <SettingsIcon />
                   </IconButton>
                   </div>
