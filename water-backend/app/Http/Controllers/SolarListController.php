@@ -54,7 +54,7 @@ class SolarListController extends Controller
             'power' => $request['powerW'], 
             'voltage' => $request['voltage'], 
             'current' => $request['current'], 
-            'cable_type_id' => 9, 
+            'cable_type_id' => $request['cableType'], 
             'discription' => $request['description'], 
             'image' => $photoname, 
         ]);

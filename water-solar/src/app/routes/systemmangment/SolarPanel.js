@@ -462,8 +462,9 @@ const SolarPanel = () => {
   const [solarLists, setSolarLists] = useState([])
   useEffect(() => {
     getSolarBrands();
-    getSolarLists();
   },[])
+  
+  
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -482,7 +483,9 @@ const SolarPanel = () => {
   const [openS, setOpenS] = React.useState(false);
   const [openSPD, setOpenSPD] = React.useState(false);
   // end code of dialog modal for water pump
-
+  useEffect(() => {
+    getSolarLists();
+  },[openS])
 // start popove code
 const [anchorEl, setAnchorEl] = React.useState(null);
 const handlePopoverOpen = (event) => {
@@ -599,7 +602,7 @@ const deleteSolarList = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/solarList/'+id)
         .then(res => {
-              // setSolarLists(res.data)
+              setSolarLists(res.data)
             setSolarLists(solarLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);

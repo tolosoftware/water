@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Config_solar;
 use Illuminate\Http\Request;
+use DB;
 
 class ConfigSolarController extends Controller
 {
@@ -39,7 +40,7 @@ class ConfigSolarController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
-            Config_solar::where('solar_list_id', $data[0]['solarListId'])->delete();
+            Config_solar::where('solar_list_id', $data[0]['solar_list_id'])->delete();
                 foreach($data as $value){
                     $config_solar = Config_solar::create([
                         'min_power' => $value['power'][0],
