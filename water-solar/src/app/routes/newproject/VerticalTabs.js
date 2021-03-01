@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{useEffect,useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -15,6 +15,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CardBox from 'components/CardBox';
 import './custome.css';
+import Alert from '@material-ui/lab/Alert';
 //slider
 import Slider from '@material-ui/core/Slider';
 import Sliderr from "react-slick";
@@ -22,9 +23,12 @@ import Sliderr from "react-slick";
 import { CircleSlider } from "react-circle-slider";
 //daynamic form
 import {v4 as uuidv4} from 'uuid';
-
-import GetData from './GetData'
-
+// form
+import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
+//back drop
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function valuetext(value) {
   return `${value}°C`;
@@ -49,7 +53,7 @@ const marks = [
   },
 ];
 
-const dirtloss = [
+const daynomicheadrange = [
   {
     value: 0,
     label: '0%',
@@ -68,20 +72,6 @@ const dirtloss = [
   },
 ];
 
-
-
-const countries = [
-    { code: 'AF', label: 'Afghanistan', phone: '93' },
-    { code: 'AD', label: 'Andorra', phone: '376' },
-    { code: 'AE', label: 'United Arab Emirates', phone: '971' },
-    { code: 'AG', label: 'Antigua and Barbuda', phone: '1-268' },
-    { code: 'AI', label: 'Anguilla', phone: '1-264' },
-    { code: 'AL', label: 'Albania', phone: '355' },
-    { code: 'AM', label: 'Armenia', phone: '374' },
-    { code: 'AO', label: 'Angola', phone: '244' },
-    { code: 'AQ', label: 'Antarctica', phone: '672' },
-
-];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -122,6 +112,12 @@ const useStyles=makeStyles((theme) => ({
       marginLeft:40,
       
   },
+
+   backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+   
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
@@ -138,7 +134,6 @@ const useStyles=makeStyles((theme) => ({
       fontSize: 18,
     },
   },
-  
    cardstyle:{
     padding: '0px',
     boxShadow: 'none',
@@ -152,15 +147,16 @@ const imagehieght = {
  
 export default function VerticalTabs() {
 
-//slider
+//slider 
   const options = {
     // dots: true,
-    infinite: true,
+    infinite: false,
     arrows: false,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow:3,
     marginRight: 10,
     slidesToScroll: 1,
+
     responsive: [
       {
         breakpoint: 1050,
@@ -196,15 +192,11 @@ export default function VerticalTabs() {
     ]
   };
 
-  // autocomplate
-   const [country, setCountry] = React.useState({});
-  //end autocomplate
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
+  const classes=useStyles();
+  const [value,setValue]=React.useState(0);
   const handleChange=(event,newValue) => {
     console.log('this',event);
-    
     setValue(newValue);
   };
 
@@ -216,54 +208,109 @@ export default function VerticalTabs() {
      setValue(id);
   }
 
-  
+  //solar and pump
+  const solarbrand=(id,index) => {
+    setSolarstate(index);
+    setSolarvalue(id);
+  }
+
+  const pumpbrand=(id,index) => {
+    setPumpstate(index);
+    setPumpvalue(id);
+  }
+
+  function toggelactivestyle(index) {
+    if(solarstate===index) {
+      return "activebrand img-thumbnail rounded mx-auto d-block";
+    } else {
+      return "img-thumbnail rounded mx-auto d-block";
+    }
+  }
+
+    function toggelactivestylepump(index) {
+    if(pumpstate===index) {
+      return "activebrand img-thumbnail rounded mx-auto d-block";
+    } else {
+      return "img-thumbnail rounded mx-auto d-block";
+    }
+  }
+//end solar and brand
+  const [daynomichead,setDaynomichead]=useState('');
+  const [watertem,setWatertem]=useState([]);
+  const [country,setCountry]=React.useState({});
+  const [city,setCity]=React.useState("");
+
+  const [projectname,setProjectname]=React.useState("");
+  const [discription,setDiscription]=React.useState("");
+
+  const [dirtloss,setDirtloss]=React.useState("");
+  const [motorcable,setMotorcable]=React.useState("");
+
+
+  //pump and solar
+  const [solarstate,setSolarstate]=useState('');
+  const [pumpstate,setPumpstate]=useState('');
+
+  const [solarvalue,setSolarvalue]=useState('');
+  const [pumpvalue,setPumpvalue]=useState('');
+  //end pump and solar
+
+  const [open,setOpen]=React.useState(false);
+ 
+
   const {register,handleSubmit}=useForm(); // initialize the hook
-  
-  const onSubmit = (data) => {
-      axios.post('http://localhost:8000/api/user', data)
-        .then(
-            res => {
-                console.log(res);
+  const onSubmit=(data) => {
+    setOpen(true);
+
+      let alldata = {
+      daynomichead,watertem,city,country,projectname,discription,dirtloss,motorcable,
+      solarvalue,pumpvalue,valueCircalslider,inputFields,
+      }
+      axios.post('api/project', alldata)
+        .then(res => {
+          setOpen(false);
+          navigate(5);
+             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
             }
-        ).catch(
-            err =>{
-                console.log(err);
+      ).catch(err => {
+        setOpen(false);
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
             } 
         )
   };
 
 
   //circal slider
+  const [valueCircalslider,setValueCircalslider]=React.useState('');
 
-
-  const [valueCircalslider,setValueCircalslider]=React.useState(0);
-
-  const handleChangeCircalslider = valueCircalslider => {
+    const handleChangeCircalslider = (valueCircalslider) => {
         //console.log(`Changed value ${value}`);
     console.log(valueCircalslider);
-    
-        setValueCircalslider({ valueCircalslider });
-    };
- 
-  // const handleChangeRange=event => {
-    
-  //   console.log(event);
-    
-  //       setValueCircalslider({
-  //           valueCircalslider: event.target.valueAsNumber,
-  //       });
-  // };
+        setValueCircalslider(valueCircalslider);
+  };
   
+  const handlseelctitem=(event,value,id) => {  
+     inputFields[id].item=value.id;
+  }
 
+  const handlselectuom=(event,value,index) => {
+   inputFields[index].uomid=value.id;
+  }
+
+  const handlchangquantity=(value, index) => {
+     inputFields[index].quantity=value;
+  }
   //daynamic form
     const [inputFields, setInputFields] = useState([
-      {id: uuidv4(),name: '',x: '',y: ''},
-      {id: uuidv4(),name: '',x: '',y: ''},
-      { id: uuidv4(), name: '', x: '', y: ''},
+          {id: '',item: '',uomid: '',quantity: ''},
+          {id: '',item: '',uomid: '',quantity: ''},
+          { id: '',item: '',uomid: '', quantity: ''},
   ]);
   
    const handleAddFields = () => {
-      setInputFields([...inputFields, { id: uuidv4(), name: '', x: '', y: ''}])
+      setInputFields([...inputFields, { id: '', item: '', uomid: '', quantity: ''}])
   }
   
      const handleRemoveFields = () => {
@@ -272,17 +319,43 @@ export default function VerticalTabs() {
       setInputFields(values);
   }
   
-  // card slider togal
-  // const [cardState,setCardState]=useState({
-  //   activObject: null,
-  //   objects: [{id: 1},{id: 2},{id: 3},{id: 4},{id: 5},{id: 6}]
-  // });
 
+const [location,setLocation]=useState([]);
+const [solar,setSolar]=useState([]);
+const [pump,setPump]=useState([]);
+const [accessories,setAccessories]=useState([]);
+const [uom,setUom]=useState([]);
 
+  useEffect(() => {
+        getProjectdata();
+  },[])
+
+  const getProjectdata=async () => {
+    axios.get('api/gitprojectdata')
+      .then(res => {  
+        setLocation(res.data.geolocation);
+        setSolar(res.data.solarbrand);
+        setPump(res.data.pumpbrand);
+        setAccessories(res.data.accessories);
+        setUom(res.data.uom);
+      
+      }
+        
+    ).catch(err => {
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+      )
+  };
+  
   return (
   
     <div className={classes.root}>
-      <GetData/>  
+
+       <Backdrop className={classes.backdrop} open={open} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      
       <Tabs
         orientation="vertical"
         variant="scrollable"
@@ -295,7 +368,8 @@ export default function VerticalTabs() {
         <Tab label="Step Two" {...a11yProps(1)} />
         <Tab label="Step Three" {...a11yProps(2)} />
         <Tab label="Step Four" {...a11yProps(3)} />
-         <Tab label="Step Five" {...a11yProps(4)} />
+        <Tab label="Step Five" {...a11yProps(4)} />
+        <Tab label="Success" {...a11yProps(5)} disabled/>
    
       </Tabs>
  
@@ -316,17 +390,17 @@ export default function VerticalTabs() {
              <FormControl fullWidth>  
 
             <Autocomplete  
-            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            id="country-select-demo" value={country}  onChange={(event, newValue) => {setCountry(newValue);}}
             style={{ width: 300 }}
-            options={countries}
+            options={location}
             classes={{
             option: classes.option,
             }}
             autoHighlight
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.country}
             renderOption={(option) => (
             <React.Fragment>
-                {option.label}
+                {option.country}
             </React.Fragment>
             )}
             renderInput={(params) => (
@@ -346,7 +420,7 @@ export default function VerticalTabs() {
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
                 }}
-                    inputRef={register}/>
+              />
                     )}
                 />  
             </FormControl> 
@@ -355,17 +429,17 @@ export default function VerticalTabs() {
            <div className="col-md-6 p-2">
              <FormControl fullWidth >  
               <Autocomplete  
-            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            id="country-select-demo" value={city} onChange={(event, newValue) => {setCity(newValue);}}
             style={{ width: 300 }}
-            options={countries}
+            options={location}
             classes={{
             option: classes.option,
             }}
             autoHighlight
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.city}
             renderOption={(option) => (
             <React.Fragment>
-                {option.label}
+                {option.city}
             </React.Fragment>
             )}
             renderInput={(params) => (
@@ -385,7 +459,7 @@ export default function VerticalTabs() {
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
                 }}
-                inputRef={register}/>
+               />
                 )}
               />  
               </FormControl> 
@@ -395,12 +469,14 @@ export default function VerticalTabs() {
               <TextField id="outlined-basic" label="Poject Name" variant="outlined"
                 helperText="Full width!"
                 placeholder="complate Project name !"
-                    margin="normal"
-                name="project_name"    
+                margin="normal"
+                name="project_name" 
+                    value={projectname}    
+                onChange={(event)=> setProjectname(event.target.value)}    
                 InputLabelProps={{
                   shrink: true,
                 }}
-              inputRef={register}/>
+              />
                 </FormControl>  
 
               <FormControl fullWidth className="p-2">  
@@ -408,16 +484,16 @@ export default function VerticalTabs() {
                 helperText="Full width!"
                 placeholder="Discription About Project  !"
                     margin="normal"
-                    name="project_name"    
-                multiline    
+                    name="discription"    
+                    multiline   
+                    value={discription}   
+                    onChange={(event)=> setDiscription(event.target.value)}  
                 InputLabelProps={{
                   shrink: true,
                 }}
               inputRef={register}/>
                 </FormControl> 
-
-             
-                
+              
               <Button onClick={() => navigate(1)} color="primary" variant="contained">Next</Button>              
             </div>  
 
@@ -446,63 +522,65 @@ export default function VerticalTabs() {
           <FormControl fullWidth >  
               <TextField id="outlined-basic" label="Dist loss" variant="outlined"
                 helperText="Full width!"
-                placeholder="Dist loss !"
+                placeholder="Dirt loss !"
                 margin="normal"
-                name="dist_loss"  
-            
-               
-          InputProps={{
-            endAdornment: <InputAdornment position="end">%</InputAdornment>,
-          }}
+                      name="dist_loss" 
+                type="number"      
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                }}
                 InputLabelProps={{
                   shrink: true,
-                }}
-              inputRef={register}/>
+                      }}
+                  value={dirtloss}   
+                   onChange={(event)=> setDirtloss(event.target.value)}      
+              />
               </FormControl> 
 
              <FormControl fullWidth>  
-            
               <TextField id="outlined-basic" label="Motor Cable" variant="outlined"
                 helperText="Full width!"
                 placeholder="Motor cable!"
                 margin="normal"
-                name="motor_cable"    
+                      name="motor_cable" 
+                  type="number"       
                 InputLabelProps={{
-                  shrink: true,
-                      }}
-                   InputProps={{
-            endAdornment: <InputAdornment position="end">m</InputAdornment>,
-          }}      
-              inputRef={register}/>
+                shrink: true,
+                    }}
+                  InputProps={{
+                endAdornment: <InputAdornment position="end">m</InputAdornment>,
+                      }} 
+                  value={motorcable}   
+                  onChange={(event)=> setMotorcable(event.target.value)}       
+             />
                   </FormControl> 
 
                 </div>
                 <div className="col-md-6 row">
-                  
-                  <div className={classes.rootslider} styleName={`ml-4`}>
+                  <div className={classes.rootslider} styleName={`ml-1`}>
                       <Typography id="vertical-slider" gutterBottom className="pb-3">
-                      Dirt Loss
+                      Day Head
                     </Typography>
-                      <Slider
-                        orientation="vertical"
-                        defaultValue={30}
-                        aria-labelledby="vertical-slider"
-                      marks={dirtloss}
+                    <Slider
+                       onChange={(event,newValue) => {setDaynomichead(newValue);}}
+                      orientation="vertical"
+                      defaultValue={30}
+                      aria-labelledby="vertical-slider"
+                      marks={daynomicheadrange}
                       step={1}
                       getAriaValueText={valuetext}
                        valueLabelDisplay="auto"
                       />
-                   
-                      
                   </div>
                   
                    <div className={classes.rootslider}>
-                    
                    <Typography id="vertical-slider" gutterBottom className="pb-3">
                      Water Temp
                     </Typography>
                   
-                      <Slider
+                    <Slider
+                     onChange={(event,newValue) => {setWatertem(newValue);}}  
+                      name="watertemprature"
                         orientation="vertical"
                         defaultValue={[20, 37]}
                         aria-labelledby="vertical-slider"
@@ -515,9 +593,9 @@ export default function VerticalTabs() {
                     </div>
                
                 </div>  
-              
+                 <Button onClick={() => navigateback(0)} variant="contained" color="secondary" className="mt-2">Previous</Button>
                <Button onClick={() => navigate(2)} color="primary" variant="contained" className="mt-2">Next</Button>
-                  <Button onClick={() => navigateback(0)} variant="contained" color="secondary" className="mt-2">Previous</Button>
+            
             
               </div>  
 
@@ -532,7 +610,7 @@ export default function VerticalTabs() {
       <TabPanel value={value} index={2} style={{width:1100}}>
           <div className="row">
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-             <div className="row">
+             <div className="row ">
               <div>  
                 <h1>The step three</h1> 
                 <h3>In this step you should insert the project information  !</h3>
@@ -543,7 +621,7 @@ export default function VerticalTabs() {
                <CircleSlider
                   value={valueCircalslider}
                   size={240}
-                  onChange={handleChangeCircalslider}
+                  onChange={()=> setValueCircalslider(value)}
                   knobRadius={15}
                   progressWidth={10}
                   circleWidth={25}
@@ -551,16 +629,17 @@ export default function VerticalTabs() {
                   tooltipSize={26}
                   max={30}
                   />
-
-              </div>  
-          <span className="ml-5">
+              </div> 
+              
+              <span className="ml-5">
+           <Button onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button>       
                 <Button onClick={() => navigate(3)} color="primary" variant="contained">Next</Button>
-                <Button onClick={() => navigateback(1)} variant="contained" color="secondary">Previous</Button> 
+               
               </span>  
           </div>
           
             
-            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3 pull-right">
             <img src="/images/3.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
@@ -578,106 +657,48 @@ export default function VerticalTabs() {
 
               <div className="row ">  
 
-                <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center"
-                  heading="Solar Brand" className={classes.cardstyle}>
-       
-         <Sliderr className="slick-app-frame" {...options}>
-            <div class="slick-slide-item">
-               <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-                  <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                  
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-             <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item three</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-            <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item four</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-             <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item five</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-           <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item sex</h2>
-                  </div>
-               </div>
-            </div>
-          </Sliderr>        
-        </CardBox>  
-                <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center"
+      <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center"
                   heading="Water pump Brand">
        
          <Sliderr className="slick-app-frame" {...options}>
+               {solar.map((data,index) => {  
+                     
+             return <span key={index} onClick={()=> solarbrand(data.id,index)} >        
+            <div className="slick-slide-item">
+               <div className="brand-logo">
+                  <div>
+                   <img src={`http://localhost:8000/brand/solar/${data.image}`} className={toggelactivestyle(index)} alt="Responsive" />
+                  </div>
+               </div>
+                </div>
+              </span>         
+             })} 
+                     
+           
+          </Sliderr>        
+      </CardBox>
+      <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center"
+        heading="Water pump Brand">
+       
+         <Sliderr className="slick-app-frame" {...options}>
+                    {pump.map((data,index) => {  
+                      return <span key={index} onClick={() => pumpbrand(data.id,index)}>        
             <div class="slick-slide-item">
                <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                 <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
+                  <div>
+                   <img src={`http://localhost:8000/brand/pumpbrand/${data.image}`} class={toggelactivestylepump(index)} alt="Responsive" />
                   </div>
                </div>
-            </div>
-            <div class="slick-slide-item">
-                  <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                  
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-             <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item three</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-            <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item four</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-             <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item five</h2>
-                  </div>
-               </div>
-            </div>
-            <div class="slick-slide-item">
-           <div className="brand-logo">
-                  <div className="brand-logo-inner">
-                    <h2>item sex</h2>
-                  </div>
-               </div>
-            </div>
+                    </div>
+              </span>         
+             })} 
           </Sliderr>        
       </CardBox>          
                 
               </div>  
+            <Button  onClick={() => navigateback(2)} variant="contained" color="secondary">Previous</Button> 
              <Button onClick={() => navigate(4)} color="primary" variant="contained">Next</Button>    
-              <Button  onClick={() => navigateback(2)} variant="contained" color="secondary">Previous</Button>    
+        
           </div>
           
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
@@ -698,22 +719,24 @@ export default function VerticalTabs() {
             </div> 
 
 
-            { inputFields.map(inputField => (              
+              {inputFields.map((inputField,index) => (      
+              
               <div className="row">  
               <div className="col-md-6">
-              <FormControl fullWidth >  
+                    
+            <FormControl fullWidth >  
               <Autocomplete  
-            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            id="country-select-demo"  onChange={(event, newValue) => handlseelctitem(event,newValue,index)}
             style={{ width: 300 }}
-            options={countries}
+            options={accessories}
             classes={{
             option: classes.option,
             }}
             autoHighlight
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             renderOption={(option) => (
             <React.Fragment>
-                {option.label}
+                {option.name}
             </React.Fragment>
             )}
             renderInput={(params) => (
@@ -724,7 +747,8 @@ export default function VerticalTabs() {
                 helperText="Full width!"
                 placeholder="pick item !"
                 margin="normal"
-                name="location"
+                name="item"
+                 size="small" 
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -733,26 +757,26 @@ export default function VerticalTabs() {
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
                 }}
-                inputRef={register}/>
+               />
                 )}
               />  
               </FormControl>
                 </div>  
 
                 <div className="col-md-3">
-                 <FormControl fullWidth >  
+            <FormControl fullWidth >  
               <Autocomplete  
-            id="country-select-demo" value={country['country']} onChange={(event, newValue) => {setCountry(newValue);}}
+            id="country-select-demo"   onChange={(event, newValue) => handlselectuom(event,newValue,index)}
             style={{ width: 300 }}
-            options={countries}
+            options={uom}
             classes={{
             option: classes.option,
             }}
             autoHighlight
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.acronym}
             renderOption={(option) => (
             <React.Fragment>
-                {option.label}
+                {option.acronym}
             </React.Fragment>
             )}
             renderInput={(params) => (
@@ -766,29 +790,33 @@ export default function VerticalTabs() {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                 size="small" 
 
                 inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
                 }}
-                inputRef={register}/>
+                />
                 )}
               />  
               </FormControl>
                 </div>
-                <div className="col-md-3">
-
+                  <div className="col-md-3">
+                    
               <FormControl fullWidth >  
-              <TextField id="outlined-basic" label="Quantity" variant="outlined"
+              <TextField id="outlined-basic" label='Quantity'
+              variant="outlined"
                 placeholder="Quantity"
                 margin="normal"
-                name="Quantity"    
+                name="Quantity" 
+                onChange= {(event)=> handlchangquantity(event.target.value, index)}     
+                 //value={inputFields.quantity}      
                 InputLabelProps={{
                 shrink: true,
                       }}
                 
               size="small"    
-              inputRef={register}/>
+             />
                 </FormControl>   
                 </div>
               </div>             
@@ -806,10 +834,11 @@ export default function VerticalTabs() {
                           remove_circle_outline
                           </span>
               </IconButton>
-              
-
-                <Button color="primary" variant="contained">Submit</Button>
-              <Button  onClick={() => navigateback(3)} variant="contained" color="secondary">Previous</Button> 
+              <div className="mt-3"></div>
+              <span className="mt-3">
+              <Button onClick={() => navigateback(3)} variant="contained" color="secondary">Previous</Button> 
+                <Button color="primary" variant="contained" type="submit">Submit</Button>
+              </span>  
             </div>
              
           
@@ -819,7 +848,31 @@ export default function VerticalTabs() {
             
           </div> 
         </TabPanel>
+
+         <TabPanel value={value} index={5} style={{width:1100}}>
+           <div className="row justify-content-center custompargraph">
+        
+           
+            <Alert severity="success" color="info">
+            <h1 color="success">Congratulations Project Successfully Inserted !</h1>  
+              
+            </Alert>
+
+            <p className="mt-3">
+
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled 
+            </p>
+
+            <Button variant="contained" color="success" className="mt-5 p-3" size="large">
+           
+              View project summary
+            </Button>
+
+          </div> 
+        </TabPanel>
       </form>  
+
+       <NotificationContainer/>
   
     </div>
   );

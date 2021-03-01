@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Projects extends Model
 {
     use HasFactory;
+
+       protected $fillable = [
+       'country', 'city_id','name','discription','dirt_loss',
+        'motor_cable','daynomic_head','water_temprature','daily_output','solar_brand_id','pump_brand_id'
+       ];
+
 }

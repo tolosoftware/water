@@ -127,7 +127,8 @@ export default function DialogSettingWD(props){
     const [inputFields, setInputFields] = useState([
       { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], cableType: ''},
     ]);
-    const handleChangeStep = (id, event, value, name) => {
+  const handleChangeStep=(id,event,value,name) => {
+      
       const newInputFields = inputFields.map(i => {
         if(id === i.id) {
           if('head' === name){
