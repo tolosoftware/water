@@ -6,44 +6,30 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {Redirect} from "react-router-dom";
 import axios from 'axios';
+import './loginstylecustom.css';
+//backdrop
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from "@material-ui/styles";
 
 
-import {
-  hideMessage,
-  showAuthLoader,
-  userFacebookSignIn,
-  userGithubSignIn,
-  userGoogleSignIn,
-  userSignIn,
-  userTwitterSignIn
-} from 'actions/Auth';
+
+const styles = theme => ({
+   backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+});
 
 class SignIn extends React.Component {
+  
   constructor() {
     super();
     this.state = {
-      email: 'demo@example.com',
-      password: 'demo#123',
-      type:'user'
+      open: false
     }
-  }
-
-  componentDidUpdate() {
-    if (this.props.showMessage) {
-      setTimeout(() => {
-        this.props.hideMessage();
-      }, 100);
-    }
-    if (this.props.authUser !== null) {
-      this.props.history.push('/');
-    }
-  }
-
-   state = {
-    redirect: false
   }
 
 
@@ -53,14 +39,21 @@ class SignIn extends React.Component {
             email: this.userName,
             password: this.password, 
         }
-     
-        this.props.showAuthLoader();
-        axios.post('http://localhost:8000/api/login', data)
-        .then(
-          res => {
-   
+        
+        this.setState({open: true})
+        axios.post('api/login', data)
+          .then(res => {
+             this.setState({open: false})
+             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            console.log('ok work dkk')
+           setTimeout(
+              () => console.log('ok work'), 
+              3000
+            );
             localStorage.setItem('token', res.data.token); 
             localStorage.setItem('UserData',JSON.stringify(res.data.user));
+         
             if(res.data.user.system===1) {
               this.props.history.push('app/dashboard/crypto');
             }else {
@@ -68,46 +61,48 @@ class SignIn extends React.Component {
             }
              
           }
-        ).catch(
-            err =>{
-                alert('login faild !')
+        ).catch( err =>{
+           this.setState({open: false})
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
             } 
         )
     };
 
 
   render() {
-    // const {
-    //   email,
-    //   password,
-    //   type
-   
-    // } = this.state;
-    const {showMessage,loader,alertMessage}=this.props;
-    
-    const { redirect } = this.state;
-
-     if (redirect) {
-       return <Redirect to='/app/dashboard/intranet'/>;
-     }
+   const { classes } = this.props;
     return (
+      <>
+       <Backdrop className={classes.backdrop} open={this.state.open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div
         className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
         <div className="app-login-main-content">
 
                 <div className="app-logo-content align-items-center justify-content-center">
                     
-                    <div class="positioning custom-style MuiAvatar-root MuiAvatar-circle bg-grey lighten-2 avatar-shadow size-90 mx-auto mb-4 MuiAvatar-colorDefault">
-                          <IconButton color="primary" aria-label="upload picture" component="span" className="custom-icon">
-                            S
-                          </IconButton>
-                    </div>
+                   
+                
+                <div className="slick-slide-item">
+                  <div className="customelogobrand">
+                      <div>
+                      <img src="/images/4.jpg" className="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
+                      </div>
+                  </div>
+              </div>
+              
+                <div className="slick-slide-item">
+                  <div className="customelogobrand">
+                      <div>
+                      <img src="/images/4.jpg" className="img-thumbnail rounded mx-auto d-block" alt="Responsive" />
+                      </div>
+                  </div>
+                </div>
+                  
 
-                     <div class="positioning MuiAvatar-root MuiAvatar-circle bg-grey lighten-2 avatar-shadow size-90 mx-auto mb-4 MuiAvatar-colorDefault">
-                           <IconButton color="primary" aria-label="upload picture" component="span" className="custom-icon">
-                            C
-                          </IconButton>
-                    </div>
+                  
           </div>
 
           <div className="app-login-content">
@@ -136,12 +131,10 @@ class SignIn extends React.Component {
 
                   <div className="mb-3 d-flex align-items-center justify-content-between">
                     <Button variant="contained" color="primary" type="submit">
-                      As Admin
+                      Login to system
                    </Button>
 
-                    <Link to="/signup">
-                      <IntlMessages id="signIn.signUp"/>
-                    </Link>
+                
                   </div>
 
                   <div className="app-social-block my-1 my-sm-3">
@@ -151,8 +144,7 @@ class SignIn extends React.Component {
                       <li>
                         <IconButton className="icon"
                                     onClick={() => {
-                                      this.props.showAuthLoader();
-                                      this.props.userFacebookSignIn();
+                                   
                                     }}>
                           <i className="zmdi zmdi-facebook"/>
                         </IconButton>
@@ -161,8 +153,7 @@ class SignIn extends React.Component {
                       <li>
                         <IconButton className="icon"
                                     onClick={() => {
-                                      this.props.showAuthLoader();
-                                      this.props.userGoogleSignIn();
+                                    
                                     }}>
                           <i className="zmdi zmdi-google-plus"/>
                         </IconButton>
@@ -178,30 +169,14 @@ class SignIn extends React.Component {
           </div>
 
         </div>
-        {
-          loader &&
-          <div className="loader-view">
-            <CircularProgress/>
-          </div>
-        }
-        {showMessage && NotificationManager.error(alertMessage)}
-        <NotificationContainer/>
-      </div>
+     
+        </div>
+          <NotificationContainer/>
+      </>  
     );
   }
 }
 
-const mapStateToProps = ({auth}) => {
-  const {loader, alertMessage, showMessage, authUser} = auth;
-  return {loader, alertMessage, showMessage, authUser}
-};
 
-export default connect(mapStateToProps, {
-  userSignIn,
-  hideMessage,
-  showAuthLoader,
-  userFacebookSignIn,
-  userGoogleSignIn,
-  userGithubSignIn,
-  userTwitterSignIn
-})(SignIn);
+
+export default withStyles(styles)(SignIn);

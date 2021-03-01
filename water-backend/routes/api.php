@@ -18,11 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
-
 //setting
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
@@ -37,6 +35,10 @@ Route::resource('solarList', SolarListController::class);
 Route::resource('solarListSetting', ConfigSolarController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
+//project 
+Route::get('gitprojectdata', [ProjectsController::class,'gitprojectdata']);
+Route::resource('project', ProjectsController::class);
+
 
 // Start Route for System Management of Water Solar
 Route::resource('new_location', GeolocationController::class);
