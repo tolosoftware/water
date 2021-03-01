@@ -136,38 +136,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // end taps functions
-/*
-const tableList = [
-  {
-    id: 1,
-    name: 'Lucy Francis',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '17 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 2,
-    name: 'Dean Holmes',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '10 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 3,
-    name: 'Terry Bridges',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '6 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 4,
-    name: 'Alice Collins',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '2 hrs. ago',
-    action: 'Pay'
-  }
-];
-*/
+
 // start code for dropzone
 const thumbsContainer = {
   display: 'flex',
@@ -208,9 +177,8 @@ const WaterPump = () => {
   const [waterPumpLists, setWaterPumpLists] = useState([])
   useEffect(() => {
     getWaterPumps();
-    getWaterPumpLists();
-
   },[])
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -224,7 +192,9 @@ const WaterPump = () => {
   };
   const [openD, setOpenD] = React.useState(false);
   const [openWSD, setOpenWSD] = React.useState(false);
-  
+  useEffect(() => {
+    getWaterPumpLists();
+  },[openD])
   const handleClose = () => {
     setOpen(false);
   };

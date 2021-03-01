@@ -167,14 +167,15 @@ export default function DialogSettingWD(props){
     const getWaterPumpSettings = async(id) => {
       console.log("id: ", id);
       if(id!==0 && id!==""){
-        console.log("ok it is not 0", id);
+        // console.log("ok it is not 0", id);
         axios.get('api/pumpListSetting/'+id)
         .then(res => { 
           let mydata = res.data;
-          console.log("the result: "+mydata + "length"+ mydata.length);
+          // console.log("the result: "+mydata + "length"+ mydata.length);
           const mainArray = []
           if(mydata.length !== 0){
-            mydata.forEach(elem => {console.log(elem); 
+            mydata.forEach(elem => {
+              // console.log(elem); 
               mainArray.push({ id: elem.id, head: [elem.min_head,elem.max_head], discharge: [elem.min_discharge,elem.max_discharge], cableLength: [elem.min_cable_length,elem.max_cable_length], pumpListId: elem.pump_list_id, cableType: elem.cable_type_id});
             });
             // console.log('mainArray is: ',mainArray);
