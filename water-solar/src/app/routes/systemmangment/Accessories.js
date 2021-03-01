@@ -62,7 +62,7 @@ function Accessories() {
         </TabList>
       </AppBar>
       <TabPanel value="1">
-        <div className="table-responsive-material">
+        <div className="table-responsive-material custRespTable">
           <Table>
             <TableHead>
               <TableRow>

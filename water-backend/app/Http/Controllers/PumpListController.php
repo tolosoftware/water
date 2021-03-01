@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pump_list;
 use Illuminate\Http\Request;
-
+use DB;
+use Illuminate\Support\Facades\File;
 class PumpListController extends Controller
 {
     /**
@@ -14,7 +15,7 @@ class PumpListController extends Controller
      */
     public function index()
     {
-        //
+        return Pump_list::all();
     }
 
     /**
@@ -35,7 +36,33 @@ class PumpListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+
+        if($request->image){
+            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('brand/pumpbrand/pump_list/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+
+        // return $request;
+        Pump_list::create([
+            'serial_no' => 12, 
+            'pump_brand_id' => $request['brand'], 
+            'model' => $request['name'], 
+            'outlet' => $request['outlet'], 
+            'diameter' => $request['current'], 
+            'ampeier' => $request['diameter'], 
+            'power' => $request['powerKW'], 
+            'discription' => $request['description'], 
+            'image' => $photoname, 
+        ]);
+
+        DB::commit();
+        return ['msg' => 'Water Pumps brand successfully inserted'];
+        } catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
     /**
@@ -78,8 +105,11 @@ class PumpListController extends Controller
      * @param  \App\Models\Pump_list  $pump_list
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pump_list $pump_list)
+    public function destroy($id)
     {
-        //
+        $pump_list = Pump_list::findOrFail($id);
+        File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
+        $pump_list->delete();
+        return ['message' => 'Selected Solar list has been Deleted'];
     }
 }

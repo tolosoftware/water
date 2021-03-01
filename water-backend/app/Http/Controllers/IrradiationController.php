@@ -54,7 +54,7 @@ class IrradiationController extends Controller
             $irradiation->update();
 
         }else{
-            return $request;
+            // return $request;
             Irradiation::create([
                 'geolocation_id' => $request['geolocation_id'],
                 'month_id' => $request['month_id'],
@@ -70,7 +70,6 @@ class IrradiationController extends Controller
                 't3pm' => $request['time3_4'],
                 't4pm' => $request['time4_5'],
                 't5pm' => $request['time5_6'],
-                't6pm' => '',
             ]);
         }
     }
