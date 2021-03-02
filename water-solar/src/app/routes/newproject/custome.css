@@ -16,3 +16,36 @@
 .customdisply{
     display: inline;
 }
+
+/* image fade-in and out */
+.fade-in{
+    animation: fadeIn 3s;
+}
+.fade-incustom{
+    animation: fadeIncustom 2s;
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeIncustom {
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+
+.imagebrandhieght{
+    height: 117px;
+}

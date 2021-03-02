@@ -14,4 +14,9 @@ class Projects extends Model
         'motor_cable','daynomic_head','water_temprature','daily_output','solar_brand_id','pump_brand_id'
        ];
 
+    public function geolocation()
+    {
+        return $this->belongsTo(GeoLocation::class, 'city_id');
+    }
+
 }

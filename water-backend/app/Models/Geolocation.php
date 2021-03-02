@@ -14,5 +14,10 @@ class GeoLocation extends Model
         'country', 'city','latitude','longtitude'
      ];
 
+      public function projects()
+    {
+        return $this->hasMany(Projects::class, 'city_id');
+    }
+
  
 }

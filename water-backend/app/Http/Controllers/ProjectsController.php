@@ -33,7 +33,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        //
+        return Projects::with('geolocation')->get();
     }
 
     /**

@@ -56,20 +56,32 @@ const marks = [
 const daynomicheadrange = [
   {
     value: 0,
-    label: '0%',
+    label: 'm',
   },
+
   {
-    value: 20,
-    label: '20%',
+    value: 30,
+    label: '37m',
   },
-  {
-    value: 37,
-    label: '37%',
-  },
+
   {
     value: 100,
-    label: '100%',
+    label: '100m',
   },
+   {
+    value: 200,
+    label: '200m',
+  },
+  
+  {
+    value: 300,
+    label: '300m',
+  }, 
+
+    {
+    value: 400,
+    label: '400m',
+  }, 
 ];
 
 
@@ -142,7 +154,7 @@ const useStyles=makeStyles((theme) => ({
 
 const imagehieght = {
   height: '420px',
-  width: '420px',
+  width: '500px',
 }
  
 export default function VerticalTabs() {
@@ -221,17 +233,17 @@ export default function VerticalTabs() {
 
   function toggelactivestyle(index) {
     if(solarstate===index) {
-      return "activebrand img-thumbnail rounded mx-auto d-block";
+      return "activebrand img-thumbnail rounded mx-auto d-block imagebrandhieght";
     } else {
-      return "img-thumbnail rounded mx-auto d-block";
+      return "img-thumbnail rounded mx-auto d-block imagebrandhieght";
     }
   }
 
     function toggelactivestylepump(index) {
     if(pumpstate===index) {
-      return "activebrand img-thumbnail rounded mx-auto d-block";
+      return "activebrand img-thumbnail rounded mx-auto d-block imagebrandhieght";
     } else {
-      return "img-thumbnail rounded mx-auto d-block";
+      return "img-thumbnail rounded mx-auto d-block imagebrandhieght";
     }
   }
 //end solar and brand
@@ -347,6 +359,81 @@ const [uom,setUom]=useState([]);
           }
       )
   };
+
+  const [imagepath,setImagepath]=useState('/images/General layout.png');
+  const [myImage,setMyImage]=useState('fade-in img-thumbnail rounded mx-auto d-block');
+
+  const [foucus,setFoucus]=useState(false);
+
+  const dirtlossMouseOver=(wichInput,wichfunction) => {
+
+    if(wichInput==="dirt" &&wichfunction==="focus") {
+       setFoucus(true)
+       setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+       setImagepath('/images/System layout.png')
+    }
+
+    if(wichInput==="dirt"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System layout.png')
+      }
+     
+     }
+
+    if(wichInput==="motor"&&wichfunction==="focus") {
+      setFoucus(true)
+      setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+      setImagepath('/images/Motor Cable layout.png')
+    }
+
+    if(wichInput==="motor"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Motor Cable layout.png')
+      }  
+    }
+
+    if(wichInput==="head"&&wichfunction==="focus") {
+        setFoucus(true)
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Hight layout.png')
+    }
+
+    if(wichInput==="head"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Hight layout.png')
+      }
+    }
+
+    if(wichInput==="temp"&&wichfunction==="focus") {
+         setFoucus(true)
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System details layout.png')
+    }
+    if(wichInput==="temp"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('fade-incustom img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System details layout.png')
+      } 
+      }
+  }
+  const dirtlossMouseLeave=(wichfunction) => {
+    if(wichfunction==="fout") {
+         setFoucus(false)
+     setMyImage('fade-in img-thumbnail rounded mx-auto d-block')
+     setImagepath('/images/General layout.png')
+    }
+
+     if(!foucus) {
+       setMyImage('fade-in img-thumbnail rounded mx-auto d-block')
+       setImagepath('/images/General layout.png')
+    }
+    
+  }
+
+ 
   
   return (
   
@@ -500,7 +587,7 @@ const [uom,setUom]=useState([]);
           
           </div>
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/1.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
+            <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div>  
@@ -533,7 +620,13 @@ const [uom,setUom]=useState([]);
                   shrink: true,
                       }}
                   value={dirtloss}   
-                   onChange={(event)=> setDirtloss(event.target.value)}      
+                   onChange={(event) => setDirtloss(event.target.value)} 
+                     onMouseOver={()=> dirtlossMouseOver('dirt','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('dirt','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}  
+                      
+                      
               />
               </FormControl> 
 
@@ -551,7 +644,11 @@ const [uom,setUom]=useState([]);
                 endAdornment: <InputAdornment position="end">m</InputAdornment>,
                       }} 
                   value={motorcable}   
-                  onChange={(event)=> setMotorcable(event.target.value)}       
+                      onChange={(event) => setMotorcable(event.target.value)}  
+                      onMouseOver={()=> dirtlossMouseOver('motor','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('motor','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}  
              />
                   </FormControl> 
 
@@ -559,7 +656,7 @@ const [uom,setUom]=useState([]);
                 <div className="col-md-6 row">
                   <div className={classes.rootslider} styleName={`ml-1`}>
                       <Typography id="vertical-slider" gutterBottom className="pb-3">
-                      Day Head
+                     Head
                     </Typography>
                     <Slider
                        onChange={(event,newValue) => {setDaynomichead(newValue);}}
@@ -567,9 +664,15 @@ const [uom,setUom]=useState([]);
                       defaultValue={30}
                       aria-labelledby="vertical-slider"
                       marks={daynomicheadrange}
+                      max={400}
                       step={1}
                       getAriaValueText={valuetext}
-                       valueLabelDisplay="auto"
+                      valueLabelDisplay="auto"
+              
+                      onMouseOver={()=> dirtlossMouseOver('head','hover')}
+                      onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                      onFocus={() => dirtlossMouseOver('head','focus')}
+                      onBlur={()=> dirtlossMouseLeave('fout')}  
                       />
                   </div>
                   
@@ -587,7 +690,13 @@ const [uom,setUom]=useState([]);
                       marks={marks}
                       step={1}
                       getAriaValueText={valuetext}
-                       valueLabelDisplay="auto"
+                      valueLabelDisplay="auto"
+                 
+                      onMouseOver={()=> dirtlossMouseOver('temp','hover')}
+                      onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                      onFocus={() => dirtlossMouseOver('temp','focus')}
+                      onBlur={()=> dirtlossMouseLeave('fout')}  
+                      
                     />
                
                     </div>
@@ -601,7 +710,9 @@ const [uom,setUom]=useState([]);
 
           </div>
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/2.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
+              <img src={imagepath} className={myImage} alt="Responsive" style={imagehieght} />
+              
+              
             </div> 
             
           </div>  
@@ -640,7 +751,7 @@ const [uom,setUom]=useState([]);
           
             
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3 pull-right">
-            <img src="/images/3.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
+            <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
@@ -702,7 +813,7 @@ const [uom,setUom]=useState([]);
           </div>
           
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
+            <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
@@ -843,7 +954,7 @@ const [uom,setUom]=useState([]);
              
           
             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
-            <img src="/images/4.jpg" class="img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
+            <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" style={imagehieght}/>
             </div> 
             
           </div> 
