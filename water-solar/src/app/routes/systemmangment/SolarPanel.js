@@ -462,8 +462,9 @@ const SolarPanel = () => {
   const [solarLists, setSolarLists] = useState([])
   useEffect(() => {
     getSolarBrands();
-    getSolarLists();
   },[])
+  
+  
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -482,7 +483,9 @@ const SolarPanel = () => {
   const [openS, setOpenS] = React.useState(false);
   const [openSPD, setOpenSPD] = React.useState(false);
   // end code of dialog modal for water pump
-
+  useEffect(() => {
+    getSolarLists();
+  },[openS])
 // start popove code
 const [anchorEl, setAnchorEl] = React.useState(null);
 const handlePopoverOpen = (event) => {
@@ -524,6 +527,20 @@ useEffect(() => () => {
 const [brand, setBrand] = React.useState("");
 const [country, setCountry] = React.useState("");
 const [description, setDescription] = React.useState("");
+
+// Start code of Solar Panal List Setting 
+const [solarListId, setSolarListId] = useState('');
+const [solarListModel, setSolarListModel] = useState('');
+ 
+const onButtonClick = (listId, solarModel) => {
+   
+  setSolarListId(listId);
+  setSolarListModel(solarModel);
+  console.log("list id: ", listId);
+  setOpenSPD(true);
+}
+// End code of Solar Panal list setting 
+
 
 const deleteSolarBrand = (id) =>{
   console.log("it is id of that water pump brand: ", id);
@@ -585,7 +602,7 @@ const deleteSolarList = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/solarList/'+id)
         .then(res => {
-              // setSolarLists(res.data)
+              setSolarLists(res.data)
             setSolarLists(solarLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
@@ -860,7 +877,9 @@ const handleSubmit = (e) => {
         solarBrands={solarBrands}
       />
       
-      <DialogSettingSP 
+      <DialogSettingSP
+        solarListId={solarListId}
+        solarListModel={solarListModel} 
         openSPD={openSPD}
         setOpenSPD={setOpenSPD}
       />
@@ -916,7 +935,7 @@ const handleSubmit = (e) => {
                   <IconButton size="small" color="primary" aria-label="add an alarm">
                       <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>setOpenSPD(true)}>
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{onButtonClick(solarList.id, solarList.model)}}>
                     <SettingsIcon />
                   </IconButton>
                   </div>

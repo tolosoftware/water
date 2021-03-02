@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -16,6 +16,9 @@ import TextField from '@material-ui/core/TextField';
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
+import axios from 'axios';
+import {NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 // import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
@@ -161,9 +164,10 @@ export default function DialogSettingWD(props){
 // end dropzone code
   // const classes = useStyles();
    
-
+  const solarList_Id = props.solarListId;
+  const solarListModel = props.solarListModel;
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: ''},
+    { id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: solarList_Id},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -200,7 +204,7 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal};
+    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, solar_list_id: solarList_Id};
     setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {
@@ -208,20 +212,74 @@ export default function DialogSettingWD(props){
     values.splice(values.findIndex(value => value.id === id), 1);
     setInputFields(values);
   }
-
+  
+  useEffect(() => {
+    // console.log("solarList Id before if", props.solarListId);
+    if(props.solarListId!==0){
+      // inputFields[0].solarListId=props.solarListId;
+      getSolarListSettings(props.solarListId);
+      // console.log("solarList Id inside if", props.solarListId);
+    }
+    // console.log("solarList Id outside if", props.solarListId); 
+     
+    // console.log("solarList Id outside if", props.solarListId);  
+  },[props.solarListId])
+  
+  const getSolarListSettings = async(id) => {
+    console.log("id: ", id);
+    if(id!==0 && id!==""){
+      console.log("ok it is not 0", id);
+      axios.get('api/solarListSetting/'+id)
+      .then(res => { 
+        let mydata = res.data;
+        console.log("the result: "+ mydata + "length"+ mydata.length);
+        const mainArray = []
+        if(mydata.length !== 0){
+          mydata.forEach(elem => {console.log(elem); 
+            mainArray.push({ id: elem.id, power: [elem.min_power,elem.max_power], base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, solar_list_id: elem.solar_list_id});
+          });
+          // console.log('mainArray is: ',mainArray);
+        }else{
+          mainArray.push({ id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: id});
+        }
+        setInputFields(mainArray);
+      }).catch(err => {
+        
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+        )
+    }
+  }
   const handleSubmit = (e) => {
       e.preventDefault();
       // let data = {
       //     power, base, quantity, panal, files
       // }
       console.log(inputFields);
+      axios.post('api/solarListSetting', inputFields)
+        .then(
+            res => {
+              console.log(res);
+              // getWaterPDevices();
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+              handleClose();
+            }
+        ).catch(
+            err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+                console.log(err);
+            } 
+        )
   }
   let id_field;
     return (
         <Dialog onClose={handleClose} className="dialogWD" fullWidth={'md'} maxWidth={'md'} aria-labelledby="customized-dialog-title" open={openSPD}>
            <form autoComplete="off" onSubmit={handleSubmit}>  
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
-              Setup
+              Setup of {solarListModel}
             </DialogTitle>
             <DialogContent dividers>
                 <div className="row">
@@ -255,7 +313,7 @@ export default function DialogSettingWD(props){
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
                               <TextField size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
-                                  id="outlined-number"
+                                  id="outlined-number1"
                                   label="Solar Quantity"
                                   type="number"
                                   InputLabelProps={{

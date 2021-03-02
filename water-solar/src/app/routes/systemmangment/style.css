@@ -12,8 +12,10 @@
     max-height: 237.19px;
 }
 
-.sp-second-col .card, .wp-second-col .card{
-    max-height: 256px;
+.sp-second-col .table-responsive-material, .wp-second-col .table-responsive-material{
+    max-height: 155px;
+    min-height: 155px;
+    overflow-y: scroll;
 }
 .paddingBottom{
     padding-bottom: 15px;

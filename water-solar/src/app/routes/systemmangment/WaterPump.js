@@ -12,7 +12,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { v4 as uuidv4 } from 'uuid';
 // start import for taps 
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
@@ -137,38 +136,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // end taps functions
-/*
-const tableList = [
-  {
-    id: 1,
-    name: 'Lucy Francis',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '17 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 2,
-    name: 'Dean Holmes',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '10 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 3,
-    name: 'Terry Bridges',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '6 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 4,
-    name: 'Alice Collins',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '2 hrs. ago',
-    action: 'Pay'
-  }
-];
-*/
+
 // start code for dropzone
 const thumbsContainer = {
   display: 'flex',
@@ -209,8 +177,8 @@ const WaterPump = () => {
   const [waterPumpLists, setWaterPumpLists] = useState([])
   useEffect(() => {
     getWaterPumps();
-    getWaterPumpLists();
   },[])
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -224,7 +192,9 @@ const WaterPump = () => {
   };
   const [openD, setOpenD] = React.useState(false);
   const [openWSD, setOpenWSD] = React.useState(false);
-  
+  useEffect(() => {
+    getWaterPumpLists();
+  },[openD])
   const handleClose = () => {
     setOpen(false);
   };
@@ -264,22 +234,13 @@ const [description, setDescription] = React.useState("");
 
 // Start code of water Pumps List Setting 
 const [pumpListId, setPumpListId] = useState('');
-const [inputFields, setInputFields] = useState([
-  { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': pumpListId, cableType: ''},
-]);
-const getWaterPumpSettings = (listId) => {
+const [pumpListModel, setPumpListModel] = useState('');
+ 
+const onButtonClick = (listId, pumpModel) => {
+   
+  setPumpListId(listId);
+  setPumpListModel(pumpModel);
   console.log("list id: ", listId);
-  axios.get('api/pumpList')
-  .then(res => {  
-      // console.log(res);
-      setWaterPumpLists(res.data);
-    }
-  ).catch(err => {
-       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-          id="notification.titleHere"/>);
-      }
-  )
-
   setOpenWSD(true);
 }
 // End code of water pumps list setting 
@@ -417,7 +378,7 @@ const handleSubmit = (e) => {
   };
   const open1 = Boolean(anchorEl);
   // end popover code
-
+   
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -622,12 +583,15 @@ const handleSubmit = (e) => {
 
     <div className="col-xl-8 col-lg-8 col-md-12 col-12 wp-second-col">
       {/* imported dialog form another file */}
+
       <DialogWaterP 
         openD={openD}
         setOpenD={setOpenD}
         waterPumpBrands={waterPumpBrands}
       />
       <DialogSettingWD 
+        pumpListId={pumpListId}
+        pumpListModel={pumpListModel}
         openWSD={openWSD}
         setOpenWSD={setOpenWSD}
       />
@@ -682,7 +646,7 @@ const handleSubmit = (e) => {
                   <IconButton size="small" color="primary" aria-label="edit an alarm">
                     <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ getWaterPumpSettings(waterList.id)}}>
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ onButtonClick(waterList.id, waterList.model)}}>
                     <SettingsIcon />
                   </IconButton>
                   </div>

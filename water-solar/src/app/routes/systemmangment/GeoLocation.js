@@ -522,7 +522,7 @@ const deletGeoLocation=(id) => {
             /> 
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField  id="outlined-basic" value={district} onChange={(e) => setDistrict(e.target.value)} label="District" name='district' variant="outlined" />
+              <TextField  id="outlined-basic" value={district} onChange={(e) => setDistrict(e.target.value)} label="City" name='district' variant="outlined" />
             </div>
           {/* </div>
           <div className="row"> */}
@@ -548,7 +548,7 @@ const deletGeoLocation=(id) => {
           <tr>
             <th>Id</th>
             <th>Country</th>
-            <th>District</th>
+            <th>City</th>
             <th>Latitude</th>
             <th>Longtitude</th>
             <th>Action</th>
@@ -617,16 +617,16 @@ const deletGeoLocation=(id) => {
               <td>
                 <div className="d-flex align-items-center">
                   <div className="user-detail">
-                    <h5 className="user-name">{data.country}</h5>
+                    <h5 className="user-name">{data.city}</h5>
                   </div>
                 </div>
               </td>
-              <td>{data.latitude}</td>
+              <td>{'0.00'}</td>
               
               <td>
                 <div className="pointer text-primary">
                   <span className="d-inline-block mr-1">
-                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>{setOpenGeoIr(true); setGeoLocationId(data.id); setGeoLocationCity(data.city);}} >
+                  <IconButton size="small" aria-label="Add Irradiation"  color="inherit" onClick={()=>{setGeoLocationId(data.id); setGeoLocationCity(data.city); setOpenGeoIr(true); }} >
                     <SettingsBrightnessIcon />
                   </IconButton>
                     {/* <i className="zmdi zmdi-mail-reply zmdi-hc-fw zmdi-hc-flip-horizontal"/> */}

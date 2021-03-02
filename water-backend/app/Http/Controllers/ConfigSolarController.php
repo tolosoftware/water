@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Config_solar;
 use Illuminate\Http\Request;
+use DB;
 
 class ConfigSolarController extends Controller
 {
@@ -35,7 +36,25 @@ class ConfigSolarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // return $request;
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            Config_solar::where('solar_list_id', $data[0]['solar_list_id'])->delete();
+                foreach($data as $value){
+                    $config_solar = Config_solar::create([
+                        'min_power' => $value['power'][0],
+                        'max_power' => $value['power'][1],
+                        'base' => $value['base'],
+                        'solar_quantity' => $value['quantity'],
+                        'panal_quantity' => $value['panal'],
+                        'solar_list_id' => $value['solar_list_id'],
+                    ]);     
+                }
+            DB::commit();
+        }catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
     /**
@@ -44,9 +63,9 @@ class ConfigSolarController extends Controller
      * @param  \App\Models\Config_solar  $config_solar
      * @return \Illuminate\Http\Response
      */
-    public function show(Config_solar $config_solar)
+    public function show($config_solar_id)
     {
-        //
+        return Config_solar::select()->where('solar_list_id', $config_solar_id)->get();
     }
 
     /**

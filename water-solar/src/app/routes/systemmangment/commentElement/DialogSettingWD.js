@@ -117,27 +117,93 @@ const useStyles = makeStyles((theme) => ({
       label: '1000M',
     },
   ];
-  
+  // We need to wrap component in `forwardRef` in order to gain
+// access to the ref object that is assigned using the `ref` prop.
+// This ref is passed as the second parameter to the function component.
+// const Child = forwardRef((props, ref) => {
+
+//   // The component instance will be extended
+//   // with whatever you return from the callback passed
+//   // as the second argument
+  // useImperativeHandle(ref, () => ({
+
+  //   getAlert() {
+  //     alert("getAlert from Child");
+  //   }
+
+  // }));
+
+//   return <h1>Hi</h1>;
+// });
 export default function DialogSettingWD(props){
+  
   const classes = useStyles();
     // start code of dialog modal for Solar Panal 
     const {openWSD, setOpenWSD} = props;
     const handleClose = () => {
       setOpenWSD(false);
+      
     };
     // end code of dialog modal for Solar Panal 
-    const [pumpListId, setPumpListId] = props.pumpListId;
-    const [inputFields, setInputFields] = props.inputFields;
+    
+    const pumpList_Id = props.pumpListId;
+    const pumpListModel = props.pumpListModel;
+     
+    const [inputFields, setInputFields] = useState([
+      { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': pumpList_Id, cableType: ''},
+    ]);
+    useEffect(() => {
+      // console.log("pumpList Id before if", props.pumpListId);
+      if(props.pumpListId!==0){
+        // inputFields[0].pumpListId=props.pumpListId;
+        getWaterPumpSettings(props.pumpListId);
+        // console.log("pumpList Id inside if", props.pumpListId);
+      }
+      // console.log("pumpList Id outside if", props.pumpListId); 
+       
+      // console.log("pumpList Id outside if", props.pumpListId);  
+    },[props.pumpListId])
+    
+    const getWaterPumpSettings = async(id) => {
+      console.log("id: ", id);
+      if(id!==0 && id!==""){
+        // console.log("ok it is not 0", id);
+        axios.get('api/pumpListSetting/'+id)
+        .then(res => { 
+          let mydata = res.data;
+          // console.log("the result: "+mydata + "length"+ mydata.length);
+          const mainArray = []
+          if(mydata.length !== 0){
+            mydata.forEach(elem => {
+              // console.log(elem); 
+              mainArray.push({ id: elem.id, head: [elem.min_head,elem.max_head], discharge: [elem.min_discharge,elem.max_discharge], cableLength: [elem.min_cable_length,elem.max_cable_length], pumpListId: elem.pump_list_id, cableType: elem.cable_type_id});
+            });
+            // console.log('mainArray is: ',mainArray);
+          }else{
+            mainArray.push({ id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': id, cableType: ''});
+          }
+          setInputFields(mainArray);
+        }).catch(err => {
+          
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+            }
+          )
+      }
+    }
+    
+    // setInputFields(props.setInputFields);
+    // inputFields[0].pump_list_id = pumpList_Id;
     const handleChangeStep = (id, event, value, name) => {
       const newInputFields = inputFields.map(i => {
         if(id === i.id) {
           if('head' === name){
             i['head'] = value;
           }
-          if('discharge' === name){
+          else if('discharge' === name){
             i['discharge'] = value;
           }
-          if('cableLength' === name){
+          else if('cableLength' === name){
             i['cableLength'] = value;
           }
           
@@ -158,45 +224,38 @@ export default function DialogSettingWD(props){
       setInputFields(newInputFields);
     }
     const handleAddFields = () => {
-      let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, pumpListId: inputFields[inputFields.length-1].pumpListId, cableType: inputFields[inputFields.length-1].cableType};
+      // console.log(inputFields);
+      inputFields[0].pumpListId = pumpList_Id;
+      let newElement = { id: uuidv4(), head: inputFields[inputFields.length-1].head, discharge: inputFields[inputFields.length-1].discharge, cableLength: inputFields[inputFields.length-1].cableLength, pumpListId: pumpList_Id, cableType: inputFields[inputFields.length-1].cableType};
       setInputFields([...inputFields, newElement])
+      // console.log(inputFields);
+      // console.log(pumpList_Id);
     }
     const handleRemoveFields = id => {
       const values  = [...inputFields];
       values.splice(values.findIndex(value => value.id === id), 1);
       setInputFields(values);
     }
-// start get cable type
-useEffect(() => {
-  getCabletype();
-},[])
-const [cableTypesSelect,setCabletypesSelect]= useState([]);
-const getCabletype=async () => {
-  axios.get('api/cabletype')
-    .then(res => {  
-      setCabletypesSelect(res.data)
-      }
-  ).catch(err => {
-         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-        }
-    )
-};
+    // start get cable type
+    useEffect(() => {
+      getCabletype();
+      
+    },[])
+
+    const [cableTypesSelect,setCabletypesSelect]= useState([]);
+    const getCabletype=async () => {
+      axios.get('api/cabletype')
+        .then(res => {  
+          setCabletypesSelect(res.data)
+          }
+      ).catch(err => {
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+            }
+        )
+    };
 
 // end get cable type
-  // const getWaterPDevices = async() =>{
-  //   axios.get('api/new_location')
-  //       .then(res => {  
-  //           setGeoLocations(res.data);
-  //         }
-  //     ).catch(err => {
-  //           // setVisibility(false)
-  //           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-  //               id="notification.titleHere"/>);
-  //           }
-  //     )
-  //   }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("InputFields", inputFields);
@@ -220,16 +279,19 @@ const getCabletype=async () => {
     let id_field;
     
     return (
+      <>
+        
+
         <Dialog onClose={handleClose} className="dialogWD"  aria-labelledby="customized-dialog-title" open={openWSD}>
            <form autoComplete="off" onSubmit={handleSubmit}>  
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
-              Setup
+              Setup of {pumpListModel}
             </DialogTitle>
             <DialogContent dividers>
                 {/* <WaterPumpDeviceSettingForm /> */}
                 <div className="row">
             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-              { inputFields.map(inputField => (
+              { inputFields.map((inputField, index) => (
                 <div key={id_field = inputField.id}>
                     <div className="row paddingBottom">
                         <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
@@ -347,5 +409,6 @@ const getCabletype=async () => {
             </DialogActions>
           </form>
         </Dialog>
+    </>
     );
 }
