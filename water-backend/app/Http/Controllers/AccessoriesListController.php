@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Accessories_list;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
+
 class AccessoriesListController extends Controller
 {
     /**
@@ -99,8 +101,11 @@ class AccessoriesListController extends Controller
      * @param  \App\Models\Accessories_list  $accessories_list
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accessories_list $accessories_list)
+    public function destroy($id)
     {
-        //
+        $accessories_list = Accessories_list::findOrFail($id);
+        File::delete('accessories/'.$accessories_list->image);
+        $accessories_list->delete();
+        return ['message' => 'Geo Location Deleted'];
     }
 }
