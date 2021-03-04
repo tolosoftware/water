@@ -4,6 +4,7 @@ import {useDropzone} from "react-dropzone";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -72,8 +73,8 @@ export default function AccessoriesForm(props) {
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
   const [description, setDescription] = useState("");
-  const [country, setCountry] = React.useState("Afghanistan");
-  const [inputValue, setInputValue] = React.useState('');
+  const [country, setCountry] = React.useState(Country[0]);
+  const [inputValue, setInputValue] = React.useState(Country[0]);
   const [price, setPrice] = useState("");
   const classes = useStyles();
   
@@ -101,38 +102,80 @@ export default function AccessoriesForm(props) {
   ));
   
 // end dropzone code
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let data = {
-        type, name, model,country, description, price
-      }
-    console.log("filese: ", files);
-    // var image = '';
-    // let file = files[0];
-    // let reader = new FileReader();
-    // reader.onloadend = (file) => {
-    //   image = reader.result;
-    //   data['image'] = image;
-    //   axios.post('api/accessories', data)
-    //     .then(res => {
-        
-    //             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-    //           id="notification.titleHere" />);
-    //         }
-    //     ).catch(err =>{
-    //            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-    //           id="notification.titleHere"/>);
-    //         }
-    //     )
-    // }
-    // reader.readAsDataURL(file); 
-}
+  
 
 const [accessoriestype,setAccessoriestype]= useState([]);
  useEffect(() => {
     getAccessoriestype();
   },[])
   
+ 
+  const accessoryObject = props.accessoryObject;
+  const [accessoryID, setAccessoryID] = useState('0'); 
+  const [oldImage, setOldImage] = useState("");
+  useEffect(() => {
+    setEditFieldValuse();
+  },[props.accessoryObject])
+
+  const setEditFieldValuse = () => {
+    setAccessoryID(accessoryObject.id);
+    setType(accessoryObject.accessories_type_id);
+    setName(accessoryObject.name);
+    setModel(accessoryObject.model);
+    setCountry(accessoryObject.country);
+    setPrice(accessoryObject.price);
+    setDescription(accessoryObject.discription);
+    setOldImage(accessoryObject.image);
+  } 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let data = {
+      accessoryID, type, name, model,country, description, price
+    }
+
+    // console.log("filese: ", data);
+    if(files.length!==0){
+      if(data.accessoryID===undefined){
+        data.accessoryID = 0;
+      }
+      // console.log('inside if', data.accessoryID);
+      var image = '';
+      let file = files[0];
+      let reader = new FileReader();
+      reader.onloadend = (file) => {
+        image = reader.result;
+        data['image'] = image;
+        axios.post('api/accessories', data)
+          .then(res => {
+                // console.log(res.data);
+                  NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                id="notification.titleHere" />);
+              }
+          ).catch(err =>{
+                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+              }
+          )
+      }
+      reader.readAsDataURL(file);
+    }
+    else{
+      // console.log('inside else:', files.length);
+      data['image'] = 'oldImage';
+      axios.post('api/accessories', data)
+          .then(res => {
+            // console.log(res.data);
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                id="notification.titleHere" />);
+              }
+          ).catch(err =>{
+                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+              }
+          )
+    }
+  }
   const getAccessoriestype=async () => {
     axios.get('api/accessoriestype')
       .then(res => {  
@@ -144,29 +187,6 @@ const [accessoriestype,setAccessoriestype]= useState([]);
           }
       )
   };  
-  const accessoryObject = props.accessoryObject;
-  const [accessoryID, setAccessoryID] = useState(); 
-  const [oldImage, setOldImage] = useState("");
-  useEffect(() => {
-    setEditFieldValuse();
-   },[props.accessoryObject])
-
-   const setEditFieldValuse = () => {
-    setAccessoryID(accessoryObject.id);
-
-    accessoriestype.map((data, index) => { 
-      if(accessoryObject.accessories_type_id === data.id){
-        setType(data.name);
-      }                              
-     })
-    
-    setName(accessoryObject.name);
-    setModel(accessoryObject.model);
-    setCountry(accessoryObject.country);
-    setPrice(accessoryObject.price);
-    setDescription(accessoryObject.discription);
-    setOldImage(accessoryObject.oldImage);
-   } 
   return (
     <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -176,23 +196,18 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type" value={type} onChange={(e) => setType(e.target.value)} variant="outlined" /> */}
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
-                            <InputLabel htmlFor="outlined-age-native-simple" size="small" >Type</InputLabel>
+                            <InputLabel id="demo-simple-select-outlined-label" size="small" >Type</InputLabel>
                             <Select size="small"
-                                native
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
                                 value={type}
                                 onChange={handleChange1}
                                 label="Type"
-                                inputProps={{
-                                name: 'Type',
-                                id: 'outlined-age-native-simple',
-                                }}
+                                name="Type"
                               >
-                              <option value=""></option>
-                              {accessoriestype.map((data, index) => { 
-                                
-                                 return <option value={data.id}>{data.name}</option>
-                                })}
-                                  
+                              {accessoriestype.map((data, index) =>  
+                                <MenuItem value={data.id}>{data.name}</MenuItem>
+                              )}
                             </Select>
                         </FormControl>
                     </div>
@@ -238,6 +253,12 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                             </div>
                             <div className="dropzone-content" style={thumbsContainer}>
                                 {thumbs}
+                                {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
+                                  <span className={`sp_right_padding`}>Cuurent Image </span>
+                                  <span><img src={`http://localhost:8000/accessories/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                </spam>): ''): ''}
+                                
+                                 
                             </div>
                         </div>
                     </div>
