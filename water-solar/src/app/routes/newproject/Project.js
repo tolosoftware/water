@@ -12,6 +12,9 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
 
+//country flag
+import Flags from 'country-flag-icons/react/3x2'
+
 //form import
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
@@ -138,6 +141,20 @@ const DialogActions = withStyles((theme) => ({
 
 //end dialog
 
+function getFlag(countryname) {
+  switch (countryname) {
+    case 'Afghanistan':
+      return <Flags.AF title="United States" className="customflag"/> ;
+    case 'Italy':
+      return <Flags.IT title="United States" className="customflag"/> ;
+    case 'China':
+      return <Flags.CH title="United States" className="customflag" />;
+     case 'Iran':
+     return <Flags.IR title="United States" className="customflag"/> ;
+    default:
+      return '';
+  }
+}
 export default function Project() {
 
   //solar and pump
@@ -211,12 +228,12 @@ const [pumpvalue,setPumpvalue]=useState('');
 //start form value    
 const [projectname,setProjectname]=React.useState("");
 const [country,setCountry]=React.useState({});
-const [city,setCity]=React.useState("");   
+const [city,setCity]=React.useState({});   
 const [daynomichead,setDaynomichead]=useState(""); 
 const [motorcable,setMotorcable]=React.useState("");
 const [piplenght,setPiplenght]=React.useState("");    
 const [dirtloss,setDirtloss]=React.useState("");
-    const [discharge,setDischarge]=React.useState("");   
+const [discharge,setDischarge]=React.useState("");   
 
 //start dynomic form
  const handlseelctitem=(event,value,id) => {  
@@ -269,6 +286,91 @@ const handleRemoveFields = () => {
       )
   };
 
+
+  const [imagepath,setImagepath]=useState('/images/General layout.png');
+  const [myImage,setMyImage]=useState('img-thumbnail rounded mx-auto d-block');
+  const [foucus,setFoucus]=useState(false);
+
+  const dirtlossMouseOver=(wichInput,wichfunction) => {
+    if(wichInput==="dirt" &&wichfunction==="focus") {
+       setFoucus(true)
+       setMyImage('img-thumbnail rounded mx-auto d-block')
+       setImagepath('/images/System layout.png')
+    }
+
+    if(wichInput==="dirt"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System layout.png')
+      }
+     
+     }
+
+    if(wichInput==="motor"&&wichfunction==="focus") {
+      setFoucus(true)
+      setMyImage('img-thumbnail rounded mx-auto d-block')
+      setImagepath('/images/Motor Cable layout.png')
+    }
+
+    if(wichInput==="motor"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Motor Cable layout.png')
+      }  
+    }
+
+    if(wichInput==="head"&&wichfunction==="focus") {
+        setFoucus(true)
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Hight layout.png')
+    }
+
+    if(wichInput==="head"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Hight layout.png')
+      }
+    }
+
+    if(wichInput==="temp"&&wichfunction==="focus") {
+         setFoucus(true)
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System details layout.png')
+    }
+    if(wichInput==="temp"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/System details layout.png')
+      } 
+    }
+
+    if(wichInput==="pip"&&wichfunction==="focus") {
+         setFoucus(true)
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Pipe layout.png')
+    }
+    if(wichInput==="pip"&&wichfunction==="hover") {
+      if(!foucus) {
+        setMyImage('img-thumbnail rounded mx-auto d-block')
+        setImagepath('/images/Pipe layout.png')
+      } 
+    }
+  }
+  const dirtlossMouseLeave=(wichfunction) => {
+    if(wichfunction==="fout") {
+         setFoucus(false)
+     setMyImage(' img-thumbnail rounded mx-auto d-block')
+     setImagepath('/images/General layout.png')
+    }
+
+     if(!foucus) {
+       setMyImage(' img-thumbnail rounded mx-auto d-block')
+       setImagepath('/images/General layout.png')
+    }
+    
+  }
+
+  const [evaluation,setEvaluation]=useState(false);
               
   return (
     <div className={classes.root}>
@@ -295,20 +397,22 @@ const handleRemoveFields = () => {
     <div className="row">
         <div className="col-md-4">
                                           
-            <div className="col-md-12 p-0" onClick={handleClickOpen}>  
+            {/* <div className="col-md-12 p-0 customWidgetHover" onClick={handleClickOpen}>  
              <Widget styleName={`bg-success  text-white`}>
               <div className="text-center">
                 <h3 className="jr-font-weight-medium">select brand</h3>
               </div>
               </Widget>
-            </div>
+                      </div> */}
+             <Button size="large" color="secondary" variant="outlined" className="form-control" onClick={handleClickOpen}>Select Brand</Button>           
                       {/* start dialog */}
                    <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} maxWidth="sm" fullWidth="sm">
                       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                         Brand Managment
                       </DialogTitle>
                         <DialogContent dividers>
-                        <b>Solar Brands</b>      
+                          <b>Solar Brands</b> 
+                    
                           <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
                            
                             <Sliderr className="slick-app-frame" {...options}>
@@ -320,7 +424,9 @@ const handleRemoveFields = () => {
                                   <div>
                                   <img src={`http://localhost:8000/brand/solar/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
                                 </div>
-                               <spna> Afghanistan 🏳️‍🌈</spna>
+                                  <span> {data.country} {getFlag(data.country)}  </span>
+                              
+                             
                               </div>
                                 </div>
                               </span>         
@@ -334,10 +440,11 @@ const handleRemoveFields = () => {
                                         {pump.map((data,index) => {  
                                           return <span key={index} onClick={() => pumpbrand(data.id,index)}>        
                                 <div class="slick-slide-item">
-                                  <div  className={toggelactivestyle(index)}>
+                                  <div  className={toggelactivestylepump(index)}>
                                       <div>
                                       <img src={`http://localhost:8000/brand/pumpbrand/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                      </div>
+                                                </div>
+                                       <span> {data.country} {getFlag(data.country)}  </span>          
                                   </div>
                                         </div>
                                   </span>         
@@ -346,8 +453,8 @@ const handleRemoveFields = () => {
                           </CardBox>     
                       </DialogContent>
                       <DialogActions>
-                        <Button autoFocus onClick={handleClose} color="primary">
-                          Save changes
+                        <Button  onClick={handleClose} color="primary" variant="contained" >
+                          Done
                         </Button>
                       </DialogActions>
                       </Dialog>
@@ -355,7 +462,8 @@ const handleRemoveFields = () => {
                       {/* end dialog */}
 
 
-            <Divider/>
+                      <Divider className="mb-3 mt-3" />
+                      
             <div className="col-md-12 p-0">  
                 <TextField className="form-control" id="outlined-basic" label="Poject Name" variant="outlined"
                 placeholder="Project name !"
@@ -445,7 +553,7 @@ const handleRemoveFields = () => {
                  </div> 
              </div>  
 
-            <Divider />  
+            <Divider className="mb-3 mt-3"/>  
 
             <div className="col-md-12 p-0">
              <TextField id="outlined-basic" className="form-control" label="Head" variant="outlined"
@@ -462,12 +570,11 @@ const handleRemoveFields = () => {
                       }}
                   value={daynomichead}   
                    onChange={(event) => setDaynomichead(event.target.value)} 
-                    // onMouseOver={()=> dirtlossMouseOver('head','hover')}
-                    // onMouseLeave={()=> dirtlossMouseLeave('xy')}
-                    // onFocus={() => dirtlossMouseOver('head','focus')}
-                    // onBlur={()=> dirtlossMouseLeave('fout')} 
-                        
-              />
+                    onMouseOver={()=> dirtlossMouseOver('head','hover')}
+                    onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                    onFocus={() => dirtlossMouseOver('head','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}       
+                 />
             </div>  
                                                 
             <div className="row">
@@ -486,10 +593,10 @@ const handleRemoveFields = () => {
                       }} 
                   value={motorcable}   
                   onChange={(event) => setMotorcable(event.target.value)}  
-                    //   onMouseOver={()=> dirtlossMouseOver('motor','hover')}
-                    //  onMouseLeave={()=> dirtlossMouseLeave('xy')}
-                    //  onFocus={() => dirtlossMouseOver('motor','focus')}
-                    // onBlur={()=> dirtlossMouseLeave('fout')}  
+                      onMouseOver={()=> dirtlossMouseOver('motor','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('motor','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}  
              />
                 </div>
                     <div className="col-md-6">
@@ -506,7 +613,11 @@ const handleRemoveFields = () => {
                 endAdornment: <InputAdornment position="end">m</InputAdornment>,
                       }} 
                   value={piplenght}   
-                  onChange={(event) => setPiplenght(event.target.value)}  
+                     onChange={(event) => setPiplenght(event.target.value)}
+                     onMouseOver={()=> dirtlossMouseOver('pip','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('pip','focus')}
+                     onBlur={()=> dirtlossMouseLeave('fout')}           
                     
              />
                     </div>
@@ -527,10 +638,10 @@ const handleRemoveFields = () => {
                       }}
                   value={discharge}   
                    onChange={(event) => setDischarge(event.target.value)} 
-                    //  onMouseOver={()=> dirtlossMouseOver('dirt','hover')}
-                    //  onMouseLeave={()=> dirtlossMouseLeave('xy')}
-                    //  onFocus={() => dirtlossMouseOver('dirt','focus')}
-                    // onBlur={()=> dirtlossMouseLeave('fout')}     
+                     onMouseOver={()=> dirtlossMouseOver('dirt','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('dirt','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}     
               />                   
             </div>
 
@@ -548,29 +659,56 @@ const handleRemoveFields = () => {
                       }}
                   value={dirtloss}   
                    onChange={(event) => setDirtloss(event.target.value)} 
-                    //  onMouseOver={()=> dirtlossMouseOver('dirt','hover')}
-                    //  onMouseLeave={()=> dirtlossMouseLeave('xy')}
-                    //  onFocus={() => dirtlossMouseOver('dirt','focus')}
-                    // onBlur={()=> dirtlossMouseLeave('fout')}     
+                     onMouseOver={()=> dirtlossMouseOver('dirt','hover')}
+                     onMouseLeave={()=> dirtlossMouseLeave('xy')}
+                     onFocus={() => dirtlossMouseOver('dirt','focus')}
+                    onBlur={()=> dirtlossMouseLeave('fout')}     
               />                   
              </div>                                 
                 
-        </div>                               
+                      </div> 
 
-               <Button color="success" variant="contained" className="mt-2">Evaluation</Button>                    
+         <Divider className="mb-3 mt-3"/>                
+
+          <Button size="large" color="primary" variant="contained" className="form-control mb-3" onClick={()=> setEvaluation(true)}>Evaluation</Button>          
                                                                      
         </div>
-          
-        <div className="col-md-8">
-                <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" />                          
+       
+        
+          <div className="col-md-8">
+          {
+                        evaluation===true? (
+            <>              
+                          <div className="row m-3">
+                            <div className="col-md-4"><strong>Project Name:</strong> {projectname} </div>
+                            <div className="col-md-4"><strong>Country Name:</strong> {country.country}</div>
+                            <div className="col-md-4"><strong>City Name:</strong> {city.city}</div>
+                          </div>
+
+                           <div className="row m-3">
+                            <div className="col-md-4"><strong>Head :</strong> {daynomichead} m</div>
+                            <div className="col-md-4"><strong>Motor Cable:</strong> {motorcable} m</div>
+                            <div className="col-md-4"><strong>Pip Lenght:</strong> {piplenght} m</div>
+                            </div>
+
+                            <div className="row m-3">
+                            <div className="col-md-4"><strong>Discharge:</strong> {discharge} m<sup>3</sup></div>  
+                            <div className="col-md-4"><strong>Dirt loss :</strong> {dirtloss} %</div>
+                            <div className="col-md-4"><strong>Pip Lenght:</strong> {piplenght} m</div>
+                            </div>
+
+                          </>  
+
+                        ): (
+               <img src={imagepath} className={myImage} alt="Responsive" alt="Responsive" />               
+            )}                
+                                         
         </div>                                  
                                       
     </div>
-        
-     
-                    
-    
-    ):""}
+      ):""}
+
+              
 
     {
     activeStep===1? (
@@ -694,7 +832,7 @@ const handleRemoveFields = () => {
               </IconButton>
         </div>
         <div className="col-md-8">
-            <img src="/images/General layout.png" className="fade-in img-thumbnail rounded mx-auto d-block" alt="Responsive" />                          
+            <img src="/images/General layout.png" className=" img-thumbnail rounded mx-auto d-block" alt="Responsive" />                          
         </div>
         </div>
     ):""}

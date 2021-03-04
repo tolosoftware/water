@@ -14,11 +14,12 @@ import {useForm} from 'react-hook-form';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CardBox from 'components/CardBox';
+import Sliderr from "react-slick";
 import './custome.css';
 import Alert from '@material-ui/lab/Alert';
 //slider
 import Slider from '@material-ui/core/Slider';
-import Sliderr from "react-slick";
+
 //circal slider
 import { CircleSlider } from "react-circle-slider";
 //daynamic form
@@ -364,7 +365,6 @@ const [uom,setUom]=useState([]);
 
   const [imagepath,setImagepath]=useState('/images/General layout.png');
   const [myImage,setMyImage]=useState('fade-in img-thumbnail rounded mx-auto d-block');
-
   const [foucus,setFoucus]=useState(false);
 
   const dirtlossMouseOver=(wichInput,wichfunction) => {

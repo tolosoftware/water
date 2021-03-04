@@ -21,6 +21,7 @@
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.4.0",
+    "country-flag-icons": "^1.2.9",
     "cross-env": "^5.2.0",
     "downshift": "^3.2.10",
     "draft-js": "^0.11.7",

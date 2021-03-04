@@ -61,3 +61,17 @@
 .customslider{
     height: 118px;
 }
+
+/* country flag */
+.customflag{
+    width: 20px;
+    height: 20px;
+}
+
+/* custom widget hover */
+.customWidgetHover:hover{
+    box-shadow: 0px 8px 10px rgb(0 0 0 / 20%);
+    transition: all 0.4s ease-in-out 0.1s;
+    background-color: #2236f2;
+    border-radius: 5%;
+}

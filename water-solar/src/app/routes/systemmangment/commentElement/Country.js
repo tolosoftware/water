@@ -105,7 +105,7 @@ const Country = [
     'India',  
     'British Indian Ocean Territory',   
     'Iraq',   
-    'Iran, Islamic Republic of',  
+    'Iran',  
     'Iceland',   
     'Italy',  
     'Jersey',  
