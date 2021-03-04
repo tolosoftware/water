@@ -39,28 +39,45 @@ class SolarListController extends Controller
     {
         DB::beginTransaction();
         try {
+            $photoname = 0;
+            $id = $request['solarListID'];
+            if($request['image'] != 'oldImage'){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+                \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
+                $request->merge(['photo' => $photoname]);
+            }
+            if ($id!==0) {
+                $solar_list = Solar_list::findOrFail($id);
+                $solar_list->solar_brand_id =  $request['brand'];
+                $solar_list->model = $request['typeModel'];
+                $solar_list->power = $request['powerW'];
+                $solar_list->voltage = $request['voltage'];
+                $solar_list->current = $request['current'];
+                $solar_list->cable_type_id = $request['cableType'];
+                if($request->image != 'oldImage'){
+                    File::delete('brand/solar/solar_list/'.$solar_list->image);
+                    $solar_list->image = $photoname;
+                }
+                $solar_list->discription = $request['description'];
+                $solar_list->save();
+            }else{
+                Solar_list::create([
+                    'serial_no' => 11, 
+                    'solar_brand_id' => $request['brand'], 
+                    'model' => $request['typeModel'], 
+                    'power' => $request['powerW'], 
+                    'voltage' => $request['voltage'], 
+                    'current' => $request['current'], 
+                    'cable_type_id' => $request['cableType'], 
+                    'discription' => $request['description'], 
+                    'image' => $photoname, 
+                ]);
+            }
+            // return $request;
+           
 
-        if($request->image){
-            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-            \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
-
-        // return $request;
-        Solar_list::create([
-            'serial_no' => 11, 
-            'solar_brand_id' => $request['brand'], 
-            'model' => $request['typeModel'], 
-            'power' => $request['powerW'], 
-            'voltage' => $request['voltage'], 
-            'current' => $request['current'], 
-            'cable_type_id' => $request['cableType'], 
-            'discription' => $request['description'], 
-            'image' => $photoname, 
-        ]);
-
-        DB::commit();
-        return ['msg' => 'Solar brand succefully inserted'];
+            DB::commit();
+            return ['msg' => 'Solar brand succefully inserted'];
         } catch (Exception $e) {
             DB::rollback();
         }

@@ -27,8 +27,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box p={3} component={'div'}>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -64,6 +64,10 @@ function Accessories() {
   const [accessoryObject, setAccessoryObject] =React.useState([]);
 
   const handleChange = (event, newValue) => {
+    setAccessoryObject('');
+    if(newValue===0){
+      getAccessories();
+    }
     setValue(newValue);
   };
    
@@ -88,7 +92,7 @@ const getAccessories = async() =>{
       )
 }
 const editAccessory = (accessoryObj) =>{
-   console.log(accessoryObj);
+  //  console.log(accessoryObj);
    setValue(1);
    setAccessoryObject(accessoryObj);
 }
@@ -144,7 +148,7 @@ const deletAccessory=(id) => {
                     { title: 'Model', field: 'model' },
                     { title: 'Country', field: 'country'},
                     {title: 'Price', field: 'price'},
-                    {title: 'Image', field: 'image'},
+                    {title: 'Image', field: 'img', render: item => <img src={`http://localhost:8000/accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},
                         
                 ]}
                 data={accessoriesList}

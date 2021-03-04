@@ -289,3 +289,9 @@ padding: 0px 15px 10px;
 /* .tap1_acc .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters {
     display: none;
 } */
+.acc_img_width{
+    width: 130px !important;
+}
+.sp_right_padding{
+    padding-right: 10px !important;
+}

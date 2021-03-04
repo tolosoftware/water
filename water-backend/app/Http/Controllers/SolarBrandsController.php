@@ -40,21 +40,34 @@ class SolarBrandsController extends Controller
          DB::beginTransaction();
         try {
 
-        if($request->image){
-            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-            \Image::make($request->image)->save(public_path('brand/solar/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
-
-         Solar_brands::create([
-            'name' => $request['brand'], 
-            'country' => $request['country'], 
-            'discription' => $request['description'], 
-            'image' => $photoname, 
-        ]);
-
-        DB::commit();
-        return ['msg' => 'Solar brand succefully inserted'];
+            $photoname = 0;
+            $id = $request['solarBrandID'];
+            if($request['image'] != 'oldImage'){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+                \Image::make($request->image)->save(public_path('brand/solar/').$photoname);
+                $request->merge(['photo' => $photoname]);
+            }
+            
+            if ($id!==0) {
+                $solar_brands = Solar_brands::findOrFail($id);
+                $solar_brands->name =  $request['brand'];
+                $solar_brands->country = $request['country'];
+                $solar_brands->discription = $request['description'];
+                if($request->image != 'oldImage'){
+                    File::delete('brand/solar/'.$solar_brands->image);
+                    $solar_brands->image = $photoname;
+                }
+                $solar_brands->save();
+            }else{
+                Solar_brands::create([
+                    'name' => $request['brand'], 
+                    'country' => $request['country'], 
+                    'discription' => $request['description'], 
+                    'image' => $photoname, 
+                ]);
+            }
+            DB::commit();
+            return ['msg' => 'Solar brand succefully inserted'];
         } catch (Exception $e) {
             DB::rollback();
         }
