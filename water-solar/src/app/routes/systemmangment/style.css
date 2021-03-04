@@ -283,3 +283,9 @@ padding: 0px 15px 10px;
     overflow-y: scroll !important;
     height: 185px !important;
 }
+.tap1_acc .MuiBox-root {
+    padding: 0 !important;
+}
+/* .tap1_acc .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters {
+    display: none;
+} */

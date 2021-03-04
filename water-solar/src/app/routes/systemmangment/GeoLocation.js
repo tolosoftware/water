@@ -23,39 +23,7 @@ import Swal from 'sweetalert2';
 // end dialog import file 
 import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
 
-/*
-const tableList = [
-  {
-    id: 1,
-    name: 'Lucy Francis',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '17 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 2,
-    name: 'Dean Holmes',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '10 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 3,
-    name: 'Terry Bridges',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '6 days ago',
-    action: 'Pay'
-  },
-  {
-    id: 4,
-    name: 'Alice Collins',
-    image: 'https://via.placeholder.com/150x150',
-    lastTransfer: '2 hrs. ago',
-    action: 'Pay'
-  }
-];
 
-*/
 // start dialog code
 const styles = (theme) => ({
   root: {

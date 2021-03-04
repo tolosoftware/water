@@ -294,6 +294,11 @@ const getWaterPumpLists = async() =>{
 
 // end get solar pabal list
 
+const editWaterBrand = (dataValue) => {
+  console.log(dataValue);
+  setValue(0);
+  // setBrand(); setD1escription();
+}
 const deleteWaterPumpBrand = (id) =>{
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
@@ -555,7 +560,7 @@ const handleSubmit = (e) => {
                                   <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterPumpBrand(data.id)} >
                                     <DeleteIcon />
                                   </IconButton>
-                                <IconButton size="small" color="primary" aria-label="edit an alarm">
+                                <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editWaterBrand(data)}>
                                     <Edit />
                                 </IconButton>
                                
