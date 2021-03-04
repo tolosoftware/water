@@ -17,22 +17,15 @@ import  './stayle.css';
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
 //drop zoon
-import {useDropzone} from 'react-dropzone'
-
-
-
-
-
-
+import {useDropzone} from 'react-dropzone';
+import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 
 //drop down
 const useStyles = makeStyles((theme) => ({ 
 }));
 
-
-
 //end drop down
-
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -189,13 +182,14 @@ export default function CustomizedDialogs(props) {
       userimage = reader.result;
       data['userimage'] = userimage;
       axios.post('api/user', data)
-        .then(
-            res => {
-                console.log(res);
+        .then( res => {
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+              setOpen(false)
             }
-        ).catch(
-            err =>{
-                console.log(err);
+        ).catch( err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
             }
            
         )
@@ -329,6 +323,7 @@ export default function CustomizedDialogs(props) {
             </DialogActions>
            </form>          
       </Dialog>
+         <NotificationContainer />
     </div>
   );
 }

@@ -6,13 +6,14 @@ import Widget from "components/Widget/index";
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";
+import {NotificationContainer,NotificationManager} from 'react-notifications';
 export const UserList=() => {
 
   const [open,setOpen]=React.useState(false);  
   const [userdata,setUserdata]= useState([]);
   useEffect(() => {
     const getUserdata=async () => {
-     axios.get('http://localhost:8000/api/user')
+     axios.get('api/user')
         .then(
             res => {
               setUserdata(res.data)
@@ -25,7 +26,7 @@ export const UserList=() => {
         )
     };
     getUserdata();
-  }, [])
+  }, [open])
    
   const deletUser = async (id) => {
  
