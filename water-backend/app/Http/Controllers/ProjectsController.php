@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Projects;
 use App\Models\Project_accessories;
-use App\Models\GeoLocation;
+use App\Models\Geolocation;
 use App\Models\Pump_brands;
 use App\Models\Solar_brands;
 use App\Models\Uom;
@@ -15,15 +15,19 @@ class ProjectsController extends Controller
 {
 
     public function gitprojectdata(){
-        $geolocation = GeoLocation::all();
+        $geolocation = Geolocation::all();
         $pumpbrand = Pump_brands::all();
         $solarbrand = Solar_brands::all();
         $uom = Uom::all();
         $accessories = Accessories_list::all();
+        $country = DB::table('geolocations')
+            ->select('country')
+            ->groupBy('country')
+            ->get();
 
         return response()->json([
             'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand,
-            'uom'=>$uom , 'accessories'=>$accessories
+            'uom'=>$uom , 'accessories'=>$accessories,'countrylist' => $country
         ]);
     }
     /**

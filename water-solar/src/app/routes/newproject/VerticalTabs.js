@@ -30,6 +30,8 @@ import IntlMessages from 'util/IntlMessages';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import Project from './Project';
+
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -437,6 +439,8 @@ const [uom,setUom]=useState([]);
   
   return (
   
+<>
+    <Project/>
     <div className={classes.root}>
 
        <Backdrop className={classes.backdrop} open={open} >
@@ -985,6 +989,8 @@ const [uom,setUom]=useState([]);
 
        <NotificationContainer/>
   
-    </div>
+      </div>
+
+    </>  
   );
 }
