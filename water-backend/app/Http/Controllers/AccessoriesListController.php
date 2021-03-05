@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Accessories_list;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
+
 class AccessoriesListController extends Controller
 {
     /**
@@ -35,24 +37,45 @@ class AccessoriesListController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         DB::beginTransaction();
         try {
-        if($request->image){
-            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-            \Image::make($request->image)->save(public_path('accessories/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
-         Accessories_list::create([
-            'accessories_type_id' => $request['type'],
-            'name' => $request['name'],
-            'model' => $request['model'],
-            'country' => $request['country'],
-            'price' =>$request['price'],
-            'discription' => $request['description'],
-            'image' => $photoname,
-        ]);
-
-        DB::commit();
+            $photoname = 0;
+            $id = $request['accessoryID'];
+            if($request['image'] != 'oldImage'){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+                \Image::make($request->image)->save(public_path('accessories/').$photoname);
+                $request->merge(['photo' => $photoname]);
+            }
+            if ($id!==0) {
+                // return "it inside if ". $id;
+                $accessories_list = Accessories_list::findOrFail($id);
+                $accessories_list->accessories_type_id = $request['type'];
+                $accessories_list->name = $request['name'];
+                $accessories_list->model = $request['model'];
+                $accessories_list->country = $request['country'];
+                $accessories_list->price = $request['price'];
+                if($request->image != 'oldImage'){
+                    File::delete('accessories/'.$accessories_list->image);
+                    $accessories_list->image = $photoname;
+                }
+                $accessories_list->discription = $request['description'];
+                $accessories_list->save();
+               
+            }else{
+                // return "inside elase: ".$request;
+                Accessories_list::create([
+                    'accessories_type_id' => $request['type'],
+                    'name' => $request['name'],
+                    'model' => $request['model'],
+                    'country' => $request['country'],
+                    'price' =>$request['price'],
+                    'discription' => $request['description'],
+                    'image' => $photoname,
+                ]);
+            }
+            
+            DB::commit();
         return ['msg' => 'Accessories Success full inserted'];
     } catch (Exception $e) {
         DB::rollback();
@@ -99,8 +122,11 @@ class AccessoriesListController extends Controller
      * @param  \App\Models\Accessories_list  $accessories_list
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accessories_list $accessories_list)
+    public function destroy($id)
     {
-        //
+        $accessories_list = Accessories_list::findOrFail($id);
+        File::delete('accessories/'.$accessories_list->image);
+        $accessories_list->delete();
+        return ['message' => 'Geo Location Deleted'];
     }
 }

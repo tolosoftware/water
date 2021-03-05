@@ -149,23 +149,27 @@ const marksC = [
 ];
 export default function DialogSolarP(props){
     // start code of dialog modal for Solar Panal 
+    const [files, setFiles] = useState([]);
     const {openS,   setOpenS} = props;
+    const {solarListObject, setSolarListObject} = props;
     const handleCloseS = () => {
-          setOpenS(false);
+      setSolarListObject([]);
+      setFiles([]);
+      setOpenS(false);
     };
     // end code of dialog modal for Solar Panal 
   const solarBrands=props.solarBrands;
   const [brand, setBrand] = useState("");
   const [typeModel, setTypeModel] = useState("");
-  const [powerW, setPowerW] = useState("");
-  const [voltage, setVoltage] = useState("");
-  const [current, setCurrent] = useState("");
+  const [powerW, setPowerW] = useState(150);
+  const [voltage, setVoltage] = useState(100);
+  const [current, setCurrent] = useState(150);
   const [cableType, setCableType] = useState("");
   const [description, setDescription] = useState("");
   const classes = useStyles();
   
 // dropzone code
-  const [files, setFiles] = useState([]);
+ 
   const {getRootProps, getInputProps} = useDropzone({
     accept: 'image/*',
     onDrop: acceptedFiles => {
@@ -209,12 +213,37 @@ const getCabletype=async () => {
 };
 
 // end get cable type
+
+
+
+const [solarListID, setSolarListID] = useState('0'); 
+const [oldImage, setOldImage] = useState("");
+useEffect(() => {
+  setEditFieldValuse();
+},[props.solarListObject])
+
+const setEditFieldValuse = () => {
+  setSolarListID(solarListObject.id);
+  setBrand(solarListObject.solar_brand_id);
+  setTypeModel(solarListObject.model);
+  setPowerW(Math.floor(solarListObject.power));
+  setVoltage(Math.floor(solarListObject.voltage));
+  setCurrent(Math.floor(solarListObject.current));
+  setCableType(solarListObject.cable_type_id);
+  setDescription(solarListObject.discription);
+  setOldImage(solarListObject.image);
+} 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let dataSolarList = {
-        brand, typeModel, powerW, voltage, current, cableType, description
+      solarListID, brand, typeModel, powerW, voltage, current, cableType, description
     }
     console.log(dataSolarList);
+    if(files.length!==0){
+      if(dataSolarList.solarListID===undefined){
+        dataSolarList.solarListID = 0;
+      }
     var image = '';
     let file = files[0];
     let reader = new FileReader();
@@ -234,7 +263,19 @@ const getCabletype=async () => {
         )
     }
     reader.readAsDataURL(file); 
-    
+  }else{
+    dataSolarList['image'] = 'oldImage';
+    axios.post('api/solarList', dataSolarList)
+        .then(res => {
+          setOpenS(false);
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+        }).catch(err =>{
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+        )
+  } 
 
   }
     return (
@@ -287,7 +328,7 @@ const getCabletype=async () => {
                                     Power
                                     </Typography>
                                     <Slider onChange={(event, value) => setPowerW(value)}
-                                        defaultValue={150}
+                                        defaultValue={(solarListID !== undefined) ? powerW : 150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -303,7 +344,7 @@ const getCabletype=async () => {
                                     Voltage
                                     </Typography>
                                     <Slider onChange={(event, value) => setVoltage(value)}
-                                        defaultValue={150}
+                                        defaultValue={(solarListID !== undefined) ? voltage : 150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -319,7 +360,7 @@ const getCabletype=async () => {
                                     Current
                                     </Typography>
                                     <Slider onChange={(event, value) => setCurrent(value)}
-                                        defaultValue={150}
+                                        defaultValue={(solarListID !== undefined) ? current : 150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -364,6 +405,10 @@ const getCabletype=async () => {
                                     </div>
                                     <div className="dropzone-content" style={thumbsContainer}>
                                         {thumbs}
+                                        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
+                                        <span className={`sp_right_padding`}>Cuurent Image </span>
+                                        <span><img src={`http://localhost:8000/brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                      </spam>): ''): ''}
                                     </div>
                                 </div>
                             </div>

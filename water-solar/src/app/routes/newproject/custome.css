@@ -4,7 +4,15 @@
 }
 
 .activebrand{
-    border: 2px solid red;
+    border: 2px solid #3f51b5;
+    box-shadow: 0px 8px 10px rgb(0 0 0 / 20%);
+    transition: all 0.4s ease-in-out 0.1s;
+    background-color: #f2f2f2;
+  
+}
+
+.activebrand:hover{
+   
 }
 
 .custompargraph{
@@ -15,4 +23,55 @@
 
 .customdisply{
     display: inline;
+}
+
+/* image fade-in and out */
+.fade-in{
+    animation: fadeIn 3s;
+}
+.fade-incustom{
+    animation: fadeIncustom 2s;
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeIncustom {
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
+    }
+}
+
+.imagebrandhieght{
+    height: 100px;
+}
+
+.customslider{
+    height: 118px;
+}
+
+/* country flag */
+.customflag{
+    width: 20px;
+    height: 20px;
+}
+
+/* custom widget hover */
+.customWidgetHover:hover{
+    box-shadow: 0px 8px 10px rgb(0 0 0 / 20%);
+    transition: all 0.4s ease-in-out 0.1s;
+    background-color: #2236f2;
+    border-radius: 5%;
 }
