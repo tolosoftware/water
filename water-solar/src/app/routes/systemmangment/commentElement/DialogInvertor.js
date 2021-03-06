@@ -23,7 +23,6 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
-import { v4 as uuidv4 } from 'uuid';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -137,38 +136,36 @@ const marksV = [
       label: '270V',
     },
 ];
-const marksC = [
+const marksVolDC = [
     {
       value: 0,
-      label: '0A',
+      label: '0V',
     },
     {
       value: 270,
-      label: '270A',
+      label: '270V',
     },
 ];
-export default function DialogSolarP(props){
+export default function DialogInvertor(props){
     // start code of dialog modal for Solar Panal 
     const [files, setFiles] = useState([]);
-    const {openS,   setOpenS} = props;
-    const {solarListObject, setSolarListObject} = props;
+    const {openIn,   setOpenIn} = props;
+    const {invertorListObject, setInvertorListObject} = props;
     
     // end code of dialog modal for Solar Panal 
-  const solarBrands=props.solarBrands;
+  const invertorBrands=props.invertorBrands;
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [solarType, setSolarType] = useState("Mono");
-  const [powerW, setPowerW] = useState(150);
+  const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
-  const [current, setCurrent] = useState(150);
-  const [cableType, setCableType] = useState("");
+  const [voltageDC, setVoltageDC] = useState([50, 150]);
   const [description, setDescription] = useState("");
   const classes = useStyles();
   const handleCloseS = () => {
-    setSolarListObject([]);
+    setInvertorListObject([]);
     setFiles([]);
-    setSolarType("Mono");
-    setOpenS(false);
+    setOpenIn(false);
   };
 // dropzone code
  
@@ -197,81 +194,59 @@ export default function DialogSolarP(props){
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 // end dropzone code
-// start get cable type
-useEffect(() => {
-  getCabletype();
-  setSolarType("Mono");
-},[])
-const [cableTypesSelect,setCabletypesSelect]= useState([]);
-const getCabletype=async () => {
-  axios.get('api/cabletype')
-    .then(res => {  
-      setCabletypesSelect(res.data)
-      }
-  ).catch(err => {
-         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-        }
-    )
-};
 
-// end get cable type
-
-
-
-const [solarListID, setSolarListID] = useState('0'); 
+const [invertorListID, setInvertorListID] = useState('0'); 
 const [oldImage, setOldImage] = useState("");
 useEffect(() => {
   setEditFieldValuse();
-},[props.solarListObject])
+},[props.invertorListObject])
 
 const setEditFieldValuse = () => {
-  setSolarListID(solarListObject.id);
-  setBrand(solarListObject.solar_brand_id);
-  setModel(solarListObject.model);
-  setSolarType(solarListObject.type);
-  setPowerW(Math.floor(solarListObject.power));
-  setVoltage(Math.floor(solarListObject.voltage));
-  setCurrent(Math.floor(solarListObject.current));
-  setCableType(solarListObject.cable_type_id);
-  setDescription(solarListObject.discription);
-  setOldImage(solarListObject.image);
+  setInvertorListID(invertorListObject.id);
+  setBrand(invertorListObject.invertor_brand_id);
+  setModel(invertorListObject.model);
+  setPowerKW(Math.floor(invertorListObject.power));
+  setVoltage(Math.floor(invertorListObject.voltage_ac));
+//   let min = Math.floor(invertorListObject.voltage_dc_min);
+//   let max = Math.floor(invertorListObject.voltage_dc_max)
+//   setVoltageDC([min, max]);
+  setDescription(invertorListObject.discription);
+  setOldImage(invertorListObject.image);
 } 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let dataSolarList = {
-      solarListID, brand, model, solarType, powerW, voltage, current, cableType, description
+    let dataInvertor = {
+      invertorListID, brand, model, powerKW, voltage, voltageDC, description
     }
-    console.log(dataSolarList);
+    console.log(dataInvertor);
     if(files.length!==0){
-      if(dataSolarList.solarListID===undefined){
-        dataSolarList.solarListID = 0;
+      if(dataInvertor.invertorListID===undefined){
+        dataInvertor.invertorListID = 0;
       }
-    var image = '';
-    let file = files[0];
-    let reader = new FileReader();
-    reader.onloadend = (file) => {
-      image = reader.result;
-      dataSolarList['image'] = image;
-      dataSolarList['serial_no'] = uuidv4();
-      axios.post('api/solarList', dataSolarList)
-        .then(res => {
-          setOpenS(false);
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-        }).catch(err =>{
-          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-        )
-    }
-    reader.readAsDataURL(file); 
+        var image = '';
+        let file = files[0];
+        let reader = new FileReader();
+        reader.onloadend = (file) => {
+        image = reader.result;
+        dataInvertor['image'] = image;
+        axios.post('api/invertorList', dataInvertor)
+            .then(res => {
+            setOpenIn(false);
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                id="notification.titleHere" />);
+            }).catch(err =>{
+            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+            }
+            )
+        }
+        reader.readAsDataURL(file); 
   }else{
-    dataSolarList['image'] = 'oldImage';
-    axios.post('api/solarList', dataSolarList)
+    dataInvertor['image'] = 'oldImage';
+    axios.post('api/invertorList', dataInvertor)
         .then(res => {
-          setOpenS(false);
+          setOpenIn(false);
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -283,10 +258,10 @@ const setEditFieldValuse = () => {
 
   }
     return (
-      <Dialog onClose={handleCloseS}  aria-labelledby="customized-dialog-title" open={openS}>
+      <Dialog onClose={handleCloseS}  aria-labelledby="customized-dialog-title" open={openIn}>
         <form autoComplete="off" onSubmit={handleSubmit}>
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleCloseS}>
-              Add Solar Panal  Device
+              Add Invertor Device
             </DialogTitle>
             <DialogContent dividers>
                 {/* <SolarPanalDeviceForm /> */}
@@ -318,7 +293,7 @@ const setEditFieldValuse = () => {
                                   <MenuItem value="">
                                       <em>None</em>
                                   </MenuItem>
-                                  {solarBrands.map(brand => 
+                                  {invertorBrands.map(brand => 
                                   <MenuItem value={brand.id}>{brand.name}</MenuItem>
                                   )}
                                   </Select>
@@ -335,12 +310,12 @@ const setEditFieldValuse = () => {
                                   <label class="btn btn-outline-primary" for={"btnradio2Poly"}>Poly</label>
                               </div>
                             </div>
-                            <div className="col-xl-5 col-lg-5 col-md-5 col-12 insideFormPadding1 inputAdornmentWrap">
+                            <div className="col-xl-9 col-lg-9 col-md-9 col-12 insideFormPadding1 inverPower inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    Power
+                                    Power (KW)
                                     </Typography>
-                                    <Slider onChange={(event, value) => setPowerW(value)}
-                                        defaultValue={(solarListID !== undefined) ? powerW : 150}
+                                    <Slider onChange={(event, value) => setPowerKW(value)}
+                                        defaultValue={(invertorListID !== undefined) ? powerKW : 150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -351,12 +326,12 @@ const setEditFieldValuse = () => {
                                     />
                             </div>
                             
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding2 inputAdornmentWrap">
+                            <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding2 inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    Voltage
+                                    Voltage (AC)
                                     </Typography>
                                     <Slider onChange={(event, value) => setVoltage(value)}
-                                        defaultValue={(solarListID !== undefined) ? voltage : 150}
+                                        defaultValue={(invertorListID !== undefined) ? voltage : 150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -367,42 +342,21 @@ const setEditFieldValuse = () => {
                                     />
                             </div>
                             
-                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding3 inputAdornmentWrap">
-                                <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    Current
-                                    </Typography>
-                                    <Slider onChange={(event, value) => setCurrent(value)}
-                                        defaultValue={(solarListID !== undefined) ? current : 150}
-                                        getAriaValueText={valuetext}
-                                        aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
-                                        marks={marksC}
-                                        min={0}
-                                        max={270}
-                                        valueLabelDisplay="auto"
-                                    />
+                            <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding3 inputAdornmentWrap">
+                                <Typography id="range-slider" gutterBottom>
+                                        Voltage (DC)
+                                </Typography>
+                                <Slider name="voltageDC" onChange={(event, value) => setVoltageDC(value)}
+                                    value={voltageDC}
+                                    valueLabelDisplay="auto"
+                                    aria-labelledby="range-slider"
+                                    getAriaValueText={valuetext}
+                                    min={0}
+                                    max={270}
+                                    marks={marksVolDC}
+                                />
                             </div>
-                            
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
-                              <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
-                                  <Select
-                                  labelId="demo-simple-select-outlined-label"
-                                  id="demo-simple-select-outlined"
-                                  value={cableType}
-                                  onChange={(e) => setCableType(e.target.value)}
-                                  label="Cable Type"
-                                  >
-                                  <MenuItem value="">
-                                      <em>None</em>
-                                  </MenuItem>
-                                  {cableTypesSelect.map(cableOption => 
-                                  <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
-                                  )}
-                                  </Select>
-                              </FormControl>
-                            </div>    
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
                                 <div class="form-group">
                                     <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                 </div>

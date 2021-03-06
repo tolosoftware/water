@@ -19,6 +19,7 @@ class CreateSolarListsTable extends Migration
             $table->unsignedBigInteger('solar_brand_id');
             $table->foreign('solar_brand_id')->references('id')->on('solar_brands')->onDelete('cascade');
             $table->string('model');
+            $table->enum('type', ['Mono', 'Poly'])->default('Mono');
             $table->decimal('power');
             $table->decimal('voltage');
             $table->decimal('current');

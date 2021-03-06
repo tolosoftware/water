@@ -47,7 +47,7 @@ class AccessoriesListController extends Controller
                 \Image::make($request->image)->save(public_path('accessories/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!==0) {
+            if ($id!=='0') {
                 // return "it inside if ". $id;
                 $accessories_list = Accessories_list::findOrFail($id);
                 $accessories_list->accessories_type_id = $request['type'];

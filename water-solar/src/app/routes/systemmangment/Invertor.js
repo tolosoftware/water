@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {useDropzone} from "react-dropzone";
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
+
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import Edit from '@material-ui/icons/Edit';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
 // start import for taps 
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
@@ -23,6 +21,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import './style.css';
+import {useDropzone} from "react-dropzone";
+import DialogInvertor from './commentElement/DialogInvertor'
+
 // end import for taps
 
 // start import for dialog
@@ -32,14 +33,13 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 // end import for dialog 
-import DialogSolarP from './commentElement/DialogSolarP';
-import DialogSettingSP from './commentElement/DialogSettingSP';
 //form importas
 import axios from 'axios';
-import IntlMessages from 'util/IntlMessages';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Country from './commentElement/Country';
+
 // start of dialog modal for water pump
 const styles = (theme) => ({
   root: {
@@ -77,7 +77,7 @@ const DialogActions = withStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
-// end of dialog modal for water pump
+
 
 // start taps functions
 function TabPanel(props) {
@@ -133,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 // end taps functions
- 
+
 // start code for dropzone
 const thumbsContainer = {
   display: 'flex',
@@ -166,75 +166,60 @@ const img = {
   height: '100%'
 };
 // end code for dropzone
-
-
-const SolarPanel = () => {
+const Invertor = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const [solarBrands, setSolarBrands] = useState([]);
-  const [solarLists, setSolarLists] = useState([])
+  const [value, setValue] = React.useState(0);
+  const [invertorBrands, setInvertorBrands] = useState([]);
+  const [invertorLists, setInvertorLists] = useState([])
   const [brand, setBrand] = React.useState("");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
   const [description, setDescription] = React.useState("");
-  const [solarBrandID, setSolarBrandID] = useState('0'); 
-  const [solarBrOldImage, setSolarBrOldImage] = useState("");
-  
+  const [invertorBrandID, setInvertorBrandID] = useState('0'); 
+  const [invertorBrOldImage, setInvertorBrOldImage] = useState("");
   useEffect(() => {
-    getSolarBrands();
+    getInvertors();
   },[])
   
-  
-  const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setBrand("");
     setDescription("");
-    setSolarBrandID('0');
-    setSolarBrOldImage("");
+    setInvertorBrandID('0');
+    setInvertorBrOldImage("");
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
     setValue(index);
   };
-  const editSolarBrand = (solarDataObject) => {
+  
+  const editInvertorBrand = (invertorDataObject) => {
     setValue(0);
-    setBrand(solarDataObject.name);
-    setCountry(solarDataObject.country);
-    setDescription(solarDataObject.discription);
-    setSolarBrandID(solarDataObject.id);
-    setSolarBrOldImage(solarDataObject.image);
-    console.log("solarDataObject : ", solarDataObject)
+    setBrand(invertorDataObject.name);
+    setCountry(invertorDataObject.country);
+    setDescription(invertorDataObject.discription);
+    setInvertorBrandID(invertorDataObject.id);
+    setInvertorBrOldImage(invertorDataObject.image);
+    console.log("invertorDataObject : ", invertorDataObject)
   }
-
   // start code of dialog modal for water pump
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const [openIn, setOpenIn] = React.useState(false);
+  useEffect(() => {
+    getInvertorLists();
+  },[openIn])
   const handleClose = () => {
     setBrand("");
     setDescription("");
-    setSolarBrandID('0');
-    setSolarBrOldImage("");
+    setInvertorBrandID('0');
+    setInvertorBrOldImage("");
     setOpen(false);
   };
-  const [openS, setOpenS] = React.useState(false);
-  const [openSPD, setOpenSPD] = React.useState(false);
   // end code of dialog modal for water pump
-  useEffect(() => {
-    getSolarLists();
-  },[openS])
-// start popove code
-const [anchorEl, setAnchorEl] = React.useState(null);
-const handlePopoverOpen = (event) => {
-  setAnchorEl(event.currentTarget);
-};
-const handlePopoverClose = () => {
-  setAnchorEl(null);
-};
-const open1 = Boolean(anchorEl);
-// end popover code
-// dropzone code
+  // dropzone code
 const [files, setFiles] = useState([]);
 const {getRootProps, getInputProps} = useDropzone({
   accept: 'image/*',
@@ -261,24 +246,16 @@ useEffect(() => () => {
   files.forEach(file => URL.revokeObjectURL(file.preview));
 }, [files]);
 // end dropzone code
+   
 // start form sumbit
 
 
-// Start code of Solar Panal List Setting 
-const [solarListId, setSolarListId] = useState('');
-const [solarListModel, setSolarListModel] = useState('');
+// Start code of water Pumps List Setting 
  
-const onButtonClick = (listId, solarModel) => {
-   
-  setSolarListId(listId);
-  setSolarListModel(solarModel);
-  // console.log("list id: ", listId);
-  setOpenSPD(true);
-}
-// End code of Solar Panal list setting 
+// End code of water pumps list setting 
 
-
-const deleteSolarBrand = (id) =>{
+// start delete function Water Device list
+const deleteInvertorList = (id) =>{
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -290,10 +267,10 @@ const deleteSolarBrand = (id) =>{
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if(result.isConfirmed) {
-      axios.delete('api/solarbrand/'+id)
+      axios.delete('api/pumpList/'+id)
         .then(res => {
-              // setSolarBrands(res.data)
-            setSolarBrands(solarBrands.filter((value) => value.id !==id));
+              // setSolarLists(res.data)
+              setInvertorLists(invertorLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
@@ -308,60 +285,20 @@ const deleteSolarBrand = (id) =>{
     }
   })
 }
-const getSolarBrands = async() =>{
-  axios.get('api/solarbrand')
-  .then(res => {  
-      // setVisibility(false)
-      // console.log(res);
-      setSolarBrands(res.data);
-    }
-).catch(err => {
-      // setVisibility(false)
-       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-          id="notification.titleHere"/>);
-      }
-  )
+const [invertorListObject, setInvertorListObject] =React.useState([]);
+const editInvertorList = (invertorListObject) =>{
+  //  console.log(solarListObject);
+  setInvertorListObject(invertorListObject);
+  setOpenIn(true)
 }
+// End delete Water Device lists
+// start get WaterPump panal list
 
-// start delete function solar panel list
-const deleteSolarList = (id) =>{
-  console.log("it is id of that water pump brand: ", id);
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if(result.isConfirmed) {
-      axios.delete('api/solarList/'+id)
-        .then(res => {
-              setSolarLists(res.data)
-            setSolarLists(solarLists.filter((value) => value.id !==id));
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-            id="notification.titleHere" />);
-          }
-        ).catch( err =>{
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Something went wrong!',
-             
-            })
-        })  
-    }
-  })
-}
-// End delete solar panal lists
-// start get solar panal list
-
-const getSolarLists = async() =>{
-  axios.get('api/solarList')
+const getInvertorLists = async() =>{
+  axios.get('api/invertorList')
   .then(res => {  
       // console.log(res);
-      setSolarLists(res.data);
+      setInvertorLists(res.data);
     }
 ).catch(err => {
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
@@ -372,77 +309,130 @@ const getSolarLists = async() =>{
 
 // end get solar pabal list
 
+const deleteInvertorBrand = (id) =>{
+  console.log("it is id of that Invertor brand: ", id);
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if(result.isConfirmed) {
+      axios.delete('api/invertorbrand/'+id)
+        .then(res => {
+              // setInvertorBrands(res.data)
+            setInvertorBrands(invertorBrands.filter((value) => value.id !==id));
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+        ).catch( err =>{
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+             
+            })
+        })  
+    }
+  })
+}
+const getInvertors = async() =>{
+  axios.get('api/invertorbrand')
+  .then(res => {  
+      // setVisibility(false)
+      // console.log(res);
+      setInvertorBrands(res.data);
+    }
+).catch(err => {
+      // setVisibility(false)
+       NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+      }
+  )
+}
 const handleSubmit = (e) => {
-    e.preventDefault();
-    let data = {
-      solarBrandID, brand, description, country
-    }
-    if(files.length!==0){
-      if(data.solarBrandID===undefined){
-        data.solarBrandID = 0;
-      }
-      var image = '';
-      let file = files[0];
-      let reader = new FileReader();
-      reader.onloadend = (file) => {
-        image = reader.result;
-        data['image'] = image;
-        axios.post('api/solarbrand', data)
-          .then(res => {
-            getSolarBrands();
-            getSolarLists();
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                id="notification.titleHere" />);
-          }).catch(err =>{
-            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+  e.preventDefault();
+ 
+  let data = {
+    invertorBrandID, country, brand, description
+  }
+  console.log(data);
+  if(files.length!==0){
+    if(data.invertorBrandID===undefined){
+      data.invertorBrandID = 0;
+    } 
+    var image = '';
+    let file = files[0];
+    let reader = new FileReader();
+    reader.onloadend = (file) => {
+      image = reader.result;
+      data['image'] = image;
+      axios.post('api/invertorbrand', data)
+        .then(res => {
+          console.log(res);
+              getInvertors();
+              getInvertorLists();
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
-          )
-      }
-      reader.readAsDataURL(file); 
+        )
     }
-    else{
-      data['image'] = 'oldImage';
-      axios.post('api/solarbrand', data)
-          .then(res => {
-            getSolarBrands();
-            getSolarLists();
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                id="notification.titleHere" />);
-          }).catch(err =>{
-            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+    reader.readAsDataURL(file); 
+  }
+  else{
+    data['image'] = 'oldImage';
+    axios.post('api/invertorbrand', data)
+        .then(res => {
+              getInvertors();
+              getInvertorLists();
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
-          )
-    }
+        )
+  }
 }
 // end form sumbit
-const [solarListObject, setSolarListObject] =React.useState([]);
-const editSolarList = (solarListObject) =>{
-  //  console.log(solarListObject);
-  setSolarListObject(solarListObject);
-  setOpenS(true)
-}
+
+  // start popove code
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+  const open1 = Boolean(anchorEl);
+  // end popover code
+   
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
-        <Widget styleName={`solarPanalBackGrad text-white`} >
+        <Widget styleName={`text-white waterPumpPanelBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
-            <WbSunnyIcon className="sunnyIcon"/>
+            <LocalDrinkIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
-            <h3 className="jr-font-weight-medium mb-3">Solar Panal Brands</h3>
-            <p className="mb-3">List of Current Solar Panal Brands</p>
+            <h3 className="jr-font-weight-medium mb-3">Invertor Brands</h3>
+            <p className="mb-3">List of Current Invertor Brands</p>
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
-        
-          
+          <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
             
-            <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={open}>
-              <form autoComplete="off" onSubmit={handleSubmit}>
+            <form autoComplete="off" onSubmit={handleSubmit}>
                 <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
                 <AppBar position="static" color="default">
                   <Tabs
@@ -453,8 +443,8 @@ const editSolarList = (solarListObject) =>{
                     variant="fullWidth"
                     aria-label="full width tabs example"
                   >
-                    <Tab label="Add New Solar Brand" {...a11yProps(0)} />
-                    <Tab label="List of Solar Brand" {...a11yProps(1)} />
+                    <Tab label="Add Brand" {...a11yProps(0)} />
+                    <Tab label="List of Brand" {...a11yProps(1)} />
                   </Tabs>
                 </AppBar>
                 
@@ -466,17 +456,17 @@ const editSolarList = (solarListObject) =>{
                   onChangeIndex={handleChangeIndex}
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
-               
+                
                   <Typography gutterBottom className={`p-Padding-bottom`}>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
                   </Typography>
                 <div className="row ">
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                     <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">  
-                    <Autocomplete 
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
+                  <Autocomplete 
                       value={country} onChange={(event, newValue) => {setCountry(newValue);}}
                       inputValue={inputValue}
                       onInputChange={(event, newInputValue) => {
@@ -486,18 +476,17 @@ const editSolarList = (solarListObject) =>{
                       options={Country}
                       style={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
-                    />
-                     
+                    /> 
                   </div>
                 </div>
                 <div className="row paddingTopForm">
-                  <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <TextareaAutosize value={description} onChange={e => setDescription(e.target.value)} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   
-                <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
+                  <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
                       <div className="dropzone-card">
                         <div className="dropzone">
                             <div {...getRootProps({className: 'dropzone-file-btn'})}>
@@ -507,13 +496,14 @@ const editSolarList = (solarListObject) =>{
                         </div>
                         <div className="dropzone-content" style={thumbsContainer}>
                             {thumbs}
-                            {(files.length === 0 )? ((solarBrOldImage!=="" && solarBrOldImage!==undefined)? (<spam>
+                            {(files.length === 0 )? ((invertorBrOldImage!=="" && invertorBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`http://localhost:8000/brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`http://localhost:8000/brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>
                   </div>
+                   
                 </div>
                 
                 </TabPanel>
@@ -532,7 +522,7 @@ const editSolarList = (solarListObject) =>{
                             </tr>
                           </thead>
                           <tbody>
-                          {solarBrands.map((solarData, index) => {
+                          {invertorBrands.map((data, index) => {
                             return <tr key={index}>
                               <td>{index+1}</td>
                               <td>
@@ -546,7 +536,7 @@ const editSolarList = (solarListObject) =>{
                                       onMouseEnter={handlePopoverOpen}
                                       onMouseLeave={handlePopoverClose}
                                     >
-                                      {solarData.name}
+                                      {data.name}
                                     </Typography>
                                     </h5>
                                     <Popover
@@ -568,26 +558,28 @@ const editSolarList = (solarListObject) =>{
                                       onClose={handlePopoverClose}
                                       disableRestoreFocus
                                     >
-                                      <Typography>{solarData.discription}</Typography>
+                                      <Typography>{data.discription}</Typography>
                                     </Popover>
                                   </div>
                                 </div>
                               </td>
                               
-                              <td>{solarData.country}</td>
+                              <td>{data.country}</td>
+                              
                               <td>
-                                <div className="d-flex align-items-center">
-                                  <img src={`http://localhost:8000/brand/solar/${solarData.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                              <div className="d-flex align-items-center">
+                                  <img src={`http://localhost:8000/brand/invertor/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                               </td>
                               <td>
                                 <div className="pointer text-primary">
-                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteSolarBrand(solarData.id)} >
+                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteInvertorBrand(data.id)} >
                                     <DeleteIcon />
                                   </IconButton>
-                                <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editSolarBrand(solarData)}>
+                                <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editInvertorBrand(data)}>
                                     <Edit />
                                 </IconButton>
+                               
                               
                                 </div>
                               </td>
@@ -603,37 +595,29 @@ const editSolarList = (solarListObject) =>{
                 </DialogContent>
                 <DialogActions>
                 {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>): null}
-                  
                 </DialogActions>
                 </form>
               </Dialog>
-          
-          
-        
       </div>
       
     </div>
 
-    <div className="col-xl-8 col-lg-8 col-md-12 col-12 sp-second-col">
+    <div className="col-xl-8 col-lg-8 col-md-12 col-12 wp-second-col">
       {/* imported dialog form another file */}
-      <DialogSolarP 
-        openS={openS}
-        setOpenS={setOpenS}
-        solarBrands={solarBrands}
-        solarListObject={solarListObject}
-        setSolarListObject={setSolarListObject}
+
+      <DialogInvertor 
+        openIn={openIn}
+        setOpenIn={setOpenIn}
+        invertorBrands={invertorBrands}
+        invertorListObject={invertorListObject}
+        setInvertorListObject={setInvertorListObject}
       />
-      
-      <DialogSettingSP
-        solarListId={solarListId}
-        solarListModel={solarListModel} 
-        openSPD={openSPD}
-        setOpenSPD={setOpenSPD}
-      />
+       
+
       <Widget>
         <div className="d-flex flex-row mb-3">
-          <h4 className="mb-0"> List of Solar Panals</h4>
-          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
+          <h4 className="mb-0"> List of Invertor</h4>
+          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
         <div className="table-responsive-material">
@@ -641,46 +625,43 @@ const editSolarList = (solarListObject) =>{
             <thead className="table-head-sm th-border-b">
               <tr>
                 <th>ID</th>
-                <th>Type/Model</th>
-                <th>Power</th>
-                <th>Voltage</th>
-                <th>Current</th>
+                <th>Model</th>
+                <th>Power (KW)</th>
+                <th>Voltage (AC)</th>
+                <th>Voltage (DC)</th>
                 <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-            {solarLists.map((solarList, index) => {
+            {invertorLists.map((invertor, index) => {
               return <tr key={index}>
                 <td>{index+1}</td>
                 <td>
                   <div className="d-flex align-items-center">
                     <div className="user-detail">
-                      <h5 className="user-name">{solarList.model}</h5>
+                      <h5 className="user-name">{invertor.model}</h5>
                     </div>
                   </div>
                 </td>
-                <td>{solarList.power}</td>
-                <td>{solarList.voltage}</td>
-                <td>{solarList.current}</td>
+                <td>{invertor.power}</td>
+                <td>{invertor.voltage_ac}</td>
+                <td>{invertor.voltage_dc_min} - {invertor.voltage_dc_max}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                  <img src={`http://localhost:8000/brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                    <img src={`http://localhost:8000/brand/invertor/invertor_list/${invertor.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
-                
-               
+                 
                 <td>
                   <div className="pointer text-primary">
-                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteSolarList(solarList.id)}>
+                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteInvertorList(invertor.id)}>
                       <DeleteIcon />
                     </IconButton>
-                  <IconButton size="small" color="primary" aria-label="add an alarm" onClick={() => editSolarList(solarList)}>
-                      <Edit />
+                  <IconButton size="small" color="primary" aria-label="edit an alarm"  onClick={() => editInvertorList(invertor)}>
+                    <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{onButtonClick(solarList.id, solarList.model)}}>
-                    <SettingsIcon />
-                  </IconButton>
+                   
                   </div>
                 </td>
               </tr>
@@ -688,17 +669,13 @@ const editSolarList = (solarListObject) =>{
             </tbody>
           </Table>
         </div>
-        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenS(true)}>
+        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenIn(true)}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
         Register New Device</span>
-        
       </Widget>
       </div>
       <NotificationContainer />  
   </div>
-    
-
   );
 };
-
-export default SolarPanel;
+export default Invertor;
