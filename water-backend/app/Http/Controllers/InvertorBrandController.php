@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Solar_brands;
+use App\Models\InvertorBrand;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 
-class SolarBrandsController extends Controller
+class InvertorBrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SolarBrandsController extends Controller
      */
     public function index()
     {
-        return Solar_brands::all();
+        return InvertorBrand::all();
     }
 
     /**
@@ -37,29 +37,32 @@ class SolarBrandsController extends Controller
      */
     public function store(Request $request)
     {
-         DB::beginTransaction();
+        // return $request;
+        DB::beginTransaction();
         try {
 
             $photoname = 0;
-            $id = $request['solarBrandID'];
+            $id = $request['invertorBrandID'];
             if($request['image'] != 'oldImage'){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/solar/').$photoname);
+                \Image::make($request->image)->save(public_path('brand/invertor/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
             
-            if ($id!=='0') {
-                $solar_brands = Solar_brands::findOrFail($id);
-                $solar_brands->name =  $request['brand'];
-                $solar_brands->country = $request['country'];
-                $solar_brands->discription = $request['description'];
+            if ($id !== '0') {
+                // return "inside if: ".$id;
+                $invertorBrand = InvertorBrand::findOrFail($id);
+                $invertorBrand->name =  $request['brand'];
+                $invertorBrand->country = $request['country'];
+                $invertorBrand->discription = $request['description'];
                 if($request->image != 'oldImage'){
-                    File::delete('brand/solar/'.$solar_brands->image);
-                    $solar_brands->image = $photoname;
+                    File::delete('brand/invertor/'.$invertorBrand->image);
+                    $invertorBrand->image = $photoname;
                 }
-                $solar_brands->save();
+                $invertorBrand->save();
             }else{
-                Solar_brands::create([
+                // return "inside else:".$id;
+                InvertorBrand::create([
                     'name' => $request['brand'], 
                     'country' => $request['country'], 
                     'discription' => $request['description'], 
@@ -76,10 +79,10 @@ class SolarBrandsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Solar_brands  $solar_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function show(Solar_brands $solar_brands)
+    public function show(InvertorBrand $invertorBrand)
     {
         //
     }
@@ -87,10 +90,10 @@ class SolarBrandsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Solar_brands  $solar_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function edit(Solar_brands $solar_brands)
+    public function edit(InvertorBrand $invertorBrand)
     {
         //
     }
@@ -99,10 +102,10 @@ class SolarBrandsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Solar_brands  $solar_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Solar_brands $solar_brands)
+    public function update(Request $request, InvertorBrand $invertorBrand)
     {
         //
     }
@@ -110,14 +113,14 @@ class SolarBrandsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Solar_brands  $solar_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $solar_brands = Solar_brands::findOrFail($id);
-        File::delete('brand/solar/'.$solar_brands->image);
-        $solar_brands->delete();
-        return ['message' => 'Geo Location Deleted'];
+        $invertorBrand = InvertorBrand::findOrFail($id);
+        File::delete('brand/invertor/'.$invertorBrand->image);
+        $invertorBrand->delete();
+        return ['message' => 'Selected Solar list has been Deleted'];
     }
 }

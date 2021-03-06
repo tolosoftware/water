@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Solar_list;
+use App\Models\InvertorList;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 
-class SolarListController extends Controller
+class InvertorListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SolarListController extends Controller
      */
     public function index()
     {
-        return Solar_list::all();
+        return InvertorList::all();
     }
 
     /**
@@ -40,37 +40,34 @@ class SolarListController extends Controller
         DB::beginTransaction();
         try {
             $photoname = 0;
-            $id = $request['solarListID'];
+            $id = $request['invertorListID'];
             if($request['image'] != 'oldImage'){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
+                \Image::make($request->image)->save(public_path('brand/invertor/invertor_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!=='0') {
-                $solar_list = Solar_list::findOrFail($id);
-                $solar_list->solar_brand_id =  $request['brand'];
-                $solar_list->model = $request['model'];
-                $solar_list->type = $request['solarType'];
-                $solar_list->power = $request['powerW'];
-                $solar_list->voltage = $request['voltage'];
-                $solar_list->current = $request['current'];
-                $solar_list->cable_type_id = $request['cableType'];
+            if ($id!==0) {
+                $invertorList = InvertorList::findOrFail($id);
+                $invertorList->invertor_brand_id =  $request['brand'];
+                $invertorList->model = $request['model'];
+                $invertorList->power = $request['powerKW'];
+                $invertorList->voltage_ac = $request['voltage'];
+                $invertorList->voltage_dc_min = $request['voltageDC'][0];
+                $invertorList->voltage_dc_max = $request['voltageDC'][1];
                 if($request->image != 'oldImage'){
-                    File::delete('brand/solar/solar_list/'.$solar_list->image);
-                    $solar_list->image = $photoname;
+                    File::delete('brand/invertor/invertor_list/'.$invertorList->image);
+                    $invertorList->image = $photoname;
                 }
-                $solar_list->discription = $request['description'];
-                $solar_list->save();
+                $invertorList->discription = $request['description'];
+                $invertorList->save();
             }else{
-                Solar_list::create([
-                    'serial_no' => 11, 
-                    'solar_brand_id' => $request['brand'], 
+                InvertorList::create([
+                    'invertor_brand_id' => $request['brand'], 
                     'model' => $request['model'], 
-                    'type' => $request['solarType'], 
-                    'power' => $request['powerW'], 
-                    'voltage' => $request['voltage'], 
-                    'current' => $request['current'], 
-                    'cable_type_id' => $request['cableType'], 
+                    'power' => $request['powerKW'], 
+                    'voltage_ac' => $request['voltage'], 
+                    'voltage_dc_min' => $request['voltageDC'][0], 
+                    'voltage_dc_max' => $request['voltageDC'][1], 
                     'discription' => $request['description'], 
                     'image' => $photoname, 
                 ]);
@@ -88,10 +85,10 @@ class SolarListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Solar_list  $solar_list
+     * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function show(Solar_list $solar_list)
+    public function show(InvertorList $invertorList)
     {
         //
     }
@@ -99,10 +96,10 @@ class SolarListController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Solar_list  $solar_list
+     * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function edit(Solar_list $solar_list)
+    public function edit(InvertorList $invertorList)
     {
         //
     }
@@ -111,10 +108,10 @@ class SolarListController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Solar_list  $solar_list
+     * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Solar_list $solar_list)
+    public function update(Request $request, InvertorList $invertorList)
     {
         //
     }
@@ -122,14 +119,14 @@ class SolarListController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Solar_list  $solar_list
+     * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(InvertorList $invertorList)
     {
-        $solar_list = Solar_list::findOrFail($id);
-        File::delete('brand/solar/solar_list/'.$solar_list->image);
-        $solar_list->delete();
+        $invertorList = InvertorList::findOrFail($id);
+        File::delete('brand/invertor/invertor_list/'.$invertorList->image);
+        $invertorList->delete();
         return ['message' => 'Selected Solar list has been Deleted'];
     }
 }

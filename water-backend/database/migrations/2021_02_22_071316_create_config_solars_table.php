@@ -17,7 +17,7 @@ class CreateConfigSolarsTable extends Migration
             $table->id();
             $table->Integer('min_power')->nullable();
             $table->Integer('max_power')->nullable();
-            $table->enum('base', ['Manual Tracker', 'Ground Structure', 'Ground Mounting'])->nullable();
+            $table->enum('base', ['Manual Tracker', 'Ground Structure'])->nullable();
             $table->Integer('solar_quantity')->nullable();
             $table->Integer('panal_quantity')->nullable();
             $table->unsignedBigInteger('solar_list_id')->nullable();

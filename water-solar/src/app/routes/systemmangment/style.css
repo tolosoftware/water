@@ -132,6 +132,12 @@ padding: 0px 15px 10px;
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
     left: 94% !important;
 }
+.insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
+    left: 96% !important;
+}
+.descriptInvertor{
+    padding-top: 15px;
+}
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
     left: 95% !important;
 }
@@ -261,8 +267,8 @@ padding: 0px 15px 10px;
     padding: 0px 10px 0px;
 }
 .inWPSG2{
-    padding-left: 15px !important;
-    padding-right: 0px !important;
+    flex: 0 0 27% !important;
+    max-width: 27% !important;
 }
 .insideSPDS .dropzone{
     margin-right: 15px;

@@ -30,9 +30,13 @@ Route::resource('accessoriestype', AccessoriesTypeController::class);
 Route::resource('pumpbrand', PumpBrandsController::class);
 Route::resource('pumpList', PumpListController::class);
 Route::resource('pumpListSetting', ConfigPumpController::class);
+//water pump brand
 Route::resource('solarbrand', SolarBrandsController::class);
 Route::resource('solarList', SolarListController::class);
 Route::resource('solarListSetting', ConfigSolarController::class);
+//water pump brand
+Route::resource('invertorbrand', InvertorBrandController::class);
+Route::resource('invertorList', InvertorListController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
 //project 
