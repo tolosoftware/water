@@ -507,10 +507,10 @@ const deletGeoLocation=(id) => {
           {/* </div>
           <div className="row"> */}
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField id="outlined-basic" size="small" value={latitude} onChange={(e) => setLatitude(e.target.value)} label="Latitude" name='latitude' variant="outlined" />
+              <TextField type="number" id="outlined-basic" size="small" value={latitude} onChange={(e) => setLatitude(e.target.value)} label="Latitude" name='latitude' variant="outlined" />
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField id="outlined-basic" size="small" value={longtitude} onChange={(e) => setLongtitude(e.target.value)} label="Longtitude" name='Longtitude' variant="outlined" />
+              <TextField type="number" id="outlined-basic" size="small" value={longtitude} onChange={(e) => setLongtitude(e.target.value)} label="Longtitude" name='Longtitude' variant="outlined" />
             </div>
           </div>
         </DialogContent>

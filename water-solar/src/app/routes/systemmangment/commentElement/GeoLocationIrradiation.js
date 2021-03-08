@@ -507,40 +507,40 @@ export default function GeoLocationIrradiation(props){
                             <div className="col-xl-6 col-lg-6 col-md-12 col-12">
                                     <div className="row row-paddding-top">
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[0]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputFieldsIrr.time6_7} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event) } variant="outlined" />
+                                            <TextField type="number" id={timeName[0]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[0]} label={timeLable[0]} value={inputFieldsIrr.time6_7} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event) } variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[1]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputFieldsIrr.time7_8} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[1]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[1]} label={timeLable[1]} value={inputFieldsIrr.time7_8} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[2]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[2]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[2]} label={timeLable[2]} value={inputFieldsIrr.time8_9} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[3]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputFieldsIrr.time9_10} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[3]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[3]} label={timeLable[3]} value={inputFieldsIrr.time9_10} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[4]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputFieldsIrr.time10_11} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[4]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[4]} label={timeLable[4]} value={inputFieldsIrr.time10_11} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[5]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[5]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[5]} label={timeLable[5]} value={inputFieldsIrr.time11_12} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[6]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputFieldsIrr.time12_1} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[6]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[6]} label={timeLable[6]} value={inputFieldsIrr.time12_1} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[7]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputFieldsIrr.time1_2} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[7]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[7]} label={timeLable[7]} value={inputFieldsIrr.time1_2} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[8]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputFieldsIrr.time2_3} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[8]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputFieldsIrr.time2_3} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[9]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputFieldsIrr.time3_4} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[9]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputFieldsIrr.time3_4} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[10]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputFieldsIrr.time4_5} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[10]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputFieldsIrr.time4_5} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
-                                            <TextField id={timeName[11]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputFieldsIrr.time5_6} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                            <TextField type="number" id={timeName[11]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputFieldsIrr.time5_6} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                          
                                     </div>
