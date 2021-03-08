@@ -40,19 +40,31 @@ class PumpBrandsController extends Controller
      
         DB::beginTransaction();
         try {
-
-        if($request->image){
-            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-            \Image::make($request->image)->save(public_path('brand/pumpbrand/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
-
-         Pump_brands::create([
-            'name' => $request['brand'], 
-            'country' => $request['country'], 
-            'discription' => $request['description'], 
-            'image' => $photoname, 
-        ]);
+            $photoname = 0;
+            $id = $request['waterBrandID'];
+            if($request['image'] != 'oldImage'){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+                \Image::make($request->image)->save(public_path('brand/pumpbrand/').$photoname);
+                $request->merge(['photo' => $photoname]);
+            }
+            if ($id!=='0') {
+                $pump_brands = Pump_brands::findOrFail($id);
+                $pump_brands->name =  $request['brand'];
+                $pump_brands->country = $request['country'];
+                $pump_brands->discription = $request['description'];
+                if($request->image != 'oldImage'){
+                    File::delete('brand/pumpbrand/'.$pump_brands->image);
+                    $pump_brands->image = $photoname;
+                }
+                $pump_brands->save();
+            }else{
+                Pump_brands::create([
+                    'name' => $request['brand'], 
+                    'country' => $request['country'], 
+                    'discription' => $request['description'], 
+                    'image' => $photoname, 
+                ]);
+            }
 
         DB::commit();
         return ['msg' => 'Pump brand succefully inserted'];

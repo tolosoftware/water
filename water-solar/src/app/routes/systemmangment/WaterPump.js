@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-import Avatar from '@material-ui/core/Avatar';
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -41,8 +40,8 @@ import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
-import countries from './commentElement/countries';
-
+import Spinner from 'react-spinner-material';
+import Country from './commentElement/Country';
 // start of dialog modal for water pump
 const styles = (theme) => ({
   root: {
@@ -172,6 +171,14 @@ const img = {
 const WaterPump = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const [visibility,setVisibility]= useState(false);
+  const [brand, setBrand] = React.useState("");
+  const [country, setCountry] = React.useState(Country[0]);
+  const [inputValue, setInputValue] = React.useState(Country[0]);
+  const [description, setDescription] = React.useState("");
+  const [waterBrandID, setWaterBrandID] = useState('0'); 
+  const [waterBrOldImage, setWaterBrOldImage] = useState("");
+
   const [value, setValue] = React.useState(0);
   const [waterPumpBrands, setWaterPumpBrands] = useState([]);
   const [waterPumpLists, setWaterPumpLists] = useState([])
@@ -180,6 +187,7 @@ const WaterPump = () => {
   },[])
   
   const handleChange = (event, newValue) => {
+    emptyForm();
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
@@ -196,6 +204,7 @@ const WaterPump = () => {
     getWaterPumpLists();
   },[openD])
   const handleClose = () => {
+    emptyForm();
     setOpen(false);
   };
   // end code of dialog modal for water pump
@@ -228,9 +237,6 @@ useEffect(() => () => {
 // end dropzone code
    
 // start form sumbit
-const [brand, setBrand] = React.useState("");
-const [country, setCountry] = React.useState("");
-const [description, setDescription] = React.useState("");
 
 // Start code of water Pumps List Setting 
 const [pumpListId, setPumpListId] = useState('');
@@ -296,10 +302,25 @@ const getWaterPumpLists = async() =>{
 
 const editWaterBrand = (dataValue) => {
   console.log(dataValue);
+  setBrand(dataValue.name);
+  setCountry(dataValue.country);
+  setDescription(dataValue.discription);
+  setWaterBrandID(dataValue.id);
+  setWaterBrOldImage(dataValue.image);
   setValue(0);
   // setBrand(); setD1escription();
 }
+const emptyForm = () =>{
+  setBrand('');
+  setCountry(Country[0]);
+  setInputValue(Country[0]);
+  setDescription('');
+  setWaterBrandID('0');
+  setWaterBrOldImage('');
+  setFiles([]);
+}
 const deleteWaterPumpBrand = (id) =>{
+  setVisibility(true)
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -313,12 +334,14 @@ const deleteWaterPumpBrand = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/pumpbrand/'+id)
         .then(res => {
+          setVisibility(false)
               // setWaterPumpBrands(res.data)
             setWaterPumpBrands(waterPumpBrands.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -330,14 +353,15 @@ const deleteWaterPumpBrand = (id) =>{
   })
 }
 const getWaterPumps = async() =>{
+  setVisibility(true)
   axios.get('api/pumpbrand')
   .then(res => {  
-      // setVisibility(false)
+      setVisibility(false)
       // console.log(res);
       setWaterPumpBrands(res.data);
     }
 ).catch(err => {
-      // setVisibility(false)
+      setVisibility(false)
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
           id="notification.titleHere"/>);
       }
@@ -345,31 +369,54 @@ const getWaterPumps = async() =>{
 }
 const handleSubmit = (e) => {
   e.preventDefault();
- 
+  setVisibility(true)
   let data = {
-    brand, description
+    waterBrandID, country, brand, description
   }
-    data['country']=country.label;
-    var image = '';
-    let file = files[0];
-    let reader = new FileReader();
-    reader.onloadend = (file) => {
-      image = reader.result;
-      data['image'] = image;
-      axios.post('api/pumpbrand', data)
-        .then(res => {
-              getWaterPumps();
-              getWaterPumpLists();
-                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-            }
-        ).catch(err =>{
-               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-            }
-        )
+    if(files.length!==0){
+      if(data.waterBrandID===undefined){
+        data.waterBrandID = 0;
+      }
+      var image = '';
+      let file = files[0];
+      let reader = new FileReader();
+      reader.onloadend = (file) => {
+        image = reader.result;
+        data['image'] = image;
+        axios.post('api/pumpbrand', data)
+          .then(res => {
+            setVisibility(false)
+            getWaterPumps();
+            getWaterPumpLists();
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+          ).catch(err =>{
+            setVisibility(false)
+                  NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+              }
+          )
+      }
+      reader.readAsDataURL(file); 
     }
-    reader.readAsDataURL(file); 
+    else{
+      data['image'] = 'oldImage';
+      axios.post('api/pumpbrand', data)
+      .then(res => {
+        setVisibility(false)
+            getWaterPumps();
+            getWaterPumpLists();
+              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+            id="notification.titleHere" />);
+          }
+      ).catch(err =>{
+        setVisibility(false)
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+      )
+    }
 }
 // end form sumbit
 
@@ -383,7 +430,12 @@ const handleSubmit = (e) => {
   };
   const open1 = Boolean(anchorEl);
   // end popover code
-   
+  const [waterListObject, setWaterListObject] =React.useState([]);
+  const editWaterList = (waterListObj) =>{
+    //  console.log(WaterListObject);
+    setWaterListObject(waterListObj);
+    setOpenD(true)
+  }
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -435,34 +487,18 @@ const handleSubmit = (e) => {
                     <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
-                    <Autocomplete
-                      id="country-select-demo" onChange={(event, newValue) => {setCountry(newValue);}}
-                      style={{ width: 300 }}
-                      options={countries}
-                      classes={{
-                        option: classes.option,
+                    <Autocomplete 
+                      value={country} onChange={(event, newValue) => {setCountry(newValue);}}
+                      inputValue={inputValue}
+                      onInputChange={(event, newInputValue) => {
+                        setInputValue(newInputValue);
                       }}
-                      autoHighlight
-                      getOptionLabel={(option) => option.label}
-                      renderOption={(option) => (
-                        <React.Fragment>
-                          {/* <span>{countryToFlag(option.code)}</span> */}
-                          {/* {option.label} ({option.code}) +{option.phone} */}
-                          {option.label}
-                        </React.Fragment>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Choose a country"
-                          variant="outlined"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'new-password', // disable autocomplete and autofill
-                          }}
-                        />
-                      )}
-                    /> 
+                      id="controllable-states-demo"
+                      options={Country}
+                      style={{ width: 300 }}
+                      renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
+                    />
+                     
                   </div>
                 </div>
                 <div className="row paddingTopForm">
@@ -482,6 +518,10 @@ const handleSubmit = (e) => {
                         </div>
                         <div className="dropzone-content" style={thumbsContainer}>
                             {thumbs}
+                            {(files.length === 0 )? ((waterBrOldImage!=="" && waterBrOldImage!==undefined)? (<spam>
+                                  <span className={`sp_right_padding`}>Cuurent Image </span>
+                                  <span><img src={`http://localhost:8000/brand/solar/${waterBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                            </spam>): ''): ''}
                         </div>
                       </div>
                   </div>
@@ -492,6 +532,9 @@ const handleSubmit = (e) => {
                 <TabPanel value={value} index={1} dir={theme.direction}>
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <span className="row justify-content-center">
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                      </span> 
                       <div className="table-responsive-material">
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
@@ -550,10 +593,9 @@ const handleSubmit = (e) => {
                               
                               <td>
                                 <div className="d-flex align-items-center">
-                                  {data.image === '' ? null :
-                                    <Avatar className="user-avatar size-30" src={data.image}/>}
-                                    <img src={`localhost:8000/brand/pumpbrand/${data.image}`} alt="brand logo"/>
+                                  <img src={`http://localhost:8000/brand/pumpbrand/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
+                                 
                               </td>
                               <td>
                                 <div className="pointer text-primary">
@@ -593,6 +635,8 @@ const handleSubmit = (e) => {
         openD={openD}
         setOpenD={setOpenD}
         waterPumpBrands={waterPumpBrands}
+        waterListObject={waterListObject}
+        setWaterListObject={setWaterListObject}
       />
       <DialogSettingWD 
         pumpListId={pumpListId}
@@ -607,6 +651,9 @@ const handleSubmit = (e) => {
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
+        <span className="row justify-content-center">
+          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+        </span> 
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
@@ -638,8 +685,7 @@ const handleSubmit = (e) => {
                 <td>{waterList.power}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                    {waterList.image === '' ? null :
-                      <Avatar className="user-avatar size-30" src={waterList.image}/>}
+                      <img src={`http://localhost:8000/brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                  
@@ -648,7 +694,7 @@ const handleSubmit = (e) => {
                     <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterList(waterList.id)}>
                       <DeleteIcon />
                     </IconButton>
-                  <IconButton size="small" color="primary" aria-label="edit an alarm">
+                  <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editWaterList(waterList)}>
                     <Edit />
                   </IconButton>
                   <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ onButtonClick(waterList.id, waterList.model)}}>

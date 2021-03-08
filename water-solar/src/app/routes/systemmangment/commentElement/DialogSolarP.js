@@ -257,7 +257,7 @@ const setEditFieldValuse = () => {
     let dataSolarList = {
       solarListID, brand, model, solarType, powerW, voltage, current, cableType, description
     }
-    console.log(dataSolarList);
+    // console.log(dataSolarList);
     if(files.length!==0){
       if(dataSolarList.solarListID===undefined){
         dataSolarList.solarListID = 0;

@@ -38,6 +38,7 @@ import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
+import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
 
 // start of dialog modal for water pump
@@ -167,6 +168,7 @@ const img = {
 };
 // end code for dropzone
 const Invertor = () => {
+  const [visibility,setVisibility]= useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -256,7 +258,8 @@ useEffect(() => () => {
 
 // start delete function Water Device list
 const deleteInvertorList = (id) =>{
-  console.log("it is id of that water pump brand: ", id);
+  setVisibility(true);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -269,12 +272,14 @@ const deleteInvertorList = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/pumpList/'+id)
         .then(res => {
+          setVisibility(false);
               // setSolarLists(res.data)
               setInvertorLists(invertorLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -295,12 +300,15 @@ const editInvertorList = (invertorListObject) =>{
 // start get WaterPump panal list
 
 const getInvertorLists = async() =>{
+  setVisibility(true);
   axios.get('api/invertorList')
   .then(res => {  
+    setVisibility(false);
       // console.log(res);
       setInvertorLists(res.data);
     }
 ).catch(err => {
+  setVisibility(false);
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
           id="notification.titleHere"/>);
       }
@@ -310,6 +318,7 @@ const getInvertorLists = async() =>{
 // end get solar pabal list
 
 const deleteInvertorBrand = (id) =>{
+  setVisibility(true);
   console.log("it is id of that Invertor brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -323,12 +332,14 @@ const deleteInvertorBrand = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/invertorbrand/'+id)
         .then(res => {
+          setVisibility(false);
               // setInvertorBrands(res.data)
             setInvertorBrands(invertorBrands.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -340,14 +351,15 @@ const deleteInvertorBrand = (id) =>{
   })
 }
 const getInvertors = async() =>{
+  setVisibility(true);
   axios.get('api/invertorbrand')
   .then(res => {  
-      // setVisibility(false)
+      setVisibility(false)
       // console.log(res);
       setInvertorBrands(res.data);
     }
 ).catch(err => {
-      // setVisibility(false)
+      setVisibility(false)
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
           id="notification.titleHere"/>);
       }
@@ -355,11 +367,11 @@ const getInvertors = async() =>{
 }
 const handleSubmit = (e) => {
   e.preventDefault();
- 
+  setVisibility(true);
   let data = {
     invertorBrandID, country, brand, description
   }
-  console.log(data);
+  // console.log(data);
   if(files.length!==0){
     if(data.invertorBrandID===undefined){
       data.invertorBrandID = 0;
@@ -372,13 +384,15 @@ const handleSubmit = (e) => {
       data['image'] = image;
       axios.post('api/invertorbrand', data)
         .then(res => {
-          console.log(res);
+          setVisibility(false);
+          // console.log(res);
               getInvertors();
               getInvertorLists();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
             }
         ).catch(err =>{
+          setVisibility(false);
                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
@@ -390,12 +404,14 @@ const handleSubmit = (e) => {
     data['image'] = 'oldImage';
     axios.post('api/invertorbrand', data)
         .then(res => {
+          setVisibility(false);
               getInvertors();
               getInvertorLists();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
             }
         ).catch(err =>{
+          setVisibility(false);
                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
@@ -510,6 +526,9 @@ const handleSubmit = (e) => {
                 <TabPanel value={value} index={1} dir={theme.direction}>
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <span className="row justify-content-center">
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                      </span>
                       <div className="table-responsive-material">
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
@@ -620,6 +639,9 @@ const handleSubmit = (e) => {
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
+        <span className="row justify-content-center">
+          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+        </span>
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">

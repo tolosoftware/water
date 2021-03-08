@@ -46,7 +46,7 @@ class SolarListController extends Controller
                 \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!=='0') {
+            if ($id!==0) {
                 $solar_list = Solar_list::findOrFail($id);
                 $solar_list->solar_brand_id =  $request['brand'];
                 $solar_list->model = $request['model'];

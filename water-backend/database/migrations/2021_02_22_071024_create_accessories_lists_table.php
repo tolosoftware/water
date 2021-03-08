@@ -20,6 +20,7 @@ class CreateAccessoriesListsTable extends Migration
             $table->string('name');
             $table->string('model');
             $table->unsignedBigInteger('uom_id');
+            $table->string('uom_name');
             $table->foreign('uom_id')->references('id')->on('uoms')->onDelete('cascade');
             $table->Integer('min_quantity');
             $table->Integer('max_quantity');

@@ -54,6 +54,7 @@ class AccessoriesListController extends Controller
                 $accessories_list->name = $request['name'];
                 $accessories_list->model = $request['model'];
                 $accessories_list->uom_id = $request['uom'];
+                $accessories_list->uom_name = $request['uom_name'];
                 $accessories_list->min_quantity = $request['min_quantity'];
                 $accessories_list->max_quantity = $request['max_quantity'];
                 if($request->image != 'oldImage'){
@@ -70,6 +71,7 @@ class AccessoriesListController extends Controller
                     'name' => $request['name'],
                     'model' => $request['model'],
                     'uom_id' => $request['uom'],
+                    'uom_name' => $request['uom_name'],
                     'min_quantity' =>$request['min_quantity'],
                     'max_quantity' =>$request['max_quantity'],
                     'discription' => $request['description'],

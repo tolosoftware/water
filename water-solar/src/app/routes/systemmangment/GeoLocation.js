@@ -20,6 +20,7 @@ import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
+import Spinner from 'react-spinner-material';
 // end dialog import file 
 import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
 
@@ -340,6 +341,7 @@ const countries = [
 
 
 const GeoLocation=() => {
+  const [visibility,setVisibility]= useState(false);
   const [geoLocations,setGeoLocations]= useState([]);
   const [geoLocationId,setGeoLocationId]= useState(0);
   const [geoLocationCity,setGeoLocationCity]= useState('');
@@ -365,14 +367,15 @@ const [longtitude, setLongtitude] = React.useState("");
 const [country, setCountry] = React.useState("");
 
 const getGeoLocations = async() =>{
+  setVisibility(true)
   axios.get('api/new_location')
       .then(res => {  
-          // setVisibility(false)
+          setVisibility(false)
           // console.log(res);
           setGeoLocations(res.data);
         }
     ).catch(err => {
-          // setVisibility(false)
+          setVisibility(false)
            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
           }
@@ -387,10 +390,12 @@ const getGeoLocations = async() =>{
     }
     // console.log(district);
     console.log(data);
+    setVisibility(true)
     axios.post('api/new_location', data)
         .then(
             res => {
               // console.log(res);
+              setVisibility(false)
               getGeoLocations();
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
@@ -398,6 +403,7 @@ const getGeoLocations = async() =>{
             }
         ).catch(
             err =>{
+              setVisibility(false)
               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
                 console.log(err);
@@ -408,6 +414,7 @@ const getGeoLocations = async() =>{
 
 // Delete functions for geo location
 const deletGeoLocation=(id) => {
+  setVisibility(true)
   console.log("it is id of that geo location: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -422,11 +429,13 @@ const deletGeoLocation=(id) => {
       axios.delete('api/new_location/'+id)
         .then(res => {
               // setGeoLocations(res.data)
+            setVisibility(false)
             setGeoLocations(geoLocations.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -448,6 +457,9 @@ const deletGeoLocation=(id) => {
             <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={handleClickOpen}>
          <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span> 
       </div>
+      <span className="row justify-content-center">
+        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+      </span>  
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
@@ -568,6 +580,9 @@ const deletGeoLocation=(id) => {
         {/* <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
                     <i className="zmdi zmdi-plus-circle-o mr-1"/>New Record</span> */}
       </div>
+      <span className="row justify-content-center">
+        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+      </span> 
       <div className="table-responsive-material">
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">
