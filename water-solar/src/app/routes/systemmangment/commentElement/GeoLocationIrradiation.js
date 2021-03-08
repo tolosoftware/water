@@ -26,6 +26,7 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
+import Spinner from 'react-spinner-material';
 // start of dialog modal for water pump
 const styles = (theme) => ({
     root: {
@@ -98,7 +99,8 @@ const styles = (theme) => ({
   // Accordation code 
     
   // end Accordation code
-export default function DialogWaterP(props){
+export default function GeoLocationIrradiation(props){
+  const [visibility,setVisibility]= useState(false);
   const [expanded, setExpanded] = useState(1);
   const geoLocationId = props.geoLocationId;
   const geoLocationCity = props.geoLocationCity;
@@ -333,6 +335,7 @@ export default function DialogWaterP(props){
     const classes = useStyles();
     
     const getIrradiations = (id) =>{
+      setVisibility(true)
       if(id!==0 && id!==""){
         // console.log("ok it is not 0", id);
         axios.get('api/irradiation/'+id)
@@ -356,7 +359,9 @@ export default function DialogWaterP(props){
           setInputFieldsIrr4(mainArray[3]); setInputFieldsIrr5(mainArray[4]); setInputFieldsIrr6(mainArray[5]);
           setInputFieldsIrr7(mainArray[6]); setInputFieldsIrr8(mainArray[7]); setInputFieldsIrr9(mainArray[8]);
           setInputFieldsIrr10(mainArray[9]); setInputFieldsIrr11(mainArray[10]); setInputFieldsIrr12(mainArray[11]);
+          setVisibility(false)
         }).catch(err => {
+          setVisibility(false)
             NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
                 id="notification.titleHere"/>);
             }
@@ -367,18 +372,20 @@ export default function DialogWaterP(props){
     const handleSubmit = (e, InputFieldsIrr) => {
       e.preventDefault();
       // console.log("IrradiationInputs", InputFieldsIrr);
-      
+      setVisibility(true)
       axios.post('api/irradiation', InputFieldsIrr)
         .then(
             res => {
               // console.log(res);
               // getIrradiations(geoLocationId);
+              setVisibility(false)
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
               // handleClose();
             }
         ).catch(
             err =>{
+              setVisibility(false)
               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
                 console.log(err);
@@ -547,7 +554,7 @@ export default function DialogWaterP(props){
                                   <CartesianGrid strokeDasharray="3 3"/>
                                   <Tooltip/>
                                   <Legend/>
-                                  <Bar dataKey="Irradiation" fill="#3367d6"/>
+                                  <Bar dataKey="Irradiation" fill="#ffc658"/>
                                   {/* <Bar dataKey="uv" fill="#ffc658"/> */}
                                 </BarChart>
                               </ResponsiveContainer>
@@ -578,7 +585,9 @@ export default function DialogWaterP(props){
                 <div className={classes.Acc} onLoad={()=>getIrradiations(geoLocationId)}>
                 {/* { monthsInputFields.map(monthInputFields => ( */}
                   <>
-                   
+                  <span className="row justify-content-center">
+                    <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                  </span> 
                   {monthsInputFields[0] === "January" && loadMyForm(inputFieldsIrr1, data1)}
                   {monthsInputFields[1] === "February" && loadMyForm(inputFieldsIrr2, data2)}
                   {monthsInputFields[2] === "March" && loadMyForm(inputFieldsIrr3, data3)}

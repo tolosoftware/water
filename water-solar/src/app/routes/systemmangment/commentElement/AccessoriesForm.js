@@ -140,14 +140,8 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     console.log('uom_id before if', accessoryObject.uom_id);
     if(accessoryObject.uom_id !== undefined){
       console.log('uom_id inside if', accessoryObject.uom_id);
-      console.log(uomList);
-      uomList.map( (data, index) =>{
-        console.log(data);
-        if(data.id === accessoryObject.uom_id){
-          console.log(data);
-          setUom(data);
-        }
-      })
+      getUomObj(accessoryObject.uom_id);
+       
        
     } 
     setDescription(accessoryObject.discription);
@@ -157,7 +151,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
   const getUomObj = (id) => {
     axios.get('api/uom/'+id)
       .then(res => {  
-         setAccessoriestype(res.data)
+         setUom(res.data)
         }
     ).catch(err => {
            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
@@ -184,6 +178,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
       accessoryID, type, name, model ,min_quantity, max_quantity, description
     }
     data['uom']=uom.id;
+    data['uom_name']=uom.name;
     console.log("filese: ", data);
     if(files.length!==0){
       if(data.accessoryID===undefined){
