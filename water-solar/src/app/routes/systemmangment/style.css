@@ -126,14 +126,20 @@ padding: 0px 15px 10px;
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
     left: 4% !important;
 }
+.insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
+    left: 6% !important;
+}
 .insideFormPadding2 span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
+    left: 2% !important;
+}
+.insideFormPadding2.ivertor-ac span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3.ivertor-dc span[data-index="0"].MuiSlider-markLabel{
     left: 2% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
     left: 94% !important;
 }
 .insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
-    left: 96% !important;
+    left: 91% !important;
 }
 .descriptInvertor{
     padding-top: 15px;
@@ -141,8 +147,14 @@ padding: 0px 15px 10px;
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
     left: 95% !important;
 }
+.insideFormPadding2.ivertor-ac span[data-index="1"].MuiSlider-markLabel{
+    left: 92% !important;
+}
 .insideFormPadding3 span[data-index="1"].MuiSlider-markLabel{
     left: 96% !important;
+}
+.insideFormPadding3.ivertor-dc span[data-index="1"].MuiSlider-markLabel{
+    left: 92% !important;
 }
 .insideFormPaddingWPS{
     padding: 0px 15px 0px;

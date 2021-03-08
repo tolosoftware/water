@@ -163,13 +163,28 @@ export default function DialogSolarP(props){
   const [current, setCurrent] = useState(150);
   const [cableType, setCableType] = useState("");
   const [description, setDescription] = useState("");
+  const [solarListID, setSolarListID] = useState('0'); 
+  const [oldImage, setOldImage] = useState("");
   const classes = useStyles();
   const handleCloseS = () => {
-    setSolarListObject([]);
-    setFiles([]);
-    setSolarType("Mono");
+    emptyForm();
     setOpenS(false);
   };
+  const emptyForm = () =>{
+    setSolarListID('0');
+    setSolarListObject([]);
+    setFiles([]);
+    setBrand('');
+    setModel('');
+    setSolarType("Mono");
+    setPowerW(150);
+    setVoltage(150);
+    setCurrent(150);
+    setCableType("");
+    setDescription("");
+    setOldImage('');
+    setFiles([]);
+  }
 // dropzone code
  
   const {getRootProps, getInputProps} = useDropzone({
@@ -219,8 +234,7 @@ const getCabletype=async () => {
 
 
 
-const [solarListID, setSolarListID] = useState('0'); 
-const [oldImage, setOldImage] = useState("");
+
 useEffect(() => {
   setEditFieldValuse();
 },[props.solarListObject])
@@ -258,6 +272,7 @@ const setEditFieldValuse = () => {
       axios.post('api/solarList', dataSolarList)
         .then(res => {
           setOpenS(false);
+          emptyForm();
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -272,6 +287,7 @@ const setEditFieldValuse = () => {
     axios.post('api/solarList', dataSolarList)
         .then(res => {
           setOpenS(false);
+          emptyForm();
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -329,9 +345,9 @@ const setEditFieldValuse = () => {
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP insideFormPaddingWPS">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1Mono"} id={"btnradio1Mono"} autocomplete="off" checked={(solarType)==="Mono"} value="Mono" onChange={event => setSolarType(event.target.value)}/>
+                                  <input type="radio" class="btn-check" name={"btnradio1Mono"} id={"btnradio1Mono"} autocomplete="off" checked={solarType==="Mono"} value="Mono" onChange={event => setSolarType(event.target.value)}/>
                                   <label class="btn btn-outline-primary" for={"btnradio1Mono"}>Mono</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2Poly"} id={"btnradio2Poly"} autocomplete="off" checked={(solarType)==="Poly"} value="Poly" onChange={event => setSolarType(event.target.value)}/>
+                                  <input type="radio" class="btn-check" name={"btnradio2Poly"} id={"btnradio2Poly"} autocomplete="off" checked={solarType==="Poly"} value="Poly" onChange={event => setSolarType(event.target.value)}/>
                                   <label class="btn btn-outline-primary" for={"btnradio2Poly"}>Poly</label>
                               </div>
                             </div>
