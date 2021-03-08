@@ -73,9 +73,10 @@ export default function AccessoriesForm(props) {
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
   const [description, setDescription] = useState("");
-  const [country, setCountry] = React.useState(Country[0]);
-  const [inputValue, setInputValue] = React.useState(Country[0]);
-  const [price, setPrice] = useState("");
+  const [min_quantity, setMin_quantity] = useState(""); 
+  const [max_quantity, setMax_quantity] = useState(""); 
+  const [uom, setUom] = useState({});
+  const [uomList, setUomList] = useState([]);
   const classes = useStyles();
   
 // dropzone code
@@ -107,12 +108,24 @@ export default function AccessoriesForm(props) {
 const [accessoriestype,setAccessoriestype]= useState([]);
  useEffect(() => {
     getAccessoriestype();
+    getUOM();
   },[])
   
  
   const accessoryObject = props.accessoryObject;
   const [accessoryID, setAccessoryID] = useState('0'); 
   const [oldImage, setOldImage] = useState("");
+  const getUOM=async () => {
+    axios.get('api/uom')
+      .then(res => {  
+         setUomList(res.data)
+        }
+    ).catch(err => {
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+      )
+  }; 
   useEffect(() => {
     setEditFieldValuse();
   },[props.accessoryObject])
@@ -122,19 +135,56 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     setType(accessoryObject.accessories_type_id);
     setName(accessoryObject.name);
     setModel(accessoryObject.model);
-    setCountry(accessoryObject.country);
-    setPrice(accessoryObject.price);
+    setMin_quantity(accessoryObject.min_quantity); 
+    setMax_quantity(accessoryObject.max_quantity);
+    console.log('uom_id before if', accessoryObject.uom_id);
+    if(accessoryObject.uom_id !== undefined){
+      console.log('uom_id inside if', accessoryObject.uom_id);
+      console.log(uomList);
+      uomList.map( (data, index) =>{
+        console.log(data);
+        if(data.id === accessoryObject.uom_id){
+          console.log(data);
+          setUom(data);
+        }
+      })
+       
+    } 
     setDescription(accessoryObject.discription);
     setOldImage(accessoryObject.image);
   } 
 
+  const getUomObj = (id) => {
+    axios.get('api/uom/'+id)
+      .then(res => {  
+         setAccessoriestype(res.data)
+        }
+    ).catch(err => {
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+      )
+  }
+ 
+  const getAccessoriestype=async () => {
+    axios.get('api/accessoriestype')
+      .then(res => {  
+         setAccessoriestype(res.data)
+        }
+    ).catch(err => {
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+      )
+  };  
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      accessoryID, type, name, model,country, description, price
+      accessoryID, type, name, model ,min_quantity, max_quantity, description
     }
-
-    // console.log("filese: ", data);
+    data['uom']=uom.id;
+    console.log("filese: ", data);
     if(files.length!==0){
       if(data.accessoryID===undefined){
         data.accessoryID = 0;
@@ -176,17 +226,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
           )
     }
   }
-  const getAccessoriestype=async () => {
-    axios.get('api/accessoriestype')
-      .then(res => {  
-         setAccessoriestype(res.data)
-        }
-    ).catch(err => {
-           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-          }
-      )
-  };  
+  
   return (
     <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -215,30 +255,54 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                        <TextField id="outlined-basic-mod" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
                     </div>
-                    
-                    <div className="col-xl-3 col-lg-3 col-md-8 col-sm-12 col-12 insideFormBP">
-                        {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Origin" value={origin} onChange={(e) => setOrigin(e.target.value)} variant="outlined" /> */}
-                        
-                        <Autocomplete size="small" 
-                          value={country} onChange={(event, newValue) => {setCountry(newValue);}}
-                          inputValue={inputValue}
-                          onInputChange={(event, newInputValue) => {
-                            setInputValue(newInputValue);
-                          }}
-                          id="controllable-states-demo"
-                          options={Country}
-                          style={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
-                        />
-                    </div>
-                    
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" type="number" className="fullWidthInput" label="Price" value={price} onChange={(e) => setPrice(e.target.value)} variant="outlined" />
+                        
+                        <Autocomplete  
+                          id="country-select-demo" value={uom}  onChange={(event, newValue) => setUom(newValue)}
+                          style={{ width: 300 }}
+                          options={uomList}
+                          classes={{
+                          option: classes.option,
+                          }}
+                          autoHighlight
+                          getOptionLabel={(option) => option.acronym}
+                          renderOption={(option) => (
+                          <React.Fragment>
+                              {option.acronym}
+                          </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                          <TextField size="small" 
+                              {...params}
+                              label="UoM"
+                              variant="outlined"
+                              placeholder="pick UoM!"
+                              name="location"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              size="small" 
+
+                              inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                              />
+                              )}
+                            />  
+                    </div>
+                    
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
+                        <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" value={min_quantity} onChange={(e) => setMin_quantity(e.target.value)} variant="outlined" />
+                    </div>
+
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
+                        <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" value={max_quantity} onChange={(e) => setMax_quantity(e.target.value)} variant="outlined" />
                     </div>
                         
-                    <div className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                    <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                         <div className="form-group">
                             <textarea className="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2"  placeholder="Short Description"></textarea>
                         </div>

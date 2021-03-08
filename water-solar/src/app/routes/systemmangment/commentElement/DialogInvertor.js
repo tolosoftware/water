@@ -156,17 +156,29 @@ export default function DialogInvertor(props){
   const invertorBrands=props.invertorBrands;
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
-  const [solarType, setSolarType] = useState("Mono");
   const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
   const [voltageDC, setVoltageDC] = useState([50, 150]);
   const [description, setDescription] = useState("");
+  const [invertorListID, setInvertorListID] = useState(0); 
+  const [oldImage, setOldImage] = useState("");
   const classes = useStyles();
   const handleCloseS = () => {
-    setInvertorListObject([]);
-    setFiles([]);
+    emptyForm();
     setOpenIn(false);
   };
+  const emptyForm = () =>{
+    setInvertorListObject([]);
+    setInvertorListID(0);
+    setBrand('');
+    setModel('');
+    setPowerKW(150);
+    setVoltage(150);
+    setVoltageDC([50, 150]);
+    setDescription("");
+    setOldImage('');
+    setFiles([]);
+  }
 // dropzone code
  
   const {getRootProps, getInputProps} = useDropzone({
@@ -195,21 +207,23 @@ export default function DialogInvertor(props){
   }, [files]);
 // end dropzone code
 
-const [invertorListID, setInvertorListID] = useState('0'); 
-const [oldImage, setOldImage] = useState("");
+
 useEffect(() => {
   setEditFieldValuse();
 },[props.invertorListObject])
 
 const setEditFieldValuse = () => {
+  if(invertorListObject.voltage_dc_min!==undefined){
+    let min = Math.floor(invertorListObject.voltage_dc_min);
+    let max = Math.floor(invertorListObject.voltage_dc_max)
+    setVoltageDC([min, max]);
+    // console.log("invertor dc: ", [min, max]);
+  }
   setInvertorListID(invertorListObject.id);
   setBrand(invertorListObject.invertor_brand_id);
   setModel(invertorListObject.model);
   setPowerKW(Math.floor(invertorListObject.power));
   setVoltage(Math.floor(invertorListObject.voltage_ac));
-//   let min = Math.floor(invertorListObject.voltage_dc_min);
-//   let max = Math.floor(invertorListObject.voltage_dc_max)
-//   setVoltageDC([min, max]);
   setDescription(invertorListObject.discription);
   setOldImage(invertorListObject.image);
 } 
@@ -233,6 +247,7 @@ const setEditFieldValuse = () => {
         axios.post('api/invertorList', dataInvertor)
             .then(res => {
             setOpenIn(false);
+            emptyForm();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
                 id="notification.titleHere" />);
             }).catch(err =>{
@@ -247,6 +262,7 @@ const setEditFieldValuse = () => {
     axios.post('api/invertorList', dataInvertor)
         .then(res => {
           setOpenIn(false);
+          emptyForm();
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -302,15 +318,8 @@ const setEditFieldValuse = () => {
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                 <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
                             </div>
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP insideFormPaddingWPS">
-                              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1Mono"} id={"btnradio1Mono"} autocomplete="off" checked={(solarType)==="Mono"} value="Mono" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio1Mono"}>Mono</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2Poly"} id={"btnradio2Poly"} autocomplete="off" checked={(solarType)==="Poly"} value="Poly" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio2Poly"}>Poly</label>
-                              </div>
-                            </div>
-                            <div className="col-xl-9 col-lg-9 col-md-9 col-12 insideFormPadding1 inverPower inputAdornmentWrap">
+                             
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inverPower inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     Power (KW)
                                     </Typography>
@@ -326,7 +335,7 @@ const setEditFieldValuse = () => {
                                     />
                             </div>
                             
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding2 inputAdornmentWrap">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding2 ivertor-ac inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     Voltage (AC)
                                     </Typography>
@@ -342,7 +351,7 @@ const setEditFieldValuse = () => {
                                     />
                             </div>
                             
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-12 insideFormPadding3 inputAdornmentWrap">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding3 ivertor-dc inputAdornmentWrap">
                                 <Typography id="range-slider" gutterBottom>
                                         Voltage (DC)
                                 </Typography>
@@ -373,7 +382,7 @@ const setEditFieldValuse = () => {
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`http://localhost:8000/brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`http://localhost:8000/brand/invertor/invertor_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>

@@ -47,14 +47,15 @@ class AccessoriesListController extends Controller
                 \Image::make($request->image)->save(public_path('accessories/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!=='0') {
+            if ($id!==0) {
                 // return "it inside if ". $id;
                 $accessories_list = Accessories_list::findOrFail($id);
                 $accessories_list->accessories_type_id = $request['type'];
                 $accessories_list->name = $request['name'];
                 $accessories_list->model = $request['model'];
-                $accessories_list->country = $request['country'];
-                $accessories_list->price = $request['price'];
+                $accessories_list->uom_id = $request['uom'];
+                $accessories_list->min_quantity = $request['min_quantity'];
+                $accessories_list->max_quantity = $request['max_quantity'];
                 if($request->image != 'oldImage'){
                     File::delete('accessories/'.$accessories_list->image);
                     $accessories_list->image = $photoname;
@@ -68,8 +69,9 @@ class AccessoriesListController extends Controller
                     'accessories_type_id' => $request['type'],
                     'name' => $request['name'],
                     'model' => $request['model'],
-                    'country' => $request['country'],
-                    'price' =>$request['price'],
+                    'uom_id' => $request['uom'],
+                    'min_quantity' =>$request['min_quantity'],
+                    'max_quantity' =>$request['max_quantity'],
                     'discription' => $request['description'],
                     'image' => $photoname,
                 ]);

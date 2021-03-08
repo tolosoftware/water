@@ -25,7 +25,7 @@ Route::resource('user', UserController::class);
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
 Route::resource('accessoriestype', AccessoriesTypeController::class);
-
+Route::get('getAccessoryData', [AccessoriesTypeController::class,'getAccessoryData']);
 //water pump brand
 Route::resource('pumpbrand', PumpBrandsController::class);
 Route::resource('pumpList', PumpListController::class);
