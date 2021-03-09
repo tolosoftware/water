@@ -244,7 +244,7 @@ class Header extends React.Component {
                 </DropdownToggle>
 
                 <DropdownMenu right>
-                  <UserInfoPopup/>
+                  <UserInfoPopup history={this.props.history}/>
                 </DropdownMenu>
               </Dropdown>
             </li>}
