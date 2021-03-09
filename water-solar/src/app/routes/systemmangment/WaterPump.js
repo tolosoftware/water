@@ -520,7 +520,7 @@ const handleSubmit = (e) => {
                             {thumbs}
                             {(files.length === 0 )? ((waterBrOldImage!=="" && waterBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`http://localhost:8000/brand/pumpbrand/${waterBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/${waterBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                             </spam>): ''): ''}
                         </div>
                       </div>
@@ -593,7 +593,7 @@ const handleSubmit = (e) => {
                               
                               <td>
                                 <div className="d-flex align-items-center">
-                                  <img src={`http://localhost:8000/brand/pumpbrand/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                                  <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                                  
                               </td>
@@ -685,7 +685,7 @@ const handleSubmit = (e) => {
                 <td>{waterList.power}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                      <img src={`http://localhost:8000/brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                      <img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                  
