@@ -435,7 +435,7 @@ const handleSubmit = (e) => {
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
-        <Widget styleName={`text-white waterPumpPanelBackGrad`}>
+        <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
             <LocalDrinkIcon className="lDrinkIcon"/>
@@ -514,7 +514,7 @@ const handleSubmit = (e) => {
                             {thumbs}
                             {(files.length === 0 )? ((invertorBrOldImage!=="" && invertorBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`http://localhost:8000/brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>
@@ -587,7 +587,7 @@ const handleSubmit = (e) => {
                               
                               <td>
                               <div className="d-flex align-items-center">
-                                  <img src={`http://localhost:8000/brand/invertor/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                                  <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                               </td>
                               <td>
@@ -671,7 +671,7 @@ const handleSubmit = (e) => {
                 <td>{invertor.voltage_dc_min} - {invertor.voltage_dc_max}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                    <img src={`http://localhost:8000/brand/invertor/invertor_list/${invertor.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                    <img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${invertor.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                  

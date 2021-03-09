@@ -526,7 +526,7 @@ const editSolarList = (solarListObject) =>{
                             {thumbs}
                             {(files.length === 0 )? ((solarBrOldImage!=="" && solarBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`http://localhost:8000/brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>
@@ -597,7 +597,7 @@ const editSolarList = (solarListObject) =>{
                               <td>{solarData.country}</td>
                               <td>
                                 <div className="d-flex align-items-center">
-                                  <img src={`http://localhost:8000/brand/solar/${solarData.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                                  <img src={`${axios.defaults.baseURL}brand/solar/${solarData.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                               </td>
                               <td>
@@ -688,7 +688,7 @@ const editSolarList = (solarListObject) =>{
                 <td>{solarList.current}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                  <img src={`http://localhost:8000/brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                  <img src={`${axios.defaults.baseURL}brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                 

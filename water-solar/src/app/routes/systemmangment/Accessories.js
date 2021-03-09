@@ -160,7 +160,7 @@ const deletAccessory=(id) => {
                     { title: 'Uom', field: 'uom_name' },
                     { title: 'Min Quantity', field: 'min_quantity'},
                     {title: 'Max Quantity', field: 'max_quantity'},
-                    {title: 'Image', field: 'img', render: item => <img src={`http://localhost:8000/accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},
+                    {title: 'Image', field: 'img', render: item => <img src={`${axios.defaults.baseURL}accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},
                         
                 ]}
                 data={accessoriesList}
