@@ -18,6 +18,4 @@ class Geolocation extends Model
     {
         return $this->hasMany(Projects::class, 'city_id');
     }
-
- 
 }

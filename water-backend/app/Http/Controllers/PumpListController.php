@@ -39,25 +39,42 @@ class PumpListController extends Controller
         DB::beginTransaction();
         try {
 
-        if($request->image){
-            $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-            \Image::make($request->image)->save(public_path('brand/pumpbrand/pump_list/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
+            $photoname = 0;
+            $id = $request['waterListID'];
+            if($request['image'] != 'oldImage'){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+                \Image::make($request->image)->save(public_path('brand/pumpbrand/pump_list/').$photoname);
+                $request->merge(['photo' => $photoname]);
+            }
 
-        // return $request;
-        Pump_list::create([
-            'serial_no' => 12, 
-            'pump_brand_id' => $request['brand'], 
-            'model' => $request['name'], 
-            'outlet' => $request['outlet'], 
-            'diameter' => $request['current'], 
-            'ampeier' => $request['diameter'], 
-            'power' => $request['powerKW'], 
-            'discription' => $request['description'], 
-            'image' => $photoname, 
-        ]);
-
+            if ($id!==0) {
+                $pump_list = Pump_list::findOrFail($id);
+                $pump_list->pump_brand_id =  $request['brand'];
+                $pump_list->model = $request['name'];
+                $pump_list->outlet = $request['outlet'];
+                $pump_list->ampeier = $request['current'];
+                $pump_list->diameter = $request['diameter'];
+                $pump_list->power = $request['powerKW'];
+                if($request->image != 'oldImage'){
+                    File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
+                    $pump_list->image = $photoname;
+                }
+                $pump_list->discription = $request['description'];
+                $pump_list->save();
+            }else{
+                // return $request;
+                Pump_list::create([
+                    'serial_no' => 12, 
+                    'pump_brand_id' => $request['brand'], 
+                    'model' => $request['name'], 
+                    'outlet' => $request['outlet'], 
+                    'diameter' => $request['diameter'], 
+                    'ampeier' => $request['current'], 
+                    'power' => $request['powerKW'], 
+                    'discription' => $request['description'], 
+                    'image' => $photoname, 
+                ]);
+            }
         DB::commit();
         return ['msg' => 'Water Pumps brand successfully inserted'];
         } catch (Exception $e) {

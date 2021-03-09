@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import Edit from '@material-ui/icons/Edit';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -23,8 +22,7 @@ import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import './style.css';
 import {useDropzone} from "react-dropzone";
-import DialogWaterP from './commentElement/DialogWaterP'
-import DialogSettingWD from './commentElement/DialogSettingWD'
+import DialogInvertor from './commentElement/DialogInvertor'
 
 // end import for taps
 
@@ -42,6 +40,7 @@ import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
+
 // start of dialog modal for water pump
 const styles = (theme) => ({
   root: {
@@ -168,43 +167,57 @@ const img = {
   height: '100%'
 };
 // end code for dropzone
-const WaterPump = () => {
+const Invertor = () => {
+  const [visibility,setVisibility]= useState(false);
   const classes = useStyles();
   const theme = useTheme();
-  const [visibility,setVisibility]= useState(false);
+  const [value, setValue] = React.useState(0);
+  const [invertorBrands, setInvertorBrands] = useState([]);
+  const [invertorLists, setInvertorLists] = useState([])
   const [brand, setBrand] = React.useState("");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
   const [description, setDescription] = React.useState("");
-  const [waterBrandID, setWaterBrandID] = useState('0'); 
-  const [waterBrOldImage, setWaterBrOldImage] = useState("");
-
-  const [value, setValue] = React.useState(0);
-  const [waterPumpBrands, setWaterPumpBrands] = useState([]);
-  const [waterPumpLists, setWaterPumpLists] = useState([])
+  const [invertorBrandID, setInvertorBrandID] = useState('0'); 
+  const [invertorBrOldImage, setInvertorBrOldImage] = useState("");
   useEffect(() => {
-    getWaterPumps();
+    getInvertors();
   },[])
   
   const handleChange = (event, newValue) => {
-    emptyForm();
+    setBrand("");
+    setDescription("");
+    setInvertorBrandID('0');
+    setInvertorBrOldImage("");
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+  
+  const editInvertorBrand = (invertorDataObject) => {
+    setValue(0);
+    setBrand(invertorDataObject.name);
+    setCountry(invertorDataObject.country);
+    setDescription(invertorDataObject.discription);
+    setInvertorBrandID(invertorDataObject.id);
+    setInvertorBrOldImage(invertorDataObject.image);
+    console.log("invertorDataObject : ", invertorDataObject)
+  }
   // start code of dialog modal for water pump
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const [openD, setOpenD] = React.useState(false);
-  const [openWSD, setOpenWSD] = React.useState(false);
+  const [openIn, setOpenIn] = React.useState(false);
   useEffect(() => {
-    getWaterPumpLists();
-  },[openD])
+    getInvertorLists();
+  },[openIn])
   const handleClose = () => {
-    emptyForm();
+    setBrand("");
+    setDescription("");
+    setInvertorBrandID('0');
+    setInvertorBrOldImage("");
     setOpen(false);
   };
   // end code of dialog modal for water pump
@@ -238,22 +251,15 @@ useEffect(() => () => {
    
 // start form sumbit
 
+
 // Start code of water Pumps List Setting 
-const [pumpListId, setPumpListId] = useState('');
-const [pumpListModel, setPumpListModel] = useState('');
  
-const onButtonClick = (listId, pumpModel) => {
-   
-  setPumpListId(listId);
-  setPumpListModel(pumpModel);
-  console.log("list id: ", listId);
-  setOpenWSD(true);
-}
 // End code of water pumps list setting 
 
 // start delete function Water Device list
-const deleteWaterList = (id) =>{
-  console.log("it is id of that water pump brand: ", id);
+const deleteInvertorList = (id) =>{
+  setVisibility(true);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -266,12 +272,14 @@ const deleteWaterList = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/pumpList/'+id)
         .then(res => {
+          setVisibility(false);
               // setSolarLists(res.data)
-              setWaterPumpLists(waterPumpLists.filter((value) => value.id !==id));
+              setInvertorLists(invertorLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -282,16 +290,25 @@ const deleteWaterList = (id) =>{
     }
   })
 }
+const [invertorListObject, setInvertorListObject] =React.useState([]);
+const editInvertorList = (invertorListObject) =>{
+  //  console.log(solarListObject);
+  setInvertorListObject(invertorListObject);
+  setOpenIn(true)
+}
 // End delete Water Device lists
 // start get WaterPump panal list
 
-const getWaterPumpLists = async() =>{
-  axios.get('api/pumpList')
+const getInvertorLists = async() =>{
+  setVisibility(true);
+  axios.get('api/invertorList')
   .then(res => {  
+    setVisibility(false);
       // console.log(res);
-      setWaterPumpLists(res.data);
+      setInvertorLists(res.data);
     }
 ).catch(err => {
+  setVisibility(false);
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
           id="notification.titleHere"/>);
       }
@@ -300,28 +317,9 @@ const getWaterPumpLists = async() =>{
 
 // end get solar pabal list
 
-const editWaterBrand = (dataValue) => {
-  console.log(dataValue);
-  setBrand(dataValue.name);
-  setCountry(dataValue.country);
-  setDescription(dataValue.discription);
-  setWaterBrandID(dataValue.id);
-  setWaterBrOldImage(dataValue.image);
-  setValue(0);
-  // setBrand(); setD1escription();
-}
-const emptyForm = () =>{
-  setBrand('');
-  setCountry(Country[0]);
-  setInputValue(Country[0]);
-  setDescription('');
-  setWaterBrandID('0');
-  setWaterBrOldImage('');
-  setFiles([]);
-}
-const deleteWaterPumpBrand = (id) =>{
-  setVisibility(true)
-  console.log("it is id of that water pump brand: ", id);
+const deleteInvertorBrand = (id) =>{
+  setVisibility(true);
+  console.log("it is id of that Invertor brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -332,16 +330,16 @@ const deleteWaterPumpBrand = (id) =>{
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if(result.isConfirmed) {
-      axios.delete('api/pumpbrand/'+id)
+      axios.delete('api/invertorbrand/'+id)
         .then(res => {
-          setVisibility(false)
-              // setWaterPumpBrands(res.data)
-            setWaterPumpBrands(waterPumpBrands.filter((value) => value.id !==id));
+          setVisibility(false);
+              // setInvertorBrands(res.data)
+            setInvertorBrands(invertorBrands.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
-          setVisibility(false)
+          setVisibility(false);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -352,13 +350,13 @@ const deleteWaterPumpBrand = (id) =>{
     }
   })
 }
-const getWaterPumps = async() =>{
-  setVisibility(true)
-  axios.get('api/pumpbrand')
+const getInvertors = async() =>{
+  setVisibility(true);
+  axios.get('api/invertorbrand')
   .then(res => {  
       setVisibility(false)
       // console.log(res);
-      setWaterPumpBrands(res.data);
+      setInvertorBrands(res.data);
     }
 ).catch(err => {
       setVisibility(false)
@@ -369,54 +367,56 @@ const getWaterPumps = async() =>{
 }
 const handleSubmit = (e) => {
   e.preventDefault();
-  setVisibility(true)
+  setVisibility(true);
   let data = {
-    waterBrandID, country, brand, description
+    invertorBrandID, country, brand, description
   }
-    if(files.length!==0){
-      if(data.waterBrandID===undefined){
-        data.waterBrandID = 0;
-      }
-      var image = '';
-      let file = files[0];
-      let reader = new FileReader();
-      reader.onloadend = (file) => {
-        image = reader.result;
-        data['image'] = image;
-        axios.post('api/pumpbrand', data)
-          .then(res => {
-            setVisibility(false)
-            getWaterPumps();
-            getWaterPumpLists();
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-            id="notification.titleHere" />);
-          }
-          ).catch(err =>{
-            setVisibility(false)
-                  NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-                id="notification.titleHere"/>);
-              }
-          )
-      }
-      reader.readAsDataURL(file); 
+  // console.log(data);
+  if(files.length!==0){
+    if(data.invertorBrandID===undefined){
+      data.invertorBrandID = 0;
+    } 
+    var image = '';
+    let file = files[0];
+    let reader = new FileReader();
+    reader.onloadend = (file) => {
+      image = reader.result;
+      data['image'] = image;
+      axios.post('api/invertorbrand', data)
+        .then(res => {
+          setVisibility(false);
+          // console.log(res);
+              getInvertors();
+              getInvertorLists();
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+          setVisibility(false);
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+            }
+        )
     }
-    else{
-      data['image'] = 'oldImage';
-      axios.post('api/pumpbrand', data)
-      .then(res => {
-        setVisibility(false)
-            getWaterPumps();
-            getWaterPumpLists();
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-            id="notification.titleHere" />);
-          }
-      ).catch(err =>{
-        setVisibility(false)
-              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-      )
-    }
+    reader.readAsDataURL(file); 
+  }
+  else{
+    data['image'] = 'oldImage';
+    axios.post('api/invertorbrand', data)
+        .then(res => {
+          setVisibility(false);
+              getInvertors();
+              getInvertorLists();
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+          setVisibility(false);
+               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+            }
+        )
+  }
 }
 // end form sumbit
 
@@ -430,24 +430,19 @@ const handleSubmit = (e) => {
   };
   const open1 = Boolean(anchorEl);
   // end popover code
-  const [waterListObject, setWaterListObject] =React.useState([]);
-  const editWaterList = (waterListObj) =>{
-    //  console.log(WaterListObject);
-    setWaterListObject(waterListObj);
-    setOpenD(true)
-  }
+   
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
-        <Widget styleName={`text-white waterPumpPanelBackGrad`}>
+        <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
             <LocalDrinkIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
-            <h3 className="jr-font-weight-medium mb-3">Water Pump Brands</h3>
-            <p className="mb-3">List of Current Water Pump Brands</p>
+            <h3 className="jr-font-weight-medium mb-3">Invertor Brands</h3>
+            <p className="mb-3">List of Current Invertor Brands</p>
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
@@ -487,7 +482,7 @@ const handleSubmit = (e) => {
                     <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
-                    <Autocomplete 
+                  <Autocomplete 
                       value={country} onChange={(event, newValue) => {setCountry(newValue);}}
                       inputValue={inputValue}
                       onInputChange={(event, newInputValue) => {
@@ -497,8 +492,7 @@ const handleSubmit = (e) => {
                       options={Country}
                       style={{ width: 300 }}
                       renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
-                    />
-                     
+                    /> 
                   </div>
                 </div>
                 <div className="row paddingTopForm">
@@ -518,10 +512,10 @@ const handleSubmit = (e) => {
                         </div>
                         <div className="dropzone-content" style={thumbsContainer}>
                             {thumbs}
-                            {(files.length === 0 )? ((waterBrOldImage!=="" && waterBrOldImage!==undefined)? (<spam>
+                            {(files.length === 0 )? ((invertorBrOldImage!=="" && invertorBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/${waterBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
-                            </spam>): ''): ''}
+                                  <span><img src={`${axios.defaults.baseURL}brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                </spam>): ''): ''}
                         </div>
                       </div>
                   </div>
@@ -534,7 +528,7 @@ const handleSubmit = (e) => {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                       <span className="row justify-content-center">
                         <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-                      </span> 
+                      </span>
                       <div className="table-responsive-material">
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
@@ -547,7 +541,7 @@ const handleSubmit = (e) => {
                             </tr>
                           </thead>
                           <tbody>
-                          {waterPumpBrands.map((data, index) => {
+                          {invertorBrands.map((data, index) => {
                             return <tr key={index}>
                               <td>{index+1}</td>
                               <td>
@@ -592,17 +586,16 @@ const handleSubmit = (e) => {
                               <td>{data.country}</td>
                               
                               <td>
-                                <div className="d-flex align-items-center">
-                                  <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                              <div className="d-flex align-items-center">
+                                  <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
-                                 
                               </td>
                               <td>
                                 <div className="pointer text-primary">
-                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterPumpBrand(data.id)} >
+                                  <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteInvertorBrand(data.id)} >
                                     <DeleteIcon />
                                   </IconButton>
-                                <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editWaterBrand(data)}>
+                                <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editInvertorBrand(data)}>
                                     <Edit />
                                 </IconButton>
                                
@@ -631,75 +624,66 @@ const handleSubmit = (e) => {
     <div className="col-xl-8 col-lg-8 col-md-12 col-12 wp-second-col">
       {/* imported dialog form another file */}
 
-      <DialogWaterP 
-        openD={openD}
-        setOpenD={setOpenD}
-        waterPumpBrands={waterPumpBrands}
-        waterListObject={waterListObject}
-        setWaterListObject={setWaterListObject}
+      <DialogInvertor 
+        openIn={openIn}
+        setOpenIn={setOpenIn}
+        invertorBrands={invertorBrands}
+        invertorListObject={invertorListObject}
+        setInvertorListObject={setInvertorListObject}
       />
-      <DialogSettingWD 
-        pumpListId={pumpListId}
-        pumpListModel={pumpListModel}
-        openWSD={openWSD}
-        setOpenWSD={setOpenWSD}
-      />
+       
 
       <Widget>
         <div className="d-flex flex-row mb-3">
-          <h4 className="mb-0"> List of Water Pumps</h4>
-          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenD(true)}>
+          <h4 className="mb-0"> List of Invertor</h4>
+          <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
         <span className="row justify-content-center">
           <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-        </span> 
+        </span>
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
               <tr>
                 <th>ID</th>
-                <th>Name/Model</th>
-                <th>Outlet (Inch)</th>
-                <th>Current (A)</th>
-                <th>Diameter (Inch)</th>
+                <th>Model</th>
                 <th>Power (KW)</th>
+                <th>Voltage (AC)</th>
+                <th>Voltage (DC)</th>
                 <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-            {waterPumpLists.map((waterList, index) => {
+            {invertorLists.map((invertor, index) => {
               return <tr key={index}>
                 <td>{index+1}</td>
                 <td>
                   <div className="d-flex align-items-center">
                     <div className="user-detail">
-                      <h5 className="user-name">{waterList.model}</h5>
+                      <h5 className="user-name">{invertor.model}</h5>
                     </div>
                   </div>
                 </td>
-                <td>{waterList.outlet}</td>
-                <td>{waterList.ampeier}</td>
-                <td>{waterList.diameter}</td>
-                <td>{waterList.power}</td>
+                <td>{invertor.power}</td>
+                <td>{invertor.voltage_ac}</td>
+                <td>{invertor.voltage_dc_min} - {invertor.voltage_dc_max}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                      <img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                    <img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${invertor.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                  
                 <td>
                   <div className="pointer text-primary">
-                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteWaterList(waterList.id)}>
+                    <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteInvertorList(invertor.id)}>
                       <DeleteIcon />
                     </IconButton>
-                  <IconButton size="small" color="primary" aria-label="edit an alarm" onClick={() => editWaterList(waterList)}>
+                  <IconButton size="small" color="primary" aria-label="edit an alarm"  onClick={() => editInvertorList(invertor)}>
                     <Edit />
                   </IconButton>
-                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{ onButtonClick(waterList.id, waterList.model)}}>
-                    <SettingsIcon />
-                  </IconButton>
+                   
                   </div>
                 </td>
               </tr>
@@ -707,7 +691,7 @@ const handleSubmit = (e) => {
             </tbody>
           </Table>
         </div>
-        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenD(true)}>
+        <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenIn(true)}>
         <i className="zmdi zmdi-plus-circle-o mr-1 jr-fs-lg d-inline-block align-middle"/>
         Register New Device</span>
       </Widget>
@@ -716,4 +700,4 @@ const handleSubmit = (e) => {
   </div>
   );
 };
-export default WaterPump;
+export default Invertor;

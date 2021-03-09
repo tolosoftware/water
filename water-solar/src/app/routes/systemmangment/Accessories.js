@@ -13,6 +13,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import AccessoriesForm from './commentElement/AccessoriesForm';
+import Spinner from 'react-spinner-material';
 //form importas
 
 function TabPanel(props) {
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
  
 
 function Accessories() {
+  const [visibility,setVisibility]= useState(false);
   // start code for taps 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -80,12 +82,15 @@ useEffect(() => {
   getAccessories();
 },[])
 const getAccessories = async() =>{
+  setVisibility(true);
   axios.get('api/accessories')
       .then(res => {  
           // console.log(res);
+          setVisibility(false);
           setAccessoriesList(res.data);
         }
     ).catch(err => {
+      setVisibility(false);
            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
           }
@@ -97,6 +102,7 @@ const editAccessory = (accessoryObj) =>{
    setAccessoryObject(accessoryObj);
 }
 const deletAccessory=(id) => {
+  setVisibility(true);
   console.log("it is id of that geo location: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -110,12 +116,14 @@ const deletAccessory=(id) => {
     if(result.isConfirmed) {
       axios.delete('api/accessories/'+id)
         .then(res => {
+          setVisibility(false);
               // setAccessories(res.data)
               setAccessoriesList(accessoriesList.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false);
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -140,15 +148,19 @@ const deletAccessory=(id) => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} className={`tap1_acc`}>
+        <span className="row justify-content-center">
+          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+        </span>
         <MaterialTable 
                 title="Dynamic list you can Edit and Delete the specific accessory"
                 columns={[
                     { title: 'ID', field: 'id' },
                     { title: 'Name', field: 'name' },
                     { title: 'Model', field: 'model' },
-                    { title: 'Country', field: 'country'},
-                    {title: 'Price', field: 'price'},
-                    {title: 'Image', field: 'img', render: item => <img src={`http://localhost:8000/accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},
+                    { title: 'Uom', field: 'uom_name' },
+                    { title: 'Min Quantity', field: 'min_quantity'},
+                    {title: 'Max Quantity', field: 'max_quantity'},
+                    {title: 'Image', field: 'img', render: item => <img src={`${axios.defaults.baseURL}accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},
                         
                 ]}
                 data={accessoriesList}

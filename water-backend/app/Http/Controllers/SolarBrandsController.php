@@ -48,7 +48,7 @@ class SolarBrandsController extends Controller
                 $request->merge(['photo' => $photoname]);
             }
             
-            if ($id!==0) {
+            if ($id!=='0') {
                 $solar_brands = Solar_brands::findOrFail($id);
                 $solar_brands->name =  $request['brand'];
                 $solar_brands->country = $request['country'];

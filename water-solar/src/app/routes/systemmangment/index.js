@@ -8,6 +8,7 @@ import GeoLocation from "./GeoLocation";
 import WaterPump from "./WaterPump";
 import SolarPanel from "./SolarPanel";
 import Accessories from "./Accessories";
+import Invertor from "./Invertor";
 import Divider from '@material-ui/core/Divider';
 
 import './style.css';
@@ -30,6 +31,12 @@ const Systemmangment = ({match}) => (
       <h3><b>Solar Panels</b></h3>
       <span>
         <SolarPanel/>
+      </span>
+      <Divider  className='diver-sys' /><br/>
+
+      <h3><b>Invertors</b></h3>
+      <span>
+        <Invertor/>
       </span>
       <Divider  className='diver-sys' /><br/>
       <div className="row mb-md-3">

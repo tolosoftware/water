@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pump_brands;
+use App\Models\InvertorBrand;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\File;
 
-class PumpBrandsController extends Controller
+class InvertorBrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class PumpBrandsController extends Controller
      */
     public function index()
     {
-        return Pump_brands::all();
+        return InvertorBrand::all();
     }
 
     /**
@@ -37,50 +37,52 @@ class PumpBrandsController extends Controller
      */
     public function store(Request $request)
     {
-     
+        // return $request;
         DB::beginTransaction();
         try {
+
             $photoname = 0;
-            $id = $request['waterBrandID'];
+            $id = $request['invertorBrandID'];
             if($request['image'] != 'oldImage'){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/pumpbrand/').$photoname);
+                \Image::make($request->image)->save(public_path('brand/invertor/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!=='0') {
-                $pump_brands = Pump_brands::findOrFail($id);
-                $pump_brands->name =  $request['brand'];
-                $pump_brands->country = $request['country'];
-                $pump_brands->discription = $request['description'];
+            
+            if ($id !== '0') {
+                // return "inside if: ".$id;
+                $invertorBrand = InvertorBrand::findOrFail($id);
+                $invertorBrand->name =  $request['brand'];
+                $invertorBrand->country = $request['country'];
+                $invertorBrand->discription = $request['description'];
                 if($request->image != 'oldImage'){
-                    File::delete('brand/pumpbrand/'.$pump_brands->image);
-                    $pump_brands->image = $photoname;
+                    File::delete('brand/invertor/'.$invertorBrand->image);
+                    $invertorBrand->image = $photoname;
                 }
-                $pump_brands->save();
+                $invertorBrand->save();
             }else{
-                Pump_brands::create([
+                // return "inside else:".$id;
+                InvertorBrand::create([
                     'name' => $request['brand'], 
                     'country' => $request['country'], 
                     'discription' => $request['description'], 
                     'image' => $photoname, 
                 ]);
             }
-
-        DB::commit();
-        return ['msg' => 'Pump brand succefully inserted'];
+            DB::commit();
+            return ['msg' => 'Solar brand succefully inserted'];
         } catch (Exception $e) {
             DB::rollback();
         }
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pump_brands  $pump_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function show(Pump_brands $pump_brands)
+    public function show(InvertorBrand $invertorBrand)
     {
         //
     }
@@ -88,10 +90,10 @@ class PumpBrandsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Pump_brands  $pump_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pump_brands $pump_brands)
+    public function edit(InvertorBrand $invertorBrand)
     {
         //
     }
@@ -100,10 +102,10 @@ class PumpBrandsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pump_brands  $pump_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pump_brands $pump_brands)
+    public function update(Request $request, InvertorBrand $invertorBrand)
     {
         //
     }
@@ -111,14 +113,14 @@ class PumpBrandsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pump_brands  $pump_brands
+     * @param  \App\Models\InvertorBrand  $invertorBrand
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $pump_brands = Pump_brands::findOrFail($id);
-        File::delete('brand/pumpbrand/'.$pump_brands->image);
-        $pump_brands->delete();
-        return ['message' => 'Geo Location Deleted'];
+        $invertorBrand = InvertorBrand::findOrFail($id);
+        File::delete('brand/invertor/'.$invertorBrand->image);
+        $invertorBrand->delete();
+        return ['message' => 'Selected Solar list has been Deleted'];
     }
 }

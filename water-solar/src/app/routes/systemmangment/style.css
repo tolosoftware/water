@@ -73,6 +73,10 @@ background: linear-gradient(90deg, rgba(0,121,254,1) 0%, rgba(5,198,253,1) 100%)
     background: rgb(104,44,48);
 background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%, rgba(53,110,216,1) 77%, rgba(30,85,177,1) 100%);
 }
+.invertorBackGrad{
+    background: rgb(159,159,159);
+    background: linear-gradient(90deg, rgba(159,159,159,1) 0%, rgba(159,159,159,1) 97%);
+}
 .insideFormBP{
     padding-bottom: 15px;
 }
@@ -126,17 +130,35 @@ padding: 0px 15px 10px;
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
     left: 4% !important;
 }
+.insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
+    left: 6% !important;
+}
 .insideFormPadding2 span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
+    left: 2% !important;
+}
+.insideFormPadding2.ivertor-ac span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3.ivertor-dc span[data-index="0"].MuiSlider-markLabel{
     left: 2% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
     left: 94% !important;
 }
+.insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
+    left: 91% !important;
+}
+.descriptInvertor{
+    padding-top: 15px;
+}
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
     left: 95% !important;
 }
+.insideFormPadding2.ivertor-ac span[data-index="1"].MuiSlider-markLabel{
+    left: 92% !important;
+}
 .insideFormPadding3 span[data-index="1"].MuiSlider-markLabel{
     left: 96% !important;
+}
+.insideFormPadding3.ivertor-dc span[data-index="1"].MuiSlider-markLabel{
+    left: 92% !important;
 }
 .insideFormPaddingWPS{
     padding: 0px 15px 0px;
@@ -261,8 +283,8 @@ padding: 0px 15px 10px;
     padding: 0px 10px 0px;
 }
 .inWPSG2{
-    padding-left: 15px !important;
-    padding-right: 0px !important;
+    flex: 0 0 27% !important;
+    max-width: 27% !important;
 }
 .insideSPDS .dropzone{
     margin-right: 15px;

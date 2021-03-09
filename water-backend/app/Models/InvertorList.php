@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Accessories_list extends Model
+class InvertorList extends Model
 {
     use HasFactory;
-    protected $table = 'accessories_lists';
+    protected $table = 'invertor_lists';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'accessories_type_id','name','model','uom_id', 'uom_name','min_quantity', 'max_quantity', 'discription','image'
+        'invertor_brand_id', 'model', 'power', 'voltage_ac','voltage_dc_min', 'voltage_dc_max', 'discription', 'image'
     ];
 }

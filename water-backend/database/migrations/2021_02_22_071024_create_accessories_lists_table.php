@@ -19,8 +19,11 @@ class CreateAccessoriesListsTable extends Migration
             $table->foreign('accessories_type_id')->references('id')->on('accessories_types')->onDelete('cascade');
             $table->string('name');
             $table->string('model');
-            $table->string('country');
-            $table->decimal('price');
+            $table->unsignedBigInteger('uom_id');
+            $table->string('uom_name');
+            $table->foreign('uom_id')->references('id')->on('uoms')->onDelete('cascade');
+            $table->Integer('min_quantity');
+            $table->Integer('max_quantity');
             $table->string('discription');
             $table->string('image');
             $table->timestamps();

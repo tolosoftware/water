@@ -23,7 +23,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Popover from '@material-ui/core/Popover';
 import './style.css';
-import './style.scss';
 // end import for taps
 
 // start import for dialog
@@ -40,6 +39,7 @@ import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import Swal from 'sweetalert2';
+import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
 // start of dialog modal for water pump
 const styles = (theme) => ({
@@ -170,10 +170,18 @@ const img = {
 
 
 const SolarPanel = () => {
+  const [visibility,setVisibility]= useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const [solarBrands, setSolarBrands] = useState([]);
   const [solarLists, setSolarLists] = useState([])
+  const [brand, setBrand] = React.useState("");
+  const [country, setCountry] = React.useState(Country[0]);
+  const [inputValue, setInputValue] = React.useState(Country[0]);
+  const [description, setDescription] = React.useState("");
+  const [solarBrandID, setSolarBrandID] = useState('0'); 
+  const [solarBrOldImage, setSolarBrOldImage] = useState("");
+  
   useEffect(() => {
     getSolarBrands();
   },[])
@@ -181,19 +189,40 @@ const SolarPanel = () => {
   
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
+    emptyForm();
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+  const editSolarBrand = (solarDataObject) => {
+    setValue(0);
+    setBrand(solarDataObject.name);
+    setCountry(solarDataObject.country);
+    setDescription(solarDataObject.discription);
+    setSolarBrandID(solarDataObject.id);
+    setSolarBrOldImage(solarDataObject.image);
+    console.log("solarDataObject : ", solarDataObject)
+  }
+
   // start code of dialog modal for water pump
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
+    emptyForm();
     setOpen(false);
   };
+  const emptyForm = () =>{
+    setBrand('');
+    setCountry(Country[0]);
+    setInputValue(Country[0]);
+    setDescription('');
+    setSolarBrandID('0');
+    setSolarBrOldImage("");
+    setFiles([]);
+  }
   const [openS, setOpenS] = React.useState(false);
   const [openSPD, setOpenSPD] = React.useState(false);
   // end code of dialog modal for water pump
@@ -238,10 +267,7 @@ useEffect(() => () => {
 }, [files]);
 // end dropzone code
 // start form sumbit
-const [brand, setBrand] = React.useState("");
-const [country, setCountry] = React.useState(Country[0]);
-const [inputValue, setInputValue] = React.useState(Country[0]);
-const [description, setDescription] = React.useState("");
+
 
 // Start code of Solar Panal List Setting 
 const [solarListId, setSolarListId] = useState('');
@@ -255,19 +281,10 @@ const onButtonClick = (listId, solarModel) => {
   setOpenSPD(true);
 }
 // End code of Solar Panal list setting 
-const [solarBrandID, setSolarBrandID] = useState('0'); 
-const [solarBrOldImage, setSolarBrOldImage] = useState("");
-const editSolarBrand = (solarDataObject) => {
-  setValue(0);
-  setBrand(solarDataObject.name);
-  setCountry(solarDataObject.country);
-  setDescription(solarDataObject.discription);
-  setSolarBrandID(solarDataObject.id);
-  setSolarBrOldImage(solarDataObject.image);
-  console.log("solarDataObject : ", solarDataObject)
-}
+
 
 const deleteSolarBrand = (id) =>{
+  setVisibility(true)
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -281,12 +298,14 @@ const deleteSolarBrand = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/solarbrand/'+id)
         .then(res => {
+          setVisibility(false)
               // setSolarBrands(res.data)
             setSolarBrands(solarBrands.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -298,14 +317,15 @@ const deleteSolarBrand = (id) =>{
   })
 }
 const getSolarBrands = async() =>{
+  setVisibility(true)
   axios.get('api/solarbrand')
   .then(res => {  
-      // setVisibility(false)
+      setVisibility(false)
       // console.log(res);
       setSolarBrands(res.data);
     }
 ).catch(err => {
-      // setVisibility(false)
+      setVisibility(false)
        NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
           id="notification.titleHere"/>);
       }
@@ -314,6 +334,7 @@ const getSolarBrands = async() =>{
 
 // start delete function solar panel list
 const deleteSolarList = (id) =>{
+  setVisibility(true)
   console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -327,12 +348,14 @@ const deleteSolarList = (id) =>{
     if(result.isConfirmed) {
       axios.delete('api/solarList/'+id)
         .then(res => {
-              setSolarLists(res.data)
-            setSolarLists(solarLists.filter((value) => value.id !==id));
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-            id="notification.titleHere" />);
-          }
+          setVisibility(false)
+          setSolarLists(res.data)
+          setSolarLists(solarLists.filter((value) => value.id !==id));
+          NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+          id="notification.titleHere" />);
+        }
         ).catch( err =>{
+          setVisibility(false)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -363,6 +386,7 @@ const getSolarLists = async() =>{
 
 const handleSubmit = (e) => {
     e.preventDefault();
+    setVisibility(true)
     let data = {
       solarBrandID, brand, description, country
     }
@@ -378,11 +402,13 @@ const handleSubmit = (e) => {
         data['image'] = image;
         axios.post('api/solarbrand', data)
           .then(res => {
+            setVisibility(false)
             getSolarBrands();
             getSolarLists();
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
                 id="notification.titleHere" />);
           }).catch(err =>{
+            setVisibility(false)
             NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
@@ -394,11 +420,13 @@ const handleSubmit = (e) => {
       data['image'] = 'oldImage';
       axios.post('api/solarbrand', data)
           .then(res => {
+            setVisibility(false)
             getSolarBrands();
             getSolarLists();
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
                 id="notification.titleHere" />);
           }).catch(err =>{
+            setVisibility(false)
             NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             }
@@ -455,7 +483,7 @@ const editSolarList = (solarListObject) =>{
                   onChangeIndex={handleChangeIndex}
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
-               
+                  
                   <Typography gutterBottom className={`p-Padding-bottom`}>
                     Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
                     in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
@@ -498,7 +526,7 @@ const editSolarList = (solarListObject) =>{
                             {thumbs}
                             {(files.length === 0 )? ((solarBrOldImage!=="" && solarBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`http://localhost:8000/brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>
@@ -509,6 +537,9 @@ const editSolarList = (solarListObject) =>{
                 <TabPanel value={value} index={1} dir={theme.direction}>
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                      <span className="row justify-content-center">
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                      </span> 
                       <div className="table-responsive-material">
                         <Table className="default-table table-unbordered table table-sm table-hover">
                           <thead className="table-head-sm th-border-b">
@@ -566,7 +597,7 @@ const editSolarList = (solarListObject) =>{
                               <td>{solarData.country}</td>
                               <td>
                                 <div className="d-flex align-items-center">
-                                  <img src={`http://localhost:8000/brand/solar/${solarData.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                                  <img src={`${axios.defaults.baseURL}brand/solar/${solarData.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                               </td>
                               <td>
@@ -625,6 +656,9 @@ const editSolarList = (solarListObject) =>{
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
+        <span className="row justify-content-center">
+                  <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                </span> 
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
@@ -654,7 +688,7 @@ const editSolarList = (solarListObject) =>{
                 <td>{solarList.current}</td>
                 <td>
                   <div className="d-flex align-items-center">
-                  <img src={`http://localhost:8000/brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
+                  <img src={`${axios.defaults.baseURL}brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
                 </td>
                 

@@ -44,9 +44,9 @@ class UomController extends Controller
      * @param  \App\Models\Uom  $uom
      * @return \Illuminate\Http\Response
      */
-    public function show(Uom $uom)
+    public function show($id)
     {
-        //
+        return Uom::findOrFail($id);
     }
 
     /**

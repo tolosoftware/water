@@ -20,9 +20,12 @@ import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
+import Spinner from 'react-spinner-material';
+
 // end dialog import file 
 import GeoLocationIrradiation from './commentElement/GeoLocationIrradiation';
-
+import * as type from 'yup';
+import { checkValidation, runValidation } from './commentElement/utils';
 
 // start dialog code
 const styles = (theme) => ({
@@ -338,11 +341,62 @@ const countries = [
 ];
 // end code for country selection 
 
+const initialState = {
+  formData: {
+    country: '',
+    city: '',
+    latitude: '',
+    longtitude: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  country: type.string().required("Required"),
+  city: type.string().required("Required"),
+  latitude: type.number("must be a number").required("Required"),
+  longtitude: type.number("must be a number").required("Required"),
+});
+
 
 const GeoLocation=() => {
+  const [visibility,setVisibility]= useState(false);
   const [geoLocations,setGeoLocations]= useState([]);
   const [geoLocationId,setGeoLocationId]= useState(0);
   const [geoLocationCity,setGeoLocationCity]= useState('');
+
+  const [district, setDistrict] = React.useState("");
+  const [latitude, setLatitude] = React.useState("");
+  const [longtitude, setLongtitude] = React.useState("");
+  const [country, setCountry] = React.useState("");
+  // let formData = {
+  //   country: country.label,
+  //   city: district,
+  //   latitude: latitude,
+  //   longtitude: longtitude,
+  // }
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
+
   useEffect(() => {
     getGeoLocations();
   },[])
@@ -359,55 +413,103 @@ const GeoLocation=() => {
   };
 // end dialog code for modal 
 // start form sumbit
-const [district, setDistrict] = React.useState("");
-const [latitude, setLatitude] = React.useState("");
-const [longtitude, setLongtitude] = React.useState("");
-const [country, setCountry] = React.useState("");
+
 
 const getGeoLocations = async() =>{
+  setVisibility(true)
   axios.get('api/new_location')
       .then(res => {  
-          // setVisibility(false)
+          setVisibility(false)
           // console.log(res);
           setGeoLocations(res.data);
         }
     ).catch(err => {
-          // setVisibility(false)
+          setVisibility(false)
            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
           }
       )
 }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    var countryName = country.label;
-    let data = {
-      countryName, district, latitude, longtitude
+  const handgleCountry = async (event, value) => {
+    setCountry(value);
+    console.log(value)
+    console.log(value?.label)
+    const schemaErrors = await runValidation(schema, {
+      ...formData, ['country']: value?.label
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, ['country']: value?.label },
+        touched: { ...touched, ['country']: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
+  const handleChange = async ({ target: { name, value } }) => {
+    if(name==='city'){
+      setDistrict(value)
     }
-    // console.log(district);
-    console.log(data);
-    axios.post('api/new_location', data)
-        .then(
-            res => {
-              // console.log(res);
-              getGeoLocations();
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-              handleClose();
-            }
-        ).catch(
-            err =>{
-              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-                console.log(err);
-            } 
-        )
+    else if(name==='latitude'){
+      setLatitude(value)
+    }
+    else if(name==='longtitude'){
+      setLongtitude(value)
+    }
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    
+    // const isValid = await schema.isValid(formData);
+    const isValid = true;
+    console.log("isValid: ", isValid);
+    if(isValid){
+      var countryName = country.label;
+      let data = {
+        countryName, district, latitude, longtitude
+      }
+      // console.log(district);
+      console.log(data);
+      setVisibility(true)
+      axios.post('api/new_location', data)
+          .then(
+              res => {
+                // console.log(res);
+                setVisibility(false)
+                getGeoLocations();
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                id="notification.titleHere" />);
+                handleClose();
+              }
+          ).catch(
+              err =>{
+                setVisibility(false)
+                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+                  console.log(err);
+              } 
+          )
+    }
+    
   }
 // end form sumbit
 
 // Delete functions for geo location
 const deletGeoLocation=(id) => {
+  setVisibility(true)
   console.log("it is id of that geo location: ", id);
   Swal.fire({
     title: 'Are you sure?',
@@ -422,11 +524,13 @@ const deletGeoLocation=(id) => {
       axios.delete('api/new_location/'+id)
         .then(res => {
               // setGeoLocations(res.data)
+            setVisibility(false)
             setGeoLocations(geoLocations.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
           }
         ).catch( err =>{
+          setVisibility(false)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -448,6 +552,9 @@ const deletGeoLocation=(id) => {
             <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={handleClickOpen}>
          <i className="zmdi zmdi-plus-circle-o mr-1"/>New Location</span> 
       </div>
+      <span className="row justify-content-center">
+        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+      </span>  
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
       <form autoComplete="off" onSubmit={handleSubmit}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
@@ -460,8 +567,8 @@ const deletGeoLocation=(id) => {
           </Typography>
           <div className="row">
             <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12 cellPadding">
-            <Autocomplete
-              id="country-select-demo"  onChange={(event, newValue) => {setCountry(newValue);}}
+            <Autocomplete name="country"
+              id="country-select-demo"  onChange={(event, newValue) => handgleCountry(event, newValue)}
               style={{ width: 300 }}
               options={countries}
               classes={{
@@ -480,6 +587,8 @@ const deletGeoLocation=(id) => {
                 <TextField id="countryName" name="country"  
                   {...params}
                   label="Choose a country"
+                  error={(touched && touched.country) && (error && error.country) ? true : false}
+                  helperText={(touched && touched.country) && (error && error.country) ? 'required' : ''}
                   variant="outlined"
                   inputProps={{
                     ...params.inputProps,
@@ -488,22 +597,47 @@ const deletGeoLocation=(id) => {
                 />
               )} 
             /> 
+             
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField  id="outlined-basic" value={district} onChange={(e) => setDistrict(e.target.value)} label="City" name='district' variant="outlined" />
+              <TextField  id="outlined-basic" value={district} onChange={(e) => handleChange(e)} label="City" name='city' variant="outlined"
+              error={(touched && touched.city) && (error && error.city) ? true : false}
+              helperText={(touched && touched.city) && (error && error.city) ? 'required' : ''}
+              />
+              {/* { (touched && touched.city) && (error && error.city) && (
+                <i>
+                  {error.city}
+                </i>
+              )} */}
             </div>
           {/* </div>
           <div className="row"> */}
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField id="outlined-basic" size="small" value={latitude} onChange={(e) => setLatitude(e.target.value)} label="Latitude" name='latitude' variant="outlined" />
+              <TextField type="number" id="outlined-basic" size="small" value={latitude} onChange={(e) => handleChange(e)} label="Latitude" name='latitude' variant="outlined" 
+              error={(touched && touched.latitude) && (error && error.latitude) ? true : false}
+              helperText={(touched && touched.latitude) && (error && error.latitude) ? 'required' : ''}
+              />
+              {/* { (touched && touched.latitude) && (error && error.latitude) && (
+                <i>
+                  {error.latitude}
+                </i>
+              )} */}
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
-              <TextField id="outlined-basic" size="small" value={longtitude} onChange={(e) => setLongtitude(e.target.value)} label="Longtitude" name='Longtitude' variant="outlined" />
+              <TextField type="number" id="outlined-basic" size="small" value={longtitude} onChange={(e) => handleChange(e)} label="Longtitude" name='longtitude' variant="outlined" 
+              error={(touched && touched.longtitude) && (error && error.longtitude) ? true : false}
+              helperText={(touched && touched.longtitude) && (error && error.longtitude) ? 'required' : ''}
+              />
+              {/* { (touched && touched.longtitude) && (error && error.longtitude) && (
+                <i>
+                  {error.longtitude}
+                </i>
+              )} */}
             </div>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button type="submit" autoFocus color="primary">
+          <Button type="submit" autoFocus color="primary" disabled={!isValid}>
             Save
           </Button>
         </DialogActions>
@@ -568,6 +702,9 @@ const deletGeoLocation=(id) => {
         {/* <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center">
                     <i className="zmdi zmdi-plus-circle-o mr-1"/>New Record</span> */}
       </div>
+      <span className="row justify-content-center">
+        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+      </span> 
       <div className="table-responsive-material">
         <Table className="default-table table-unbordered table table-sm table-hover">
           <thead className="table-head-sm th-border-b">

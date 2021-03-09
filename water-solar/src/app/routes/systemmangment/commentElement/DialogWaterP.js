@@ -182,10 +182,12 @@ export default function DialogWaterP(props){
     // };
     const handleClose = () => {
         setOpenD(false);
+        emptyForm();
     };
     // end code of dialog modal for water pump
     const [brand, setBrand] = useState("");
     const waterPumpBrands=props.waterPumpBrands;
+    const {waterListObject, setWaterListObject} = props;
     const handleChange1 = (event) => {
       setBrand(event.target.value);
     };
@@ -196,10 +198,46 @@ export default function DialogWaterP(props){
     const [current, setCurrent] = useState("");
     const [diameter, setDiameter] = useState("");
     const [description, setDescription] = useState("");
+    const [waterListID, setWaterListID] = useState('0'); 
+    const [oldImage, setOldImage] = useState("");
+    const [files, setFiles] = useState([]);
+
+    const emptyForm = () =>{
+      setWaterListID('0');
+      setWaterListObject([]);
+      setBrand('');
+      setName('');
+      setPowerKW('');
+      setOutlet('');
+      setCurrent('');
+      setDiameter('');
+      setDescription("");
+      setOldImage('');
+      setFiles([]);
+    }
+
+    useEffect(() => {
+      setEditFieldValuse();
+    },[props.waterListObject])
+    
+    const setEditFieldValuse = () => {
+      setWaterListID(waterListObject.id);
+      setBrand(waterListObject.pump_brand_id);
+      setName(waterListObject.model);
+      setOutlet(waterListObject.outlet);
+      setCurrent(waterListObject.ampeier);
+      setDiameter(waterListObject.diameter);
+      var n = waterListObject.power;
+      n = parseFloat(n);
+      setPowerKW(n);
+      setDescription(waterListObject.discription);
+      setOldImage(waterListObject.image);
+    } 
+  
     const classes = useStyles();
     
   // dropzone code
-    const [files, setFiles] = useState([]);
+    
     const {getRootProps, getInputProps} = useDropzone({
       accept: 'image/*',
       onDrop: acceptedFiles => {
@@ -225,20 +263,39 @@ export default function DialogWaterP(props){
       files.forEach(file => URL.revokeObjectURL(file.preview));
     }, [files]);
   // end dropzone code
+
     const handleSubmit = (e) => {
       e.preventDefault();
       let dataWaterList = {
-          brand, name, outlet, current, diameter, powerKW, description,
+        waterListID, brand, name, outlet, current, diameter, powerKW, description,
       }
       console.log(dataWaterList);
-      var image = '';
-    let file = files[0];
-    let reader = new FileReader();
-    reader.onloadend = (file) => {
-      image = reader.result;
-      dataWaterList['image'] = image;
-      dataWaterList['serial_no'] = uuidv4();
-      axios.post('api/pumpList', dataWaterList)
+      if(files.length!==0){
+        if(dataWaterList.waterListID===undefined){
+          dataWaterList.waterListID=0;
+        }
+        var image = '';
+        let file = files[0];
+        let reader = new FileReader();
+        reader.onloadend = (file) => {
+          image = reader.result;
+          dataWaterList['image'] = image;
+          dataWaterList['serial_no'] = uuidv4();
+          axios.post('api/pumpList', dataWaterList)
+            .then(res => {
+              setOpenD(false);
+                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                  id="notification.titleHere" />);
+            }).catch(err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+              }
+            )
+        }
+        reader.readAsDataURL(file); 
+      }else{
+        dataWaterList['image'] = 'oldImage';
+        axios.post('api/pumpList', dataWaterList)
         .then(res => {
           setOpenD(false);
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
@@ -248,9 +305,7 @@ export default function DialogWaterP(props){
             id="notification.titleHere"/>);
           }
         )
-    }
-    reader.readAsDataURL(file); 
-  
+      }
     }
     return (
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openD}>
@@ -310,15 +365,7 @@ export default function DialogWaterP(props){
                                   }}
                                   value={outlet} onChange={(e) => setOutlet(e.target.value)}/>
                               </FormControl>
-                                {/* <TextField size="small"
-                                    label="Outlet" value={outlet} onChange={(e) => setOutlet(e.target.value)}
-                                    id="outlined-start-adornment"
-                                    className={clsx(classes.margin, classes.textField)}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="end">inch</InputAdornment>,
-                                    }}
-                                    variant="outlined"
-                                />   */}
+                                
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
@@ -332,15 +379,7 @@ export default function DialogWaterP(props){
                                     }}
                                     value={current} onChange={(e) => setCurrent(e.target.value)}/>
                                 </FormControl>
-                                {/* <TextField size="small"
-                                    label="Current" value={current} onChange={(e) => setCurrent(e.target.value)}
-                                    id="outlined-start-adornment"
-                                    className={clsx(classes.margin, classes.textField)}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="end">A</InputAdornment>,
-                                    }}
-                                    variant="outlined"
-                                />   */}
+                                
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
@@ -354,22 +393,14 @@ export default function DialogWaterP(props){
                                     }}
                                     value={diameter} onChange={(e) => setDiameter(e.target.value)}/>
                                 </FormControl>
-                                {/* <TextField size="small"
-                                    label="Diameter" value={diameter} onChange={(e) => setDiameter(e.target.value)}
-                                    id="outlined-start-adornment"
-                                    className={clsx(classes.margin, classes.textField)}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="end">inch</InputAdornment>,
-                                    }}
-                                    variant="outlined"
-                                />   */}
+                                
                             </div>
                             <div className="col-xl-12 col-lg-12 col-md-12 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                 Power to KW
                                 </Typography>
                                 <Slider onChange={(event, value) => setPowerKW(value)}
-                                    defaultValue={15}
+                                    defaultValue={(powerKW) ? powerKW : 15}
                                     getAriaValueText={valuetext}
                                     aria-labelledby="discrete-slider-small-steps"
                                     step={null}
@@ -394,6 +425,10 @@ export default function DialogWaterP(props){
                                     </div>
                                     <div className="dropzone-content" style={thumbsContainer}>
                                         {thumbs}
+                                        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
+                                        <span className={`sp_right_padding`}>Cuurent Image </span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                      </spam>): ''): ''}
                                     </div>
                                 </div>
                             </div>
