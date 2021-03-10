@@ -39,6 +39,7 @@ class PumpListController extends Controller
         DB::beginTransaction();
         try {
 
+            // return $request;
             $photoname = 0;
             $id = $request['waterListID'];
             if($request['image'] != 'oldImage'){

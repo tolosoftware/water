@@ -42,6 +42,9 @@ import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './commentElement/utils';
+
 // start of dialog modal for water pump
 const styles = (theme) => ({
   root: {
@@ -168,6 +171,42 @@ const img = {
   height: '100%'
 };
 // end code for dropzone
+
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    country: '',
+    description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  country: type.string().required("Required"),
+  description: type.string().required("Required"),
+});
+
+
+// end validation code
+
+
 const WaterPump = () => {
   const classes = useStyles();
   const theme = useTheme();
@@ -181,13 +220,20 @@ const WaterPump = () => {
 
   const [value, setValue] = React.useState(0);
   const [waterPumpBrands, setWaterPumpBrands] = useState([]);
-  const [waterPumpLists, setWaterPumpLists] = useState([])
+  const [waterPumpLists, setWaterPumpLists] = useState([]);
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   useEffect(() => {
     getWaterPumps();
   },[])
   
-  const handleChange = (event, newValue) => {
+  const Field = (event, newValue) => {
     emptyForm();
+    handleAllField(false);
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
@@ -205,6 +251,7 @@ const WaterPump = () => {
   },[openD])
   const handleClose = () => {
     emptyForm();
+    handleAllField(false);
     setOpen(false);
   };
   // end code of dialog modal for water pump
@@ -216,7 +263,9 @@ const {getRootProps, getInputProps} = useDropzone({
     setFiles(acceptedFiles.map(file => Object.assign(file, {
       preview: URL.createObjectURL(file)
     })));
+
   }
+  
 });
 
 const thumbs = files.map(file => (
@@ -233,8 +282,24 @@ const thumbs = files.map(file => (
 useEffect(() => () => {
   // Make sure to revoke the data uris to avoid memory leaks
   files.forEach(file => URL.revokeObjectURL(file.preview));
+  // handleImage();
 }, [files]);
 // end dropzone code
+// const handleImage= async()=> {
+//   let name = 'files';
+//   const schemaErrors = await runValidation(schema, {
+//     ...formData, [name]: files
+//   });
+//   dispatch({
+//     type: setState,
+//     payload: {
+//       error: schemaErrors,
+//       formData: { ...formData, [name]: files },
+//       touched: { ...touched, [name]: true },
+//       isValid: checkValidation(schemaErrors)
+//     }
+//   });
+// }
    
 // start form sumbit
 
@@ -308,7 +373,23 @@ const editWaterBrand = (dataValue) => {
   setWaterBrandID(dataValue.id);
   setWaterBrOldImage(dataValue.image);
   setValue(0);
+  handleAllField(true);
   // setBrand(); setD1escription();
+}
+const handleAllField = async(valid) =>{
+  let f1 = 'brand', f2 = 'country', f3 = 'description';
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [f1]: brand, [f2]: country, [f3]: description
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [f1]: brand, [f2]: country, [f3]: description },
+      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+      isValid: valid
+    }
+  });
 }
 const emptyForm = () =>{
   setBrand('');
@@ -367,16 +448,54 @@ const getWaterPumps = async() =>{
       }
   )
 }
+const handleCountry = async (event, value) => {
+  setCountry(value);
+  let name = 'country';
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [name]: value
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [name]: value },
+      touched: { ...touched, [name]: true },
+      isValid: checkValidation(schemaErrors)
+    }
+  });
+};
+const handleChangeField = async ({ target: { name, value } }) => {
+  if(name==='brand'){
+    setBrand(value)
+  }
+  else if(name==='description'){
+    setDescription(value)
+  }
+  
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [name]: value
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [name]: value },
+      touched: { ...touched, [name]: true },
+      isValid: checkValidation(schemaErrors)
+    }
+  });
+};
+
 const handleSubmit = (e) => {
   e.preventDefault();
   setVisibility(true)
   let data = {
     waterBrandID, country, brand, description
   }
+  if(data.waterBrandID===undefined){
+    data.waterBrandID = 0;
+  }
     if(files.length!==0){
-      if(data.waterBrandID===undefined){
-        data.waterBrandID = 0;
-      }
       var image = '';
       let file = files[0];
       let reader = new FileReader();
@@ -458,7 +577,7 @@ const handleSubmit = (e) => {
                 <AppBar position="static" color="default">
                   <Tabs
                     value={value}
-                    onChange={handleChange}
+                    onChange={Field}
                     indicatorColor="primary"
                     textColor="primary"
                     variant="fullWidth"
@@ -484,11 +603,14 @@ const handleSubmit = (e) => {
                   </Typography>
                 <div className="row ">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
+                    <TextField id="outlined-basic" name='brand' value={brand} onChange={e => handleChangeField(e)} 
+                    error={(touched && touched.brand) && (error && error.brand) ? true : false}
+                    helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''}
+                     label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
                     <Autocomplete 
-                      value={country} onChange={(event, newValue) => {setCountry(newValue);}}
+                      value={country} onChange={(event, newValue) => handleCountry(event, newValue)}
                       inputValue={inputValue}
                       onInputChange={(event, newInputValue) => {
                         setInputValue(newInputValue);
@@ -496,14 +618,21 @@ const handleSubmit = (e) => {
                       id="controllable-states-demo"
                       options={Country}
                       style={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
+                      renderInput={(params) => <TextField {...params} label="Country" name='country'
+                      error={(touched && touched.country) && (error && error.country) ? true : false}
+                      helperText={(touched && touched.country) && (error && error.country) ? '*required' : ''}
+                      variant="outlined" />}
                     />
                      
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <TextareaAutosize value={description} onChange={e => setDescription(e.target.value)} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
+                    <TextareaAutosize name='description' value={description} onChange={e => handleChangeField(e)}
+                    id='description' aria-label="minimum height" rowsMin={3} 
+                    className={`minWidth form-control ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`}
+                     placeholder="Short Description" />
+                     <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                   </div>
                 </div>
                 <div className="row paddingTopForm">
@@ -511,7 +640,7 @@ const handleSubmit = (e) => {
                   <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
                       <div className="dropzone-card">
                         <div className="dropzone">
-                            <div {...getRootProps({className: 'dropzone-file-btn'})}>
+                            <div {...getRootProps({className: 'dropzone-file-btn'})} >
                                 <input {...getInputProps()} />
                                 <p>Upload image</p>
                             </div>
@@ -620,7 +749,7 @@ const handleSubmit = (e) => {
                 </SwipeableViews>
                 </DialogContent>
                 <DialogActions>
-                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>): null}
+                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " disabled={!isValid} >Submit</Button>): null}
                 </DialogActions>
                 </form>
               </Dialog>

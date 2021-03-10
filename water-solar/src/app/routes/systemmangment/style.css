@@ -11,7 +11,21 @@
 .custRespTable{
     max-height: 237.19px;
 }
-
+.displayBlock{
+    display: block;
+}
+.displayNone{
+    display: none;
+}
+.errorText{
+    color: red;
+}
+.error{
+    border: 1px solid red;
+}
+.error:focus{
+    border: 1px solid red;
+}
 .sp-second-col .table-responsive-material, .wp-second-col .table-responsive-material{
     max-height: 155px;
     min-height: 155px;

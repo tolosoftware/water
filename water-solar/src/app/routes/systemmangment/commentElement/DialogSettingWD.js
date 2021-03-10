@@ -21,7 +21,8 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
-// import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
+// import * as type from 'yup';
+// import { checkValidation, runValidation } from './utils';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -135,6 +136,36 @@ const useStyles = makeStyles((theme) => ({
 
 //   return <h1>Hi</h1>;
 // });
+// validation code
+// const initialState = {
+//   formData: {
+//     cableTypes: {cableType: ''},
+//   },
+//   error: {},
+//   touched: {},
+//   isValid: false
+// };
+
+// const setState = 'SET_STATE';
+
+// function reducer(state, action) {
+//   switch(action.type) {
+//     case setState:
+//       return {
+//         ...state,
+//         ...action.payload
+//       };
+//     default:
+//       return state;
+//   }
+// }
+// const schema = type.object().shape({
+//   cableType: type.string().required("Required"),
+// });
+
+
+// end validation code
+
 export default function DialogSettingWD(props){
   
   const classes = useStyles();
@@ -153,15 +184,9 @@ export default function DialogSettingWD(props){
       { id: uuidv4(), head: [20, 100], discharge: [10, 30], cableLength: [300, 800], 'pumpListId': pumpList_Id, cableType: ''},
     ]);
     useEffect(() => {
-      // console.log("pumpList Id before if", props.pumpListId);
       if(props.pumpListId!==0){
-        // inputFields[0].pumpListId=props.pumpListId;
         getWaterPumpSettings(props.pumpListId);
-        // console.log("pumpList Id inside if", props.pumpListId);
       }
-      // console.log("pumpList Id outside if", props.pumpListId); 
-       
-      // console.log("pumpList Id outside if", props.pumpListId);  
     },[props.pumpListId])
     
     const getWaterPumpSettings = async(id) => {
