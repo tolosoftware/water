@@ -102,7 +102,7 @@ class GeolocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\GeoLocation  $geolocation
+     * @param  \App\Models\Geolocation  $geolocation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Geolocation $geolocation)

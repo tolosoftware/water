@@ -9,7 +9,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 // end of dialog modal for water pump
-import Country from './Country';
 import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
@@ -278,8 +277,6 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                               InputLabelProps={{
                                 shrink: true,
                               }}
-                              size="small" 
-
                               inputProps={{
                               ...params.inputProps,
                               autoComplete: 'new-password', // disable autocomplete and autofill

@@ -7,7 +7,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Widget from "components/Widget/index";
+// import Widget from "components/Widget/index";
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
@@ -700,7 +700,7 @@ const handleRemoveFields = () => {
                           </>  
 
                         ): (
-               <img src={imagepath} className={myImage} alt="Responsive" alt="Responsive" />               
+               <img src={imagepath} className={myImage} alt="Responsive" />               
             )}                
                                          
         </div>                                  
@@ -744,7 +744,6 @@ const handleRemoveFields = () => {
                 placeholder="pick item !"
                 margin="normal"
                 name="item"
-                 size="small" 
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -786,8 +785,6 @@ const handleRemoveFields = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                 size="small" 
-
                 inputProps={{
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill

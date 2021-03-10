@@ -6,7 +6,7 @@ import Widget from "components/Widget/index";
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";
-import {NotificationContainer,NotificationManager} from 'react-notifications';
+// import {NotificationContainer,NotificationManager} from 'react-notifications';
 export const UserList=() => {
 
   const [open,setOpen]=React.useState(false);  

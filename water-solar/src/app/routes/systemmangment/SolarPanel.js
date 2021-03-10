@@ -41,6 +41,9 @@ import {NotificationContainer,NotificationManager} from 'react-notifications';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './commentElement/utils';
+
 // start of dialog modal for water pump
 const styles = (theme) => ({
   root: {
@@ -168,6 +171,37 @@ const img = {
 };
 // end code for dropzone
 
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    country: '',
+    description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  country: type.string().required("Required"),
+  description: type.string().required("Required"),
+});
+// end validation code
 
 const SolarPanel = () => {
   const [visibility,setVisibility]= useState(false);
@@ -181,7 +215,12 @@ const SolarPanel = () => {
   const [description, setDescription] = React.useState("");
   const [solarBrandID, setSolarBrandID] = useState('0'); 
   const [solarBrOldImage, setSolarBrOldImage] = useState("");
-  
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   useEffect(() => {
     getSolarBrands();
   },[])
@@ -190,6 +229,7 @@ const SolarPanel = () => {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     emptyForm();
+    handleAllField(false);
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
@@ -202,7 +242,8 @@ const SolarPanel = () => {
     setDescription(solarDataObject.discription);
     setSolarBrandID(solarDataObject.id);
     setSolarBrOldImage(solarDataObject.image);
-    console.log("solarDataObject : ", solarDataObject)
+    // console.log("solarDataObject : ", solarDataObject)
+    handleAllField(true);
   }
 
   // start code of dialog modal for water pump
@@ -212,6 +253,7 @@ const SolarPanel = () => {
   };
   const handleClose = () => {
     emptyForm();
+    handleAllField(false);
     setOpen(false);
   };
   const emptyForm = () =>{
@@ -390,10 +432,10 @@ const handleSubmit = (e) => {
     let data = {
       solarBrandID, brand, description, country
     }
+    if(data.solarBrandID===undefined){
+      data.solarBrandID = 0;
+    }
     if(files.length!==0){
-      if(data.solarBrandID===undefined){
-        data.solarBrandID = 0;
-      }
       var image = '';
       let file = files[0];
       let reader = new FileReader();
@@ -440,6 +482,75 @@ const editSolarList = (solarListObject) =>{
   setSolarListObject(solarListObject);
   setOpenS(true)
 }
+const handleAllField = async(valid) =>{
+  const f1 = ['brand', 'country', 'description'];
+  const f2 = [brand, country, description];
+
+  for (let index = 0; index < f1.length; index++) {
+    // const element = array[index];
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [f1[index]]: f2[index]
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [f1[index]]: f2[index] },
+        touched: { ...touched, [f1[index]]: false},
+        isValid: valid
+      }
+    });
+  }
+  // const schemaErrors = await runValidation(schema, {
+  //   ...formData, [f1]: brand, [f2]: country, [f3]: description
+  // });
+  // dispatch({
+  //   type: setState,
+  //   payload: {
+  //     error: schemaErrors,
+  //     formData: { ...formData, [f1]: brand, [f2]: country, [f3]: description },
+  //     touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+  //     isValid: valid
+  //   }
+  // });
+}
+const handleCountry = async (event, value) => {
+  setCountry(value);
+  let name = 'country';
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [name]: value
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [name]: value },
+      touched: { ...touched, [name]: true },
+      isValid: checkValidation(schemaErrors)
+    }
+  });
+};
+const handleChangeField = async ({ target: { name, value } }) => {
+  if(name==='brand'){
+    setBrand(value)
+  }
+  else if(name==='description'){
+    setDescription(value)
+  }
+  
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [name]: value
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [name]: value },
+      touched: { ...touched, [name]: true },
+      isValid: checkValidation(schemaErrors)
+    }
+  });
+};
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -455,9 +566,6 @@ const editSolarList = (solarListObject) =>{
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
-        
-          
-            
             <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={open}>
               <form autoComplete="off" onSubmit={handleSubmit}>
                 <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
@@ -490,11 +598,14 @@ const editSolarList = (solarListObject) =>{
                   </Typography>
                 <div className="row ">
                   <div className="col-xl-6 col-lg-6 col-md-12 col-12">
-                    <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
+                    <TextField id="outlined-basic" value={brand} onChange={e => handleChangeField(e)} name='brand'
+                    error={(touched && touched.brand) && (error && error.brand) ? true : false}
+                    helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''} 
+                    label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-12 col-12">  
                     <Autocomplete 
-                      value={country} onChange={(event, newValue) => {setCountry(newValue);}}
+                      value={country} onChange={(event, newValue) => handleCountry(event, newValue)}
                       inputValue={inputValue}
                       onInputChange={(event, newInputValue) => {
                         setInputValue(newInputValue);
@@ -502,14 +613,19 @@ const editSolarList = (solarListObject) =>{
                       id="controllable-states-demo"
                       options={Country}
                       style={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
+                      renderInput={(params) => <TextField {...params} label="Country" name='country'
+                      error={(touched && touched.country) && (error && error.country) ? true : false}
+                      helperText={(touched && touched.country) && (error && error.country) ? '*required' : ''}
+                      variant="outlined" />}
                     />
                      
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-                    <TextareaAutosize value={description} onChange={e => setDescription(e.target.value)} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
+                    <TextareaAutosize value={description} onChange={e => handleChangeField(e)} name='description'
+                     id='description' aria-label="minimum height" rowsMin={3} className={`minWidth form-control ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} placeholder="Short Description" />
+                     <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                   </div>
                 </div>
                 <div className="row paddingTopForm">
@@ -622,7 +738,7 @@ const editSolarList = (solarListObject) =>{
                 </SwipeableViews>
                 </DialogContent>
                 <DialogActions>
-                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>): null}
+                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={!isValid} >Submit</Button>): null}
                   
                 </DialogActions>
                 </form>

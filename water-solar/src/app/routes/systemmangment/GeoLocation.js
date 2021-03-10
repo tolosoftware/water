@@ -432,17 +432,16 @@ const getGeoLocations = async() =>{
 }
   const handgleCountry = async (event, value) => {
     setCountry(value);
-    console.log(value)
-    console.log(value?.label)
+    let name = 'country';
     const schemaErrors = await runValidation(schema, {
-      ...formData, ['country']: value?.label
+      ...formData, [name]: value?.label
     });
     dispatch({
       type: setState,
       payload: {
         error: schemaErrors,
-        formData: { ...formData, ['country']: value?.label },
-        touched: { ...touched, ['country']: true },
+        formData: { ...formData, [name]: value?.label },
+        touched: { ...touched, [name]: true },
         isValid: checkValidation(schemaErrors)
       }
     });

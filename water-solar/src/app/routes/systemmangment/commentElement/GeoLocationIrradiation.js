@@ -588,19 +588,21 @@ export default function GeoLocationIrradiation(props){
                   <span className="row justify-content-center">
                     <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
                   </span> 
-                  {monthsInputFields[0] === "January" && loadMyForm(inputFieldsIrr1, data1)}
-                  {monthsInputFields[1] === "February" && loadMyForm(inputFieldsIrr2, data2)}
-                  {monthsInputFields[2] === "March" && loadMyForm(inputFieldsIrr3, data3)}
-                  {monthsInputFields[3] === "April" && loadMyForm(inputFieldsIrr4, data4)}
-                  {monthsInputFields[4] === "May" && loadMyForm(inputFieldsIrr5, data5)}
-                  {monthsInputFields[5] === "June" && loadMyForm(inputFieldsIrr6, data6)}
-                  {monthsInputFields[6] === "July" && loadMyForm(inputFieldsIrr7, data7)}
-                  {monthsInputFields[7] === "August" && loadMyForm(inputFieldsIrr8, data8)}
-                  {monthsInputFields[8] === "September" && loadMyForm(inputFieldsIrr9, data9)}
-                  {monthsInputFields[9] === "October" && loadMyForm(inputFieldsIrr10, data10)}
-                  {monthsInputFields[10] === "November" && loadMyForm(inputFieldsIrr11, data11)}
-                  {monthsInputFields[11] === "December" && loadMyForm(inputFieldsIrr12, data12)}
-                    </>
+                    <span className={(visibility === false)? 'displayBlock' : 'displayNone'} >
+                    {monthsInputFields[0] === "January" && loadMyForm(inputFieldsIrr1, data1)}
+                    {monthsInputFields[1] === "February" && loadMyForm(inputFieldsIrr2, data2)}
+                    {monthsInputFields[2] === "March" && loadMyForm(inputFieldsIrr3, data3)}
+                    {monthsInputFields[3] === "April" && loadMyForm(inputFieldsIrr4, data4)}
+                    {monthsInputFields[4] === "May" && loadMyForm(inputFieldsIrr5, data5)}
+                    {monthsInputFields[5] === "June" && loadMyForm(inputFieldsIrr6, data6)}
+                    {monthsInputFields[6] === "July" && loadMyForm(inputFieldsIrr7, data7)}
+                    {monthsInputFields[7] === "August" && loadMyForm(inputFieldsIrr8, data8)}
+                    {monthsInputFields[8] === "September" && loadMyForm(inputFieldsIrr9, data9)}
+                    {monthsInputFields[9] === "October" && loadMyForm(inputFieldsIrr10, data10)}
+                    {monthsInputFields[10] === "November" && loadMyForm(inputFieldsIrr11, data11)}
+                    {monthsInputFields[11] === "December" && loadMyForm(inputFieldsIrr12, data12)}
+                    </span>
+                  </>
                   {/* // )) } */}
                 </div>
               
