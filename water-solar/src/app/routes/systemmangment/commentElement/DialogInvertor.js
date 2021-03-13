@@ -269,26 +269,24 @@ const setEditFieldValuse = () => {
   setVoltage(Math.floor(invertorListObject.voltage_ac));
   setDescription(invertorListObject.discription);
   setOldImage(invertorListObject.image);
-  handleAllField(true);
 } 
+useEffect(() => {
+  (invertorListObject.id === undefined)? handleAllField(false): handleAllField(true);
+},[openIn])
 const handleAllField = async(valid) =>{
-  const f1 = ['brand', 'model', 'description'];
-  const f2 = [brand, model, description];
-
-  for (let index = 0; index < f1.length; index++) {
-    const schemaErrors = await runValidation(schema, {
-      ...formData, [f1[index]]: f2[index]
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [f1[index]]: f2[index] },
-        touched: { ...touched, [f1[index]]: false},
-        isValid: valid
-      }
-    });
-  }
+  let f1 = 'brand', f2 = 'model', f3 = 'description';
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [f1]: brand, [f2]: model, [f3]: description
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [f1]: brand, [f2]: model, [f3]: description },
+      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+      isValid: valid
+    }
+  });
 }
   
   const handleChangeField = async ({ target: { name, value } }) => {

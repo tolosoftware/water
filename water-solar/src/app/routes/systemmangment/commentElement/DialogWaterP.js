@@ -223,7 +223,6 @@ export default function DialogWaterP(props){
     //     setOpenD(true);
     // };
     const handleClose = () => {
-      handleAllField(false);
       emptyForm();
       setOpenD(false);
     };
@@ -328,47 +327,27 @@ export default function DialogWaterP(props){
       setPowerKW(n);
       setDescription(waterListObject.discription);
       setOldImage(waterListObject.image);
-      handleAllField(true);
     },[waterListObject])
     
     useEffect(() => {
       (waterListObject.id === undefined)? handleAllField(false): handleAllField(true);
-    },[props.openS])
+    },[openD])
     
     
     const handleAllField = async(valid) =>{
-      const f1 = ['brand', 'name', 'outlet', 'current', 'diameter', 'description'];
-      const f2 = [brand, name, outlet, current, diameter, description];
-
-      for (let index = 0; index < f1.length; index++) {
-        let name = f1[index];
-        const schemaErrors = await runValidation(schema, {
-          ...formData, [name]: f2[index]
-        });
-        dispatch({
-          type: setState,
-          payload: {
-            error: schemaErrors,
-            formData: { ...formData, [name]: f2[index] },
-            touched: { ...touched, [name]: false},
-            isValid: valid
-          }
-        });
-      }
-
-      // let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter', f6='description';
-      // const schemaErrors = await runValidation(schema, {
-      //   ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description 
-      // });
-      // dispatch({
-      //   type: setState,
-      //   payload: {
-      //     error: schemaErrors,
-      //     formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description },
-      //     touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false },
-      //     isValid: valid
-      //   }
-      // });
+      let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter', f6='description';
+      const schemaErrors = await runValidation(schema, {
+        ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description 
+      });
+      dispatch({
+        type: setState,
+        payload: {
+          error: schemaErrors,
+          formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description },
+          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false },
+          isValid: valid
+        }
+      });
     }
   
     const classes = useStyles();

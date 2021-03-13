@@ -171,8 +171,9 @@ const [accessoriestype,setAccessoriestype]= useState([]);
   }; 
   useEffect(() => {
     setEditFieldValuse();
-  },[props.accessoryObject])
-
+    (accessoryObject.id === undefined)? handleAllField(false): handleAllField(true);
+  },[accessoryObject])
+  
   const setEditFieldValuse = () => {
     setAccessoryID(accessoryObject.id);
     setType(accessoryObject.accessories_type_id);
@@ -184,12 +185,9 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     if(accessoryObject.uom_id !== undefined){
       // console.log('uom_id inside if', accessoryObject.uom_id);
       getUomObj(accessoryObject.uom_id);
-       
-       
     } 
     setDescription(accessoryObject.discription);
     setOldImage(accessoryObject.image);
-    handleAllField(true)
   } 
 
   const getUomObj = (id) => {
@@ -266,24 +264,19 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     }
   }
   const handleAllField = async(valid) =>{
-    const f1 = ['type', 'name', 'model', 'uom', 'min_quantity', 'max_quantity', 'description'];
-    const f2 = [type, name, model, uom, min_quantity, max_quantity, description];
-  
-    for (let index = 0; index < f1.length; index++) {
-      let name = f1[index];
+    let f1 = 'type', f2 = 'name', f3 = 'model', f4='uom', f5='min_quantity', f6= 'max_quantity', f7='description';
       const schemaErrors = await runValidation(schema, {
-        ...formData, [name]: f2[index]
+        ...formData, [f1]: type, [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity, [f7]: description 
       });
       dispatch({
         type: setState,
         payload: {
           error: schemaErrors,
-          formData: { ...formData, [name]: f2[index] },
-          touched: { ...touched, [name]: false},
+          formData: { ...formData, [f1]: type, [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity, [f7]: description },
+          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false, [f7]: false },
           isValid: valid
         }
       });
-    }
   }
   const handleUom = async (event, value) => {
     setUom(value);
