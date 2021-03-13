@@ -4,7 +4,7 @@ import Widget from "components/Widget/index";
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -417,7 +417,6 @@ const getInvertorLists = async() =>{
 
 const deleteInvertorBrand = (id) =>{
   setVisibility(true);
-  console.log("it is id of that Invertor brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -536,7 +535,7 @@ const handleSubmit = (e) => {
         <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
-            <LocalDrinkIcon className="lDrinkIcon"/>
+            <FlashAutoIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
             <h3 className="jr-font-weight-medium mb-3">Invertor Brands</h3>

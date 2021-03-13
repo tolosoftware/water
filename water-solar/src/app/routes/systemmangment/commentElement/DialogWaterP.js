@@ -231,7 +231,6 @@ export default function DialogWaterP(props){
     const waterPumpBrands=props.waterPumpBrands;
     const {waterListObject, setWaterListObject} = props;
     
-    
     const [name, setName] = useState("");
     const [powerKW, setPowerKW] = useState("");
     const [outlet, setOutlet] = useState("");
