@@ -224,7 +224,11 @@ const Invertor = () => {
   useEffect(() => {
     getInvertors();
   },[])
-  
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    handleAllField(false);
+    setOpen(true);
+  };
   const handleChange = (event, newValue) => {
     setBrand("");
     setDescription("");
@@ -235,7 +239,7 @@ const Invertor = () => {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
-  
+
   const editInvertorBrand = (invertorDataObject) => {
     setValue(0);
     setBrand(invertorDataObject.name);
@@ -243,28 +247,24 @@ const Invertor = () => {
     setDescription(invertorDataObject.discription);
     setInvertorBrandID(invertorDataObject.id);
     setInvertorBrOldImage(invertorDataObject.image);
-    handleAllField(true);
     // console.log("invertorDataObject : ", invertorDataObject)
+    handleAllField(true)
   }
+   
   const handleAllField = async(valid) =>{
-    const f1 = ['brand', 'country', 'description'];
-    const f2 = [brand, country, description];
-  
-    for (let index = 0; index < f1.length; index++) {
-      // const element = array[index];
-      const schemaErrors = await runValidation(schema, {
-        ...formData, [f1[index]]: f2[index]
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, [f1[index]]: f2[index] },
-          touched: { ...touched, [f1[index]]: false},
-          isValid: valid
-        }
-      });
-    }
+    let f1 = 'brand', f2 = 'country', f3 = 'description';
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [f1]: brand, [f2]: country, [f3]: description
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [f1]: brand, [f2]: country, [f3]: description },
+        touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+        isValid: valid
+      }
+    });
   }
     const handleCountry = async (event, value) => {
       setCountry(value);
@@ -304,10 +304,8 @@ const Invertor = () => {
       });
     };
   // start code of dialog modal for water pump
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+ 
+  
   const [openIn, setOpenIn] = React.useState(false);
   useEffect(() => {
     getInvertorLists();
