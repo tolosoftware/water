@@ -12,6 +12,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './utils';
 
 // end code for country selection 
 const useStyles = makeStyles((theme) => ({
@@ -63,12 +65,48 @@ const useStyles = makeStyles((theme) => ({
   };
 // end code for dropzone
 
+// validation code
+const initialState = {
+  formData: {
+    type: '',
+    name: '',
+    model: '',
+    uom: '',
+    min_quantity: '',
+    max_quantity: '',
+    description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  type: type.number().required("Required"),
+  name: type.string().required("Required"),
+  model: type.string().required("Required"),
+  uom: type.object().required("Required"),
+  min_quantity: type.number().required("Required"),
+  max_quantity: type.number().required("Required"),
+  description: type.string().required("Required"),
+});
+// end validation code
+
 export default function AccessoriesForm(props) {
   const [type, setType] = useState("");
-  const handleChange1 = (event) => {
-    setType(event.target.value);
-    };
-  
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
   const [description, setDescription] = useState("");
@@ -76,6 +114,12 @@ export default function AccessoriesForm(props) {
   const [max_quantity, setMax_quantity] = useState(""); 
   const [uom, setUom] = useState({});
   const [uomList, setUomList] = useState([]);
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   const classes = useStyles();
   
 // dropzone code
@@ -136,15 +180,16 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     setModel(accessoryObject.model);
     setMin_quantity(accessoryObject.min_quantity); 
     setMax_quantity(accessoryObject.max_quantity);
-    console.log('uom_id before if', accessoryObject.uom_id);
+    // console.log('uom_id before if', accessoryObject.uom_id);
     if(accessoryObject.uom_id !== undefined){
-      console.log('uom_id inside if', accessoryObject.uom_id);
+      // console.log('uom_id inside if', accessoryObject.uom_id);
       getUomObj(accessoryObject.uom_id);
        
        
     } 
     setDescription(accessoryObject.discription);
     setOldImage(accessoryObject.image);
+    handleAllField(true)
   } 
 
   const getUomObj = (id) => {
@@ -178,11 +223,11 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     }
     data['uom']=uom.id;
     data['uom_name']=uom.name;
-    console.log("filese: ", data);
+    // console.log("filese: ", data);
+    if(data.accessoryID===undefined){
+      data.accessoryID = 0;
+    }
     if(files.length!==0){
-      if(data.accessoryID===undefined){
-        data.accessoryID = 0;
-      }
       // console.log('inside if', data.accessoryID);
       var image = '';
       let file = files[0];
@@ -220,7 +265,75 @@ const [accessoriestype,setAccessoriestype]= useState([]);
           )
     }
   }
+  const handleAllField = async(valid) =>{
+    const f1 = ['type', 'name', 'model', 'uom', 'min_quantity', 'max_quantity', 'description'];
+    const f2 = [type, name, model, uom, min_quantity, max_quantity, description];
   
+    for (let index = 0; index < f1.length; index++) {
+      let name = f1[index];
+      const schemaErrors = await runValidation(schema, {
+        ...formData, [name]: f2[index]
+      });
+      dispatch({
+        type: setState,
+        payload: {
+          error: schemaErrors,
+          formData: { ...formData, [name]: f2[index] },
+          touched: { ...touched, [name]: false},
+          isValid: valid
+        }
+      });
+    }
+  }
+  const handleUom = async (event, value) => {
+    setUom(value);
+    let name = 'uom';
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
+  const handleChangeField = async ({ target: { name, value } }) => {
+    if(name==='type'){
+      setType(value)
+    }
+    else if(name==='name'){
+      setName(value)
+    }
+    else if(name==='model'){
+      setModel(value)
+    }
+    else if(name==='min_quantity'){
+      setMin_quantity(value)
+    }
+    else if(name==='max_quantity'){
+      setMax_quantity(value)
+    }
+    else if(name==='description'){
+      setDescription(value)
+    }
+    
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
   return (
     <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -230,31 +343,38 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type" value={type} onChange={(e) => setType(e.target.value)} variant="outlined" /> */}
                         <FormControl variant="outlined" size="small" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label" size="small" >Type</InputLabel>
+                            <InputLabel id="demo-simple-select-outlined-label" size="small"  error={(touched && touched.type) && (error && error.type) ? true : false} >Type</InputLabel>
                             <Select size="small"
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
                                 value={type}
-                                onChange={handleChange1}
+                                onChange={e => handleChangeField(e)}
                                 label="Type"
-                                name="Type"
+                                name="type"
+                                error={(touched && touched.type) && (error && error.type) ? true : false}
+                                helperText={(touched && touched.type) && (error && error.type) ? '*required' : ''} 
                               >
+                              <MenuItem value=''>none</MenuItem>
                               {accessoriestype.map((data, index) =>  
                                 <MenuItem value={data.id}>{data.name}</MenuItem>
                               )}
                             </Select>
+
                         </FormControl>
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" value={name} onChange={(e) => setName(e.target.value)} variant="outlined" />
+                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" name='name' value={name} onChange={(e) => handleChangeField(e)}
+                         error={(touched && touched.name) && (error && error.name) ? true : false}
+                         helperText={(touched && touched.name) && (error && error.name) ? '*required' : ''} variant="outlined" />
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-mod" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                        <TextField id="outlined-basic-mod" size="small" className="fullWidthInput" label="Model" name='model' value={model} onChange={(e) => handleChangeField(e)} error={(touched && touched.model) && (error && error.model) ? true : false}
+                                helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} variant="outlined" />
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         
-                        <Autocomplete  
-                          id="country-select-demo" value={uom}  onChange={(event, newValue) => setUom(newValue)}
+                        <Autocomplete  size="small"
+                          id="country-select-demo" value={uom}  onChange={(event, newValue) => handleUom(event, newValue)}
                           style={{ width: 300 }}
                           options={uomList}
                           classes={{
@@ -273,7 +393,9 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                               label="UoM"
                               variant="outlined"
                               placeholder="pick UoM!"
-                              name="location"
+                              name="uom"
+                              error={(touched && touched.uom) && (error && error.uom) ? true : false}
+                              helperText={(touched && touched.uom) && (error && error.uom) ? '*required' : ''}
                               InputLabelProps={{
                                 shrink: true,
                               }}
@@ -287,16 +409,17 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                     </div>
                     
                     <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" value={min_quantity} onChange={(e) => setMin_quantity(e.target.value)} variant="outlined" />
+                        <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" name='min_quantity' value={min_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.min_quantity) && (error && error.min_quantity) ? true : false} helperText={(touched && touched.min_quantity) && (error && error.min_quantity) ? '*required' : ''} variant="outlined" />
                     </div>
 
                     <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" value={max_quantity} onChange={(e) => setMax_quantity(e.target.value)} variant="outlined" />
+                        <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' value={max_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.max_quantity) && (error && error.max_quantity) ? true : false} helperText={(touched && touched.max_quantity) && (error && error.max_quantity) ? '*required' : ''} variant="outlined" />
                     </div>
                         
                     <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                         <div className="form-group">
-                            <textarea className="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2"  placeholder="Short Description"></textarea>
+                            <textarea className={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description' value={description} onChange={(e) => handleChangeField(e)} rows="2"  placeholder="Short Description"></textarea>
+                            <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                         </div>
                     </div>
                     <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 accessory_file">
@@ -319,7 +442,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                         </div>
                     </div>
                     <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 btnAccessory">
-                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
+                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn" disabled={!isValid}>Submit</Button>
                     </div>
                     </div>
             </form>
