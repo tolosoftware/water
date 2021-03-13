@@ -649,7 +649,7 @@ const handleSubmit = (e) => {
                             {thumbs}
                             {(files.length === 0 )? ((waterBrOldImage!=="" && waterBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/${waterBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/${waterBrOldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                             </spam>): ''): ''}
                         </div>
                       </div>

@@ -24,6 +24,8 @@ import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
 import { v4 as uuidv4 } from 'uuid';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './utils';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -147,6 +149,40 @@ const marksC = [
       label: '270A',
     },
 ];
+
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    model: '',
+    cableType: '',
+    description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  model: type.string().required("Required"),
+  cableType: type.number().required("Required"), 
+  description: type.string().required("Required"),
+});
+// end validation code
 export default function DialogSolarP(props){
     // start code of dialog modal for Solar Panal 
     const [files, setFiles] = useState([]);
@@ -165,9 +201,16 @@ export default function DialogSolarP(props){
   const [description, setDescription] = useState("");
   const [solarListID, setSolarListID] = useState('0'); 
   const [oldImage, setOldImage] = useState("");
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   const classes = useStyles();
   const handleCloseS = () => {
     emptyForm();
+    handleAllField(false, false);
     setOpenS(false);
   };
   const emptyForm = () =>{
@@ -185,6 +228,36 @@ export default function DialogSolarP(props){
     setOldImage('');
     setFiles([]);
   }
+
+  const handleChangeField = async ({ target: { name, value } }) => {
+    if(name==='brand'){
+      setBrand(value)
+    }
+    else if(name==='model'){
+      setModel(value)
+    }
+    else if(name==='description'){
+      setDescription(value)
+    }
+    
+    else if(name==='cableType'){
+      setCableType(value)
+    }
+    
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
+ 
 // dropzone code
  
   const {getRootProps, getInputProps} = useDropzone({
@@ -215,7 +288,6 @@ export default function DialogSolarP(props){
 // start get cable type
 useEffect(() => {
   getCabletype();
-  setSolarType("Mono");
 },[])
 const [cableTypesSelect,setCabletypesSelect]= useState([]);
 const getCabletype=async () => {
@@ -229,28 +301,45 @@ const getCabletype=async () => {
         }
     )
 };
-
 // end get cable type
 
-
-
-
 useEffect(() => {
-  setEditFieldValuse();
-},[props.solarListObject])
+    setSolarListID(solarListObject.id);
+    setBrand(solarListObject.solar_brand_id);
+    setModel(solarListObject.model);
+    setSolarType(solarListObject.type);
+    setPowerW(Math.floor(solarListObject.power));
+    setVoltage(Math.floor(solarListObject.voltage));
+    setCurrent(Math.floor(solarListObject.current));
+    setCableType(solarListObject.cable_type_id);
+    setDescription(solarListObject.discription);
+    setOldImage(solarListObject.image);
+    
+},[solarListObject])
+useEffect(() => {
+  (solarListObject.id === undefined)? handleAllField(false, false): handleAllField(true, false);
+},[props.openS])
+const handleAllField = async(valid, touchedValid) =>{
+  const f1 = ['brand', 'model', 'cableType', 'description'];
+  const f2 = [brand, model, cableType, description];
 
-const setEditFieldValuse = () => {
-  setSolarListID(solarListObject.id);
-  setBrand(solarListObject.solar_brand_id);
-  setModel(solarListObject.model);
-  setSolarType(solarListObject.type);
-  setPowerW(Math.floor(solarListObject.power));
-  setVoltage(Math.floor(solarListObject.voltage));
-  setCurrent(Math.floor(solarListObject.current));
-  setCableType(solarListObject.cable_type_id);
-  setDescription(solarListObject.discription);
-  setOldImage(solarListObject.image);
-} 
+  for (let index = 0; index < f1.length; index++) {
+    let name = f1[index];
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: f2[index]
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: f2[index] },
+        touched: { ...touched, [name]: touchedValid},
+        isValid: valid
+      }
+    });
+  }
+}
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -258,10 +347,10 @@ const setEditFieldValuse = () => {
       solarListID, brand, model, solarType, powerW, voltage, current, cableType, description
     }
     // console.log(dataSolarList);
+    if(dataSolarList.solarListID===undefined){
+      dataSolarList.solarListID = 0;
+    }
     if(files.length!==0){
-      if(dataSolarList.solarListID===undefined){
-        dataSolarList.solarListID = 0;
-      }
     var image = '';
     let file = files[0];
     let reader = new FileReader();
@@ -323,12 +412,12 @@ const setEditFieldValuse = () => {
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                 <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
-                                  <Select
+                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.brand) && (error && error.brand) ? true : false}>Brand</InputLabel>
+                                  <Select name='brand'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={brand}
-                                        onChange={(e) => setBrand(e.target.value)}
+                                        onChange={(e) => handleChangeField(e)}
                                   label="Brand"
                                   >
                                   <MenuItem value="">
@@ -338,18 +427,22 @@ const setEditFieldValuse = () => {
                                   <MenuItem value={brand.id}>{brand.name}</MenuItem>
                                   )}
                                   </Select>
+                                  <span className={(touched && touched.brand) && (error && error.brand) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" name='model' value={model} onChange={(e) => handleChangeField(e)} variant="outlined" 
+                                error={(touched && touched.model) && (error && error.model) ? true : false}
+                                helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} />
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP insideFormPaddingWPS">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1Mono"} id={"btnradio1Mono"} autocomplete="off" checked={solarType==="Mono"} value="Mono" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio1Mono"}>Mono</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2Poly"} id={"btnradio2Poly"} autocomplete="off" checked={solarType==="Poly"} value="Poly" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio2Poly"}>Poly</label>
+                                  <input type="radio" class="btn-check" name={`radio${solarType}`} id="btnradio1Mono" autocomplete="off" checked={(solarType==="Mono" || solarType === undefined) ? true : false} value="Mono" onChange={event => setSolarType(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio1Mono">Mono</label>
+                                  <input type="radio" class="btn-check" name={`radio${solarType}`} id="btnradio2Poly" autocomplete="off" checked={(solarType==="Poly")? true : false} value="Poly" onChange={event => setSolarType(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio2Poly">Poly</label>
                               </div>
+                               
                             </div>
                             <div className="col-xl-5 col-lg-5 col-md-5 col-12 insideFormPadding1 inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
@@ -401,12 +494,12 @@ const setEditFieldValuse = () => {
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
-                                  <Select
+                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.cableType) && (error && error.cableType) ? true : false}>Cable Type</InputLabel>
+                                  <Select name='cableType'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={cableType}
-                                  onChange={(e) => setCableType(e.target.value)}
+                                  onChange={(e) => handleChangeField(e)}
                                   label="Cable Type"
                                   >
                                   <MenuItem value="">
@@ -416,11 +509,13 @@ const setEditFieldValuse = () => {
                                   <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
                                   )}
                                   </Select>
+                                  <span className={(touched && touched.cableType) && (error && error.cableType) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                               </FormControl>
                             </div>    
                             <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <textarea name="description" class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`}  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </div>
                             </div>
                             <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
@@ -435,7 +530,7 @@ const setEditFieldValuse = () => {
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>
@@ -448,7 +543,7 @@ const setEditFieldValuse = () => {
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " name={`isValid ${isValid}`} disabled={!isValid} >Submit</Button>
             </DialogActions>
           </form>
       </Dialog>
