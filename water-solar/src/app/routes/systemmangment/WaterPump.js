@@ -551,10 +551,10 @@ const handleSubmit = (e) => {
   // end popover code
   const [waterListObject, setWaterListObject] =React.useState([]);
   const editWaterList = (waterListObj) =>{
-    //  console.log(WaterListObject);
     setWaterListObject(waterListObj);
-    setOpenD(true)
+    setOpenD(true);
   }
+   
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">

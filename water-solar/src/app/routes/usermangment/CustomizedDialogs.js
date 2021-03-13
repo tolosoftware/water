@@ -119,7 +119,7 @@ const DialogActions = withStyles((theme) => ({
 
 export default function CustomizedDialogs(props) {
     const {open,setOpen} = props;
-
+    const {userDataOject, setUserDataObject} = props;
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
@@ -171,8 +171,14 @@ export default function CustomizedDialogs(props) {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-  const {register,handleSubmit}=useForm(); // initialize the hook
-  
+  const {register, getValues , setValue, handleSubmit}=useForm(); // initialize the hook
+  useEffect(() => {
+    const editUserObject=async () => {
+       console.log('register', register['name']);
+       console.log('userDataObject', userDataOject);
+    };
+    editUserObject();
+  }, [userDataOject])
   const onSubmit = (data) => {
   
     var userimage = '';
