@@ -315,7 +315,8 @@ export default function DialogWaterP(props){
       setOldImage('');
       setFiles([]);
     }
-    const setEditFieldValuse = () => {
+     
+    useEffect(() => {
       setWaterListID(waterListObject.id);
       setBrand(waterListObject.pump_brand_id);
       setName(waterListObject.model);
@@ -328,31 +329,46 @@ export default function DialogWaterP(props){
       setDescription(waterListObject.discription);
       setOldImage(waterListObject.image);
       handleAllField(true);
-      
-    } 
-    useEffect(() => {
-      if(props.waterListObject.length !== 0){
-        setEditFieldValuse();
-      }
     },[waterListObject])
     
-    
+    useEffect(() => {
+      (waterListObject.id === undefined)? handleAllField(false): handleAllField(true);
+    },[props.openS])
     
     
     const handleAllField = async(valid) =>{
-      let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter', f6='description';
-      const schemaErrors = await runValidation(schema, {
-        ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description 
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description },
-          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false },
-          isValid: valid
-        }
-      });
+      const f1 = ['brand', 'name', 'outlet', 'current', 'diameter', 'description'];
+      const f2 = [brand, name, outlet, current, diameter, description];
+
+      for (let index = 0; index < f1.length; index++) {
+        let name = f1[index];
+        const schemaErrors = await runValidation(schema, {
+          ...formData, [name]: f2[index]
+        });
+        dispatch({
+          type: setState,
+          payload: {
+            error: schemaErrors,
+            formData: { ...formData, [name]: f2[index] },
+            touched: { ...touched, [name]: false},
+            isValid: valid
+          }
+        });
+      }
+
+      // let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter', f6='description';
+      // const schemaErrors = await runValidation(schema, {
+      //   ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description 
+      // });
+      // dispatch({
+      //   type: setState,
+      //   payload: {
+      //     error: schemaErrors,
+      //     formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description },
+      //     touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false },
+      //     isValid: valid
+      //   }
+      // });
     }
   
     const classes = useStyles();
@@ -565,7 +581,7 @@ export default function DialogWaterP(props){
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>
