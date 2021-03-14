@@ -70,7 +70,20 @@ export const UserList=() => {
   };
   const [userDataOject, setUserDataObject]= useState([]);
   const editUser = (data) => {
-    setUserDataObject(data);
+     
+    let dataObject ={
+      id: data.id,
+      name: data.name,
+      companyname: data.companyname,
+      email: data.email,
+      password: data.password,
+      website: data.website,
+      phone: data.phone,
+      expiration: data.expiration,
+      status: data.status,
+
+    }
+    setUserDataObject(dataObject);
     setOpen(true);
   }
   return (

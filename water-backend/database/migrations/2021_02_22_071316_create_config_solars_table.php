@@ -15,8 +15,7 @@ class CreateConfigSolarsTable extends Migration
     {
         Schema::create('config_solars', function (Blueprint $table) {
             $table->id();
-            $table->Integer('min_power')->nullable();
-            $table->Integer('max_power')->nullable();
+            $table->string('power')->nullable();
             $table->enum('base', ['Manual Tracker', 'Ground Structure'])->nullable();
             $table->Integer('solar_quantity')->nullable();
             $table->Integer('panal_quantity')->nullable();

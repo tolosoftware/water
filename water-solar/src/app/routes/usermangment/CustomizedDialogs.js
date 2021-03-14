@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import  React, {useEffect, useState} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -118,8 +118,12 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
-    const {open,setOpen} = props;
-    const {userDataOject, setUserDataObject} = props;
+  const {register, handleSubmit, getValues , setValue }=useForm({
+    
+    defaultValues: props.userDataOject,
+  }); // initialize the hook
+  const {open,setOpen} = props;
+  // const userDataOject = props.userDataOject;
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
@@ -128,7 +132,7 @@ export default function CustomizedDialogs(props) {
     };
    //drop down
   const classes = useStyles();
-   const [state, setState] = React.useState({
+  const [state, setState] = React.useState({
     expiration: '',
     name: 'hai',
   });
@@ -170,37 +174,57 @@ export default function CustomizedDialogs(props) {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
+  // const [username, setUsername] = useState();
+  // useEffect(() => {
+  //   // setUsername(userDataOject.name);
+  //   // const editUserObject=async () => {
+  //     setValue('name', 'userDataOject.name', {
+  //       shouldValidate: true,
+  //       shouldDirty: true
+  //     });
+  //     setValue('companyname', userDataOject.companyname, {
+  //       shouldValidate: true,
+  //       shouldDirty: true
+  //     });
+  //     setValue('email', userDataOject.email);
+  //     setValue('password', userDataOject.password);
+  //     setValue('website', userDataOject.website);
+  //     setValue('phone', userDataOject.phone);
+  //     setValue('expiration', userDataOject.expiration);
+  //     setValue('status', userDataOject.status);
+  //      console.log('userDataObject', getValues());
+  // // };
+  
+  // // console.log('user name ', username);
+  //   // let data = editUserObject(userDataOject);
+  //   // editUserObject();
+  // }, [props.userDataOject])
 
-  const {register, getValues , setValue, handleSubmit}=useForm(); // initialize the hook
-  useEffect(() => {
-    const editUserObject=async () => {
-       console.log('register', register['name']);
-       console.log('userDataObject', userDataOject);
-    };
-    editUserObject();
-  }, [userDataOject])
+  
   const onSubmit = (data) => {
   
     var userimage = '';
     let file = files[0];
-    let reader = new FileReader();
-    reader.onloadend = (file) => {
-      userimage = reader.result;
-      data['userimage'] = userimage;
-      axios.post('api/user', data)
-        .then( res => {
-              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-              setOpen(false)
-            }
-        ).catch( err =>{
-              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-            }
+    // let reader = new FileReader();
+    // setValue(props.userDataOject);
+    console.log('data in post form', data);
+    // reader.onloadend = (file) => {
+    //   userimage = reader.result;
+    //   data['userimage'] = userimage;
+    //   axios.post('api/user', data)
+    //     .then( res => {
+    //           NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+    //           id="notification.titleHere" />);
+    //           setOpen(false)
+    //         }
+    //     ).catch( err =>{
+    //           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+    //           id="notification.titleHere"/>);
+    //         }
            
-        )
-    }
-    reader.readAsDataURL(file); 
+    //     )
+    // }
+    // reader.readAsDataURL(file); 
   };
 
 
@@ -221,25 +245,26 @@ export default function CustomizedDialogs(props) {
 
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                  <TextField id="name" className="form-control" name="name" label="Full Name" size="small" variant="outlined" inputRef={register}/>
+                  <TextField id="id" type='hidden' className="form-control" name="id" label="id"  size="small" variant="outlined" ref={register({ required: true })}/>
+                  <TextField id="name" className="form-control" name="name" label="Full Name" size="small" variant="outlined" ref={register}/>
               </div>
 
         
                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                  <TextField id="companyname" name="companyname" className="form-control"  size="small" label="Company Name" variant="outlined" inputRef={register} /> 
+                  <TextField id="companyname" name="companyname" className="form-control"  size="small" label="Company Name" variant="outlined" ref={register} /> 
                 </div>  
 
-              
+                
             
               </div>
 
 
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                 <TextField id="email" className="form-control" label="Email" name="email"  size="small" type="email" variant="outlined" inputRef={register}/>   
+                 <TextField id="email" className="form-control" label="Email" name="email"  size="small" type="email" variant="outlined" ref={register}/>   
                 </div>
                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                  <TextField name="password" className="form-control" label="Password"  size="small" type="password" variant="outlined" inputRef={register}/>
+                  <TextField name="password" className="form-control" label="Password"  size="small" type="password" variant="outlined" ref={register}/>
                 </div>
               </div>
               
@@ -250,11 +275,11 @@ export default function CustomizedDialogs(props) {
                 
              
                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   <TextField name="website" className="form-control" label="Website"  size="small" variant="outlined" inputRef={register}/>
+                   <TextField name="website" className="form-control" label="Website"  size="small" variant="outlined" ref={register}/>
                 </div>
 
                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   <TextField name="phone" className="form-control" label="Phone"  size="small" variant="outlined" inputRef={register}/>
+                   <TextField name="phone" className="form-control" label="Phone"  size="small" variant="outlined" ref={register}/>
                 </div>    
 
               
@@ -267,7 +292,7 @@ export default function CustomizedDialogs(props) {
                     <InputLabel htmlFor="outlined-age-native-simple">Expiration</InputLabel>
                     <Select
                       native
-                      inputRef={register}
+                      ref={register}
                       value={state.age}
                       onChange={handleChange}
                       label="expiration"
@@ -294,8 +319,8 @@ export default function CustomizedDialogs(props) {
                       className="d-flex flex-row"
                       aria-label="status"
                       name="status">
-                      <FormControlLabel value="male"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
-                      <FormControlLabel value="female" inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
+                      <FormControlLabel value="male"  ref={register} control={<Radio color="primary"/>} label="Active"/>
+                      <FormControlLabel value="female" ref={register} control={<Radio color="primary"/>} label="Inactive"/>
                     </RadioGroup>
                  </FormControl>               
                 </div>    
