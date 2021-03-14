@@ -3,14 +3,13 @@ import axios from 'axios';
 import MaterialTable from 'material-table';
 import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
-import {NotificationContainer,NotificationManager} from 'react-notifications';
+import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";
-// import {NotificationContainer,NotificationManager} from 'react-notifications';
 export const UserList=() => {
   const [visibility,setVisibility]= useState(false);
   const [open,setOpen]=React.useState(false);  
@@ -70,20 +69,7 @@ export const UserList=() => {
   };
   const [userDataOject, setUserDataObject]= useState([]);
   const editUser = (data) => {
-     
-    let dataObject ={
-      id: data.id,
-      name: data.name,
-      companyname: data.companyname,
-      email: data.email,
-      password: data.password,
-      website: data.website,
-      phone: data.phone,
-      expiration: data.expiration,
-      status: data.status,
-
-    }
-    setUserDataObject(dataObject);
+    setUserDataObject(data);
     setOpen(true);
   }
   return (
@@ -120,12 +106,12 @@ export const UserList=() => {
                 tooltip: 'Edit User',
                 onClick: (event, rowData) =>  editUser(rowData)
                 },
-                rowData => ({
-                icon: 'delete',
-                color:'primary',  
-                tooltip: 'Delete User',
-                onClick: (event, rowData) => deletUser(rowData.id),
-                disabled: rowData.birthYear < 2000
+                rowData => ({ 
+                  disabled: (rowData['system']===1)? true : false,
+                  icon: 'delete',
+                  color:'primary',  
+                  tooltip: 'Delete User',
+                  onClick: (event, rowData) => deletUser(rowData.id),
                 })
             ]}
             options={{
