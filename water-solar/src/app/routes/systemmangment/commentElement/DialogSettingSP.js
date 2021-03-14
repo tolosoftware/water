@@ -85,14 +85,68 @@ function valuetext(value) {
 //       },
       
 //   }));
-  const marksP = [
+  // const marksP = [
+  //   {
+  //     value: 0,
+  //     label: '0W',
+  //   },
+  //   {
+  //     value: 240,
+  //     label: '240W',
+  //   },
+  // ];
+  const marksKW = [
     {
-      value: 0,
-      label: '0W',
+      value: 0.75,
+      label: '0.75KW',
     },
     {
-      value: 240,
-      label: '240W',
+      value: 1.1,
+      // label: '1.1KW',
+    },
+    {
+      value: 1.5,
+      // label: '1.5KW',
+    },
+    {
+      value: 2.2,
+      // label: '2.2KW',
+    },
+    {
+      value: 3,
+      // label: '3KW',
+    },
+    {
+      value: 4,
+      // label: '4KW',
+    },
+    {
+      value: 5.5,
+      // label: '5.5KW',
+    },
+    {
+      value: 7.5,
+      // label: '7.5KW',
+    },
+    {
+      value: 11,
+      // label: '11KW',
+    },
+    {
+      value: 15,
+      label: '15KW',
+    },
+    {
+      value: 18.5,
+      // label: '18.5KW',
+    },
+    {
+      value: 22,
+      // label: '22KW',
+    },
+    {
+      value: 30,
+      label: '30KW',
     },
   ];
 // start code for dropzone
@@ -167,7 +221,7 @@ export default function DialogSettingWD(props){
   const solarList_Id = props.solarListId;
   const solarListModel = props.solarListModel;
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: solarList_Id},
+    { id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: solarList_Id},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -226,21 +280,21 @@ export default function DialogSettingWD(props){
   },[props.solarListId])
   
   const getSolarListSettings = async(id) => {
-    console.log("id: ", id);
+    // console.log("id: ", id);
     if(id!==0 && id!==""){
-      console.log("ok it is not 0", id);
+      // console.log("ok it is not 0", id);
       axios.get('api/solarListSetting/'+id)
       .then(res => { 
         let mydata = res.data;
-        console.log("the result: "+ mydata + "length"+ mydata.length);
+        // console.log("the result: "+ mydata + "length"+ mydata.length);
         const mainArray = []
         if(mydata.length !== 0){
           mydata.forEach(elem => {console.log(elem); 
-            mainArray.push({ id: elem.id, power: [elem.min_power,elem.max_power], base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, solar_list_id: elem.solar_list_id});
+            mainArray.push({ id: elem.id, power: elem.power, base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, solar_list_id: elem.solar_list_id});
           });
           // console.log('mainArray is: ',mainArray);
         }else{
-          mainArray.push({ id: uuidv4(), power: [20, 37], base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: id});
+          mainArray.push({ id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: id});
         }
         setInputFields(mainArray);
       }).catch(err => {
@@ -260,7 +314,7 @@ export default function DialogSettingWD(props){
       axios.post('api/solarListSetting', inputFields)
         .then(
             res => {
-              console.log(res);
+              // console.log(res);
               // getWaterPDevices();
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
@@ -287,8 +341,21 @@ export default function DialogSettingWD(props){
                     { inputFields.map(inputField => (
                     <div key={id_field = inputField.id}>
                       <div className="row insideSPDS paddingBottom">
-                          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
-                            <Typography id="range-slider" gutterBottom>
+                          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 insideFormPaddingWPS powerKW-SS1 inputAdornmentWrap">
+                            <Typography id="discrete-slider-small-steps" gutterBottom >
+                            Power to KW 
+                            </Typography>
+                            <Slider name="power" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'power')}
+                                defaultValue={(inputField.power)?inputField.power: 15 }
+                                getAriaValueText={valuetext}
+                                aria-labelledby="discrete-slider-small-steps"
+                                step={null}
+                                marks={marksKW}
+                                min={0.75}
+                                max={30}
+                                valueLabelDisplay="auto"
+                            />
+                            {/* <Typography id="range-slider" gutterBottom>
                                   Power
                               </Typography>
                               <Slider name="power" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'power')}
@@ -299,7 +366,7 @@ export default function DialogSettingWD(props){
                                   min={0}
                                   max={240}
                                   marks={marksP}
-                              />
+                              /> */}
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPSG2 inputAdornmentWrap">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -310,7 +377,7 @@ export default function DialogSettingWD(props){
                               </div>
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
-                              <TextField size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
+                              <TextField required size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number1"
                                   label="Solar Quantity"
                                   type="number"
@@ -321,7 +388,7 @@ export default function DialogSettingWD(props){
                               />
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
-                              <TextField size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
+                              <TextField required size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
                                   label="Panal Quantity"
                                   type="number"

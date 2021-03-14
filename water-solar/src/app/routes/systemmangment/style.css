@@ -213,6 +213,12 @@ padding: 0px 15px 10px;
 .powerKW-PR span[data-index="0"].MuiSlider-markLabel {
     left: 4% !important;
 }
+.powerKW-SS1 span[data-index="0"].MuiSlider-markLabel {
+    left: 7% !important;
+}
+.powerKW-SS1 span[data-index="12"].MuiSlider-markLabel {
+    left: 95% !important;
+}
 .powerKW-PR span[data-index="12"].MuiSlider-markLabel {
     left: 97% !important;
 }
