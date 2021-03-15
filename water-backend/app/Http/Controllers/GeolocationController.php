@@ -6,6 +6,8 @@ use App\Models\Geolocation;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Irradiation;
+Use \Carbon\Carbon;
+
 class GeolocationController extends Controller
 {
     /**
@@ -82,9 +84,106 @@ class GeolocationController extends Controller
      * @param  \App\Models\Geolocation  $geolocation
      * @return \Illuminate\Http\Response
      */
-    public function show(Geolocation $geolocation)
+    public function show($geoId)
     {
-        //
+        $date = Carbon::now();
+        $currentTime = $date->format('H:i:s');
+        $newdata = array();
+        $locations = Geolocation::all();
+        foreach ($locations as $location) {
+            $insideData = [
+                'id' => $location->id,
+                'country' => $location->country,
+                'city' => $location->city,
+                'latitude' => $location->latitude,
+                'longtitude' => $location->longtitude,
+            ];
+
+            $irradiation = Irradiation::where('month_id', $date->month)->where('geolocation_id', $location->id)->get();
+            if('06:00:00' <= $currentTime &&  $currentTime < '07:00:00'){
+                $insideData['currentIrr'] = $irradiation[0]->t6am;
+            }
+            elseif('07:00:00' <= $currentTime && $currentTime < '08:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t7am;
+            }
+            elseif('08:00:00' <= $currentTime && $currentTime < '09:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t8am;
+            }
+            elseif('09:00:00' <= $currentTime && $currentTime < '10:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t9am;
+            }
+            elseif('10:00:00' <= $currentTime && $currentTime < '11:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t10am;
+            }
+            elseif('11:00:00' <= $currentTime && $currentTime < '12:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t11am;
+            }
+            elseif('12:00:00' <= $currentTime && $currentTime < '13:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t12am;
+            }
+            elseif('13:00:00' <= $currentTime && $currentTime < '14:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t1pm;
+            }
+            elseif('14:00:00' <= $currentTime && $currentTime < '15:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t2pm;
+            }
+            elseif('15:00:00' <= $currentTime && $currentTime < '16:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t3pm;
+            }
+            elseif('16:00:00' <= $currentTime && $currentTime < '17:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t4pm;
+            }
+            elseif('17:00:00' <= $currentTime && $currentTime < '18:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t5pm;
+            }
+            elseif('18:00:00' <= $currentTime && $currentTime < '06:00:00'){
+                $insideData['currentIrr'] =  '0.00';
+            }
+            array_push($newdata, $insideData);
+        }
+        return $newdata;
+       /*
+            $irradiation = Irradiation::where('month_id', $date->month)->where('geolocation_id', $geoId)->get();
+            $currentTime = $date->format('H:i:s');
+            if('06:00:00' <= $currentTime &&  $currentTime < '07:00:00'){
+                return $irradiation[0]->t6am;
+            }
+            elseif('07:00:00' <= $currentTime && $currentTime < '08:00:00'){
+            return $irradiation[0]->t7am;
+            }
+            elseif('08:00:00' <= $currentTime && $currentTime < '09:00:00'){
+                return $irradiation[0]->t8am;
+            }
+            elseif('09:00:00' <= $currentTime && $currentTime < '10:00:00'){
+                return $irradiation[0]->t9am;
+            }
+            elseif('10:00:00' <= $currentTime && $currentTime < '11:00:00'){
+                return $irradiation[0]->t10am;
+            }
+            elseif('11:00:00' <= $currentTime && $currentTime < '12:00:00'){
+                return $irradiation[0]->t11am;
+            }
+            elseif('12:00:00' <= $currentTime && $currentTime < '13:00:00'){
+                return $irradiation[0]->t12am;
+            }
+            elseif('13:00:00' <= $currentTime && $currentTime < '14:00:00'){
+                return $irradiation[0]->t1pm;
+            }
+            elseif('14:00:00' <= $currentTime && $currentTime < '15:00:00'){
+                return $irradiation[0]->t2pm;
+            }
+            elseif('15:00:00' <= $currentTime && $currentTime < '16:00:00'){
+                return $irradiation[0]->t3pm;
+            }
+            elseif('16:00:00' <= $currentTime && $currentTime < '17:00:00'){
+                return $irradiation[0]->t4pm;
+            }
+            elseif('17:00:00' <= $currentTime && $currentTime < '06:00:00'){
+                return $irradiation[0]->t5pm;
+            }
+        */
+
+        return '';
     }
 
     /**

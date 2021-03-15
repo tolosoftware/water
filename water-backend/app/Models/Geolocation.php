@@ -18,4 +18,8 @@ class Geolocation extends Model
     {
         return $this->hasMany(Projects::class, 'city_id');
     }
+      public function irradiations()
+    {
+        return $this->hasMany(Irradiation::class, 'geolocation_id');
+    }
 }
