@@ -23,6 +23,8 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './utils';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -146,6 +148,39 @@ const marksVolDC = [
       label: '270V',
     },
 ];
+
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    model: '',
+    // description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  model: type.string().required("Required"),
+  // description: type.string().required("Required"),
+});
+// end validation code
+
 export default function DialogInvertor(props){
     // start code of dialog modal for Solar Panal 
     const [files, setFiles] = useState([]);
@@ -159,9 +194,17 @@ export default function DialogInvertor(props){
   const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
   const [voltageDC, setVoltageDC] = useState([50, 150]);
-  const [description, setDescription] = useState("");
+  // const [description, setDescription] = useState("");
   const [invertorListID, setInvertorListID] = useState(0); 
   const [oldImage, setOldImage] = useState("");
+
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
+
   const classes = useStyles();
   const handleCloseS = () => {
     emptyForm();
@@ -175,7 +218,7 @@ export default function DialogInvertor(props){
     setPowerKW(150);
     setVoltage(150);
     setVoltageDC([50, 150]);
-    setDescription("");
+    // setDescription("");
     setOldImage('');
     setFiles([]);
   }
@@ -224,20 +267,64 @@ const setEditFieldValuse = () => {
   setModel(invertorListObject.model);
   setPowerKW(Math.floor(invertorListObject.power));
   setVoltage(Math.floor(invertorListObject.voltage_ac));
-  setDescription(invertorListObject.discription);
+  // setDescription(invertorListObject.discription);
   setOldImage(invertorListObject.image);
 } 
+useEffect(() => {
+  (invertorListObject.id === undefined)? handleAllField(false): handleAllField(true);
+},[openIn])
+const handleAllField = async(valid) =>{
+  let f1 = 'brand', f2 = 'model'/*, f3 = 'description'*/;
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [f1]: brand, [f2]: model/*, [f3]: description*/
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [f1]: brand, [f2]: model/*, [f3]: description */},
+      touched: { ...touched, [f1]: false, [f2]: false/*, [f3]: false*/ },
+      isValid: valid
+    }
+  });
+}
+  
+  const handleChangeField = async ({ target: { name, value } }) => {
+    if(name==='brand'){
+      setBrand(value)
+    }
+    else if(name==='model'){
+      setModel(value)
+    }
+    // else if(name==='description'){
+    //   setDescription(value)
+    // }
+    
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let dataInvertor = {
-      invertorListID, brand, model, powerKW, voltage, voltageDC, description
+      invertorListID, brand, model, powerKW, voltage, voltageDC/*, description*/
     }
-    console.log(dataInvertor);
+    // console.log(dataInvertor);
+    if(dataInvertor.invertorListID===undefined){
+      dataInvertor.invertorListID = 0;
+    }
     if(files.length!==0){
-      if(dataInvertor.invertorListID===undefined){
-        dataInvertor.invertorListID = 0;
-      }
+      
         var image = '';
         let file = files[0];
         let reader = new FileReader();
@@ -298,13 +385,15 @@ const setEditFieldValuse = () => {
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                 <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
-                                  <Select
+                                  <InputLabel id="demo-simple-select-outlined-label" 
+                                  error={(touched && touched.brand) && (error && error.brand) ? true : false}>Brand</InputLabel>
+                                  <Select name='brand'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={brand}
-                                        onChange={(e) => setBrand(e.target.value)}
+                                        onChange={(e) => handleChangeField(e)}
                                   label="Brand"
+                                  helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''}   
                                   >
                                   <MenuItem value="">
                                       <em>None</em>
@@ -316,7 +405,7 @@ const setEditFieldValuse = () => {
                                 </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                                <TextField id="outlined-basic" size="small" className="fullWidthInput" name='model' label="Model" value={model} onChange={(e) => handleChangeField(e)} error={(touched && touched.model) && (error && error.model) ? true : false} helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} variant="outlined" />
                             </div>
                              
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inverPower inputAdornmentWrap">
@@ -365,11 +454,11 @@ const setEditFieldValuse = () => {
                                     marks={marksVolDC}
                                 />
                             </div>
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
+                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description'  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
                                 <div className="dropzone-card">
                                     <div className="dropzone">
@@ -382,7 +471,7 @@ const setEditFieldValuse = () => {
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>
@@ -395,7 +484,7 @@ const setEditFieldValuse = () => {
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " disabled={!isValid}>Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

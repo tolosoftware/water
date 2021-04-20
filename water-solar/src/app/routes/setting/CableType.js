@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import Swal from 'sweetalert2';
 import IntlMessages from 'util/IntlMessages';
@@ -166,9 +166,7 @@ const [visibility,setVisibility]= useState(false);
                     }}>
                   <DeleteIcon />
                     </IconButton>
-                   <IconButton size="small" aria-label="Edit"  color="primary">
-                  <EditIcon />
-                 </IconButton>   
+                   
               </td>
             </tr>
           })}

@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
+import axios from 'axios';
 import {
   BELOW_THE_HEADER,
   COLLAPSED_DRAWER,
@@ -15,6 +16,8 @@ import {
   INSIDE_THE_HEADER
 } from 'constants/ActionTypes';
 import SearchBox from 'components/SearchBox';
+
+import './style.css'
 
 
 
@@ -25,6 +28,7 @@ import Menu from 'components/TopNav/Menu';
 import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
 
 class Header extends React.Component {
+
 
   onAppNotificationSelect = () => {
     this.setState({
@@ -136,6 +140,10 @@ class Header extends React.Component {
     });
   }
 
+  trylogout() {
+    this.props.history.push('app/setting');
+  }
+
   render() {
     const {drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
@@ -158,7 +166,8 @@ class Header extends React.Component {
           }
 
           <Link className="app-logo mr-2 d-none d-sm-block" to="/">
-            <img src={require("assets/images/logo.png")} alt="Jambo" title="Jambo"/>
+            {/* <img src={require("assets/images/logo.png")} alt="Jambo" title="Jambo"/> */}
+            <h1 className="logcolor">Clean Water</h1>
           </Link>
 
 
@@ -214,13 +223,6 @@ class Header extends React.Component {
             </li>
           
             <li className="list-inline-item mail-tour">
-            <NavLink className="prepend-icon" to="/app/Knowledgebase">
-                      {/* <span className="nav-text"><IntlMessages id="sidebar.knowledge"/></span> */}
-              <IconButton aria-label="delete" className="icon-btn">
-                <DeleteIcon fontSize="small" className="zmdi zmdi-comment-alt-text zmdi-hc-fw"/>
-              </IconButton>
-            </NavLink>
-               
             </li>
 
             {navigationStyle === HORIZONTAL_NAVIGATION &&
@@ -237,7 +239,7 @@ class Header extends React.Component {
                   <IconButton className="icon-btn size-30">
                     <Avatar
                       alt='...'
-                      src={'https://via.placeholder.com/150x150'}
+                      src={`${axios.defaults.baseURL}user/img/${JSON.parse(localStorage.getItem('UserData')).userimage}`}
                       className="size-30"
                     />
                   </IconButton>

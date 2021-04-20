@@ -52,7 +52,7 @@ class SolarBrandsController extends Controller
                 $solar_brands = Solar_brands::findOrFail($id);
                 $solar_brands->name =  $request['brand'];
                 $solar_brands->country = $request['country'];
-                $solar_brands->discription = $request['description'];
+                $solar_brands->discription = 'null';
                 if($request->image != 'oldImage'){
                     File::delete('brand/solar/'.$solar_brands->image);
                     $solar_brands->image = $photoname;
@@ -62,7 +62,7 @@ class SolarBrandsController extends Controller
                 Solar_brands::create([
                     'name' => $request['brand'], 
                     'country' => $request['country'], 
-                    'discription' => $request['description'], 
+                    'discription' => 'null', 
                     'image' => $photoname, 
                 ]);
             }

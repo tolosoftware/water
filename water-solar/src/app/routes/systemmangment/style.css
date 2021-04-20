@@ -1,3 +1,47 @@
+.wp-brand{
+    margin-top: 10px;
+}
+.app-header-horizontal .app-toolbar .search-bar{
+    display: none !important;
+}
+.app-header-horizontal .app-main-menu{
+    margin: auto;
+}
+.rSPrSection{
+    max-height: 580px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.dashboard-slide .slick-slider img {
+    height: 260px;
+    margin-bottom: 0 !important;
+}
+.dashboard-slide .jr-card{
+    padding: 20px;
+    padding-bottom: 9px;
+}
+.dashboard-brand .jr-card, .dashborad-brand-list .jr-card, .dashboard-project .jr-card {
+    padding: 20px;
+}
+.dashboard-brand .jr-card-header {
+    margin-bottom: 8px;
+}
+.dashboard-brand .slick-slider {
+    margin-bottom: 0px;
+}
+.user-list-sect .table-responsive-material {
+    height: 250px;
+}
+.dashboard-project .table-responsive-material {
+    height: 270px;
+}
+.slick-slider .slick-prev:before, .slick-slider .slick-next:before {
+    color: #3fa2c8;
+}
+.dashborad-brand-list .table-responsive-material {
+    height: 158px;
+}
+
 .p-Padding-bottom{
     padding-bottom: 15px !important;
 }
@@ -29,7 +73,7 @@
 .sp-second-col .table-responsive-material, .wp-second-col .table-responsive-material{
     max-height: 155px;
     min-height: 155px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .paddingBottom{
     padding-bottom: 15px;
@@ -88,8 +132,10 @@ background: linear-gradient(90deg, rgba(0,121,254,1) 0%, rgba(5,198,253,1) 100%)
 background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%, rgba(53,110,216,1) 77%, rgba(30,85,177,1) 100%);
 }
 .invertorBackGrad{
-    background: rgb(159,159,159);
-    background: linear-gradient(90deg, rgba(159,159,159,1) 0%, rgba(159,159,159,1) 97%);
+    /* background: rgb(159,159,159);
+    background: linear-gradient(90deg, rgba(159,159,159,1) 0%, rgba(159,159,159,1) 97%); */
+    background: rgb(221,221,221);
+    background: linear-gradient(158deg, rgba(221,221,221,1) 0%, rgba(64,64,64,1) 100%);
 }
 .insideFormBP{
     padding-bottom: 15px;
@@ -122,6 +168,7 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
 .MuiSlider-mark.MuiSlider-markActive {
     background-color: #3f51b5 !important;
 }
+
 .MuiSlider-mark {
     background-color: #fff !important;
 }
@@ -142,19 +189,22 @@ padding: 0px 15px 10px;
 }
 
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
-    left: 4% !important;
+    left: 9% !important;
 }
 .insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
     left: 6% !important;
 }
-.insideFormPadding2 span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
+.insideFormPadding2 span[data-index="0"].MuiSlider-markLabel{
+    left: 3% !important;
+}
+.insideFormPadding3 span[data-index="0"].MuiSlider-markLabel{
     left: 2% !important;
 }
 .insideFormPadding2.ivertor-ac span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3.ivertor-dc span[data-index="0"].MuiSlider-markLabel{
     left: 2% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
-    left: 94% !important;
+    left: 91% !important;
 }
 .insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
@@ -162,8 +212,11 @@ padding: 0px 15px 10px;
 .descriptInvertor{
     padding-top: 15px;
 }
+.insideFormPadding1 span[data-index="2"].MuiSlider-markLabel{
+    left: 94% !important;
+}
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
-    left: 95% !important;
+    left: 93% !important;
 }
 .insideFormPadding2.ivertor-ac span[data-index="1"].MuiSlider-markLabel{
     left: 92% !important;
@@ -211,7 +264,13 @@ padding: 0px 15px 10px;
 .powerKW-PR span[data-index="0"].MuiSlider-markLabel {
     left: 4% !important;
 }
-.powerKW-PR span[data-index="12"].MuiSlider-markLabel {
+.powerKW-SS1 span[data-index="0"].MuiSlider-markLabel {
+    left: 7% !important;
+}
+.powerKW-SS1 span[data-index="12"].MuiSlider-markLabel {
+    left: 95% !important;
+}
+.powerKW-PR span[data-index="22"].MuiSlider-markLabel {
     left: 97% !important;
 }
 @media(max-width: 425px){
@@ -284,6 +343,10 @@ padding: 0px 15px 10px;
     border-radius: .25rem !important;
     padding: 0.68rem 0.54rem !important;
 }
+.group_radio label.btn.btn-outline-primary{
+    padding: 0.68rem 1.54rem !important;
+}
+/* my code */
 .insideFormPaddingWPS .btn-group label:first-child{
     border-top-right-radius: 0rem !important;
     border-bottom-right-radius: 0rem !important;
@@ -316,7 +379,7 @@ padding: 0px 15px 10px;
 }
 
 .hiegthCard .table-responsive-material{
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     height: 185px !important;
 }
 .tap1_acc .MuiBox-root {
@@ -325,9 +388,34 @@ padding: 0px 15px 10px;
 /* .tap1_acc .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters {
     display: none;
 } */
-.acc_img_width{
+.edit_img_width{
     width: 130px !important;
+}
+.acc_img_width{
+    width: 60px !important;
 }
 .sp_right_padding{
     padding-right: 10px !important;
+}
+.project_bas_field{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.project_bas_field .btn:not(:last-child) {
+    margin-right: 0px; 
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.project_bas_field .btn:last-child {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+.project_bas_field .btn{
+    padding: 0.68rem 2rem !important;
+}
+.dis-wps span[data-index="0"].MuiSlider-markLabel {
+    left: 9% !important;
+}
+.dis-wps span[data-index="1"].MuiSlider-markLabel {
+    left: 89% !important;
 }

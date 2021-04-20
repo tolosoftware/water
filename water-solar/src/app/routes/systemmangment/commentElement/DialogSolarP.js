@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 // start import for dialog
 import Dialog from '@material-ui/core/Dialog';
@@ -24,6 +25,8 @@ import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
 import { v4 as uuidv4 } from 'uuid';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './utils';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -119,12 +122,16 @@ const img = {
 // end code for dropzone
   const marksW = [
     {
-      value: 0,
-      label: '0W',
+      value: 100,
+      label: '100W',
     },
+    // {
+    //   value: 270,
+    //   // label: '270W',
+    // },
     {
-      value: 270,
-      label: '270W',
+      value: 600,
+      label: '600W',
     },
 ];
 const marksV = [
@@ -137,16 +144,54 @@ const marksV = [
       label: '270V',
     },
 ];
-const marksC = [
-    {
-      value: 0,
-      label: '0A',
-    },
-    {
-      value: 270,
-      label: '270A',
-    },
-];
+// const marksC = [
+//     {
+//       value: 0,
+//       label: '0A',
+//     },
+//     {
+//       value: 270,
+//       label: '270A',
+//     },
+// ];
+
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    model: '',
+    cableType: '',
+    current: '',
+    voltage: '',
+    // description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  model: type.string().required("Required"),
+  cableType: type.number().required("Required"), 
+  // description: type.string().required("Required"),
+  current: type.number().required("Required"),
+  voltage: type.number().required("Required"),
+});
+// end validation code
 export default function DialogSolarP(props){
     // start code of dialog modal for Solar Panal 
     const [files, setFiles] = useState([]);
@@ -159,15 +204,22 @@ export default function DialogSolarP(props){
   const [model, setModel] = useState("");
   const [solarType, setSolarType] = useState("Mono");
   const [powerW, setPowerW] = useState(150);
-  const [voltage, setVoltage] = useState(100);
-  const [current, setCurrent] = useState(150);
+  const [voltage, setVoltage] = useState('');
+  const [current, setCurrent] = useState('');
   const [cableType, setCableType] = useState("");
-  const [description, setDescription] = useState("");
+  // const [description, setDescription] = useState("");
   const [solarListID, setSolarListID] = useState('0'); 
   const [oldImage, setOldImage] = useState("");
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   const classes = useStyles();
   const handleCloseS = () => {
     emptyForm();
+    handleAllField(false, false);
     setOpenS(false);
   };
   const emptyForm = () =>{
@@ -178,13 +230,46 @@ export default function DialogSolarP(props){
     setModel('');
     setSolarType("Mono");
     setPowerW(150);
-    setVoltage(150);
-    setCurrent(150);
+    setVoltage('');
+    setCurrent('');
     setCableType("");
-    setDescription("");
+    // setDescription("");
     setOldImage('');
     setFiles([]);
   }
+
+  const handleChangeField = async ({ target: { name, value } }) => {
+    if(name==='brand'){
+      setBrand(value)
+    }
+    else if(name==='model'){
+      setModel(value)
+    }
+    // else if(name==='description'){
+    //   setDescription(value)
+    // }
+    
+    else if(name==='cableType'){
+      setCableType(value)
+    }
+    else if(name==='current'){
+      setCurrent(value)
+    }
+    
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [name]: value
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [name]: value },
+        touched: { ...touched, [name]: true },
+        isValid: checkValidation(schemaErrors)
+      }
+    });
+  };
+ 
 // dropzone code
  
   const {getRootProps, getInputProps} = useDropzone({
@@ -215,7 +300,6 @@ export default function DialogSolarP(props){
 // start get cable type
 useEffect(() => {
   getCabletype();
-  setSolarType("Mono");
 },[])
 const [cableTypesSelect,setCabletypesSelect]= useState([]);
 const getCabletype=async () => {
@@ -229,39 +313,51 @@ const getCabletype=async () => {
         }
     )
 };
-
 // end get cable type
 
-
-
-
 useEffect(() => {
-  setEditFieldValuse();
-},[props.solarListObject])
+    setSolarListID(solarListObject.id);
+    setBrand(solarListObject.solar_brand_id);
+    setModel(solarListObject.model);
+    setSolarType(solarListObject.type);
+    setPowerW(Math.floor(solarListObject.power));
+    setVoltage(solarListObject.voltage);
+    setCurrent(solarListObject.current);
+    setCableType(solarListObject.cable_type_id);
+    // setDescription(solarListObject.discription);
+    setOldImage(solarListObject.image);
+    
+},[solarListObject])
+useEffect(() => {
+  (solarListObject.id === undefined)? handleAllField(false): handleAllField(true);
+},[openS])
+const handleAllField = async(valid, touchedValid) =>{
+  let f1 = 'brand', f2 = 'model', f3 = 'cableType', f5 = 'current', f6 = 'voltage'/*, f4 = 'description'*/;
+  const schemaErrors = await runValidation(schema, {
+    ...formData, [f1]: brand, [f2]: model, [f3]: cableType, [f5]: current, [f6]: voltage/*, [f4]: description*/
+  });
+  dispatch({
+    type: setState,
+    payload: {
+      error: schemaErrors,
+      formData: { ...formData, [f1]: brand, [f2]: model, [f3]: cableType, [f5]: current, [f6]: voltage/*, [f4]: description*/ },
+      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f5]: false, [f6]: false/*, [f4]: false*/ },
+      isValid: valid
+    }
+  });
+}
 
-const setEditFieldValuse = () => {
-  setSolarListID(solarListObject.id);
-  setBrand(solarListObject.solar_brand_id);
-  setModel(solarListObject.model);
-  setSolarType(solarListObject.type);
-  setPowerW(Math.floor(solarListObject.power));
-  setVoltage(Math.floor(solarListObject.voltage));
-  setCurrent(Math.floor(solarListObject.current));
-  setCableType(solarListObject.cable_type_id);
-  setDescription(solarListObject.discription);
-  setOldImage(solarListObject.image);
-} 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let dataSolarList = {
-      solarListID, brand, model, solarType, powerW, voltage, current, cableType, description
+      solarListID, brand, model, solarType, powerW, voltage, current, cableType/*, description*/
     }
     // console.log(dataSolarList);
+    if(dataSolarList.solarListID===undefined){
+      dataSolarList.solarListID = 0;
+    }
     if(files.length!==0){
-      if(dataSolarList.solarListID===undefined){
-        dataSolarList.solarListID = 0;
-      }
     var image = '';
     let file = files[0];
     let reader = new FileReader();
@@ -323,12 +419,12 @@ const setEditFieldValuse = () => {
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                 <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
-                                  <Select
+                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.brand) && (error && error.brand) ? true : false}>Brand</InputLabel>
+                                  <Select name='brand'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={brand}
-                                        onChange={(e) => setBrand(e.target.value)}
+                                        onChange={(e) => handleChangeField(e)}
                                   label="Brand"
                                   >
                                   <MenuItem value="">
@@ -338,75 +434,106 @@ const setEditFieldValuse = () => {
                                   <MenuItem value={brand.id}>{brand.name}</MenuItem>
                                   )}
                                   </Select>
+                                  <span className={(touched && touched.brand) && (error && error.brand) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" value={model} onChange={(e) => setModel(e.target.value)} variant="outlined" />
+                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" name='model' value={model} onChange={(e) => handleChangeField(e)} variant="outlined" 
+                                error={(touched && touched.model) && (error && error.model) ? true : false}
+                                helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} />
                             </div>
-                            <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP insideFormPaddingWPS">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP group_radio insideFormPaddingWPS">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                  <input type="radio" class="btn-check" name={"btnradio1Mono"} id={"btnradio1Mono"} autocomplete="off" checked={solarType==="Mono"} value="Mono" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio1Mono"}>Mono</label>
-                                  <input type="radio" class="btn-check" name={"btnradio2Poly"} id={"btnradio2Poly"} autocomplete="off" checked={solarType==="Poly"} value="Poly" onChange={event => setSolarType(event.target.value)}/>
-                                  <label class="btn btn-outline-primary" for={"btnradio2Poly"}>Poly</label>
+                                  <input type="radio" class="btn-check" name={`radio${solarType}`} id="btnradio1Mono" autocomplete="off" checked={(solarType==="Mono" || solarType === undefined) ? true : false} value="Mono" onChange={event => setSolarType(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio1Mono">Mono</label>
+                                  <input type="radio" class="btn-check" name={`radio${solarType}`} id="btnradio2Poly" autocomplete="off" checked={(solarType==="Poly")? true : false} value="Poly" onChange={event => setSolarType(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio2Poly">Poly</label>
                               </div>
+                               
                             </div>
-                            <div className="col-xl-5 col-lg-5 col-md-5 col-12 insideFormPadding1 inputAdornmentWrap">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     Power
                                     </Typography>
                                     <Slider onChange={(event, value) => setPowerW(value)}
-                                        defaultValue={(solarListID !== undefined) ? powerW : 150}
+                                        defaultValue={(solarListID !== undefined) ? powerW : 270}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
+                                        step={5}
                                         marks={marksW}
-                                        min={0}
-                                        max={270}
+                                        min={100}
+                                        max={600}
                                         valueLabelDisplay="auto"
                                     />
                             </div>
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding2 inputAdornmentWrap">
-                                <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    Voltage
-                                    </Typography>
-                                    <Slider onChange={(event, value) => setVoltage(value)}
-                                        defaultValue={(solarListID !== undefined) ? voltage : 150}
-                                        getAriaValueText={valuetext}
-                                        aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
-                                        marks={marksV}
-                                        min={0}
-                                        max={270}
-                                        valueLabelDisplay="auto"
-                                    />
+                                {/* <Typography id="discrete-slider-small-steps" gutterBottom>
+                                  Voltage
+                                </Typography>
+                                <Slider onChange={(event, value) => setVoltage(value)}
+                                    defaultValue={(solarListID !== undefined) ? voltage : 150}
+                                    getAriaValueText={valuetext}
+                                    aria-labelledby="discrete-slider-small-steps"
+                                    step={20}
+                                    marks={marksV}
+                                    min={0}
+                                    max={270}
+                                    valueLabelDisplay="auto"
+                                /> */}
+                                <FormControl fullWidth >  
+                                  <TextField size="small" id="outlined-basic3" label="Voltage" variant="outlined"
+                                  name="voltage"  
+                                  InputProps={{
+                                    endAdornment: <InputAdornment position="end">V</InputAdornment>,
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  value={voltage} onChange={(e) => handleChangeField(e)}
+                                  error={(touched && touched.voltage) && (error && error.voltage) ? true : false}
+                                  helperText={(touched && touched.voltage) && (error && error.voltage) ? '*required & must be number' : ''}/>
+                                </FormControl>
                             </div>
                             
-                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding3 inputAdornmentWrap">
-                                <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    Current
-                                    </Typography>
-                                    <Slider onChange={(event, value) => setCurrent(value)}
-                                        defaultValue={(solarListID !== undefined) ? current : 150}
-                                        getAriaValueText={valuetext}
-                                        aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
-                                        marks={marksC}
-                                        min={0}
-                                        max={270}
-                                        valueLabelDisplay="auto"
-                                    />
+                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormBPCable">
+                                {/* <Typography id="discrete-slider-small-steps" gutterBottom>
+                                Current
+                                </Typography>
+                                <Slider onChange={(event, value) => setCurrent(value)}
+                                    defaultValue={(solarListID !== undefined) ? current : 150}
+                                    getAriaValueText={valuetext}
+                                    aria-labelledby="discrete-slider-small-steps"
+                                    step={20}
+                                    marks={marksC}
+                                    min={0}
+                                    max={270}
+                                    valueLabelDisplay="auto"
+                                /> */}
+                                <FormControl fullWidth >  
+                                  <TextField size="small" id="outlined-basic3" label="Current" variant="outlined"
+                                  name="current"  
+                                  InputProps={{
+                                    endAdornment: <InputAdornment position="end">A</InputAdornment>,
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  value={current} onChange={(e) => handleChangeField(e)}
+                                  error={(touched && touched.current) && (error && error.current) ? true : false}
+                                  helperText={(touched && touched.current) && (error && error.current) ? '*required & must be number' : ''}/>
+                                </FormControl>
+                                
                             </div>
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
-                                  <Select
+                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.cableType) && (error && error.cableType) ? true : false}>Cable Type</InputLabel>
+                                  <Select name='cableType'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={cableType}
-                                  onChange={(e) => setCableType(e.target.value)}
+                                  onChange={(e) => handleChangeField(e)}
                                   label="Cable Type"
                                   >
                                   <MenuItem value="">
@@ -416,13 +543,15 @@ const setEditFieldValuse = () => {
                                   <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
                                   )}
                                   </Select>
+                                  <span className={(touched && touched.cableType) && (error && error.cableType) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                               </FormControl>
                             </div>    
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-lg"  value={description} onChange={(e) => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <textarea name="description" class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`}  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
                                 <div className="dropzone-card">
                                     <div className="dropzone">
@@ -435,7 +564,7 @@ const setEditFieldValuse = () => {
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>
@@ -448,7 +577,7 @@ const setEditFieldValuse = () => {
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " name={`isValid ${isValid}`} disabled={!isValid} >Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

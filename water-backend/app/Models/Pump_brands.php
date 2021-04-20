@@ -14,4 +14,9 @@ class Pump_brands extends Model
        'name', 'country','discription','image'
     ];
 
+    public function pumplist()
+    {
+        return $this->hasMany(Pump_list::class, 'pump_brand_id');
+    }
+
 }

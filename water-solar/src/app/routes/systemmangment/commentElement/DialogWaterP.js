@@ -154,19 +154,19 @@ const img = {
     },
     {
       value: 7.5,
-      label: '7.5KW',
+      // label: '7.5KW',
     },
     {
       value: 11,
-      label: '11KW',
+      // label: '11KW',
     },
     {
       value: 15,
-      label: '15KW',
+      // label: '15KW',
     },
     {
       value: 18.5,
-      label: '18.5KW',
+      // label: '18.5KW',
     },
     {
       value: 22,
@@ -174,7 +174,47 @@ const img = {
     },
     {
       value: 30,
-      label: '30KW',
+      // label: '30KW',
+    },
+    {
+      value: 37,
+      label: '37KW',
+    },
+    {
+      value: 45,
+      // label: '45KW',
+    },
+    {
+      value: 52,
+      label: '52KW',
+    },
+    {
+      value: 55,
+      // label: '55KW',
+    },
+    {
+      value: 60,
+      // label: '60KW',
+    },
+    {
+      value: 67,
+      label: '67KW',
+    },
+    {
+      value: 75,
+      // label: '75KW',
+    },
+    {
+      value: 81,
+      // label: '81KW',
+    },
+    {
+      value: 92,
+      label: '92KW',
+    },
+    {
+      value: 110,
+      label: '110KW',
     },
   ];
   // validation code
@@ -186,7 +226,7 @@ const initialState = {
     current: '',
     diameter: '',
     // powerKW: '',
-    description: '',
+    // description: '',
   },
   error: {},
   touched: {},
@@ -213,7 +253,7 @@ const schema = type.object().shape({
   current: type.number().required("Required"), 
   diameter: type.number().required("Required"), 
   // powerKW: type.number().required("Required"),
-  description: type.string().required("Required"),
+  // description: type.string().required("Required"),
 });
 // end validation code
 export default function DialogWaterP(props){
@@ -223,7 +263,6 @@ export default function DialogWaterP(props){
     //     setOpenD(true);
     // };
     const handleClose = () => {
-      handleAllField(false);
       emptyForm();
       setOpenD(false);
     };
@@ -232,13 +271,12 @@ export default function DialogWaterP(props){
     const waterPumpBrands=props.waterPumpBrands;
     const {waterListObject, setWaterListObject} = props;
     
-    
     const [name, setName] = useState("");
     const [powerKW, setPowerKW] = useState("");
     const [outlet, setOutlet] = useState("");
     const [current, setCurrent] = useState("");
     const [diameter, setDiameter] = useState("");
-    const [description, setDescription] = useState("");
+    // const [description, setDescription] = useState("");
     const [waterListID, setWaterListID] = useState('0'); 
     const [oldImage, setOldImage] = useState("");
     const [files, setFiles] = useState([]);
@@ -275,9 +313,9 @@ export default function DialogWaterP(props){
       else if(name==='name'){
         setName(value)
       }
-      else if(name==='description'){
-        setDescription(value)
-      }
+      // else if(name==='description'){
+      //   setDescription(value)
+      // }
       else if(name==='outlet'){
         setOutlet(value)
       }
@@ -311,11 +349,12 @@ export default function DialogWaterP(props){
       setOutlet('');
       setCurrent('');
       setDiameter('');
-      setDescription("");
+      // setDescription("");
       setOldImage('');
       setFiles([]);
     }
-    const setEditFieldValuse = () => {
+     
+    useEffect(() => {
       setWaterListID(waterListObject.id);
       setBrand(waterListObject.pump_brand_id);
       setName(waterListObject.model);
@@ -325,31 +364,26 @@ export default function DialogWaterP(props){
       var n = waterListObject.power;
       n = parseFloat(n);
       setPowerKW(n);
-      setDescription(waterListObject.discription);
+      // setDescription(waterListObject.discription);
       setOldImage(waterListObject.image);
-      handleAllField(true);
-      
-    } 
-    useEffect(() => {
-      if(props.waterListObject.length !== 0){
-        setEditFieldValuse();
-      }
     },[waterListObject])
     
-    
+    useEffect(() => {
+      (waterListObject.id === undefined)? handleAllField(false): handleAllField(true);
+    },[openD])
     
     
     const handleAllField = async(valid) =>{
-      let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter', f6='description';
+      let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter' /*, f6='description'*/;
       const schemaErrors = await runValidation(schema, {
-        ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description 
+        ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter /*, [f6]: description */
       });
       dispatch({
         type: setState,
         payload: {
           error: schemaErrors,
-          formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter, [f6]: description },
-          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false },
+          formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter /*, [f6]: description*/ },
+          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false /*, [f6]: false*/ },
           isValid: valid
         }
       });
@@ -388,7 +422,7 @@ export default function DialogWaterP(props){
     const handleSubmit = (e) => {
       e.preventDefault();
       let dataWaterList = {
-        waterListID, brand, name, outlet, current, diameter, powerKW, description,
+        waterListID, brand, name, outlet, current, diameter, powerKW, /*description,*/
       }
       // console.log(dataWaterList);
       if(dataWaterList.waterListID===undefined){
@@ -543,16 +577,16 @@ export default function DialogWaterP(props){
                                     step={null}
                                     marks={marksKW}
                                     min={0.75}
-                                    max={30}
+                                    max={110}
                                     valueLabelDisplay="auto"
                                 />
                             </div>
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name="description"  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                     <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
                                 <div className="dropzone-card">
                                     <div className="dropzone">
@@ -565,7 +599,7 @@ export default function DialogWaterP(props){
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>

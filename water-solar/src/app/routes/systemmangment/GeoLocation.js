@@ -377,6 +377,7 @@ const schema = type.object().shape({
 const GeoLocation=() => {
   const [visibility,setVisibility]= useState(false);
   const [geoLocations,setGeoLocations]= useState([]);
+  const [geoLoIrr, setGeoLoIrr] = useState([]);
   const [geoLocationId,setGeoLocationId]= useState(0);
   const [geoLocationCity,setGeoLocationCity]= useState('');
 
@@ -384,12 +385,9 @@ const GeoLocation=() => {
   const [latitude, setLatitude] = React.useState("");
   const [longtitude, setLongtitude] = React.useState("");
   const [country, setCountry] = React.useState("");
-  // let formData = {
-  //   country: country.label,
-  //   city: district,
-  //   latitude: latitude,
-  //   longtitude: longtitude,
-  // }
+  const [open, setOpen] = React.useState(false);
+  const [openGeoIr, setOpenGeoIr] = React.useState(false);
+   
   const [{
     formData,
     error,
@@ -400,11 +398,13 @@ const GeoLocation=() => {
   useEffect(() => {
     getGeoLocations();
   },[])
+  useEffect(() => {
+    getGeoLocationIrradiations(1);
+  },[openGeoIr])
   const classes = useStyles();
   // form code 
   // getModalStyle is not a pure function, we roll the style only on the first render
-  const [open, setOpen] = React.useState(false);
-  const [openGeoIr, setOpenGeoIr] = React.useState(false);
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -429,7 +429,24 @@ const getGeoLocations = async() =>{
               id="notification.titleHere"/>);
           }
       )
-}
+};
+
+const getGeoLocationIrradiations = async(geoId) =>{
+  // setVisibility(true)
+  axios.get('api/new_location/'+geoId)
+      .then(res => {  
+          // setVisibility(false)
+          // console.log("result data from server:", res);
+          setGeoLoIrr(res.data);
+        }
+    ).catch(err => {
+          // setVisibility(false)
+          console.log("result data from server:", err);
+           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+          }
+      )
+};
   const handgleCountry = async (event, value) => {
     setCountry(value);
     let name = 'country';
@@ -560,10 +577,7 @@ const deletGeoLocation=(id) => {
         Add Geo-Location Country with City
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. 
-          </Typography>
+          
           <div className="row">
             <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12 cellPadding">
             <Autocomplete name="country"
@@ -715,7 +729,7 @@ const deletGeoLocation=(id) => {
           </tr>
           </thead>
           <tbody>
-          {geoLocations.map((data, index) => {
+          {geoLoIrr.map((data, index) => {
             return <tr key={index}>
               <td>{index+1}</td>
               <td>
@@ -725,8 +739,7 @@ const deletGeoLocation=(id) => {
                   </div>
                 </div>
               </td>
-              <td>{'0.00'}</td>
-              
+              <td >{(data.currentIrr)? data.currentIrr: '0.00'}</td>
               <td>
                 <div className="pointer text-primary">
                   <span className="d-inline-block mr-1">

@@ -18,9 +18,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthController::class, 'login']);
+// Route::group(['prefix' => 'auth', 'middleware' => 'cors'], function() {
+//     Route::post('/login', [AuthController::class, 'login']);
+
+
+// });
+    
+
+ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
+// Dashboard Route
+Route::get('adminDashboard',[UserController::class,'adminDashboard']);
+
 //setting
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
@@ -42,6 +52,9 @@ Route::resource('accessories', AccessoriesListController::class);
 //project 
 Route::get('gitprojectdata', [ProjectsController::class,'gitprojectdata']);
 Route::resource('project', ProjectsController::class);
+Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
+Route::post('project-analyze',[ProjectsController::class,'analyze']);
+Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
 
 
 // Start Route for System Management of Water Solar

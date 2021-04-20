@@ -35,7 +35,7 @@ class UomController extends Controller
      */
     public function store(Request $request)
     {
-
+        return Uom::create($request->all());
     }
 
     /**
@@ -78,8 +78,10 @@ class UomController extends Controller
      * @param  \App\Models\Uom  $uom
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Uom $uom)
+    public function destroy($id)
     {
-        //
+        $uom = Uom::findOrFail($id);
+        $uom->delete();
+        return ['message' => 'Cable type Deleted'];
     }
 }
