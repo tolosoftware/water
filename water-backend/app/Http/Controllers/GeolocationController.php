@@ -139,6 +139,7 @@ class GeolocationController extends Controller
             elseif('18:00:00' <= $currentTime && $currentTime < '06:00:00'){
                 $insideData['currentIrr'] =  '0.00';
             }
+            // $insideData['currentIrr'] =  $currentTime;
             array_push($newdata, $insideData);
         }
         return $newdata;

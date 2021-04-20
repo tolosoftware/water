@@ -390,7 +390,7 @@ export default function DialogSettingWD(props){
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
                               <TextField required size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
-                                  label="Panal Quantity"
+                                  label="Stand Quantity"
                                   type="number"
                                   InputLabelProps={{
                                       shrink: true,

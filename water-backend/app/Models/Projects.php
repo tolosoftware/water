@@ -11,7 +11,7 @@ class Projects extends Model
 
        protected $fillable = [
        'country', 'city_id','name','discription','dirt_loss',
-        'motor_cable','daynomic_head','water_temprature','daily_output','solar_brand_id','pump_brand_id'
+        'motor_cable','daynomic_head','daily_output','solar_brand_id','pump_brand_id','invertor_brand_id'
        ];
 
     public function geolocation()

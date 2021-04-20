@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ContainerHeader from "components/ContainerHeader/index";
+// import ContainerHeader from "components/ContainerHeader/index";
 import IntlMessages from "util/IntlMessages";
 import CardBox from 'components/CardBox/index';
 
@@ -15,7 +15,7 @@ import './style.css';
 
 const Systemmangment = ({match}) => (
     <div className="app-wrapper">
-      <ContainerHeader match={match} title={<IntlMessages id="System Mangment"/>} /> 
+      {/* <ContainerHeader match={match} title={<IntlMessages id="System Mangment"/>} />  */}
       <h3><b>Geo-Location Mangment</b></h3>
       <span>
         <GeoLocation/>

@@ -577,10 +577,7 @@ const deletGeoLocation=(id) => {
         Add Geo-Location Country with City
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. 
-          </Typography>
+          
           <div className="row">
             <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12 cellPadding">
             <Autocomplete name="country"

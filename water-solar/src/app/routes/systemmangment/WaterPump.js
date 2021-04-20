@@ -10,7 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+// import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // start import for taps 
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
@@ -20,7 +20,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Popover from '@material-ui/core/Popover';
+// import Popover from '@material-ui/core/Popover';
 import './style.css';
 import {useDropzone} from "react-dropzone";
 import DialogWaterP from './commentElement/DialogWaterP'
@@ -177,7 +177,7 @@ const initialState = {
   formData: {
     brand: '',
     country: '',
-    description: '',
+    // description: '',
   },
   error: {},
   touched: {},
@@ -200,7 +200,7 @@ function reducer(state, action) {
 const schema = type.object().shape({
   brand: type.string().required("Required"),
   country: type.string().required("Required"),
-  description: type.string().required("Required"),
+  // description: type.string().required("Required"),
 });
 
 
@@ -214,7 +214,7 @@ const WaterPump = () => {
   const [brand, setBrand] = React.useState("");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
-  const [description, setDescription] = React.useState("");
+  // const [description, setDescription] = React.useState("");
   const [waterBrandID, setWaterBrandID] = useState('0'); 
   const [waterBrOldImage, setWaterBrOldImage] = useState("");
 
@@ -369,7 +369,7 @@ const editWaterBrand = (dataValue) => {
   console.log(dataValue);
   setBrand(dataValue.name);
   setCountry(dataValue.country);
-  setDescription(dataValue.discription);
+  // setDescription(dataValue.discription);
   setWaterBrandID(dataValue.id);
   setWaterBrOldImage(dataValue.image);
   setValue(0);
@@ -377,16 +377,17 @@ const editWaterBrand = (dataValue) => {
   // setBrand(); setD1escription();
 }
 const handleAllField = async(valid) =>{
-  let f1 = 'brand', f2 = 'country', f3 = 'description';
+  let f1 = 'brand', f2 = 'country';
+  // let f3 = 'description';
   const schemaErrors = await runValidation(schema, {
-    ...formData, [f1]: brand, [f2]: country, [f3]: description
+    ...formData, [f1]: brand, [f2]: country /* , [f3]: description*/
   });
   dispatch({
     type: setState,
     payload: {
       error: schemaErrors,
-      formData: { ...formData, [f1]: brand, [f2]: country, [f3]: description },
-      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+      formData: { ...formData, [f1]: brand, [f2]: country /*, [f3]: description*/ },
+      touched: { ...touched, [f1]: false, [f2]: false /*, [f3]: false*/ },
       isValid: valid
     }
   });
@@ -395,7 +396,7 @@ const emptyForm = () =>{
   setBrand('');
   setCountry(Country[0]);
   setInputValue(Country[0]);
-  setDescription('');
+  // setDescription('');
   setWaterBrandID('0');
   setWaterBrOldImage('');
   setFiles([]);
@@ -468,9 +469,9 @@ const handleChangeField = async ({ target: { name, value } }) => {
   if(name==='brand'){
     setBrand(value)
   }
-  else if(name==='description'){
-    setDescription(value)
-  }
+  // else if(name==='description'){
+  //   setDescription(value)
+  // }
   
   const schemaErrors = await runValidation(schema, {
     ...formData, [name]: value
@@ -490,7 +491,7 @@ const handleSubmit = (e) => {
   e.preventDefault();
   setVisibility(true)
   let data = {
-    waterBrandID, country, brand, description
+    waterBrandID, country, brand /*, description*/
   }
   if(data.waterBrandID===undefined){
     data.waterBrandID = 0;
@@ -540,14 +541,14 @@ const handleSubmit = (e) => {
 // end form sumbit
 
   // start popove code
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-  const open1 = Boolean(anchorEl);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const handlePopoverOpen = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handlePopoverClose = () => {
+  //   setAnchorEl(null);
+  // };
+  // const open1 = Boolean(anchorEl);
   // end popover code
   const [waterListObject, setWaterListObject] =React.useState([]);
   const editWaterList = (waterListObj) =>{
@@ -596,12 +597,7 @@ const handleSubmit = (e) => {
                   onChangeIndex={handleChangeIndex}
                 >
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
-                
-                  <Typography gutterBottom className={`p-Padding-bottom`}>
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-                    in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                  </Typography>
-                <div className="row ">
+                <div className="row wp-brand">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                     <TextField id="outlined-basic" name='brand' value={brand} onChange={e => handleChangeField(e)} 
                     error={(touched && touched.brand) && (error && error.brand) ? true : false}
@@ -626,7 +622,7 @@ const handleSubmit = (e) => {
                      
                   </div>
                 </div>
-                <div className="row paddingTopForm">
+                {/* <div className="row paddingTopForm">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <TextareaAutosize name='description' value={description} onChange={e => handleChangeField(e)}
                     id='description' aria-label="minimum height" rowsMin={3} 
@@ -634,7 +630,7 @@ const handleSubmit = (e) => {
                      placeholder="Short Description" />
                      <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                   </div>
-                </div>
+                </div> */}
                 <div className="row paddingTopForm">
                   
                   <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
@@ -680,6 +676,8 @@ const handleSubmit = (e) => {
                             return <tr key={index}>
                               <td>{index+1}</td>
                               <td>
+                              {data.name}
+                                {/* 
                                 <div className="d-flex align-items-center">
                                   <div className="user-detail">
                                     
@@ -715,7 +713,8 @@ const handleSubmit = (e) => {
                                       <Typography>{data.discription}</Typography>
                                     </Popover>
                                   </div>
-                                </div>
+                                </div> */
+                                }
                               </td>
                               
                               <td>{data.country}</td>
@@ -793,7 +792,7 @@ const handleSubmit = (e) => {
                 <th>Current (A)</th>
                 <th>Diameter (Inch)</th>
                 <th>Power (KW)</th>
-                <th>Image</th>
+                {/* <th>Image</th> */}
                 <th>Action</th>
               </tr>
             </thead>
@@ -812,11 +811,11 @@ const handleSubmit = (e) => {
                 <td>{waterList.ampeier}</td>
                 <td>{waterList.diameter}</td>
                 <td>{waterList.power}</td>
-                <td>
+                {/* <td>
                   <div className="d-flex align-items-center">
                       <img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                   </div>
-                </td>
+                </td> */}
                  
                 <td>
                   <div className="pointer text-primary">

@@ -13,4 +13,14 @@ class Solar_list extends Model
     protected $fillable = [
         'serial_no','solar_brand_id','model','power','voltage','current', 'discription', 'image','cable_type_id'
     ];
+
+   public function solar_config()
+    {
+        return $this->hasMany(Config_solar::class, 'solar_list_id');
+    }
+
+    public function solar_brand()
+    {
+        return $this->belongsTo(Solar_brands::class, 'solar_brand_id');
+    }
 }

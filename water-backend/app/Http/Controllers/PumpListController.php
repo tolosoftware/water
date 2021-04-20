@@ -60,7 +60,7 @@ class PumpListController extends Controller
                     File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
                     $pump_list->image = $photoname;
                 }
-                $pump_list->discription = $request['description'];
+                $pump_list->discription = 'null';
                 $pump_list->save();
             }else{
                 // return $request;
@@ -72,7 +72,7 @@ class PumpListController extends Controller
                     'diameter' => $request['diameter'], 
                     'ampeier' => $request['current'], 
                     'power' => $request['powerKW'], 
-                    'discription' => $request['description'], 
+                    'discription' => 'null', 
                     'image' => $photoname, 
                 ]);
             }

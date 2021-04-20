@@ -59,7 +59,7 @@ class SolarListController extends Controller
                     File::delete('brand/solar/solar_list/'.$solar_list->image);
                     $solar_list->image = $photoname;
                 }
-                $solar_list->discription = $request['description'];
+                $solar_list->discription = 'null';
                 $solar_list->save();
             }else{
                 Solar_list::create([
@@ -71,7 +71,7 @@ class SolarListController extends Controller
                     'voltage' => $request['voltage'], 
                     'current' => $request['current'], 
                     'cable_type_id' => $request['cableType'], 
-                    'discription' => $request['description'], 
+                    'discription' => 'null', 
                     'image' => $photoname, 
                 ]);
             }

@@ -8,6 +8,14 @@ use App\Models\Privilige;
 use Illuminate\Support\Facades\Hash;
 use DB;
 use Illuminate\Support\Facades\File;
+use App\Models\Pump_brands;
+use App\Models\Solar_brands;
+use App\Models\InvertorBrand;
+use App\Models\Pump_list;
+use App\Models\Solar_list;
+use App\Models\InvertorList;
+use App\Models\Projects;
+Use \Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -16,6 +24,28 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function adminDashboard()
+    {   
+        $pumpbrand = Pump_brands::all();
+        $solarbrand = Solar_brands::all();
+        $invertorBrand = InvertorBrand::all();
+        $pumpLists = Pump_list::all();
+        $solarLists = Solar_list::all();
+        $invertorLists = InvertorList::all();
+        $users = User::where('system', 0)->get();
+        $currenTmonth = Carbon::now()->month;
+        $projects = Projects::all();
+        $proOfThMonth = 0;
+        foreach ($projects as $project) {
+            $projecCurrentMonth = $project->created_at->format('m');
+            if($projecCurrentMonth == $currenTmonth){
+                ++$proOfThMonth;
+            }
+        }
+        return response()->json([
+            'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'invertorBrand'=>$invertorBrand, 'users'=>$users, 'pumpLists'=>$pumpLists, 'solarLists'=>$solarLists, 'invertorLists'=>$invertorLists, 'projects'=>$projects, 'proOfThMonth'=>$proOfThMonth
+        ]);
+    }
     public function index()
     {
         return User::all();

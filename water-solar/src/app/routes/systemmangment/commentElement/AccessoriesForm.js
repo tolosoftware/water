@@ -3,10 +3,10 @@ import TextField from '@material-ui/core/TextField';
 import {useDropzone} from "react-dropzone";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 // end of dialog modal for water pump
 import axios from 'axios';
@@ -68,13 +68,13 @@ const useStyles = makeStyles((theme) => ({
 // validation code
 const initialState = {
   formData: {
-    type: '',
+    // type: '',
     name: '',
     model: '',
     uom: '',
     min_quantity: '',
     max_quantity: '',
-    description: '',
+    // description: '',
   },
   error: {},
   touched: {},
@@ -95,21 +95,21 @@ function reducer(state, action) {
   }
 }
 const schema = type.object().shape({
-  type: type.number().required("Required"),
+  // type: type.number().required("Required"),
   name: type.string().required("Required"),
   model: type.string().required("Required"),
   uom: type.object().required("Required"),
   min_quantity: type.number().required("Required"),
   max_quantity: type.number().required("Required"),
-  description: type.string().required("Required"),
+  // description: type.string().required("Required"),
 });
 // end validation code
 
 export default function AccessoriesForm(props) {
-  const [type, setType] = useState("");
+  // const [type, setType] = useState("");
   const [name, setName] = useState("");
   const [model, setModel] = useState("");
-  const [description, setDescription] = useState("");
+  // const [description, setDescription] = useState("");
   const [min_quantity, setMin_quantity] = useState(""); 
   const [max_quantity, setMax_quantity] = useState(""); 
   const [uom, setUom] = useState({});
@@ -148,9 +148,9 @@ export default function AccessoriesForm(props) {
 // end dropzone code
   
 
-const [accessoriestype,setAccessoriestype]= useState([]);
+// const [accessoriestype,setAccessoriestype]= useState([]);
  useEffect(() => {
-    getAccessoriestype();
+    // getAccessoriestype();
     getUOM();
   },[])
   
@@ -176,7 +176,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
   
   const setEditFieldValuse = () => {
     setAccessoryID(accessoryObject.id);
-    setType(accessoryObject.accessories_type_id);
+    // setType(accessoryObject.accessories_type_id);
     setName(accessoryObject.name);
     setModel(accessoryObject.model);
     setMin_quantity(accessoryObject.min_quantity); 
@@ -186,7 +186,7 @@ const [accessoriestype,setAccessoriestype]= useState([]);
       // console.log('uom_id inside if', accessoryObject.uom_id);
       getUomObj(accessoryObject.uom_id);
     } 
-    setDescription(accessoryObject.discription);
+    // setDescription(accessoryObject.discription);
     setOldImage(accessoryObject.image);
   } 
 
@@ -202,22 +202,22 @@ const [accessoriestype,setAccessoriestype]= useState([]);
       )
   }
  
-  const getAccessoriestype=async () => {
-    axios.get('api/accessoriestype')
-      .then(res => {  
-         setAccessoriestype(res.data)
-        }
-    ).catch(err => {
-           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-              id="notification.titleHere"/>);
-          }
-      )
-  };  
+  // const getAccessoriestype=async () => {
+  //   axios.get('api/accessoriestype')
+  //     .then(res => {  
+  //        setAccessoriestype(res.data)
+  //       }
+  //   ).catch(err => {
+  //          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+  //             id="notification.titleHere"/>);
+  //         }
+  //     )
+  // };  
   
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = {
-      accessoryID, type, name, model ,min_quantity, max_quantity, description
+      accessoryID, name, model ,min_quantity, max_quantity/*, type, description*/
     }
     data['uom']=uom.id;
     data['uom_name']=uom.name;
@@ -264,16 +264,16 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     }
   }
   const handleAllField = async(valid) =>{
-    let f1 = 'type', f2 = 'name', f3 = 'model', f4='uom', f5='min_quantity', f6= 'max_quantity', f7='description';
+    let /*f1 = 'type',*/ f2 = 'name', f3 = 'model', f4='uom', f5='min_quantity', f6= 'max_quantity'/*, f7='description'*/;
       const schemaErrors = await runValidation(schema, {
-        ...formData, [f1]: type, [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity, [f7]: description 
+        ...formData, /*[f1]: type,*/ [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity/*, [f7]: description */
       });
       dispatch({
         type: setState,
         payload: {
           error: schemaErrors,
-          formData: { ...formData, [f1]: type, [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity, [f7]: description },
-          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false, [f7]: false },
+          formData: { ...formData, /*[f1]: type,*/ [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity/*, [f7]: description*/ },
+          touched: { ...touched, /*[f1]: false,*/ [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false/*, [f7]: false*/ },
           isValid: valid
         }
       });
@@ -295,10 +295,11 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     });
   };
   const handleChangeField = async ({ target: { name, value } }) => {
-    if(name==='type'){
-      setType(value)
-    }
-    else if(name==='name'){
+    // if(name==='type'){
+    //   setType(value)
+    // }
+    // else 
+    if(name==='name'){
       setName(value)
     }
     else if(name==='model'){
@@ -310,9 +311,9 @@ const [accessoriestype,setAccessoriestype]= useState([]);
     else if(name==='max_quantity'){
       setMax_quantity(value)
     }
-    else if(name==='description'){
-      setDescription(value)
-    }
+    // else if(name==='description'){
+    //   setDescription(value)
+    // }
     
     const schemaErrors = await runValidation(schema, {
       ...formData, [name]: value
@@ -333,9 +334,9 @@ const [accessoriestype,setAccessoriestype]= useState([]);
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="row">
             
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
+                    {/* <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP"> */}
                         {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Type" value={type} onChange={(e) => setType(e.target.value)} variant="outlined" /> */}
-                        <FormControl variant="outlined" size="small" className={classes.formControl}>
+                        {/* <FormControl variant="outlined" size="small" className={classes.formControl}>
                             <InputLabel id="demo-simple-select-outlined-label" size="small"  error={(touched && touched.type) && (error && error.type) ? true : false} >Type</InputLabel>
                             <Select size="small"
                                 labelId="demo-simple-select-outlined-label"
@@ -353,8 +354,8 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                               )}
                             </Select>
 
-                        </FormControl>
-                    </div>
+                        </FormControl> */}
+                    {/* </div> */}
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" name='name' value={name} onChange={(e) => handleChangeField(e)}
                          error={(touched && touched.name) && (error && error.name) ? true : false}
@@ -401,21 +402,21 @@ const [accessoriestype,setAccessoriestype]= useState([]);
                             />  
                     </div>
                     
-                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" name='min_quantity' value={min_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.min_quantity) && (error && error.min_quantity) ? true : false} helperText={(touched && touched.min_quantity) && (error && error.min_quantity) ? '*required' : ''} variant="outlined" />
                     </div>
 
-                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' value={max_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.max_quantity) && (error && error.max_quantity) ? true : false} helperText={(touched && touched.max_quantity) && (error && error.max_quantity) ? '*required' : ''} variant="outlined" />
                     </div>
                         
-                    <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                    {/* <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                         <div className="form-group">
                             <textarea className={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description' value={description} onChange={(e) => handleChangeField(e)} rows="2"  placeholder="Short Description"></textarea>
                             <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                         </div>
-                    </div>
-                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12 accessory_file">
+                    </div> */}
+                    <div className="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 accessory_file">
                         <div className="dropzone-card">
                             <div className="dropzone">
                                 <div {...getRootProps({className: 'dropzone-file-btn'})}>

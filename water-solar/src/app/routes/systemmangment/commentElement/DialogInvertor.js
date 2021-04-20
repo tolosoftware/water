@@ -154,7 +154,7 @@ const initialState = {
   formData: {
     brand: '',
     model: '',
-    description: '',
+    // description: '',
   },
   error: {},
   touched: {},
@@ -177,7 +177,7 @@ function reducer(state, action) {
 const schema = type.object().shape({
   brand: type.string().required("Required"),
   model: type.string().required("Required"),
-  description: type.string().required("Required"),
+  // description: type.string().required("Required"),
 });
 // end validation code
 
@@ -194,7 +194,7 @@ export default function DialogInvertor(props){
   const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
   const [voltageDC, setVoltageDC] = useState([50, 150]);
-  const [description, setDescription] = useState("");
+  // const [description, setDescription] = useState("");
   const [invertorListID, setInvertorListID] = useState(0); 
   const [oldImage, setOldImage] = useState("");
 
@@ -218,7 +218,7 @@ export default function DialogInvertor(props){
     setPowerKW(150);
     setVoltage(150);
     setVoltageDC([50, 150]);
-    setDescription("");
+    // setDescription("");
     setOldImage('');
     setFiles([]);
   }
@@ -267,23 +267,23 @@ const setEditFieldValuse = () => {
   setModel(invertorListObject.model);
   setPowerKW(Math.floor(invertorListObject.power));
   setVoltage(Math.floor(invertorListObject.voltage_ac));
-  setDescription(invertorListObject.discription);
+  // setDescription(invertorListObject.discription);
   setOldImage(invertorListObject.image);
 } 
 useEffect(() => {
   (invertorListObject.id === undefined)? handleAllField(false): handleAllField(true);
 },[openIn])
 const handleAllField = async(valid) =>{
-  let f1 = 'brand', f2 = 'model', f3 = 'description';
+  let f1 = 'brand', f2 = 'model'/*, f3 = 'description'*/;
   const schemaErrors = await runValidation(schema, {
-    ...formData, [f1]: brand, [f2]: model, [f3]: description
+    ...formData, [f1]: brand, [f2]: model/*, [f3]: description*/
   });
   dispatch({
     type: setState,
     payload: {
       error: schemaErrors,
-      formData: { ...formData, [f1]: brand, [f2]: model, [f3]: description },
-      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+      formData: { ...formData, [f1]: brand, [f2]: model/*, [f3]: description */},
+      touched: { ...touched, [f1]: false, [f2]: false/*, [f3]: false*/ },
       isValid: valid
     }
   });
@@ -296,9 +296,9 @@ const handleAllField = async(valid) =>{
     else if(name==='model'){
       setModel(value)
     }
-    else if(name==='description'){
-      setDescription(value)
-    }
+    // else if(name==='description'){
+    //   setDescription(value)
+    // }
     
     const schemaErrors = await runValidation(schema, {
       ...formData, [name]: value
@@ -317,7 +317,7 @@ const handleAllField = async(valid) =>{
   const handleSubmit = (e) => {
     e.preventDefault();
     let dataInvertor = {
-      invertorListID, brand, model, powerKW, voltage, voltageDC, description
+      invertorListID, brand, model, powerKW, voltage, voltageDC/*, description*/
     }
     // console.log(dataInvertor);
     if(dataInvertor.invertorListID===undefined){
@@ -454,11 +454,11 @@ const handleAllField = async(valid) =>{
                                     marks={marksVolDC}
                                 />
                             </div>
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
+                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
                                 <div class="form-group">
                                     <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description'  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
                                 <div className="dropzone-card">
                                     <div className="dropzone">

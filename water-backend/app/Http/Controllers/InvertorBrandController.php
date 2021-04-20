@@ -54,7 +54,7 @@ class InvertorBrandController extends Controller
                 $invertorBrand = InvertorBrand::findOrFail($id);
                 $invertorBrand->name =  $request['brand'];
                 $invertorBrand->country = $request['country'];
-                $invertorBrand->discription = $request['description'];
+                $invertorBrand->discription = 'null';
                 if($request->image != 'oldImage'){
                     File::delete('brand/invertor/'.$invertorBrand->image);
                     $invertorBrand->image = $photoname;
@@ -65,7 +65,7 @@ class InvertorBrandController extends Controller
                 InvertorBrand::create([
                     'name' => $request['brand'], 
                     'country' => $request['country'], 
-                    'discription' => $request['description'], 
+                    'discription' => 'null', 
                     'image' => $photoname, 
                 ]);
             }

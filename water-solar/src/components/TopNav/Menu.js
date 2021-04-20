@@ -6,8 +6,10 @@ import IntlMessages from 'util/IntlMessages';
 
 class Menu extends Component {
 
+
   componentDidMount() {
-    const {history} = this.props;
+    const {history}=this.props;
+   
 
     const pathname = `#${history.location.pathname}`;// get current path
     const mainMenu = document.getElementsByClassName('nav-item');
@@ -80,7 +82,6 @@ class Menu extends Component {
     return null;
   }
 
-
   render() {
     return (
       <div className="app-main-menu d-none d-md-block">
@@ -93,12 +94,14 @@ class Menu extends Component {
           </li>
 
           <li className="nav-item mega-menu">
-           
-             <NavLink className="prepend-icon" to="/app/newproject">
+            {JSON.parse(localStorage.getItem('UserData')).system===1?(
+                 <NavLink className="prepend-icon" to="/app/newproject">
                       <span className="nav-text"><IntlMessages id="sidebar.newproject"/></span>
               </NavLink>
-
-             
+            ):''}
+           
+ 
+              
           </li>
 
           <li className="nav-item">
@@ -114,11 +117,12 @@ class Menu extends Component {
                </NavLink>
           </li> */}
 
-          <li className="nav-item">  
+          <li className="nav-item"> 
+            {JSON.parse(localStorage.getItem('UserData')).system===1?(  
               <NavLink className="prepend-icon" to="/app/systemmangment">
                       <span className="nav-text"><IntlMessages id="sidebar.system-management"/></span>
               </NavLink>
-            
+             ):''}
           </li>
 
              <li className="nav-item">  

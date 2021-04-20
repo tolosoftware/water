@@ -58,7 +58,7 @@ class InvertorListController extends Controller
                     File::delete('brand/invertor/invertor_list/'.$invertorList->image);
                     $invertorList->image = $photoname;
                 }
-                $invertorList->discription = $request['description'];
+                $invertorList->discription = 'null';
                 $invertorList->save();
             }else{
                 InvertorList::create([
@@ -68,7 +68,7 @@ class InvertorListController extends Controller
                     'voltage_ac' => $request['voltage'], 
                     'voltage_dc_min' => $request['voltageDC'][0], 
                     'voltage_dc_max' => $request['voltageDC'][1], 
-                    'discription' => $request['description'], 
+                    'discription' => 'null', 
                     'image' => $photoname, 
                 ]);
             }

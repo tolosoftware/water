@@ -19,16 +19,17 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('city_id');
             $table->foreign('city_id')->references('id')->on('geolocations');
             $table->string('name');
-            $table->string('discription');
+            $table->string('discription')->nullable();
             $table->decimal('dirt_loss');
             $table->decimal('motor_cable');
             $table->decimal('daynomic_head');
-            $table->string('water_temprature');
             $table->decimal('daily_output');
             $table->unsignedBigInteger('solar_brand_id');
             $table->foreign('solar_brand_id')->references('id')->on('solar_brands');
             $table->unsignedBigInteger('pump_brand_id');
             $table->foreign('pump_brand_id')->references('id')->on('pump_brands');
+            $table->unsignedBigInteger('invertor_brand_id');
+            $table->foreign('invertor_brand_id')->references('id')->on('invertor_brands');
             $table->timestamps();
         });
     }
