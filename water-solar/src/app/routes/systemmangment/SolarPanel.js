@@ -643,7 +643,7 @@ const handleChangeField = async ({ target: { name, value } }) => {
                             {thumbs}
                             {(files.length === 0 )? ((solarBrOldImage!=="" && solarBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`${axios.defaults.baseURL}brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/solar/${solarBrOldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>

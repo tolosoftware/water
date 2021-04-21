@@ -223,7 +223,6 @@ export default function DialogWaterP(props){
     //     setOpenD(true);
     // };
     const handleClose = () => {
-      handleAllField(false);
       emptyForm();
       setOpenD(false);
     };
@@ -231,7 +230,6 @@ export default function DialogWaterP(props){
     const [brand, setBrand] = useState("");
     const waterPumpBrands=props.waterPumpBrands;
     const {waterListObject, setWaterListObject} = props;
-    
     
     const [name, setName] = useState("");
     const [powerKW, setPowerKW] = useState("");
@@ -315,7 +313,8 @@ export default function DialogWaterP(props){
       setOldImage('');
       setFiles([]);
     }
-    const setEditFieldValuse = () => {
+     
+    useEffect(() => {
       setWaterListID(waterListObject.id);
       setBrand(waterListObject.pump_brand_id);
       setName(waterListObject.model);
@@ -327,16 +326,11 @@ export default function DialogWaterP(props){
       setPowerKW(n);
       setDescription(waterListObject.discription);
       setOldImage(waterListObject.image);
-      handleAllField(true);
-      
-    } 
-    useEffect(() => {
-      if(props.waterListObject.length !== 0){
-        setEditFieldValuse();
-      }
     },[waterListObject])
     
-    
+    useEffect(() => {
+      (waterListObject.id === undefined)? handleAllField(false): handleAllField(true);
+    },[openD])
     
     
     const handleAllField = async(valid) =>{
@@ -565,7 +559,7 @@ export default function DialogWaterP(props){
                                         {thumbs}
                                         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
                                         <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                       </spam>): ''): ''}
                                     </div>
                                 </div>

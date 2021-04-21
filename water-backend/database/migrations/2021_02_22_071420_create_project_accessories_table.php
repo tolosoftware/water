@@ -18,9 +18,7 @@ class CreateProjectAccessoriesTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->unsignedBigInteger('accessories_id');
-            $table->foreign('accessories_id')->references('id')->on('accessories_lists');
-            $table->unsignedBigInteger('uom_id');
-            $table->foreign('uom_id')->references('id')->on('uoms');
+            $table->foreign('accessories_id')->references('id')->on('accessories_lists')->onDelete('cascade');
             $table->integer('quantity');
             $table->timestamps();
         });

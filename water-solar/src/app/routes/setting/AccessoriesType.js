@@ -160,9 +160,7 @@ const [visibility,setVisibility]= useState(false);
                     }}>
                   <DeleteIcon />
                     </IconButton>
-                   <IconButton size="small" aria-label="Edit"  color="primary">
-                  <EditIcon />
-                 </IconButton>   
+                  
               </td>
             </tr>
           })}

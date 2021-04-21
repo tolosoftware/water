@@ -1,304 +1,362 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import MonthlyRevenue from 'components/dashboard/Intranet/MonthlyRevenue';
-import {Area, AreaChart, CartesianGrid, ResponsiveContainer} from 'recharts';
-import {connections, expanseData1} from '../data';
-import UserDetailTable from 'components/dashboard/Common/UserDetailTable';
-import UserProfileCard from 'components/dashboard/Common/userProfileCard/UserProfileCard';
-import MarketingTable from 'components/dashboard/Common/MarketingTable';
-import PhotoCollage from 'components/dashboard/Common/PhotoCollage/index';
-import LatestNotifications from 'components/dashboard/Common/LatestNotifications';
-import RecentActivities from 'components/dashboard/Common/RecentActivities/index';
-import {
-  announcementsNotification,
-  appNotification,
-  chartData,
-  dailyFeedData,
-  marketingData,
-  products,
-  projects,
-  recentList,
-  todoData,
-  weeklyData
-} from './data';
-
-import ProjectsList from 'components/dashboard/Intranet/ProjectsList';
-import YourDailyFeed from 'components/dashboard/Common/DailyFeed/index';
-import TimerView from 'components/dashboard/Common/TimerView/index';
-import ContactCard from 'components/Cards/Contact/index';
-import PopularProduct from 'components/dashboard/Common/PopularProduct';
-import ContainerHeader from 'components/ContainerHeader/index';
-import CardHeader from 'components/dashboard/Common/CardHeader/index';
-import CardMenu from 'components/dashboard/Common/CardMenu';
+// import ContainerHeader from 'components/ContainerHeader/index';
 import IntlMessages from 'util/IntlMessages';
-import WeeklyList from "components/dashboard/Intranet/WeeklyList";
-import Statistics from "components/dashboard/default/Statistics";
-import CardBox from "components/CardBox/index";
-import SiteVisitor from "components/dashboard/Common/SiteVisitor";
+import Projects from './Projects';
+import ContactCard from 'components/Cards/Contact/index';
 import MapWithASearchBox from "../../../map/routes/MapWithSearchBox/Components/MapWithASearchBox";
-import SimpleToDo from 'components/ToDoCard/index';
+import CardBox from 'components/CardBox';
+import TestimonialCarousel from './testimonial/index';
+import PumpList from "./PumpList";
+import SolarList from "./SolarList";
+import InvertorList from "./InvertorList";
+//backdrop
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import axios from 'axios';
+import {NotificationManager} from 'react-notifications';
+import { withStyles } from "@material-ui/styles";
+//country flag
+import Flags from 'country-flag-icons/react/3x2';
+import Slider from "react-slick";
 
+function getFlag(countryname) {
+  switch (countryname) {
+    case 'Afghanistan':
+      return <Flags.AF title="United States" className="customflag"/> ;
+    case 'Italy':
+      return <Flags.IT title="United States" className="customflag"/> ;
+    case 'China':
+      return <Flags.CH title="United States" className="customflag" />;
+     case 'Iran':
+     return <Flags.IR title="United States" className="customflag"/> ;
+    default:
+      return '';
+  }
+}
+const products = [
+  {
+    image: '/images/System details layout.png'
+  }, {
+    image: '/images/Hight layout.png'
+  }, {
+    image: '/images/outlet layout.png'
+  }, {
+    image: '/images/Motor Cable layout.png'
+  }, {
+    image: '/images/Pipe layout.png'
+  }, {
+    image: '/images/System layout.png'
+  }
+];
+const testimonials = [
+  {
+    content: 'All the Lorem Ipsum generators on the Internet tend to repeat, making this the first true generator on the Internet.',
+    avatar: '/images/General layout.png',
+    name: 'Alex Dolgove',
+    title: 'BDM G-axon'
+  }, {
+    content: 'Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)',
+    avatar: '/images/System layout.png',
+    name: 'Domnic Brown',
+    title: 'Product Head'
+  }, {
+    content: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ',
+    avatar: '/images/Pipe layout.png',
+    name: 'Jeson Born',
+    title: 'Director, Abc LLC'
+  }, {
+    content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, ',
+    avatar: '/images/Motor Cable layout.png',
+    name: 'John Smith',
+    title: 'Chief Engineer'
+  }, {
+    content: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form',
+    avatar: '/images/outlet layout.png',
+    name: 'Min Chan',
+    title: 'Director, Abc LLC'
+  }, {
+    content: 'It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures',
+    avatar: '/images/Hight layout.png',
+    name: 'Stella Johnson',
+    title: 'Engineer Lead'
+  }, {
+    content: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections ',
+    avatar: '/images/System details layout.png',
+    name: 'Steve Smith',
+    title: 'Director, Abc LLC'
+  }
+]; 
+const projects = [
+  {
+    id: 1,
+    name: "Jambo Admin",
+    date: "Oct 21",
+    status: "Completed",
+    color: "success",
+    progressValue: 98,
+    teamList: [
+      {id: 1, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 2, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 3, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 4, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 2,
+    name: 'Chatbull',
+    date: "Oct 22",
+    status: "On Hold",
+    color: "warning",
+    progressValue: 70,
+    teamList: [
+      {id: 5, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 6, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 7, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 8, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 3,
+    name: 'Mouldifi',
+    date: "Nov 12",
+    status: "Delayed",
+    color: "info",
+    progressValue: 40,
+    teamList: [
+      {id: 9, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 10, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 11, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 12, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 4,
+    name: 'Simplify Timer',
+    date: "Nov 21",
+    status: "Completed",
+    color: "success",
+    progressValue: 98,
+    teamList: [
+      {id: 13, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 14, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 15, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 16, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 5,
+    name: 'Clevex',
+    date: "Aug 21",
+    status: "Cancelled",
+    color: "danger",
+    progressValue: 38,
+    teamList: [
+      {id: 17, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 18, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 19, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 20, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 6,
+    name: 'Simplify Timer',
+    date: "Dec 12",
+    status: "Completed",
+    color: "success",
+    progressValue: 24,
+    teamList: [
+      {id: 21, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 22, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 23, image: 'https://via.placeholder.com/120x120', name: ''},
+      {id: 24, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+  {
+    id: 7,
+    name: "Clevex",
+    date: "Sep 15",
+    status: "Cancelled",
+    color: "danger",
+    progressValue: 24,
+    teamList: [
+      {id: 25, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 26, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 27, image: 'https://via.placeholder.com/150x150', name: ''},
+      {id: 28, image: 'https://via.placeholder.com/150x150', name: ''},
+    ]
+  },
+];
+const styles = theme => ({
+  backdrop: {
+   zIndex: theme.zIndex.drawer + 1,
+   color: '#fff',
+ },
+});
 
 class Intranet extends React.Component {
-
-  onOptionMenuSelect = event => {
-    this.setState({menuState: true, anchorEl: event.currentTarget});
-  };
-  handleRequestClose = () => {
-    this.setState({menuState: false});
-  };
-
   constructor() {
     super();
-    this.state = {
-      anchorEl: undefined,
-      menuState: false,
+    this.state= {
+      solarBrands: [],
+      pumpBrands: [],
+      invertorBrand: [],
+      projects: [],
+      pumpLists: [],
+      solarLists: [],
+      invertorLists: [],
+      openbackdrop: false,
+      options: {
+        dots: false,
+        infinite: true,
+        arrows: true,
+        speed: 500,
+        slidesToShow: 2,
+        marginRight: 10,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1050,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 1,
+              dots: false
+            }
+          }, 
+          {
+            breakpoint: 850,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              dots: false
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+              dots: false
+            }
+          },
+          {
+            breakpoint: 400,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              dots: false
+            }
+          }
+        ]
+      },
     }
-  }
+    this.getUserDashboardData();
 
+  }
+  getUserDashboardData(){
+    this.setState({openbackdrop: true});
+    axios.get('api/adminDashboard')
+      .then(res => {  
+        this.setState({
+          openbackdrop: false, solarBrands: res.data.solarbrand, pumpBrands: res.data.pumpbrand, invertorBrand: res.data.invertorBrand, pumpLists: res.data.pumpLists, solarLists: res.data.solarLists, invertorLists: res.data.invertorLists, projects:res.data.projects 
+        });
+       //  console.log('solarBrands and pumpbrand', res);
+      }
+        
+    ).catch(err => {
+      this.setState({openbackdrop: false});
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+          id="notification.titleHere"/>);
+        }
+      )
+  }
   render() {
-    const {anchorEl, menuState} = this.state;
+    const { classes } = this.props;
     return (
       <div className="dashboard animated slideInUpTiny animation-duration-3">
-        <ContainerHeader match={this.props.match} title={<IntlMessages id="sidebar.dashboard.intranet"/>}/>
+        {/* <ContainerHeader match={this.props.match} title={<IntlMessages id="sidebar.dashboard.user"/>}/> */}
+        <Backdrop className={classes.backdrop} open={this.state.openbackdrop} >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+          <div className="row ">
+            <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
+                    heading>
+              <TestimonialCarousel testimonials={testimonials}/>
+            </CardBox>
+            <div className="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-project">
+                <Projects projects={this.state.projects}/>
+            </div>
+          
+            <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
+                    heading={<IntlMessages id="Water Pump Brands"/>}>
+              <Slider className="slick-app-frame" {...this.state.options} >
+                {this.state.pumpBrands.map((data,index) => {
+                  return <div class="slick-slide-item">
+                    <div className="brand-logo">
+                      <div className="brand-logo-inner">
+                        <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`} alt="Clients"/>
+                      </div>
+                      
+                    </div>
+                    <span> {data.country} {getFlag(data.country)}  </span>
+                  </div>  
+                })} 
+              </Slider>
+            </CardBox>
+            <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
+              <PumpList pumpLists={this.state.pumpLists}/>
+            </div>
 
-        <div className="row">
-          <div className="col-12">
-            <div className="jr-card chart-user-statistics bg-primary darken-4 text-white">
-              <div className="jr-dealclose-header px-4 mb-4">
-                <div>
-                  <h4 className="mb-0">User Statstics</h4>
-                </div>
-                <div className="jr-dealclose-header-right">
-                  <p className="mb-2"><span style={{backgroundColor: "#3BB4A3"}}
-                                            className="size-8 rounded-circle d-inline-block mr-1"/>Expanse</p>
-                  <p className="ml-2 mb-2"><span style={{backgroundColor: '#FF9800'}}
-                                                 className="size-8 rounded-circle d-inline-block mr-1"/>Income</p>
-                </div>
+            <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
+                      heading={<IntlMessages id="Solar Brands"/>}>
+                <Slider className="slick-app-frame" {...this.state.options} >
+                  {this.state.solarBrands.map((data,index) => {
+                    return <div class="slick-slide-item">
+                      <div className="brand-logo">
+                        <div className="brand-logo-inner">
+                          <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`} alt="Clients"/>
+                        </div>
+                      </div>
+                      <span> {data.country} {getFlag(data.country)}  </span>
+                    </div>  
+                  })} 
+                </Slider>
+              </CardBox>
+              <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
+                <SolarList solarLists={this.state.solarLists} />
               </div>
-              <MonthlyRevenue chartData={expanseData1}/>
-            </div>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-lg-3 col-sm-6 col-12">
-            <div className="card jr-card-intra shadow text-center">
-              <div className="card-header py-3 d-flex align-items-center">
-                <h3 className="mb-0"><IntlMessages id="sidebar.view"/></h3>
-                <span className="badge badge-secondary ml-auto"><IntlMessages id="dashboard.monthly"/></span>
-              </div>
-              <div className="stack-order  py-4 px-2">
-                <h1 className="chart-f30">386,200</h1>
-                <span className="h3 text-muted"><IntlMessages id="dashboard.totalView"/></span>
-                <span className="h5 text-green">
-                                    <i className="zmdi zmdi-flash zmdi-hc-fw"/>98%</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3 col-sm-6 col-12">
-            <div className="card jr-card-intra shadow text-center">
-              <div className="card-header py-3 d-flex align-items-center">
-                <h3 className="mb-0"><IntlMessages id="dashboard.orders"/></h3>
-                <span className="badge badge-secondary ml-auto"><IntlMessages id="dashboard.annual"/></span>
-              </div>
-              <div className="stack-order py-4 px-2">
-                <h1 className="chart-f30">80,800</h1>
-                <span className="h3 text-muted"><IntlMessages id="dashboard.newOrder"/></span>
-                <span className="h5 text-cyan"><i
-                  className="zmdi zmdi-long-arrow-return zmdi-hc-fw zmdi-hc-rotate-90"/>20%</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6 col-sm-12 col-12">
-            <div className="card jr-card-intra shadow text-center">
-              <div className="card-header py-3 d-flex align-items-center">
-                <h3 className="mb-0"><IntlMessages id="dashboard.visited"/></h3>
-                <span className="badge badge-primary ml-auto"><IntlMessages id="dashboard.today"/></span>
-              </div>
-              <div className="row no-gutters">
-                <div className="col-6">
-                  <div className="stack-order py-4 px-2">
-                    <h1 className="chart-f30">406,42</h1>
-                    <span className="h3"><IntlMessages
-                      id="dashboard.rapidPace"/></span>
-                    <span className="h5 text-green"><i
-                      className="zmdi zmdi-long-arrow-return zmdi-hc-fw zmdi-hc-rotate-90"/>20%</span>
+              <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
+                        heading={<IntlMessages id="Invertor Brands"/>}>
+                  <Slider className="slick-app-frame" {...this.state.options} >
+                    {this.state.invertorBrand.map((data,index) => {
+                      return <div class="slick-slide-item">
+                        <div className="brand-logo">
+                          <div className="brand-logo-inner">
+                            <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} alt="Clients"/>
+                          </div>
+                        </div>
+                        <span> {data.country} {getFlag(data.country)}  </span>
+                      </div>  
+                    })} 
+                  </Slider>
+                </CardBox>
+                <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
+                  <InvertorList invertorLists={this.state.invertorLists} />
+                </div>
+
+                <div className="col-lg-4 col-md-5 col-sm-6 col-12">
+                  <ContactCard/>
+                </div>
+
+                <div className="col-lg-8 col-12">
+                  <div className="jr-card p-2">
+                    <MapWithASearchBox styleName="embed-responsive-31by9"/>
                   </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="stack-order py-4 px-2">
-                    <h1 className="chart-f30">206,12</h1>
-                    <span className="h3"><IntlMessages id="dashboard.slowPace"/></span>
-                    <span className="h5 text-red"><i
-                      className="zmdi zmdi-long-arrow-return zmdi-hc-fw zmdi-hc-rotate-90"/>20%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                </div> 
         </div>
-
-        <div className="row">
-          <div className="col-lg-3 col-sm-6 col-12">
-            <UserProfileCard styleName="pb-4" headerStyle="bg-gradient-primary"/>
-          </div>
-
-          <div className="col-lg-4 col-sm-6 col-12">
-            <div className="jr-card jr-full-card">
-              <CardHeader heading={<IntlMessages id="dashboard.newConnections"/>}
-                          subHeading={<IntlMessages id="dashboard.thisWeek"/>}/>
-
-              <UserDetailTable data={connections} tableStyle="full-table-last-sm"/>
-            </div>
-          </div>
-
-          <div className="col-lg-5 col-12">
-            <div className="jr-card">
-              <CardHeader heading={<IntlMessages id="dashboard.recentActivities"/>}
-                          subHeading={<IntlMessages id="dashboard.lastActivity"/>}/>
-
-              {recentList.map((recentList, index) => <RecentActivities key={index}
-                                                                       recentData={recentList}/>)}
-
-            </div>
-          </div>
-
-          <div className="col-lg-6 col-12">
-            <div className="jr-card">
-              <div className="jr-card-header d-flex align-items-center justify-content-between">
-                <h3 className="mb-0"><IntlMessages id="dashboard.currentProjects"/></h3>
-                <span className="badge badge-secondary"><IntlMessages id="table.thisWeek"/></span>
-              </div>
-              <ProjectsList data={projects}/>
-            </div>
-          </div>
-
-          <div className="col-lg-6 col-12">
-            <div className="jr-card jr-full-card">
-              <div className="jr-card-header d-flex align-items-center">
-                <div className="mr-auto">
-                  <h3 className="card-heading d-inline-block mb-0"><IntlMessages
-                    id="dashboard.yourDailyFeed"/></h3>
-                </div>
-
-                <span className="badge badge-secondary"><IntlMessages id="dashboard.newFeed"/></span>
-              </div>
-              <YourDailyFeed data={dailyFeedData}/>
-              <div className="daily-feed-footer">
-                <span className="jr-link card-link"><IntlMessages id="dashboard.viewAll"/></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-lg-4 col-sm-6 col-12 order-lg-1">
-            <div className="jr-card pb-4">
-              <div className="jr-card-header d-flex align-items-center">
-                <div className="mr-auto">
-                  <h3 className="card-heading d-inline-block mb-0"><IntlMessages
-                    id="dashboard.toDoItems"/></h3>
-                </div>
-                <span className="badge badge-secondary"><IntlMessages id="dashboard.today"/></span>
-              </div>
-              <SimpleToDo data={todoData}/>
-            </div>
-          </div>
-
-          <div className="col-lg-4 col-sm-6 col-12 order-lg-3">
-            <div className="jr-card pb-3">
-              <CardHeader styleName="mb-3 align-items-center" heading={<IntlMessages id="dashboard.weekly"/>}/>
-              <WeeklyList data={weeklyData}/>
-            </div>
-          </div>
-
-          <div className="col-lg-4 col-12 order-lg-2">
-            <div className="jr-card jr-full-card">
-              <div className="jr-card-header d-flex align-items-center">
-                <h3 className="card-heading mb-0"><i
-                  className="zmdi zmdi-chart-donut zmdi-hc-fw mr-2"/><IntlMessages
-                  id="dashboard.marketingCampaign"/>
-                </h3>
-                <span className="badge badge-secondary ml-auto"><IntlMessages
-                  id="dashboard.today"/></span>
-              </div>
-              <MarketingTable data={marketingData}/>
-            </div>
-          </div>
-
-          <div className="col-lg-4 col-sm-6 col-12 order-lg-4">
-            <LatestNotifications appNotification={appNotification}
-                                 announcementsNotification={announcementsNotification}/>
-          </div>
-
-          <div className="col-lg-4 col-sm-6 col-12 order-lg-6">
-            <TimerView headerColor="gradient-primary"/>
-          </div>
-
-          <div className="col-lg-4 col-12 order-lg-5">
-            <Statistics/>
-          </div>
-
-        </div>
-
-        <div className="row">
-          <CardBox styleName="col-lg-8 col-12" heading="Site Visitors Statistics">
-            <div>
-              Lorem ipsum is dummy content Cenas in erat accumsan, hendrerit
-              lorem vel, pulvinar odio. Quisque
-              eu conva. hendrerit lorem vel, pulvinar odio. Quisque eu conva.
-            </div>
-            <SiteVisitor
-              children={<ResponsiveContainer width="100%" height={150}>
-                <AreaChart data={chartData}>
-                  <CartesianGrid vertical horizontal={false} fillOpacity={0.2} width={200}/>
-                  <Area type="linear" dataKey="cv" stroke="#3F51B5"
-                        fillOpacity={.8}
-                        fill="#3F51B5"/>
-                  <Area type="linear" dataKey="pv" stroke="#FF9800"
-                        fillOpacity={.8}
-                        fill="#FF9800"/>
-                  <Area type="linear" dataKey="uv" stroke="#4CAF50"
-                        fillOpacity={.8}
-                        fill="#4CAF50"/>
-                </AreaChart>
-              </ResponsiveContainer>}/>
-          </CardBox>
-          <div className="col-lg-4 col-md-7 col-sm-6 col-12">
-            <PhotoCollage/>
-          </div>
-
-          <div className="col-lg-4 col-md-5 col-sm-6 col-12">
-            <ContactCard/>
-          </div>
-
-          <div className="col-lg-8 col-12">
-            <div className="jr-card p-2">
-              <MapWithASearchBox styleName="embed-responsive-31by9"/>
-            </div>
-          </div>
-
-          <div className="col-12">
-            <div className="jr-card">
-              <CardHeader heading={<IntlMessages id="dashboard.popularProducts"/>}
-                          subHeading={<IntlMessages id="dashboard.loremIpsum"/>} styleName="mb-4"/>
-
-              <div className="row">
-                {products.map((products, index) => <PopularProduct key={index} product={products}
-                                                                   styleName="col-xl-4 col-sm-6 col-12 mb-4"/>)}
-              </div>
-              <Button size="small" color="primary">VIEW ALL PRODUCTS</Button>
-            </div>
-          </div>
-        </div>
-        <CardMenu menuState={menuState} anchorEl={anchorEl}
-                  handleRequestClose={this.handleRequestClose.bind(this)}/>
-
       </div>
     );
   }
 }
 
-export default Intranet;
+export default withStyles(styles)(Intranet);

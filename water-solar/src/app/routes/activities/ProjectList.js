@@ -2,13 +2,16 @@ import React,{useEffect,useState}from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 
+// import { browserHistory } from 'react-router';
 //back drop and notification
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from "react-router";
 //classes
+import Swal from 'sweetalert2';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ProjectList=() => {
+export const ProjectList=(props) => {
+     const history = useHistory();
  const classes = useStyles();
   const [open,setOpen]=React.useState(false); 
   const [projects,setProjects]= useState([]);
@@ -51,24 +55,58 @@ export const ProjectList=() => {
           <MaterialTable 
                 title="Project List"
                 columns={[
+                    // { title: 'No:', render(rowData)=>rowData.tableData.id },
                     { title: 'Name', field: 'name' },
                     { title: 'Country', field: 'country' },
                     { title: 'City', field: 'geolocation.city'},
-                    {title: 'Discription', field: 'discription'},
-                        
+                         
                 ]}
               data={projects}
                   actions={[
                     {
                     icon: 'delete',
                     tooltip: 'Delete Project',
-                    onClick: (event, rowData) =>  alert("You saved " + rowData.id)
+                       onClick: (event, rowData) =>  {
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                                  }).then((result) => {
+                                if(result.isConfirmed) {
+                                axios.delete('api/project/'+rowData.id)
+                                    .then(res => {
+                                     
+                                        setProjects(projects.filter((value) => value.id !==rowData.id));
+                                        Swal.fire(
+                                            'Deleted!',
+                                            'Your file has been deleted.',
+                                            'success'
+                                        )
+                                        }
+                                    ).catch( err =>{
+                                        Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Something went wrong!',
+                                        
+                                        })
+                                    })  
+                                }
+                            })
+                       }
                     },
                     rowData => ({
                     icon: 'visibility',
                     color:'primary',  
                     tooltip: 'View Project Details',
-                    onClick: (event, rowData) => alert(rowData.id),
+                        onClick: (event,rowData) => {
+                            history.push('/app/project-summary/'+rowData.id);   
+                        },
+                    
                     disabled: rowData.birthYear < 2000, 
                     })
                 ]}

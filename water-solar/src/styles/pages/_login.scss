@@ -4,6 +4,7 @@
 .login-container {
   position: relative;
   height: 100%;
+  
 }
 
 .login-content {
@@ -15,6 +16,7 @@
   @include border-radius(4px);
   font-size: 14px;
   max-width: 94%;
+
 }
 
 .login-header {
@@ -39,6 +41,7 @@
   max-width: 1080px;
   width: 94%;
   margin: 0 auto;
+   
 
   & .loader-view {
     position: absolute;
@@ -60,12 +63,17 @@
   overflow: hidden;
   width: 780px;
   height: 500px;
+    @media screen and (max-width: 575px) {
+     overflow-y: scroll;
+  }
+ 
 }
 
 .app-login-content {
   padding: 35px 35px 20px;
   width: 60%;
   order: 1;
+  
 
   @media screen and (max-width: 575px) {
     width: 100%;
@@ -90,54 +98,26 @@
   padding: 10px 35px !important;
 }
 
+
 .app-logo-content {
   background-color: $app-primary;
   padding: 35px 35px 20px;
   width: 40%;
   order: 2;
-
-
+  display: flex !important;
+  @media screen and (min-width: 576px) {
+  flex-direction: column;
+ 
+}
   @media screen and (max-width: 575px) {
     width: 100%;
     order: 1;
   }
 }
 
-//custom style 
-.custom-style{
-  margin-top: 100px;
+.login-brand-image{
+  width: 200px;
+  height: 200px !important;
 }
 
-.positioning{
-  border-radius: 10px;
-  padding-left: 23px;
-  padding-bottom: 23px;
-}
 
-.app-social-block {
-  @include display-flex();
-  @include align-items(center);
-  @include justify-content(space-between);
-
-  & .social-link,
-  & .social-link li {
-    margin: 0;
-  }
-
-  & .social-link button {
-    border: solid 1px $app-primary;
-    @include border-radius(50%);
-    color: $app-primary;
-    padding: 0;
-
-    &:hover,
-    &:focus {
-      color: $white;
-      background-color: $app-primary;
-    }
-  }
-
-  & p {
-    margin-bottom: 0;
-  }
-}

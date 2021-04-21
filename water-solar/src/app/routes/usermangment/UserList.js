@@ -3,24 +3,31 @@ import axios from 'axios';
 import MaterialTable from 'material-table';
 import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
+import {NotificationManager} from 'react-notifications';
+import IntlMessages from 'util/IntlMessages';
+import Swal from 'sweetalert2';
+import Spinner from 'react-spinner-material';
 //classes
 import UserInside from './UserInside';
 import CustomizedDialogs from "./CustomizedDialogs";
-// import {NotificationContainer,NotificationManager} from 'react-notifications';
 export const UserList=() => {
-
+  const [visibility,setVisibility]= useState(false);
   const [open,setOpen]=React.useState(false);  
   const [userdata,setUserdata]= useState([]);
   useEffect(() => {
     const getUserdata=async () => {
+      setVisibility(true);
      axios.get('api/user')
         .then(
             res => {
+              setVisibility(false);
               setUserdata(res.data)
             }
-        ).catch(
-            err =>{
-                console.log(err);
+        ).catch(err =>{
+              setVisibility(false);
+              console.log(err);
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
             }
            
         )
@@ -29,24 +36,42 @@ export const UserList=() => {
   }, [open])
    
   const deletUser = async (id) => {
- 
-    if(window.confirm('Are you sure you want to delet this !')) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if(result.isConfirmed) {
         axios.delete('api/user/'+id)
             .then(
                 res => {
                   setUserdata(res.data)
-
                   setUserdata(userdata.filter((value) => value.id !==id));
-
+                  NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+                  id="notification.titleHere" />);
                 }
-            ).catch(
-                err =>{
-                    console.log(err);
-                } 
-          )
-       }
+            ).catch(err =>{
+              console.log(err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+              
+              })
+            })
+      }
+    })
+     
   };
-  
+  const [userDataOject, setUserDataObject]= useState([]);
+  const editUser = (data) => {
+    setUserDataObject(data);
+    setOpen(true);
+  }
   return (
       
       
@@ -54,38 +79,48 @@ export const UserList=() => {
         <CustomizedDialogs
           open={open}
           setOpen={setOpen}
+          userDataOject={userDataOject}
+          setUserDataObject={setUserDataObject}
         />  
       
      <div className="row">
-     <div className="col-md-8">   
+     <div className="col-md-8"> 
+        {visibility ? (
+          <span className="row justify-content-center">
+            <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+          </span>
+        ) : (
           <MaterialTable 
-                title="Positioning Actions Column Preview"
-                columns={[
-                    { title: 'Name', field: 'name' },
-                    { title: 'Compnay Name', field: 'companyname' },
-                    { title: 'Email', field: 'email'},
-                    {title: 'Phone', field: 'phone'},
-                        
-                ]}
-                data={userdata}
-                actions={[
-                    {
-                    icon: 'edit',
-                    tooltip: 'Edit User',
-                    onClick: (event, rowData) =>  alert("You saved " + rowData.id)
-                    },
-                    rowData => ({
-                    icon: 'delete',
-                    color:'primary',  
-                    tooltip: 'Delete User',
-                    onClick: (event, rowData) => deletUser(rowData.id),
-                    disabled: rowData.birthYear < 2000
-                    })
-                ]}
-                options={{
-                    actionsColumnIndex: -1
-                }}
+            title="Positioning Actions Column Preview"
+            columns={[
+                { title: 'Name', field: 'name' },
+                { title: 'Compnay Name', field: 'companyname' },
+                { title: 'Email', field: 'email'},
+                {title: 'Phone', field: 'phone'},
+                    
+            ]}
+            data={userdata}
+            actions={[
+                {
+                icon: 'edit',
+                tooltip: 'Edit User',
+                onClick: (event, rowData) =>  editUser(rowData)
+                },
+                rowData => ({ 
+                  disabled: (rowData['system']===1)? true : false,
+                  icon: 'delete',
+                  color:'primary',  
+                  tooltip: 'Delete User',
+                  onClick: (event, rowData) => deletUser(rowData.id),
+                })
+            ]}
+            options={{
+                actionsColumnIndex: -1
+            }}
           />
+        )}
+            
+          
         </div>
           <div className="col-md-4">
            

@@ -43,8 +43,7 @@ class ConfigSolarController extends Controller
             Config_solar::where('solar_list_id', $data[0]['solar_list_id'])->delete();
                 foreach($data as $value){
                     $config_solar = Config_solar::create([
-                        'min_power' => $value['power'][0],
-                        'max_power' => $value['power'][1],
+                        'power' => $value['power'],
                         'base' => $value['base'],
                         'solar_quantity' => $value['quantity'],
                         'panal_quantity' => $value['panal'],

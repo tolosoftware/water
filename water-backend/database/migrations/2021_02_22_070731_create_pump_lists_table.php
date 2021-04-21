@@ -22,7 +22,7 @@ class CreatePumpListsTable extends Migration
             $table->decimal('outlet');
             $table->decimal('ampeier');
             $table->decimal('diameter');
-            $table->decimal('power');
+            $table->string('power');
             $table->string('discription');
             $table->string('image');
             $table->timestamps();

@@ -4,7 +4,7 @@ import Widget from "components/Widget/index";
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -40,6 +40,8 @@ import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 import Country from './commentElement/Country';
+import * as type from 'yup';
+import { checkValidation, runValidation } from './commentElement/utils';
 
 // start of dialog modal for water pump
 const styles = (theme) => ({
@@ -167,6 +169,39 @@ const img = {
   height: '100%'
 };
 // end code for dropzone
+
+// validation code
+const initialState = {
+  formData: {
+    brand: '',
+    country: '',
+    description: '',
+  },
+  error: {},
+  touched: {},
+  isValid: false
+};
+
+const setState = 'SET_STATE';
+
+function reducer(state, action) {
+  switch(action.type) {
+    case setState:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+const schema = type.object().shape({
+  brand: type.string().required("Required"),
+  country: type.string().required("Required"),
+  description: type.string().required("Required"),
+});
+// end validation code
+
 const Invertor = () => {
   const [visibility,setVisibility]= useState(false);
   const classes = useStyles();
@@ -180,10 +215,20 @@ const Invertor = () => {
   const [description, setDescription] = React.useState("");
   const [invertorBrandID, setInvertorBrandID] = useState('0'); 
   const [invertorBrOldImage, setInvertorBrOldImage] = useState("");
+  const [{
+    formData,
+    error,
+    touched,
+    isValid
+  }, dispatch] = React.useReducer(reducer, initialState);
   useEffect(() => {
     getInvertors();
   },[])
-  
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    handleAllField(false);
+    setOpen(true);
+  };
   const handleChange = (event, newValue) => {
     setBrand("");
     setDescription("");
@@ -194,7 +239,7 @@ const Invertor = () => {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
-  
+
   const editInvertorBrand = (invertorDataObject) => {
     setValue(0);
     setBrand(invertorDataObject.name);
@@ -202,13 +247,65 @@ const Invertor = () => {
     setDescription(invertorDataObject.discription);
     setInvertorBrandID(invertorDataObject.id);
     setInvertorBrOldImage(invertorDataObject.image);
-    console.log("invertorDataObject : ", invertorDataObject)
+    // console.log("invertorDataObject : ", invertorDataObject)
+    handleAllField(true)
   }
+   
+  const handleAllField = async(valid) =>{
+    let f1 = 'brand', f2 = 'country', f3 = 'description';
+    const schemaErrors = await runValidation(schema, {
+      ...formData, [f1]: brand, [f2]: country, [f3]: description
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, [f1]: brand, [f2]: country, [f3]: description },
+        touched: { ...touched, [f1]: false, [f2]: false, [f3]: false },
+        isValid: valid
+      }
+    });
+  }
+    const handleCountry = async (event, value) => {
+      setCountry(value);
+      let name = 'country';
+      const schemaErrors = await runValidation(schema, {
+        ...formData, [name]: value
+      });
+      dispatch({
+        type: setState,
+        payload: {
+          error: schemaErrors,
+          formData: { ...formData, [name]: value },
+          touched: { ...touched, [name]: true },
+          isValid: checkValidation(schemaErrors)
+        }
+      });
+    };
+    const handleChangeField = async ({ target: { name, value } }) => {
+      if(name==='brand'){
+        setBrand(value)
+      }
+      else if(name==='description'){
+        setDescription(value)
+      }
+      
+      const schemaErrors = await runValidation(schema, {
+        ...formData, [name]: value
+      });
+      dispatch({
+        type: setState,
+        payload: {
+          error: schemaErrors,
+          formData: { ...formData, [name]: value },
+          touched: { ...touched, [name]: true },
+          isValid: checkValidation(schemaErrors)
+        }
+      });
+    };
   // start code of dialog modal for water pump
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+ 
+  
   const [openIn, setOpenIn] = React.useState(false);
   useEffect(() => {
     getInvertorLists();
@@ -218,6 +315,7 @@ const Invertor = () => {
     setDescription("");
     setInvertorBrandID('0');
     setInvertorBrOldImage("");
+    handleAllField(false);
     setOpen(false);
   };
   // end code of dialog modal for water pump
@@ -319,7 +417,6 @@ const getInvertorLists = async() =>{
 
 const deleteInvertorBrand = (id) =>{
   setVisibility(true);
-  console.log("it is id of that Invertor brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -372,10 +469,10 @@ const handleSubmit = (e) => {
     invertorBrandID, country, brand, description
   }
   // console.log(data);
+  if(data.invertorBrandID===undefined){
+    data.invertorBrandID = 0;
+  }
   if(files.length!==0){
-    if(data.invertorBrandID===undefined){
-      data.invertorBrandID = 0;
-    } 
     var image = '';
     let file = files[0];
     let reader = new FileReader();
@@ -438,7 +535,7 @@ const handleSubmit = (e) => {
         <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
-            <LocalDrinkIcon className="lDrinkIcon"/>
+            <FlashAutoIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
             <h3 className="jr-font-weight-medium mb-3">Invertor Brands</h3>
@@ -479,11 +576,13 @@ const handleSubmit = (e) => {
                   </Typography>
                 <div className="row ">
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <TextField id="outlined-basic" value={brand} onChange={e => setBrand(e.target.value)} name='brand' label="Brand Name" variant="outlined" />
+                    <TextField id="outlined-basic" value={brand} onChange={e => handleChangeField(e)} name='brand'
+                    error={(touched && touched.brand) && (error && error.brand) ? true : false}
+                    helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''}  label="Brand Name" variant="outlined" />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">  
                   <Autocomplete 
-                      value={country} onChange={(event, newValue) => {setCountry(newValue);}}
+                      value={country} onChange={(event, newValue) => handleCountry(event, newValue)}
                       inputValue={inputValue}
                       onInputChange={(event, newInputValue) => {
                         setInputValue(newInputValue);
@@ -491,13 +590,16 @@ const handleSubmit = (e) => {
                       id="controllable-states-demo"
                       options={Country}
                       style={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} label="Country" variant="outlined" />}
+                      renderInput={(params) => <TextField {...params} label="Country" name='country'
+                      error={(touched && touched.country) && (error && error.country) ? true : false}
+                      helperText={(touched && touched.country) && (error && error.country) ? '*required' : ''} variant="outlined" />}
                     /> 
                   </div>
                 </div>
                 <div className="row paddingTopForm">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <TextareaAutosize value={description} onChange={e => setDescription(e.target.value)} name='description' id='description' aria-label="minimum height" rowsMin={3} className="minWidth form-control" placeholder="Short Description" />
+                    <TextareaAutosize value={description} onChange={e => handleChangeField(e)} name='description' id='description' aria-label="minimum height" rowsMin={3} className={`minWidth form-control ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`}  placeholder="Short Description" />
+                    <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                   </div>
                 </div>
                 <div className="row paddingTopForm">
@@ -514,7 +616,7 @@ const handleSubmit = (e) => {
                             {thumbs}
                             {(files.length === 0 )? ((invertorBrOldImage!=="" && invertorBrOldImage!==undefined)? (<spam>
                                   <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`${axios.defaults.baseURL}brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
+                                  <span><img src={`${axios.defaults.baseURL}brand/invertor/${invertorBrOldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
                                 </spam>): ''): ''}
                         </div>
                       </div>
@@ -613,7 +715,7 @@ const handleSubmit = (e) => {
                 </SwipeableViews>
                 </DialogContent>
                 <DialogActions>
-                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg ">Submit</Button>): null}
+                {(value===0)? (<Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " disabled={!isValid} >Submit</Button>): null}
                 </DialogActions>
                 </form>
               </Dialog>
