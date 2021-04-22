@@ -94,18 +94,18 @@ const useStyles = makeStyles((theme) => ({
       label: '0M',
     },
     {
-      value: 400,
-      label: '400M',
+      value: 500,
+      label: '500M',
     },
   ];
   const marksD = [
     {
       value: 0,
-      label: '0V',
+      label: '0m³/h',
     },
     {
-      value: 50,
-      label: '50V',
+      value: 100,
+      label: '100m³/h',
     },
   ];
   const marksCL = [
@@ -329,7 +329,7 @@ export default function DialogSettingWD(props){
                                   aria-labelledby="range-slider"
                                   getAriaValueText={valuetext}
                                   min={0}
-                                  max={240}
+                                  max={500}
                                   marks={marksM}
                               />
                             {/* <Typography id="range-slider" gutterBottom>
@@ -343,7 +343,7 @@ export default function DialogSettingWD(props){
                                 valueLabelDisplay="auto"
                             /> */}
                         </div>
-                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inputAdornmentWrap">
+                        <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS dis-wps inputAdornmentWrap">
                               <Typography id="range-slider" gutterBottom>
                               Discharge
                               </Typography>
@@ -353,7 +353,7 @@ export default function DialogSettingWD(props){
                                   aria-labelledby="range-slider"
                                   getAriaValueText={valuetext}
                                   min={0}
-                                  max={50}
+                                  max={100}
                                   marks={marksD}
                               />
                             {/* <Typography id="range-slider" gutterBottom>

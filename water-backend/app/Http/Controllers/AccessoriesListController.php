@@ -61,7 +61,7 @@ class AccessoriesListController extends Controller
                     File::delete('accessories/'.$accessories_list->image);
                     $accessories_list->image = $photoname;
                 }
-                $accessories_list->discription = $request['description'];
+                $accessories_list->discription = 'null';
                 $accessories_list->save();
                
             }else{
@@ -74,7 +74,7 @@ class AccessoriesListController extends Controller
                     'uom_name' => $request['uom_name'],
                     'min_quantity' =>$request['min_quantity'],
                     'max_quantity' =>$request['max_quantity'],
-                    'discription' => $request['description'],
+                    'discription' => 'null',
                     'image' => $photoname,
                 ]);
             }

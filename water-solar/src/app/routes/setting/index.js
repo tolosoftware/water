@@ -3,7 +3,7 @@ import React from 'react';
 // import IntlMessages from "util/IntlMessages";
 import Uom from './Uom';
 import CableType from './CableType';
-import AccessoriesType from './AccessoriesType';
+// import AccessoriesType from './AccessoriesType';
 
 
 const Setting = ({match}) => (
@@ -17,10 +17,10 @@ const Setting = ({match}) => (
              <div className="col-md-4">
               <CableType />
             </div>
-
+{/* 
             <div className="col-md-4">
              <AccessoriesType/>
-            </div>
+            </div> */}
         </div>
   </div>
 );

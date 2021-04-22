@@ -51,7 +51,7 @@ class PumpBrandsController extends Controller
                 $pump_brands = Pump_brands::findOrFail($id);
                 $pump_brands->name =  $request['brand'];
                 $pump_brands->country = $request['country'];
-                $pump_brands->discription = $request['description'];
+                $pump_brands->discription = 'null';
                 if($request->image != 'oldImage'){
                     File::delete('brand/pumpbrand/'.$pump_brands->image);
                     $pump_brands->image = $photoname;
@@ -61,7 +61,7 @@ class PumpBrandsController extends Controller
                 Pump_brands::create([
                     'name' => $request['brand'], 
                     'country' => $request['country'], 
-                    'discription' => $request['description'], 
+                    'discription' => "null", 
                     'image' => $photoname, 
                 ]);
             }

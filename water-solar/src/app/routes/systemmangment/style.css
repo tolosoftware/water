@@ -1,3 +1,6 @@
+.wp-brand{
+    margin-top: 10px;
+}
 .app-header-horizontal .app-toolbar .search-bar{
     display: none !important;
 }
@@ -186,7 +189,7 @@ padding: 0px 15px 10px;
 }
 
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
-    left: 5% !important;
+    left: 9% !important;
 }
 .insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
     left: 6% !important;
@@ -201,7 +204,7 @@ padding: 0px 15px 10px;
     left: 2% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
-    left: 94% !important;
+    left: 91% !important;
 }
 .insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
@@ -267,7 +270,7 @@ padding: 0px 15px 10px;
 .powerKW-SS1 span[data-index="12"].MuiSlider-markLabel {
     left: 95% !important;
 }
-.powerKW-PR span[data-index="12"].MuiSlider-markLabel {
+.powerKW-PR span[data-index="22"].MuiSlider-markLabel {
     left: 97% !important;
 }
 @media(max-width: 425px){
@@ -409,4 +412,10 @@ padding: 0px 15px 10px;
 }
 .project_bas_field .btn{
     padding: 0.68rem 2rem !important;
+}
+.dis-wps span[data-index="0"].MuiSlider-markLabel {
+    left: 9% !important;
+}
+.dis-wps span[data-index="1"].MuiSlider-markLabel {
+    left: 89% !important;
 }
