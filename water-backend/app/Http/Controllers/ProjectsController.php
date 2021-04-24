@@ -24,7 +24,7 @@ class ProjectsController extends Controller
 {
     public function getEnergy($city_id, $solar_power, $avaDischarge){
         $eachMonthFinalTotalEngery = array();
-        $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0;
+        $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0; $t6pm=0;
         $january=0;$february=0;$march=0;$april=0;$may=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0; 
         $irredation = Irradiation::where('geolocation_id',$city_id)->get();
         $monthlyHrOutputData = array();
@@ -41,6 +41,7 @@ class ProjectsController extends Controller
                 $t3pm = $t3pm + $eachmonth['t3pm'];
                 $t4pm = $t4pm + $eachmonth['t4pm'];
                 $t5pm = $t5pm + $eachmonth['t5pm'];
+                $t6pm = $t6pm + $eachmonth['t6pm'];
                 
                 $hrEnergyOfEachMonth =  [
                     ['name'=>'6am', 'hrEn'=>round(($solar_power/1030)*($t6am), 2)],
@@ -50,11 +51,12 @@ class ProjectsController extends Controller
                     ['name'=>'10am', 'hrEn'=>round(($solar_power/1030)*($t10am), 2)],
                     ['name'=>'11am', 'hrEn'=>round(($solar_power/1030)*($t11am), 2)],
                     ['name'=>'12am', 'hrEn'=>round(($solar_power/1030)*($t12am), 2)],
-                    ['name'=>'1am', 'hrEn'=>round(($solar_power/1030)*($t1pm), 2)],
-                    ['name'=>'2am', 'hrEn'=>round(($solar_power/1030)*($t2pm), 2)],
-                    ['name'=>'3am', 'hrEn'=>round(($solar_power/1030)*($t3pm), 2)],
-                    ['name'=>'4am', 'hrEn'=>round(($solar_power/1030)*($t4pm), 2)],
-                    ['name'=>'5am', 'hrEn'=>round(($solar_power/1030)*($t5pm), 2)],  
+                    ['name'=>'1pm', 'hrEn'=>round(($solar_power/1030)*($t1pm), 2)],
+                    ['name'=>'2pm', 'hrEn'=>round(($solar_power/1030)*($t2pm), 2)],
+                    ['name'=>'3pm', 'hrEn'=>round(($solar_power/1030)*($t3pm), 2)],
+                    ['name'=>'4pm', 'hrEn'=>round(($solar_power/1030)*($t4pm), 2)],
+                    ['name'=>'5pm', 'hrEn'=>round(($solar_power/1030)*($t5pm), 2)],  
+                    ['name'=>'6pm', 'hrEn'=>round(($solar_power/1030)*($t6pm), 2)],  
                 ];
                 $maxValueOfHrEn = 0;
                 foreach ($hrEnergyOfEachMonth as $hrEnOfEaMo)
@@ -72,11 +74,12 @@ class ProjectsController extends Controller
                     ['name'=>'10am', 'hrOutput'=>round(($hrEnergyOfEachMonth[4]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
                     ['name'=>'11am', 'hrOutput'=>round(($hrEnergyOfEachMonth[5]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
                     ['name'=>'12am', 'hrOutput'=>round(($hrEnergyOfEachMonth[6]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
-                    ['name'=>'1am', 'hrOutput'=>round(($hrEnergyOfEachMonth[7]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
-                    ['name'=>'2am', 'hrOutput'=>round(($hrEnergyOfEachMonth[8]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
-                    ['name'=>'3am', 'hrOutput'=>round(($hrEnergyOfEachMonth[9]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
-                    ['name'=>'4am', 'hrOutput'=>round(($hrEnergyOfEachMonth[10]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
-                    ['name'=>'5am', 'hrOutput'=>round(($hrEnergyOfEachMonth[11]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],  
+                    ['name'=>'1pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[7]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
+                    ['name'=>'2pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[8]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
+                    ['name'=>'3pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[9]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
+                    ['name'=>'4pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[10]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],
+                    ['name'=>'5pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[11]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],  
+                    ['name'=>'6pm', 'hrOutput'=>round(($hrEnergyOfEachMonth[12]['hrEn']/$maxValueOfHrEn)*($avaDischarge), 2)],  
                 ];
                 $totalMonthlyOutput =0;
                 foreach ($eachMonthlyHrOutputP as $eaMoHrOutputP)
@@ -85,7 +88,7 @@ class ProjectsController extends Controller
                 }
                 array_push($monthlyHrOutputData, round($totalMonthlyOutput, 2));
 
-                $eachmonthtotal = $eachmonth['t6am'] + $eachmonth['t7am'] + $eachmonth['t8am'] + $eachmonth['t9am'] + $eachmonth['t10am'] + $eachmonth['t11am'] + $eachmonth['t12am'] + $eachmonth['t1pm'] + $eachmonth['t2pm']+ $eachmonth['t3pm'] + $eachmonth['t4pm'] + $eachmonth['t5pm'];
+                $eachmonthtotal = $eachmonth['t6am'] + $eachmonth['t7am'] + $eachmonth['t8am'] + $eachmonth['t9am'] + $eachmonth['t10am'] + $eachmonth['t11am'] + $eachmonth['t12am'] + $eachmonth['t1pm'] + $eachmonth['t2pm']+ $eachmonth['t3pm'] + $eachmonth['t4pm'] + $eachmonth['t5pm'] + $eachmonth['t6pm'];
                 array_push($eachMonthFinalTotalEngery, round($eachmonthtotal,1));
             }
 
@@ -97,11 +100,12 @@ class ProjectsController extends Controller
                 ['name'=>'10am', 'hrEn'=>round(($solar_power/1030)*($t10am/12), 2)],
                 ['name'=>'11am', 'hrEn'=>round(($solar_power/1030)*($t11am/12), 2)],
                 ['name'=>'12am', 'hrEn'=>round(($solar_power/1030)*($t12am/12), 2)],
-                ['name'=>'1am', 'hrEn'=>round(($solar_power/1030)*($t1pm/12), 2)],
-                ['name'=>'2am', 'hrEn'=>round(($solar_power/1030)*($t2pm/12), 2)],
-                ['name'=>'3am', 'hrEn'=>round(($solar_power/1030)*($t3pm/12), 2)],
-                ['name'=>'4am', 'hrEn'=>round(($solar_power/1030)*($t4pm/12), 2)],
-                ['name'=>'5am', 'hrEn'=>round(($solar_power/1030)*($t5pm/12), 2)],  
+                ['name'=>'1pm', 'hrEn'=>round(($solar_power/1030)*($t1pm/12), 2)],
+                ['name'=>'2pm', 'hrEn'=>round(($solar_power/1030)*($t2pm/12), 2)],
+                ['name'=>'3pm', 'hrEn'=>round(($solar_power/1030)*($t3pm/12), 2)],
+                ['name'=>'4pm', 'hrEn'=>round(($solar_power/1030)*($t4pm/12), 2)],
+                ['name'=>'5pm', 'hrEn'=>round(($solar_power/1030)*($t5pm/12), 2)],  
+                ['name'=>'6pm', 'hrEn'=>round(($solar_power/1030)*($t6pm/12), 2)],  
             ];
             
             $energyForEachMonth =  [
@@ -135,11 +139,12 @@ class ProjectsController extends Controller
                 ['name'=>'10am', 'hrOutput'=>round(($hrEnergy[4]['hrEn']/$maxValue)*($avaDischarge), 2)],
                 ['name'=>'11am', 'hrOutput'=>round(($hrEnergy[5]['hrEn']/$maxValue)*($avaDischarge), 2)],
                 ['name'=>'12am', 'hrOutput'=>round(($hrEnergy[6]['hrEn']/$maxValue)*($avaDischarge), 2)],
-                ['name'=>'1am', 'hrOutput'=>round(($hrEnergy[7]['hrEn']/$maxValue)*($avaDischarge), 2)],
-                ['name'=>'2am', 'hrOutput'=>round(($hrEnergy[8]['hrEn']/$maxValue)*($avaDischarge), 2)],
-                ['name'=>'3am', 'hrOutput'=>round(($hrEnergy[9]['hrEn']/$maxValue)*($avaDischarge), 2)],
-                ['name'=>'4am', 'hrOutput'=>round(($hrEnergy[10]['hrEn']/$maxValue)*($avaDischarge), 2)],
-                ['name'=>'5am', 'hrOutput'=>round(($hrEnergy[11]['hrEn']/$maxValue)*($avaDischarge), 2)],  
+                ['name'=>'1pm', 'hrOutput'=>round(($hrEnergy[7]['hrEn']/$maxValue)*($avaDischarge), 2)],
+                ['name'=>'2pm', 'hrOutput'=>round(($hrEnergy[8]['hrEn']/$maxValue)*($avaDischarge), 2)],
+                ['name'=>'3pm', 'hrOutput'=>round(($hrEnergy[9]['hrEn']/$maxValue)*($avaDischarge), 2)],
+                ['name'=>'4pm', 'hrOutput'=>round(($hrEnergy[10]['hrEn']/$maxValue)*($avaDischarge), 2)],
+                ['name'=>'5pm', 'hrOutput'=>round(($hrEnergy[11]['hrEn']/$maxValue)*($avaDischarge), 2)],  
+                ['name'=>'6pm', 'hrOutput'=>round(($hrEnergy[12]['hrEn']/$maxValue)*($avaDischarge), 2)],  
             ];
             $monthlyHrOutput =  [
                 ['name'=>'Jan', 'MonthlyOutput'=>$monthlyHrOutputData[0]],
@@ -213,7 +218,7 @@ class ProjectsController extends Controller
 
     public function getIrredation($city_id){
         $eachmonthfinaltotal = array();
-         $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0;
+         $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0; $t6pm=0;
          $january=0;$february=0;$march=0;$april=0;$may=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0; 
          $irredation = Irradiation::where('geolocation_id',$city_id)->get();
 
@@ -230,12 +235,13 @@ class ProjectsController extends Controller
              $t3pm = $t3pm + $eachmonth['t3pm'];
              $t4pm = $t4pm + $eachmonth['t4pm'];
              $t5pm = $t5pm + $eachmonth['t5pm'];
+             $t6pm = $t6pm + $eachmonth['t6pm'];
 
             //  $eachmonthavrege = ($t6am + $t7am + $t8am + $t9am + $t10am + $t11am + $t12am + $t1pm + $t2pm + $t3pm + $t4pm + $t5pm) /12;
             //  array_push($eachmonthfinalavrege, $eachmonthavrege);
 
 
-             $eachmonthtotal = $eachmonth['t6am'] + $eachmonth['t7am'] + $eachmonth['t8am'] + $eachmonth['t9am'] + $eachmonth['t10am'] + $eachmonth['t11am'] + $eachmonth['t12am'] + $eachmonth['t1pm'] + $eachmonth['t2pm']+ $eachmonth['t3pm'] + $eachmonth['t4pm'] + $eachmonth['t5pm'];
+             $eachmonthtotal = $eachmonth['t6am'] + $eachmonth['t7am'] + $eachmonth['t8am'] + $eachmonth['t9am'] + $eachmonth['t10am'] + $eachmonth['t11am'] + $eachmonth['t12am'] + $eachmonth['t1pm'] + $eachmonth['t2pm']+ $eachmonth['t3pm'] + $eachmonth['t4pm'] + $eachmonth['t5pm'] + $eachmonth['t6pm'];
              array_push($eachmonthfinaltotal, round($eachmonthtotal,1));
             }
              $average =  [
@@ -246,11 +252,12 @@ class ProjectsController extends Controller
                  ['name'=>'10am', 'val'=>round($t10am/12, 2)],
                  ['name'=>'11am', 'val'=>round($t11am/12, 2)],
                  ['name'=>'12am', 'val'=>round($t12am/12, 2)],
-                 ['name'=>'1am', 'val'=>round($t1pm/12, 2)],
-                 ['name'=>'2am', 'val'=>round($t2pm/12, 2)],
-                 ['name'=>'3am', 'val'=>round($t3pm/12, 2)],
-                 ['name'=>'4am', 'val'=>round($t4pm/12, 2)],
-                 ['name'=>'5am', 'val'=>round($t5pm/12, 2)],  
+                 ['name'=>'1pm', 'val'=>round($t1pm/12, 2)],
+                 ['name'=>'2pm', 'val'=>round($t2pm/12, 2)],
+                 ['name'=>'3pm', 'val'=>round($t3pm/12, 2)],
+                 ['name'=>'4pm', 'val'=>round($t4pm/12, 2)],
+                 ['name'=>'5pm', 'val'=>round($t5pm/12, 2)],  
+                 ['name'=>'6pm', 'val'=>round($t5pm/12, 2)],  
              ];
 
              $averageforeachmonth =  [

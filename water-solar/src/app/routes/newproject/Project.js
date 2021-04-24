@@ -842,7 +842,7 @@ const handleRemoveFields = () => {
 
             <div className="col-md-12 p-0">
                 <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
-                <TextField id="outlined-basic" className="form-control" label={`Head ${(piplenght ? ('+ ' + Math.ceil(Number((5/100)*piplenght))):'')}`} variant="outlined"
+                <TextField id="outlined-basic" className="form-control" label={`Head ${((piplenght && dirtloss) ? ('+ ' + Math.ceil(Number((dirtloss*piplenght)/100))):'')}`} variant="outlined"
                 placeholder="Head !"
                 margin="normal"
                 name="head" 

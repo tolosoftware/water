@@ -69,6 +69,7 @@ class GeolocationController extends Controller
                     't3pm' => $request['time3_4'],
                     't4pm' => $request['time4_5'],
                     't5pm' => $request['time5_6'],
+                    't6pm' => $request['time6_7'],
                 ]);
             }
 
@@ -136,7 +137,10 @@ class GeolocationController extends Controller
             elseif('17:00:00' <= $currentTime && $currentTime < '18:00:00'){
                 $insideData['currentIrr'] =  $irradiation[0]->t5pm;
             }
-            elseif('18:00:00' <= $currentTime && $currentTime < '06:00:00'){
+            elseif('18:00:00' <= $currentTime && $currentTime < '19:00:00'){
+                $insideData['currentIrr'] =  $irradiation[0]->t6pm;
+            }
+            elseif('19:00:00' <= $currentTime && $currentTime < '06:00:00'){
                 $insideData['currentIrr'] =  '0.00';
             }
             // $insideData['currentIrr'] =  $currentTime;
