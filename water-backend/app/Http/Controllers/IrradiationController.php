@@ -53,6 +53,7 @@ class IrradiationController extends Controller
                 $irradiation->t3pm = $request['time3_4'];
                 $irradiation->t4pm = $request['time4_5'];
                 $irradiation->t5pm = $request['time5_6'];
+                $irradiation->t6pm = $request['time6_7p'];
                 $irradiation->update();
 
             }

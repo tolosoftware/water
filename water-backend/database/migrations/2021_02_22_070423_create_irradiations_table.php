@@ -31,6 +31,7 @@ class CreateIrradiationsTable extends Migration
             $table->string('t3pm')->nullable();
             $table->string('t4pm')->nullable();
             $table->string('t5pm')->nullable();
+            $table->string('t6pm')->nullable();
             $table->timestamps();
         });
     }
