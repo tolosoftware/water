@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import Edit from '@material-ui/icons/Edit';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -23,6 +24,7 @@ import Box from '@material-ui/core/Box';
 import './style.css';
 import {useDropzone} from "react-dropzone";
 import DialogInvertor from './commentElement/DialogInvertor'
+import InvertorSetting from './commentElement/InvertorSetting'
 
 // end import for taps
 
@@ -371,7 +373,7 @@ const deleteInvertorList = (id) =>{
       axios.delete('api/pumpList/'+id)
         .then(res => {
           setVisibility(false);
-              // setSolarLists(res.data)
+              // setInvertorLists(res.data)
               setInvertorLists(invertorLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
@@ -388,6 +390,19 @@ const deleteInvertorList = (id) =>{
     }
   })
 }
+// Start code of Invertor Panal List Setting 
+const [openSID, setOpenSID] = React.useState(false);
+const [invertorListId, setInvertorListId] = useState();
+const [invertorListModel, setInvertorListModel] = useState('');
+ 
+const onButtonClick = (listId, invertorModel) => {
+   
+  setInvertorListId(listId);
+  setInvertorListModel(invertorModel);
+  // console.log("list id: ", listId);
+  setOpenSID(true);
+}
+// End code of Invertor Panal list setting 
 const [invertorListObject, setInvertorListObject] =React.useState([]);
 const editInvertorList = (invertorListObject) =>{
   //  console.log(solarListObject);
@@ -532,6 +547,12 @@ const handleSubmit = (e) => {
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
       <div className={classes.root}>
+      <InvertorSetting
+        invertorListId={invertorListId}
+        invertorListModel={invertorListModel} 
+        openSID={openSID}
+        setOpenSID={setOpenSID}
+      />
         <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
             {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
@@ -782,7 +803,9 @@ const handleSubmit = (e) => {
                   <IconButton size="small" color="primary" aria-label="edit an alarm"  onClick={() => editInvertorList(invertor)}>
                     <Edit />
                   </IconButton>
-                   
+                  <IconButton size="small" color="primary" aria-label="setting an alarm" onClick={()=>{onButtonClick(invertor.id, invertor.model)}}>
+                    <SettingsIcon />
+                  </IconButton>
                   </div>
                 </td>
               </tr>

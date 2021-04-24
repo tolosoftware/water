@@ -116,47 +116,47 @@ export default function GeoLocationIrradiation(props){
       // console.log('inside modal:', props)
     },[props.geoLocationId])
     const [inputFieldsIrr1, setInputFieldsIrr1] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId ,month_id: 1, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId ,month_id: 1, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr2, setInputFieldsIrr2] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 2, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 2, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr3, setInputFieldsIrr3] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 3, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 3, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr4, setInputFieldsIrr4] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 4, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 4, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr5, setInputFieldsIrr5] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 5, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 5, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr6, setInputFieldsIrr6] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 6, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 6, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr7, setInputFieldsIrr7] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 7, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 7, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr8, setInputFieldsIrr8] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 8, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 8, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr9, setInputFieldsIrr9] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 9, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 9, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr10, setInputFieldsIrr10] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 10, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 10, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr11, setInputFieldsIrr11] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 11, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 11, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const [inputFieldsIrr12, setInputFieldsIrr12] = useState([
-      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 12, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''} ,]);
+      { id: uuidv4(), geolocation_id: geoLocationId, month_id: 12, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''} ,]);
 
     const monthsInputFields=[
       'January','February', 'March','April','May','June','July','August','September','October', 'November', 'December'
     ];
-    const timeLable = ['6:00-7:00 AM', '7:00-8:00 AM', '8:00-9:00 AM', '9:00-10:00 AM', '10:00-11:00 AM', '11:00-12:00 AM', '12:00-1:00 PM', '1:00-2:00 PM','2:00-3:00 PM','3:00-4:00 PM','4:00-5:00 PM','5:00-6:00 PM'];
+    const timeLable = ['6:00-7:00 AM', '7:00-8:00 AM', '8:00-9:00 AM', '9:00-10:00 AM', '10:00-11:00 AM', '11:00-12:00 AM', '12:00-1:00 PM', '1:00-2:00 PM','2:00-3:00 PM','3:00-4:00 PM','4:00-5:00 PM','5:00-6:00 PM', '6:00-7:00 PM'];
     
-    const timeName = ['time6_7', 'time7_8', 'time8_9', 'time9_10', 'time10_11', 'time11_12', 'time12_1', 'time1_2', 'time2_3', 'time3_4', 'time4_5', 'time5_6'];
+    const timeName = ['time6_7', 'time7_8', 'time8_9', 'time9_10', 'time10_11', 'time11_12', 'time12_1', 'time1_2', 'time2_3', 'time3_4', 'time4_5', 'time5_6', 'time6_7p'];
     const data1 = [
       {name: '6-7', Irradiation: inputFieldsIrr1[0].time6_7, amt: 2400},
       {name: '7-8', Irradiation: inputFieldsIrr1[0].time7_8, amt: 2210},
@@ -170,6 +170,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr1[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr1[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr1[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr1[0].time6_7p, amt: 2100},
     ];
     const data2 = [
       {name: '6-7', Irradiation: inputFieldsIrr2[0].time6_7, amt: 2400},
@@ -184,6 +185,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr2[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr2[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr2[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr2[0].time6_7p, amt: 2100},
     ];
     const data3 = [
       {name: '6-7', Irradiation: inputFieldsIrr3[0].time6_7, amt: 2400},
@@ -198,6 +200,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr3[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr3[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr3[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr3[0].time6_7p, amt: 2100},
     ];
     const data4 = [
       {name: '6-7', Irradiation: inputFieldsIrr4[0].time6_7, amt: 2400},
@@ -212,6 +215,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr4[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr4[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr4[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr4[0].time6_7p, amt: 2100},
     ];
     const data5 = [
       {name: '6-7', Irradiation: inputFieldsIrr5[0].time6_7, amt: 2400},
@@ -226,6 +230,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr5[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr5[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr5[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr5[0].time6_7p, amt: 2100},
     ];
     const data6 = [
       {name: '6-7', Irradiation: inputFieldsIrr6[0].time6_7, amt: 2400},
@@ -240,6 +245,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr6[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr6[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr6[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr6[0].time6_7p, amt: 2100},
     ];
     const data7 = [
       {name: '6-7', Irradiation: inputFieldsIrr7[0].time6_7, amt: 2400},
@@ -254,6 +260,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr7[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr7[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr7[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr8[0].time6_7p, amt: 2100},
     ];
     const data8 = [
       {name: '6-7', Irradiation: inputFieldsIrr8[0].time6_7, amt: 2400},
@@ -268,6 +275,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr8[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr8[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr8[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr8[0].time6_7p, amt: 2100},
     ];
     const data9 = [
       {name: '6-7', Irradiation: inputFieldsIrr9[0].time6_7, amt: 2400},
@@ -282,6 +290,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr9[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr9[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr9[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr9[0].time6_7p, amt: 2100},
     ];
     const data10 = [
       {name: '6-7', Irradiation: inputFieldsIrr10[0].time6_7, amt: 2400},
@@ -296,6 +305,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr10[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr10[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr10[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr10[0].time6_7p, amt: 2100},
     ];
     const data11 = [
       {name: '6-7', Irradiation: inputFieldsIrr11[0].time6_7, amt: 2400},
@@ -310,6 +320,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr11[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr11[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr11[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr11[0].time6_7p, amt: 2100},
     ];
     const data12 = [
       {name: '6-7', Irradiation: inputFieldsIrr12[0].time6_7, amt: 2400},
@@ -324,6 +335,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr12[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr12[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr12[0].time5_6, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr12[0].time6_7p, amt: 2100},
     ];
     
    
@@ -347,12 +359,12 @@ export default function GeoLocationIrradiation(props){
           if(mydata.length !== 0){
             mydata.forEach(elem => {
               // console.log(elem); 
-              mainArray.push([{ id: elem.id, geolocation_id: elem.geolocation_id, month_id: elem.month_id, time6_7: elem.t6am, time7_8: elem.t7am, time8_9: elem.t8am, time9_10: elem.t9am, time10_11: elem.t10am, time11_12: elem.t11am, time12_1: elem.t12am, time1_2: elem.t1pm, time2_3: elem.t2pm, time3_4: elem.t3pm, time4_5: elem.t4pm, time5_6: elem.t5pm}]);
+              mainArray.push([{ id: elem.id, geolocation_id: elem.geolocation_id, month_id: elem.month_id, time6_7: elem.t6am, time7_8: elem.t7am, time8_9: elem.t8am, time9_10: elem.t9am, time10_11: elem.t10am, time11_12: elem.t11am, time12_1: elem.t12am, time1_2: elem.t1pm, time2_3: elem.t2pm, time3_4: elem.t3pm, time4_5: elem.t4pm, time5_6: elem.t5pm, time6_7p: elem.t6pm}]);
             });
             // console.log('mainArray is: ',mainArray);
           }else{
             for (let index = 1; index <= 12; index++) {
-              mainArray.push([{ id: uuidv4(), geolocation_id: id, month_id: index, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: ''}]);
+              mainArray.push([{ id: uuidv4(), geolocation_id: id, month_id: index, time6_7: '', time7_8: '', time8_9: '', time9_10: '', time10_11: '', time11_12: '', time12_1: '', time1_2: '', time2_3: '', time3_4: '', time4_5: '', time5_6: '', time6_7p: ''}]);
             }
           }
           setInputFieldsIrr1(mainArray[0]); setInputFieldsIrr2(mainArray[1]); setInputFieldsIrr3(mainArray[2]);
@@ -533,14 +545,17 @@ export default function GeoLocationIrradiation(props){
                                         <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
                                             <TextField type="number" id={timeName[8]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[8]} label={timeLable[8]} value={inputFieldsIrr.time2_3} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
-                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
+                                        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
                                             <TextField type="number" id={timeName[9]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[9]} label={timeLable[9]} value={inputFieldsIrr.time3_4} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
-                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
+                                        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
                                             <TextField type="number" id={timeName[10]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[10]} label={timeLable[10]} value={inputFieldsIrr.time4_5} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
-                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 myFormControl">
+                                        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
                                             <TextField type="number" id={timeName[11]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[11]} label={timeLable[11]} value={inputFieldsIrr.time5_6} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
+                                        </div>
+                                        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12 myFormControl">
+                                            <TextField type="number" id={timeName[12]+inputFieldsIrr.month_id} size="small" className="fullWidthInput" name={timeName[12]} label={timeLable[12]} value={inputFieldsIrr.time6_7p} onChange={(event) => handleChangeInput(inputFieldsIrr.month_id, event)} variant="outlined" />
                                         </div>
                                          
                                     </div>
