@@ -162,6 +162,11 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
     height: 100px !important;
     width: 120px !important;
 }
+.waterPumpListFile .dropzone-file-btn{
+    height: 60px !important;
+    width: inherit !important;
+    margin-left: 0px;
+}
 .cellPadding{
     padding: 8px !important;
 }
@@ -261,8 +266,14 @@ padding: 0px 15px 10px;
 .powerKW-PR{
     padding: 0 22px 22px 15px !important;
 }
+.voltage span[data-index="0"].MuiSlider-markLabel {
+    left: 10% !important;
+}
+.voltage span[data-index="2"].MuiSlider-markLabel {
+    left: 90% !important;
+}
 .powerKW-PR span[data-index="0"].MuiSlider-markLabel {
-    left: 4% !important;
+    left: 10% !important;
 }
 .powerKW-SS1 span[data-index="0"].MuiSlider-markLabel {
     left: 7% !important;
@@ -271,7 +282,7 @@ padding: 0px 15px 10px;
     left: 95% !important;
 }
 .powerKW-PR span[data-index="22"].MuiSlider-markLabel {
-    left: 97% !important;
+    left: 91% !important;
 }
 @media(max-width: 425px){
     .accessory_file .dropzone-file-btn {
@@ -346,6 +357,9 @@ padding: 0px 15px 10px;
 .group_radio label.btn.btn-outline-primary{
     padding: 0.68rem 1.54rem !important;
 }
+.group_radio_phase label.btn.btn-outline-primary{
+    padding: 0.68rem 1.05rem !important;
+}
 /* my code */
 .insideFormPaddingWPS .btn-group label:first-child{
     border-top-right-radius: 0rem !important;
@@ -418,4 +432,7 @@ padding: 0px 15px 10px;
 }
 .dis-wps span[data-index="1"].MuiSlider-markLabel {
     left: 89% !important;
+}
+.mb-invertor{
+    margin-bottom: 10px;
 }

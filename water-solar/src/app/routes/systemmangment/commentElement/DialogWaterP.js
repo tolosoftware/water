@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
+import CustomDropzone from "./CustomDropzone";
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -91,38 +91,6 @@ const styles = (theme) => ({
         },
         
   }));
-// start code for dropzone
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
-
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-// end code for dropzone
   const marksKW = [
     {
       value: 0.75,
@@ -170,7 +138,7 @@ const img = {
     },
     {
       value: 22,
-      label: '22KW',
+      // label: '22KW',
     },
     {
       value: 30,
@@ -178,7 +146,7 @@ const img = {
     },
     {
       value: 37,
-      label: '37KW',
+      // label: '37KW',
     },
     {
       value: 45,
@@ -198,7 +166,7 @@ const img = {
     },
     {
       value: 67,
-      label: '67KW',
+      // label: '67KW',
     },
     {
       value: 75,
@@ -210,11 +178,25 @@ const img = {
     },
     {
       value: 92,
-      label: '92KW',
+      // label: '92KW',
     },
     {
       value: 110,
       label: '110KW',
+    },
+  ];
+  const marksV = [
+    {
+      value: 110,
+      label: '110V',
+    },
+    {
+      value: 220,
+      // label: '220V',
+    },
+    {
+      value: 380,
+      label: '380V',
     },
   ];
   // validation code
@@ -272,7 +254,9 @@ export default function DialogWaterP(props){
     const {waterListObject, setWaterListObject} = props;
     
     const [name, setName] = useState("");
-    const [powerKW, setPowerKW] = useState("");
+    const [powerKW, setPowerKW] = useState(15);
+    const [voltage, setVoltage] = useState("");
+    const [phase, setPhase] = useState("1Phase");
     const [outlet, setOutlet] = useState("");
     const [current, setCurrent] = useState("");
     const [diameter, setDiameter] = useState("");
@@ -280,15 +264,17 @@ export default function DialogWaterP(props){
     const [waterListID, setWaterListID] = useState('0'); 
     const [oldImage, setOldImage] = useState("");
     const [files, setFiles] = useState([]);
+    const [oldDataSheet, setOldDataSheet] = useState("");
+    const [dataSheetFiles, setDataSheetFiles] = useState([]);
+    const [oldGraph, setOldGraph] = useState("");
+    const [graphFiles, setGraphFiles] = useState([]);
     const [{
       formData,
       error,
       touched,
       isValid
     }, dispatch] = React.useReducer(reducer, initialState);
-    // const handleChange1 = (event) => {
-    //   setBrand(event.target.value);
-    // };
+   
 
     const handlePower = async (event, value) => {
       setPowerKW(value);
@@ -345,13 +331,19 @@ export default function DialogWaterP(props){
       setWaterListObject([]);
       setBrand('');
       setName('');
-      setPowerKW('');
+      setPowerKW(15);
+      setVoltage('');
+      setPhase('1Phase');
       setOutlet('');
       setCurrent('');
       setDiameter('');
       // setDescription("");
       setOldImage('');
+      setOldDataSheet('');
+      setOldGraph('');
       setFiles([]);
+      setDataSheetFiles([]);
+      setGraphFiles([]);
     }
      
     useEffect(() => {
@@ -361,11 +353,13 @@ export default function DialogWaterP(props){
       setOutlet(waterListObject.outlet);
       setCurrent(waterListObject.ampeier);
       setDiameter(waterListObject.diameter);
-      var n = waterListObject.power;
-      n = parseFloat(n);
-      setPowerKW(n);
+      setPowerKW(waterListObject.power);
+      setVoltage(waterListObject.voltage);
+      setPhase(waterListObject.phase);
       // setDescription(waterListObject.discription);
       setOldImage(waterListObject.image);
+      setOldDataSheet(waterListObject.data_sheet);
+      setOldGraph(waterListObject.graph);
     },[waterListObject])
     
     useEffect(() => {
@@ -390,34 +384,6 @@ export default function DialogWaterP(props){
     }
   
     const classes = useStyles();
-    
-  // dropzone code
-    
-    const {getRootProps, getInputProps} = useDropzone({
-      accept: 'image/*',
-      onDrop: acceptedFiles => {
-        setFiles(acceptedFiles.map(file => Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })));
-      }
-    });
-  
-    const thumbs = files.map(file => (
-      <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img alt={file.name}
-               src={file.preview}
-               style={img}
-          />
-        </div>
-      </div>
-    ));
-  
-    useEffect(() => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach(file => URL.revokeObjectURL(file.preview));
-    }, [files]);
-  // end dropzone code
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -566,7 +532,7 @@ export default function DialogWaterP(props){
                                 </FormControl>
                                 
                             </div>
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
+                            <div className="col-xl-5 col-lg-5 col-md-5 col-12 insideFormBP powerKW-PR inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom >
                                 Power to KW 
                                 </Typography>
@@ -581,28 +547,44 @@ export default function DialogWaterP(props){
                                     valueLabelDisplay="auto"
                                 />
                             </div>
+                            <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBP voltage inputAdornmentWrap">
+                                <Typography id="discrete-slider-small-steps" gutterBottom >
+                                Voltage to V 
+                                </Typography>
+                                <Slider name="voltage" onChange={(event, value) => setVoltage(event.target.value)}
+                                    defaultValue={(voltage) ? voltage : 15}
+                                    getAriaValueText={valuetext}
+                                    aria-labelledby="discrete-slider-small-steps"
+                                    step={null}
+                                    marks={marksV}
+                                    min={110}
+                                    max={380}
+                                    valueLabelDisplay="auto"
+                                />
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP group_radio_phase insideFormPaddingWPS">
+                              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                  <input type="radio" class="btn-check" name={`radio${phase}`} id="btnradio11Phase" autocomplete="off" checked={(phase==="1Phase" || phase === undefined) ? true : false} value="1Phase" onChange={event => setPhase(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio11Phase">1Phase</label>
+                                  <input type="radio" class="btn-check" name={`radio${phase}`} id="btnradio23Phase" autocomplete="off" checked={(phase==="3Phase")? true : false} value="3Phase" onChange={event => setPhase(event.target.value)}/>
+                                  <label class="btn btn-outline-primary" for="btnradio23Phase">3Phase</label>
+                              </div>
+                               
+                            </div>
                             {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name="description"  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                     <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </div>
                             </div> */}
-                            <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
-                                <div className="dropzone-card">
-                                    <div className="dropzone">
-                                        <div {...getRootProps({className: 'dropzone-file-btn'})}>
-                                            <input {...getInputProps()} />
-                                            <p>Upload image</p>
-                                        </div>
-                                    </div>
-                                    <div className="dropzone-content" style={thumbsContainer}>
-                                        {thumbs}
-                                        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-                                        <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
-                                      </spam>): ''): ''}
-                                    </div>
-                                </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                                <CustomDropzone/>
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                              <CustomDropzone/>
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                              <CustomDropzone/>
                             </div>
                           </div>
                   </div>

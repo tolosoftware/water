@@ -158,7 +158,7 @@ export default function InvertorSetting(props){
   }
   let id_field;
     return (
-        <Dialog onClose={handleClose} className="dialogWD" fullWidth={'md'} maxWidth={'md'} aria-labelledby="customized-dialog-title" open={openSID}>
+        <Dialog onClose={handleClose} className="dialogWD" fullWidth={'xs'} maxWidth={'xs'} aria-labelledby="customized-dialog-title" open={openSID}>
            <form autoComplete="off" onSubmit={handleSubmit}>  
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
               Setup of {invertorListModel}
@@ -166,10 +166,12 @@ export default function InvertorSetting(props){
             <DialogContent dividers>
                 <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-                    { inputFields.map(inputField => (
-                    <div key={id_field = inputField.id}>
-                      <div className="row insideSPDS paddingBottom">
-                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
+                  
+                    {/* <div key={id_field = inputField.id}> */}
+                    
+                      <div className="row insideSPDS paddingBottom ">
+                        { inputFields.map(inputField => (
+                          <div key={id_field = inputField.id} className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap mb-invertor">
                               <TextField required size="small" name='power' value={inputField.power} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number1"
                                   label="Invertor Power"
@@ -180,9 +182,10 @@ export default function InvertorSetting(props){
                                   variant="outlined"
                               />
                           </div>
+                        )) }
                       </div>
-                  </div>
-                  )) }
+                  {/*  </div> */}
+                 
               </div>
           </div>
             </DialogContent>
