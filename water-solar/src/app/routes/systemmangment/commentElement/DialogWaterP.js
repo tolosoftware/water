@@ -262,12 +262,27 @@ export default function DialogWaterP(props){
     const [diameter, setDiameter] = useState("");
     // const [description, setDescription] = useState("");
     const [waterListID, setWaterListID] = useState('0'); 
-    const [oldImage, setOldImage] = useState("");
-    const [files, setFiles] = useState([]);
-    const [oldDataSheet, setOldDataSheet] = useState("");
-    const [dataSheetFiles, setDataSheetFiles] = useState([]);
-    const [oldGraph, setOldGraph] = useState("");
-    const [graphFiles, setGraphFiles] = useState([]);
+    const [image, setImage] = useState({ oldImage: '', btnText: 'Image' });
+    let imageFile = '';
+    const [dataSheet, setDataSheet] = useState({ oldImage: '', btnText: 'Data Sheet' });
+    let dataSheetFile = '';
+    const [graph, setGraph] = useState({ oldImage: '', btnText: 'Graph' });
+    let graphFile = '';
+    const eventhandlerIm = (data) => {
+      imageFile = data;
+      // console.log('images file data', data);
+      // console.log('images file', imageFile);
+    };
+    const eventhandlerDaSh = data => {
+      dataSheetFile = data;
+      // console.log('dataSheetFile file', dataSheetFile);
+    };
+    const eventhandlerGr = data => {
+      graphFile=data;
+      // console.log('graphs file', graphFile);
+      // console.log('graph', graph);
+    };
+
     const [{
       formData,
       error,
@@ -338,12 +353,9 @@ export default function DialogWaterP(props){
       setCurrent('');
       setDiameter('');
       // setDescription("");
-      setOldImage('');
-      setOldDataSheet('');
-      setOldGraph('');
-      setFiles([]);
-      setDataSheetFiles([]);
-      setGraphFiles([]);
+      setImage({ ...image, ['oldImage']: ''});
+      setDataSheet({ ...dataSheet, ['oldImage']: ''});
+      setGraph({ ...graph, ['oldImage']: ''});
     }
      
     useEffect(() => {
@@ -357,9 +369,9 @@ export default function DialogWaterP(props){
       setVoltage(waterListObject.voltage);
       setPhase(waterListObject.phase);
       // setDescription(waterListObject.discription);
-      setOldImage(waterListObject.image);
-      setOldDataSheet(waterListObject.data_sheet);
-      setOldGraph(waterListObject.graph);
+      setImage({ ...image, ['oldImage']: waterListObject.image});
+      setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet});
+      setGraph({ ...graph, ['oldImage']: waterListObject.graph});
     },[waterListObject])
     
     useEffect(() => {
@@ -388,20 +400,14 @@ export default function DialogWaterP(props){
     const handleSubmit = (e) => {
       e.preventDefault();
       let dataWaterList = {
-        waterListID, brand, name, outlet, current, diameter, powerKW, /*description,*/
+        waterListID, brand, name, outlet, current, diameter, powerKW, phase, voltage, imageFile, dataSheetFile, graphFile, /*description,*/
       }
-      // console.log(dataWaterList);
+      console.log(dataWaterList);
       if(dataWaterList.waterListID===undefined){
         dataWaterList.waterListID=0;
       }
-      if(files.length!==0){
-        var image = '';
-        let file = files[0];
-        let reader = new FileReader();
-        reader.onloadend = (file) => {
-          image = reader.result;
-          dataWaterList['image'] = image;
-          dataWaterList['serial_no'] = uuidv4();
+      dataWaterList['serial_no'] = uuidv4();
+      // if(files.length!==0){
           axios.post('api/pumpList', dataWaterList)
             .then(res => {
               setOpenD(false);
@@ -413,22 +419,21 @@ export default function DialogWaterP(props){
                 id="notification.titleHere"/>);
               }
             )
-        }
-        reader.readAsDataURL(file); 
-      }else{
-        dataWaterList['image'] = 'oldImage';
-        axios.post('api/pumpList', dataWaterList)
-        .then(res => {
-          setOpenD(false);
-          // console.log('result ', res.data);
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-        }).catch(err =>{
-          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-        )
-      }
+        
+      // }else{
+      //   dataWaterList['image'] = 'oldImage';
+      //   axios.post('api/pumpList', dataWaterList)
+      //   .then(res => {
+      //     setOpenD(false);
+      //     // console.log('result ', res.data);
+      //       NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+      //         id="notification.titleHere" />);
+      //   }).catch(err =>{
+      //     NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+      //       id="notification.titleHere"/>);
+      //     }
+      //   )
+      // }
     }
     return (
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openD}>
@@ -578,13 +583,13 @@ export default function DialogWaterP(props){
                                 </div>
                             </div> */}
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
-                                <CustomDropzone/>
+                                <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
-                              <CustomDropzone/>
+                              <CustomDropzone formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
-                              <CustomDropzone/>
+                              <CustomDropzone formData={graph} onChange={eventhandlerGr.bind(this)}/>
                             </div>
                           </div>
                   </div>

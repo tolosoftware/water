@@ -37,7 +37,8 @@ const thumbsContainer = {
   // end code for dropzone
 export default function CustomDropzone(props) {
 const [files, setFiles] = useState([]);
-const [oldImage, setOldImage] = useState("");
+const oldImage = props?.formData.oldImage;
+const btnText = props?.formData.btnText;
  // dropzone code
     
  const {getRootProps, getInputProps} = useDropzone({
@@ -65,18 +66,54 @@ const [oldImage, setOldImage] = useState("");
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  useEffect(() => {
+  
+    if (props.onChange) {
+      getBase64(files[0])
+      .then(result => {
+        // console.log("File Is", files);
+        props.onChange(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  }, [files]);
+
+  const getBase64 = file => {
+    return new Promise(resolve => {
+      // let fileInfo;
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        // console.log("Called", reader);
+        baseURL = reader.result;
+        // console.log(baseURL);
+        resolve(baseURL);
+      };
+      // console.log(fileInfo);
+    });
+  };
+
   return (
     <div className="dropzone-card">
         <div className="dropzone">
             <div {...getRootProps({className: 'dropzone-file-btn'})}>
                 <input {...getInputProps()} />
-                <p>Upload image</p>
+                <p>Upload {btnText}</p>
             </div>
         </div>
         <div className="dropzone-content" style={thumbsContainer}>
             {thumbs}
             {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-            <span className={`sp_right_padding`}>Cuurent Image </span>
+            <span className={`sp_right_padding`}>Cuurent {btnText} </span>
             <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
             </spam>): ''): ''}
         </div>
