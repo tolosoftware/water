@@ -23,8 +23,12 @@ class CreatePumpListsTable extends Migration
             $table->decimal('ampeier');
             $table->decimal('diameter');
             $table->string('power');
-            $table->string('discription');
-            $table->string('image');
+            $table->string('voltage');
+            $table->enum('phase', ['1Phase', '3Phase'])->default('1Phase');
+            $table->string('discription')->nullable();
+            $table->string('image')->nullable();
+            $table->string('data_sheet')->nullable();
+            $table->string('graph')->nullable();
             $table->timestamps();
         });
     }

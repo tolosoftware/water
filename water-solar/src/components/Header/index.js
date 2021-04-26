@@ -1,11 +1,12 @@
 import React from 'react';
-import {Link, withRouter, NavLink} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+// import {Link, withRouter, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
 import axios from 'axios';
 import {
