@@ -43,25 +43,25 @@ class PumpListController extends Controller
             $photoname = 0;
             $dataSheetName = 0;
             $graphName = 0;
-            $id = $request['waterListID'];
-            if($request->imageFile){
+             
+            if($request['imageFile']){
                 $photoname = time().'1.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
                 \Image::make($request->imageFile)->save(public_path('brand/pumpbrand/pump_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if($request->dataSheetFile){
+            if($request['dataSheetFile']){
                 $dataSheetName = time().'2.' . explode('/', explode(':', substr($request->dataSheetFile, 0, strpos($request->dataSheetFile, ';')))[1])[1];
                 \Image::make($request->dataSheetFile)->save(public_path('brand/pumpbrand/pump_list/data_sheet/').$dataSheetName);
                 $request->merge(['dataSheet' => $dataSheetName]);
             }
-            if($request->graphFile){
+            if($request['graphFile']){
                 $graphName = time().'3.' . explode('/', explode(':', substr($request->graphFile, 0, strpos($request->graphFile, ';')))[1])[1];
                 \Image::make($request->graphFile)->save(public_path('brand/pumpbrand/pump_list/graph/').$graphName);
                 $request->merge(['graph' => $graphName]);
             }
             // return $photoname;
-            if ($id!==0) {
-                $pump_list = Pump_list::findOrFail($id);
+            if (!empty($request['waterListID'])) {
+                $pump_list = Pump_list::findOrFail($request['waterListID']);
                 $pump_list->pump_brand_id =  $request['brand'];
                 $pump_list->model = $request['name'];
                 $pump_list->outlet = $request['outlet'];
@@ -70,15 +70,15 @@ class PumpListController extends Controller
                 $pump_list->power = $request['powerKW'];
                 $pump_list->voltage= $request['voltage'];
                 $pump_list->phase= $request['phase'];
-                if($request->imageFile){
+                if($request['imageFile']){
                     File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
                     $pump_list->image = $photoname;
                 }
-                if($request->dataSheetFile){
+                if($request['dataSheetFile']){
                     File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->dataSheetFile);
                     $pump_list->data_sheet = $dataSheetName;
                 }
-                if($request->graphFile){
+                if($request['graphFile']){
                     File::delete('brand/pumpbrand/pump_list/graph/'.$pump_list->graphFile);
                     $pump_list->graph = $graphName;
                 }
