@@ -24,8 +24,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import * as type from 'yup';
-import { checkValidation, runValidation } from './utils';
+import {useForm} from 'react-hook-form';
 
 // import WaterPumpDeviceForm from './WaterPumpDeviceForm';
 // end import for dialog 
@@ -199,46 +198,9 @@ const styles = (theme) => ({
       label: '380V',
     },
   ];
-  // validation code
-const initialState = {
-  formData: {
-    brand: '',
-    name: '',
-    outlet: '',
-    current: '',
-    diameter: '',
-    // powerKW: '',
-    // description: '',
-  },
-  error: {},
-  touched: {},
-  isValid: false
-};
 
-const setState = 'SET_STATE';
-
-function reducer(state, action) {
-  switch(action.type) {
-    case setState:
-      return {
-        ...state,
-        ...action.payload
-      };
-    default:
-      return state;
-  }
-}
-const schema = type.object().shape({
-  brand: type.string().required("Required"),
-  name: type.string().required("Required"),
-  outlet: type.number().required("Required"), 
-  current: type.number().required("Required"), 
-  diameter: type.number().required("Required"), 
-  // powerKW: type.number().required("Required"),
-  // description: type.string().required("Required"),
-});
-// end validation code
 export default function DialogWaterP(props){
+  const {register, handleSubmit, errors }=useForm(); // initialize the hook
     // start code of dialog modal for water pump
     const {openD, setOpenD} = props;
     // const handleClickOpen = () => {
@@ -253,15 +215,10 @@ export default function DialogWaterP(props){
     const waterPumpBrands=props.waterPumpBrands;
     const {waterListObject, setWaterListObject} = props;
     
-    const [name, setName] = useState("");
     const [powerKW, setPowerKW] = useState(15);
-    const [voltage, setVoltage] = useState("");
+    const [voltage, setVoltage] = useState(110);
     const [phase, setPhase] = useState("1Phase");
-    const [outlet, setOutlet] = useState("");
-    const [current, setCurrent] = useState("");
-    const [diameter, setDiameter] = useState("");
     // const [description, setDescription] = useState("");
-    const [waterListID, setWaterListID] = useState('0'); 
     const [image, setImage] = useState({ oldImage: '', btnText: 'Image' });
     let imageFile = '';
     const [dataSheet, setDataSheet] = useState({ oldImage: '', btnText: 'Data Sheet' });
@@ -283,75 +240,11 @@ export default function DialogWaterP(props){
       // console.log('graph', graph);
     };
 
-    const [{
-      formData,
-      error,
-      touched,
-      isValid
-    }, dispatch] = React.useReducer(reducer, initialState);
-   
-
-    const handlePower = async (event, value) => {
-      setPowerKW(value);
-      // let name = 'powerKW';
-      // const schemaErrors = await runValidation(schema, {
-      //   ...formData, [name]: value
-      // });
-      // dispatch({
-      //   type: setState,
-      //   payload: {
-      //     error: schemaErrors,
-      //     formData: { ...formData, [name]: value },
-      //     touched: { ...touched, [name]: true },
-      //     isValid: checkValidation(schemaErrors)
-      //   }
-      // });
-    };
-    const handleChangeField = async ({ target: { name, value } }) => {
-      if(name==='brand'){
-        setBrand(value)
-      }
-      else if(name==='name'){
-        setName(value)
-      }
-      // else if(name==='description'){
-      //   setDescription(value)
-      // }
-      else if(name==='outlet'){
-        setOutlet(value)
-      }
-      else if(name==='current'){
-        setCurrent(value)
-      }
-      else if(name==='diameter'){
-        setDiameter(value)
-      }
-      
-      const schemaErrors = await runValidation(schema, {
-        ...formData, [name]: value
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, [name]: value },
-          touched: { ...touched, [name]: true },
-          isValid: checkValidation(schemaErrors)
-        }
-      });
-    };
-
     const emptyForm = () =>{
-      setWaterListID('0');
       setWaterListObject([]);
-      setBrand('');
-      setName('');
       setPowerKW(15);
       setVoltage('');
       setPhase('1Phase');
-      setOutlet('');
-      setCurrent('');
-      setDiameter('');
       // setDescription("");
       setImage({ ...image, ['oldImage']: ''});
       setDataSheet({ ...dataSheet, ['oldImage']: ''});
@@ -359,85 +252,52 @@ export default function DialogWaterP(props){
     }
      
     useEffect(() => {
-      setWaterListID(waterListObject.id);
-      setBrand(waterListObject.pump_brand_id);
-      setName(waterListObject.model);
-      setOutlet(waterListObject.outlet);
-      setCurrent(waterListObject.ampeier);
-      setDiameter(waterListObject.diameter);
-      setPowerKW(waterListObject.power);
-      setVoltage(waterListObject.voltage);
-      setPhase(waterListObject.phase);
+      setPowerKW(waterListObject.power?waterListObject.power:15);
+      setVoltage(waterListObject.voltage?waterListObject.voltage:110);
+      setPhase(waterListObject.phase?waterListObject.phase:'1Phase');
       // setDescription(waterListObject.discription);
       setImage({ ...image, ['oldImage']: waterListObject.image});
-      setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet});
-      setGraph({ ...graph, ['oldImage']: waterListObject.graph});
+      setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet?'data_sheet/'+waterListObject.data_sheet: ''});
+      setGraph({ ...graph, ['oldImage']: waterListObject.graph?'graph/'+waterListObject.graph: ''});
     },[waterListObject])
     
-    useEffect(() => {
-      (waterListObject.id === undefined)? handleAllField(false): handleAllField(true);
-    },[openD])
+     
     
     
-    const handleAllField = async(valid) =>{
-      let f1 = 'brand', f2 = 'name', f3 = 'outlet', f4='current', f5='diameter' /*, f6='description'*/;
-      const schemaErrors = await runValidation(schema, {
-        ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter /*, [f6]: description */
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, [f1]: brand, [f2]: name, [f3]: outlet, [f4]: current, [f5]: diameter /*, [f6]: description*/ },
-          touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f4]: false, [f5]: false /*, [f6]: false*/ },
-          isValid: valid
-        }
-      });
-    }
+     
   
     const classes = useStyles();
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      let dataWaterList = {
-        waterListID, brand, name, outlet, current, diameter, powerKW, phase, voltage, imageFile, dataSheetFile, graphFile, /*description,*/
-      }
-      console.log(dataWaterList);
-      if(dataWaterList.waterListID===undefined){
-        dataWaterList.waterListID=0;
-      }
-      dataWaterList['serial_no'] = uuidv4();
-      // if(files.length!==0){
-          axios.post('api/pumpList', dataWaterList)
-            .then(res => {
-              setOpenD(false);
-              // console.log('result ', res.data);
-                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                  id="notification.titleHere" />);
-            }).catch(err =>{
-              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-                id="notification.titleHere"/>);
-              }
-            )
-        
-      // }else{
-      //   dataWaterList['image'] = 'oldImage';
-      //   axios.post('api/pumpList', dataWaterList)
-      //   .then(res => {
-      //     setOpenD(false);
-      //     // console.log('result ', res.data);
-      //       NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-      //         id="notification.titleHere" />);
-      //   }).catch(err =>{
-      //     NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-      //       id="notification.titleHere"/>);
-      //     }
-      //   )
+    const onSubmit = (data) => {
+      data['powerKW'] = powerKW;
+      data['phase'] = phase;
+      data['voltage'] = voltage;
+      data['imageFile'] = imageFile;
+      data['dataSheetFile'] = dataSheetFile;
+      data['graphFile'] = graphFile;
+      // let dataWaterList = {
+      //   waterListID, brand, name, outlet, current, diameter, powerKW, phase, voltage, imageFile, dataSheetFile, graphFile, /*description,*/
       // }
+      // if(dataWaterList.waterListID===undefined){
+        //   dataWaterList.waterListID=0;
+        // }
+      data['serial_no'] = uuidv4();
+      console.log(data);
+      axios.post('api/pumpList', data)
+        .then(res => {
+          // setOpenD(false);
+          console.log('result ', res.data);
+            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+              id="notification.titleHere" />);
+        }).catch(err =>{
+          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+            id="notification.titleHere"/>);
+          }
+        );
     }
     return (
         <Dialog onClose={handleClose}  aria-labelledby="customized-dialog-title" open={openD}>
-            <form autoComplete="off" onSubmit={handleSubmit}>
+            <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleClose}>
               Add Water Pump Device
             </DialogTitle>
@@ -448,6 +308,7 @@ export default function DialogWaterP(props){
                     
                         <div className="row">
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
+                            <TextField id="id" type='hidden' style={{width: '0%'}} name="waterListID" defaultValue={(waterListObject?.id) ? waterListObject?.id : 0} inputRef={register}/>
                                 <TextField size="small"
                                     id="outlined-read-only-input"
                                     label="ID"
@@ -461,15 +322,19 @@ export default function DialogWaterP(props){
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-outlined-label"
-                                error={(touched && touched.brand) && (error && error.brand) ? true : false}
-                                
+                                error={errors.brand && true}
                                 >Brand</InputLabel>
-                                <Select name="brand"
+                                <Select
+                                name="brand"
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
-                                value={brand}
-                                onChange={(e) => handleChangeField(e)}
+                                defaultValue={waterListObject?.pump_brand_id ? waterListObject?.pump_brand_id : brand}
+                                inputRef={register({required: true})}
+                                error={errors.brand && true}
+                                // value={waterListObject?.pump_brand_id ? waterListObject?.pump_brand_id : brand}
+                                onChange={(e) => setBrand(e.target.value)}
                                 label="Brand"
+                                
                                 >
                                 <MenuItem value="">
                                     <em>None</em>
@@ -479,13 +344,12 @@ export default function DialogWaterP(props){
                                   )}
                               
                                 </Select>
-                                <span className={(touched && touched.brand) && (error && error.brand) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
+                                <span className={errors.brand ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                               </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
-                                <TextField id="outlined-basic1" size="small" name="name" className="fullWidthInput" label="Name/Model" value={name} onChange={(e) => handleChangeField(e)} variant="outlined"
-                                error={(touched && touched.name) && (error && error.name) ? true : false}
-                                helperText={(touched && touched.name) && (error && error.name) ? '*required' : ''}
+                                <TextField id="outlined-basic1" size="small" variant="outlined" name="name" className="fullWidthInput" label="Name/Model" defaultValue={waterListObject?.model} inputRef={register({required: true})} 
+                                error={errors.name && true} helperText={errors.name ? '*required' : ''}
                                 />
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
@@ -498,9 +362,8 @@ export default function DialogWaterP(props){
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  value={outlet} onChange={(e) => handleChangeField(e)}
-                                  error={(touched && touched.outlet) && (error && error.outlet) ? true : false}
-                                    helperText={(touched && touched.outlet) && (error && error.outlet) ? '*required & must be number' : ''}/>
+                                  defaultValue={waterListObject?.outlet} inputRef={register({required: true})} 
+                                error={errors.outlet && true} helperText={errors.outlet ? '*required' : ''}/>
                               </FormControl>
                                 
                             </div>
@@ -514,9 +377,8 @@ export default function DialogWaterP(props){
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    value={current} onChange={(e) => handleChangeField(e)}
-                                    error={(touched && touched.current) && (error && error.current) ? true : false}
-                                    helperText={(touched && touched.current) && (error && error.current) ? '*required & must be number' : ''}/>
+                                    defaultValue={waterListObject?.ampeier} inputRef={register({required: true})} 
+                                    error={errors.current && true} helperText={errors.current ? '*required' : ''}/>
                                 </FormControl>
                                 
                             </div>
@@ -530,9 +392,8 @@ export default function DialogWaterP(props){
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    value={diameter} onChange={(e) => handleChangeField(e)}
-                                    error={(touched && touched.diameter) && (error && error.diameter) ? true : false}
-                                    helperText={(touched && touched.diameter) && (error && error.diameter) ? '*required & must be number' : ''}
+                                    defaultValue={waterListObject?.diameter} inputRef={register({required: true})} 
+                                    error={errors.diameter && true} helperText={errors.diameter ? '*required' : ''}
                                     />
                                 </FormControl>
                                 
@@ -541,7 +402,7 @@ export default function DialogWaterP(props){
                                 <Typography id="discrete-slider-small-steps" gutterBottom >
                                 Power to KW 
                                 </Typography>
-                                <Slider name="powerKW" onChange={(event, value) => handlePower(event, value)}
+                                <Slider name="powerKW" onChange={(event, value) => setPowerKW(value)}
                                     defaultValue={(powerKW) ? powerKW : 15}
                                     getAriaValueText={valuetext}
                                     aria-labelledby="discrete-slider-small-steps"
@@ -556,8 +417,8 @@ export default function DialogWaterP(props){
                                 <Typography id="discrete-slider-small-steps" gutterBottom >
                                 Voltage to V 
                                 </Typography>
-                                <Slider name="voltage" onChange={(event, value) => setVoltage(event.target.value)}
-                                    defaultValue={(voltage) ? voltage : 15}
+                                <Slider name="voltage" onChange={(event, value) => setVoltage(value)}
+                                    defaultValue={(voltage) ? voltage : 110}
                                     getAriaValueText={valuetext}
                                     aria-labelledby="discrete-slider-small-steps"
                                     step={null}
@@ -597,8 +458,7 @@ export default function DialogWaterP(props){
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg"
-            disabled={!isValid} >Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" >Submit</Button>
             </DialogActions>
             </form>
         </Dialog>
