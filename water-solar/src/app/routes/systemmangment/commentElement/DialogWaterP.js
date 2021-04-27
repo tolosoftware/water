@@ -211,7 +211,7 @@ export default function DialogWaterP(props){
       setOpenD(false);
     };
     // end code of dialog modal for water pump
-    const [brand, setBrand] = useState("");
+    const [brand, setBrand] = useState('');
     const waterPumpBrands=props.waterPumpBrands;
     const {waterListObject, setWaterListObject} = props;
     
@@ -242,7 +242,7 @@ export default function DialogWaterP(props){
 
     const emptyForm = () =>{
       setWaterListObject([]);
-      setPowerKW(15);
+      setPowerKW(15); 
       setVoltage('');
       setPhase('1Phase');
       // setDescription("");
@@ -253,13 +253,29 @@ export default function DialogWaterP(props){
      
     useEffect(() => {
       setPowerKW(waterListObject.power?waterListObject.power:15);
+      // let brandID = waterPumpBrands[0]['id'];
+      // console.log('waterPumpBrands', waterPumpBrands);
+      
+      if(waterListObject?.pump_brand_id){
+        setBrand(waterListObject.pump_brand_id);
+      }else{
+        waterPumpBrands.map((wbrand, index) =>  { 
+          if(index===0){ setBrand(wbrand.id);
+            // console.log('brand indide', brand);
+            // console.log('wbrand.id', wbrand.id);
+          }
+          // console.log('index', index+1);
+        });
+      }
+      // setBrand(waterListObject.pump_brand_id?waterListObject.pump_brand_id :1);
+      console.log('brand', brand);
       setVoltage(waterListObject.voltage?waterListObject.voltage:110);
       setPhase(waterListObject.phase?waterListObject.phase:'1Phase');
       // setDescription(waterListObject.discription);
       setImage({ ...image, ['oldImage']: waterListObject.image});
       setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet?'data_sheet/'+waterListObject.data_sheet: ''});
       setGraph({ ...graph, ['oldImage']: waterListObject.graph?'graph/'+waterListObject.graph: ''});
-    },[waterListObject])
+    },[waterListObject, props.openD])
     
      
     
@@ -269,6 +285,7 @@ export default function DialogWaterP(props){
     const classes = useStyles();
 
     const onSubmit = (data) => {
+      data['brand'] = brand;
       data['powerKW'] = powerKW;
       data['phase'] = phase;
       data['voltage'] = voltage;
@@ -285,7 +302,7 @@ export default function DialogWaterP(props){
       console.log(data);
       axios.post('api/pumpList', data)
         .then(res => {
-          // setOpenD(false);
+          setOpenD(false);
           console.log('result ', res.data);
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
@@ -308,7 +325,7 @@ export default function DialogWaterP(props){
                     
                         <div className="row">
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
-                            <TextField id="id" type='hidden' style={{width: '0%'}} name="waterListID" defaultValue={(waterListObject?.id) ? waterListObject?.id : 0} inputRef={register}/>
+                            <TextField id="id" type='hidden' style={{width: '0%'}} name="waterListID" defaultValue={(waterListObject?.id) ? waterListObject?.id : ''} inputRef={register}/>
                                 <TextField size="small"
                                     id="outlined-read-only-input"
                                     label="ID"
@@ -322,29 +339,23 @@ export default function DialogWaterP(props){
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-outlined-label"
-                                error={errors.brand && true}
                                 >Brand</InputLabel>
                                 <Select
                                 name="brand"
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
-                                defaultValue={waterListObject?.pump_brand_id ? waterListObject?.pump_brand_id : brand}
-                                inputRef={register({required: true})}
-                                error={errors.brand && true}
-                                // value={waterListObject?.pump_brand_id ? waterListObject?.pump_brand_id : brand}
+                                value={brand}
                                 onChange={(e) => setBrand(e.target.value)}
                                 label="Brand"
-                                
                                 >
                                 <MenuItem value="">
-                                    <em>None</em>
+                                     
                                 </MenuItem>
                                 {waterPumpBrands.map(wbrand => 
                                   <MenuItem value={wbrand.id}>{wbrand.name}</MenuItem>
                                   )}
-                              
                                 </Select>
-                                <span className={errors.brand ? 'displayBlock errorText' : 'displayNone'}>*required</span>
+                                {/* <span className={errors.brand ? 'displayBlock errorText' : 'displayNone'}>*required</span> */}
                               </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
@@ -354,7 +365,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                               <FormControl fullWidth >  
-                                <TextField size="small" id="outlined-basic2" label="Outlet" variant="outlined"
+                                <TextField type='number' size="small" id="outlined-basic2" label="Outlet" variant="outlined"
                                   name="outlet"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">inch</InputAdornment>,
@@ -369,7 +380,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
-                                  <TextField size="small" id="outlined-basic3" label="Current" variant="outlined"
+                                  <TextField type='number' size="small" id="outlined-basic3" label="Current" variant="outlined"
                                     name="current"  
                                     InputProps={{
                                       endAdornment: <InputAdornment position="end">A</InputAdornment>,
@@ -384,7 +395,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
-                                  <TextField size="small" id="outlined-basic4" label="Diameter" variant="outlined"
+                                  <TextField type='number' size="small" id="outlined-basic4" label="Diameter" variant="outlined"
                                     name="diameter"  
                                     InputProps={{
                                       endAdornment: <InputAdornment position="end">inch</InputAdornment>,
