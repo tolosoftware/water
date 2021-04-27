@@ -224,12 +224,8 @@ export default function CustomizedDialogs(props) {
         </DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)}>      
          <DialogContent dividers>
-
           <div className="row"> 
              <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12">
-            
-        
-
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   <TextField id="id" type='hidden' name="id" defaultValue={(userDataOject?.id) ? userDataOject?.id : 0} inputRef={register}/>
@@ -238,13 +234,9 @@ export default function CustomizedDialogs(props) {
                   />
               </div>
 
-        
                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   <TextField id="companyname" name="companyname" className="form-control" defaultValue={userDataOject?.companyname}  size="small" label="Company Name" variant="outlined" inputRef={register({required: true})} error={errors.companyname && true} helperText={errors.companyname && '*required'}/> 
                 </div>  
-
-                
-            
               </div>
 
 

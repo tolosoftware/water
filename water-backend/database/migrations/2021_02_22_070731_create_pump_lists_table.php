@@ -19,9 +19,9 @@ class CreatePumpListsTable extends Migration
             $table->unsignedBigInteger('pump_brand_id');
             $table->foreign('pump_brand_id')->references('id')->on('pump_brands')->onDelete('cascade');
             $table->string('model');
-            $table->decimal('outlet');
-            $table->decimal('ampeier');
-            $table->decimal('diameter');
+            $table->string('outlet');
+            $table->string('ampeier');
+            $table->string('diameter');
             $table->string('power');
             $table->string('voltage');
             $table->enum('phase', ['1Phase', '3Phase'])->default('1Phase');
