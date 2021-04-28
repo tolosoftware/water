@@ -1,3 +1,38 @@
+@media (min-width: 1200px)
+{
+    .solarCDropzone{
+        flex: 0 0 24.66667% !important;
+        max-width: 24.66667% !important;
+    }
+    .col1-m1 {
+        flex: 0 0 11.66667% !important;
+        max-width: 11.66667% !important;
+    }
+}
+.solarCDropzone .dropzone{
+    display: inline-flex;
+    margin-right: 5px !important;
+    margin-bottom: 10px !important;
+}
+.solarCDropzone .dropzone-content{
+    display: inline-flex !important;
+    flex-flow: wrap-reverse !important;
+    margin-top: 0px !important;
+    float: right !important;
+}
+
+.solarCDropzone .dropzone-content>div{
+    margin-bottom: 0px !important;
+    margin-right: 0px !important;
+    width: 125px !important;
+    height: 45px !important;
+}
+
+.solarCDropzone .dropzone-content>div img{
+    width: 100% !important;
+    height: inherit !important;
+}
+
 .wp-brand{
     margin-top: 10px;
 }
@@ -276,10 +311,10 @@ padding: 0px 15px 10px;
     left: 10% !important;
 }
 .powerKW-SS1 span[data-index="0"].MuiSlider-markLabel {
-    left: 7% !important;
+    left: 10% !important;
 }
-.powerKW-SS1 span[data-index="12"].MuiSlider-markLabel {
-    left: 95% !important;
+.powerKW-SS1 span[data-index="22"].MuiSlider-markLabel {
+    left: 93% !important;
 }
 .powerKW-PR span[data-index="22"].MuiSlider-markLabel {
     left: 91% !important;

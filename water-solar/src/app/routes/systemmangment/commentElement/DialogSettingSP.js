@@ -12,7 +12,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-// import {useDropzone} from "react-dropzone";
+import {useDropzone} from "react-dropzone";
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
@@ -134,7 +134,7 @@ function valuetext(value) {
     },
     {
       value: 15,
-      label: '15KW',
+      // label: '15KW',
     },
     {
       value: 18.5,
@@ -146,40 +146,80 @@ function valuetext(value) {
     },
     {
       value: 30,
-      label: '30KW',
+      // label: '30KW',
+    },
+    {
+      value: 37,
+      // label: '37KW',
+    },
+    {
+      value: 45,
+      // label: '45KW',
+    },
+    {
+      value: 52,
+      // label: '52KW',
+    },
+    {
+      value: 55,
+      // label: '55KW',
+    },
+    {
+      value: 60,
+      // label: '60KW',
+    },
+    {
+      value: 67,
+      // label: '67KW',
+    },
+    {
+      value: 75,
+      // label: '75KW',
+    },
+    {
+      value: 81,
+      // label: '81KW',
+    },
+    {
+      value: 92,
+      // label: '92KW',
+    },
+    {
+      value: 110,
+      label: '110KW',
     },
   ];
 // start code for dropzone
-// const thumbsContainer = {
-//     display: 'flex',
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     marginTop: 16
-//   };
+const thumbsContainer = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 16
+  };
   
-//   const thumb = {
-//     display: 'inline-flex',
-//     borderRadius: 2,
-//     border: '1px solid #eaeaea',
-//     marginBottom: 8,
-//     marginRight: 8,
-//     width: 100,
-//     height: 100,
-//     padding: 4,
-//     boxSizing: 'border-box'
-//   };
+  const thumb = {
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    width: 100,
+    height: 100,
+    padding: 4,
+    boxSizing: 'border-box'
+  };
   
-//   const thumbInner = {
-//     display: 'flex',
-//     minWidth: 0,
-//     overflow: 'hidden'
-//   };
+  const thumbInner = {
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
+  };
   
-//   const img = {
-//     display: 'block',
-//     width: 'auto',
-//     height: '100%'
-//   };
+  const img = {
+    display: 'block',
+    width: 'auto',
+    height: '100%'
+  };
   // end code for dropzone
 export default function DialogSettingWD(props){
     // start code of dialog modal for Solar Panal 
@@ -190,31 +230,31 @@ export default function DialogSettingWD(props){
     // end code of dialog modal for Solar Panal 
 
     // dropzone code
-  // const [files, setFiles] = useState([]);
-  // const {getRootProps, getInputProps} = useDropzone({
-  //   accept: 'image/*',
-  //   onDrop: acceptedFiles => {
-  //     setFiles(acceptedFiles.map(file => Object.assign(file, {
-  //       preview: URL.createObjectURL(file)
-  //     })));
-  //   }
-  // });
+  const [files, setFiles] = useState([]);
+  const {getRootProps, getInputProps} = useDropzone({
+    accept: 'image/*',
+    onDrop: acceptedFiles => {
+      setFiles(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
+    }
+  });
 
-  // const thumbs = files.map(file => (
-  //   <div style={thumb} key={file.name}>
-  //     <div style={thumbInner}>
-  //       <img alt={file.name}
-  //            src={file.preview}
-  //            style={img}
-  //       />
-  //     </div>
-  //   </div>
-  // ));
+  const thumbs = files.map(file => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img alt={file.name}
+             src={file.preview}
+             style={img}
+        />
+      </div>
+    </div>
+  ));
 
-  // useEffect(() => () => {
-  //   // Make sure to revoke the data uris to avoid memory leaks
-  //   files.forEach(file => URL.revokeObjectURL(file.preview));
-  // }, [files]);
+  useEffect(() => () => {
+    // Make sure to revoke the data uris to avoid memory leaks
+    files.forEach(file => URL.revokeObjectURL(file.preview));
+  }, [files]);
 // end dropzone code
   // const classes = useStyles();
    
@@ -341,7 +381,7 @@ export default function DialogSettingWD(props){
                     { inputFields.map(inputField => (
                     <div key={id_field = inputField.id}>
                       <div className="row insideSPDS paddingBottom">
-                          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 insideFormPaddingWPS powerKW-SS1 inputAdornmentWrap">
+                          <div className="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 insideFormPaddingWPS powerKW-SS1 inputAdornmentWrap">
                             <Typography id="discrete-slider-small-steps" gutterBottom >
                             Power to KW 
                             </Typography>
@@ -352,7 +392,7 @@ export default function DialogSettingWD(props){
                                 step={null}
                                 marks={marksKW}
                                 min={0.75}
-                                max={30}
+                                max={110}
                                 valueLabelDisplay="auto"
                             />
                             {/* <Typography id="range-slider" gutterBottom>
@@ -376,10 +416,10 @@ export default function DialogSettingWD(props){
                                   <label class="btn btn-outline-primary" for={"btnradio2"+id_field}>Ground Structure</label>
                               </div>
                           </div>
-                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap">
+                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap col1-m1">
                               <TextField required size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number1"
-                                  label="Solar Quantity"
+                                  label="Solar Qty"
                                   type="number"
                                   InputLabelProps={{
                                       shrink: true,
@@ -387,10 +427,10 @@ export default function DialogSettingWD(props){
                                   variant="outlined"
                               />
                           </div>
-                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS ">
+                          <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS col1-m1">
                               <TextField required size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number"
-                                  label="Stand Quantity"
+                                  label="Stand Qty"
                                   type="number"
                                   InputLabelProps={{
                                       shrink: true,
@@ -398,19 +438,21 @@ export default function DialogSettingWD(props){
                                   variant="outlined"
                               />
                           </div>
-                          {/* <div className="col-xl-3 col-lg-3 col-md-6 col-12 accessory_file waterPumFile">
+                          <div className="col-xl-3 col-lg-3 col-md-6 col-12 iaccessory_file waterPumFle solarCDropzone">
                                   <div className="dropzone-card">
                                       <div className="dropzone">
                                           <div {...getRootProps({className: 'dropzone-file-btn'})}>
                                               <input {...getInputProps()} />
-                                              <p>Upload image</p>
+                                              <IconButton size="small" color="primary" aria-label="remove alarm">
+                                                <AddCircleOutlineIcon />
+                                              </IconButton>
                                           </div>
                                       </div>
                                       <div className="dropzone-content" style={thumbsContainer}>
                                           {thumbs}
                                       </div>
                                   </div>
-                          </div> */}
+                          </div>
 
                       </div>
                   </div>

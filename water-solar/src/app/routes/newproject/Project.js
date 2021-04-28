@@ -920,8 +920,8 @@ const handleRemoveFields = () => {
              <div className="row">
             <div className="col-md-6">
             <BootstrapTooltip title="Enter your hourly water requirement in average method.">
-              <TextField id="outlined-basic" label="Discharge" variant="outlined"
-                placeholder="Hourly Discharge"
+              <TextField id="outlined-basic" label="Water Demand" variant="outlined"
+                placeholder="Water Demand"
                 margin="normal"
                 name="discharge" 
                 size="small"                                      
@@ -945,8 +945,8 @@ const handleRemoveFields = () => {
 
 
             <div className="col-md-6">
-              <TextField id="outlined-basic" label="Dirt loss" variant="outlined" size="small"
-                placeholder="Dirt loss !"
+              <TextField id="outlined-basic" label="Pipe Friction loss" variant="outlined" size="small"
+                placeholder="Pipe Friction loss!"
                 margin="normal"
                 name="dist_loss" 
                 type="number"
