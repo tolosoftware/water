@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 use DB;
 class ProjectsController extends Controller
 {
-    public function getEnergy($city_id, $solar_power, $avaDischarge){
+    public function getEnergy($city_id, $solar_power, $avaDischarge, $dirtloss){
         $eachMonthFinalTotalEngery = array();
         $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0; $t6pm=0;
         $january=0;$february=0;$march=0;$april=0;$may=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0;$january=0; 
@@ -84,7 +84,7 @@ class ProjectsController extends Controller
                 $totalMonthlyOutput =0;
                 foreach ($eachMonthlyHrOutputP as $eaMoHrOutputP)
                 {
-                    $totalMonthlyOutput += $eaMoHrOutputP['hrOutput'];
+                    $totalMonthlyOutput += (($eaMoHrOutputP['hrOutput'])-(($eaMoHrOutputP['hrOutput']*$dirtloss)/100));
                 }
                 array_push($monthlyHrOutputData, round($totalMonthlyOutput, 2));
 
@@ -122,7 +122,6 @@ class ProjectsController extends Controller
                 ['name'=>'Nov', 'energy'=>round($solar_power*($eachMonthFinalTotalEngery[10]/1030),2)],
                 ['name'=>'Dec', 'energy'=>round($solar_power*($eachMonthFinalTotalEngery[11]/1030),2)],  
             ];
-            
             $maxValue = 0;
             foreach ($hrEnergy as $hrEn)
             {
@@ -199,7 +198,7 @@ class ProjectsController extends Controller
             $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])->get()->first();
             // return  $solar;
             if($solar && $request['citylocation'] != null){
-                $energyData = $this->getEnergy($request['citylocation'], $solar['solar_list']['power'], $avaDischarge);
+                $energyData = $this->getEnergy($request['citylocation'], $solar['solar_list']['power'], $avaDischarge, $request['dirtloss']);
                 $hrOutputP = $energyData['hrOutputP'];  $monthlyHrOutput = $energyData['monthlyHrOutput']; $hrEnergy = $energyData['hrEnergy']; $energy = $energyData['energyForEachMonth'];
             }
         }
