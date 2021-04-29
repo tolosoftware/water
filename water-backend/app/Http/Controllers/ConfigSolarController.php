@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Config_solar;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\File;
 
 class ConfigSolarController extends Controller
 {
@@ -40,13 +41,26 @@ class ConfigSolarController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
-            Config_solar::where('solar_list_id', $data[0]['solar_list_id'])->delete();
+            $solarConfigs = Config_solar::where('solar_list_id', $data[0]['solar_list_id'])->get();
+            foreach($solarConfigs as $solarConfig){
+                if($solarConfig->image){
+                    File::delete('brand/solar/solar_list/config/'.$solarConfig->image);
+                }
+                $solarConfig->delete();
+            }
                 foreach($data as $value){
+                    $photoname = 0;
+                    if($value['imageRaw']){
+                        $photoname = time().'sc.' .rand(1,1000). explode('/', explode(':', substr($value['imageRaw'], 0, strpos($value['imageRaw'], ';')))[1])[1];
+                        \Image::make($value['imageRaw'])->save(public_path('brand/solar/solar_list/config/').$photoname);
+                        $value->merge(['photo' => $photoname]);
+                    }
                     $config_solar = Config_solar::create([
                         'power' => $value['power'],
                         'base' => $value['base'],
                         'solar_quantity' => $value['quantity'],
                         'panal_quantity' => $value['panal'],
+                        'image' => $photoname,
                         'solar_list_id' => $value['solar_list_id'],
                     ]);     
                 }
