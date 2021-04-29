@@ -19,6 +19,7 @@ class CreateConfigSolarsTable extends Migration
             $table->enum('base', ['Manual Tracker', 'Ground Structure'])->nullable();
             $table->Integer('solar_quantity')->nullable();
             $table->Integer('panal_quantity')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('solar_list_id')->nullable();
             $table->foreign('solar_list_id')->references('id')->on('solar_lists')->onDelete('cascade');
             $table->timestamps();

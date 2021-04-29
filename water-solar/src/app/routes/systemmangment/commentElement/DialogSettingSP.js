@@ -10,16 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
 import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
+import DropzoneSC from './DropzoneSC';
 // import WaterPumpDeviceSettingForm from './WaterPumpDeviceSettingForm';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
@@ -190,38 +189,6 @@ function valuetext(value) {
       label: '110KW',
     },
   ];
-// start code for dropzone
-const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
-  };
-  
-  const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-  };
-  
-  const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-  };
-  
-  const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-  };
-  // end code for dropzone
 export default function DialogSettingWD(props){
     // start code of dialog modal for Solar Panal 
     const {openSPD, setOpenSPD} = props;
@@ -229,40 +196,13 @@ export default function DialogSettingWD(props){
       setOpenSPD(false);
     };
     // end code of dialog modal for Solar Panal 
-
-    // dropzone code
-  const [files, setFiles] = useState([]);
-  const {getRootProps, getInputProps} = useDropzone({
-    accept: 'image/*',
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-    }
-  });
-
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img alt={file.name}
-             src={file.preview}
-             style={img}
-        />
-      </div>
-    </div>
-  ));
-
-  useEffect(() => () => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
-// end dropzone code
   // const classes = useStyles();
    
   const solarList_Id = props.solarListId;
   const solarListModel = props.solarListModel;
+  let imageFile = '';
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: solarList_Id},
+    { id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: solarList_Id},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -299,7 +239,7 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, solar_list_id: solarList_Id};
+    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, image: '', imageRaw: '', solar_list_id: solarList_Id};
     setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {
@@ -319,7 +259,19 @@ export default function DialogSettingWD(props){
      
     // console.log("solarList Id outside if", props.solarListId);  
   },[props.solarListId])
-  
+  const eventhandlerSoCImage = data => {
+    imageFile = data[0];
+    const newInputFields = inputFields.map(i => {
+      if(i.id === data[1]) {
+        i['imageRaw'] = imageFile;
+      }
+      return i;
+    })
+    
+    setInputFields(newInputFields);
+    // console.log('data config file', data);
+    // console.log('newInputFields', newInputFields);
+  };
   const getSolarListSettings = async(id) => {
     // console.log("id: ", id);
     if(id!==0 && id!==""){
@@ -330,12 +282,13 @@ export default function DialogSettingWD(props){
         // console.log("the result: "+ mydata + "length"+ mydata.length);
         const mainArray = []
         if(mydata.length !== 0){
-          mydata.forEach(elem => {console.log(elem); 
-            mainArray.push({ id: elem.id, power: elem.power, base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, solar_list_id: elem.solar_list_id});
+          mydata.forEach(elem => {
+            // console.log(elem); 
+            mainArray.push({ id: elem.id, power: elem.power, base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, image: elem.image, imageRaw: '', solar_list_id: elem.solar_list_id});
           });
           // console.log('mainArray is: ',mainArray);
         }else{
-          mainArray.push({ id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', solar_list_id: id});
+          mainArray.push({ id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: id});
         }
         setInputFields(mainArray);
       }).catch(err => {
@@ -419,7 +372,7 @@ export default function DialogSettingWD(props){
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap col1-m1">
                               <TextField required size="small" name="quantity" value={inputField.quantity} onChange={event => handleChangeInput(inputField.id, event)}
-                                  id="outlined-number1"
+                                  id={`outlined-number1`+inputField.id}
                                   label="Solar Qty"
                                   type="number"
                                   InputLabelProps={{
@@ -430,7 +383,7 @@ export default function DialogSettingWD(props){
                           </div>
                           <div className="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 insideFormPaddingWPS col1-m1">
                               <TextField required size="small" name="panal" value={inputField.panal} onChange={event => handleChangeInput(inputField.id, event)}
-                                  id="outlined-number"
+                                  id={"outlined-number"+inputField.id}
                                   label="Stand Qty"
                                   type="number"
                                   InputLabelProps={{
@@ -440,19 +393,7 @@ export default function DialogSettingWD(props){
                               />
                           </div>
                           <div className="col-xl-3 col-lg-3 col-md-6 col-12 iaccessory_file waterPumFle solarCDropzone">
-                                  <div className="dropzone-card">
-                                      <div className="dropzone">
-                                          <div {...getRootProps({className: 'dropzone-file-btn'})}>
-                                              <input {...getInputProps()} />
-                                              <IconButton size="small" color="primary" aria-label="remove alarm">
-                                                <AddCircleOutlineIcon />
-                                              </IconButton>
-                                          </div>
-                                      </div>
-                                      <div className="dropzone-content" style={thumbsContainer}>
-                                          {thumbs}
-                                      </div>
-                                  </div>
+                                  <DropzoneSC onChange={eventhandlerSoCImage.bind(this)} image={inputField.image} fieldId={inputField.id}/>
                           </div>
 
                       </div>

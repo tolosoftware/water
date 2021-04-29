@@ -945,8 +945,8 @@ const handleRemoveFields = () => {
 
 
             <div className="col-md-6">
-              <TextField id="outlined-basic" label="Pipe Friction loss" variant="outlined" size="small"
-                placeholder="Pipe Friction loss!"
+              <TextField id="outlined-basic" label="Pipe Friction losses" variant="outlined" size="small"
+                placeholder="Pipe Friction losses!"
                 margin="normal"
                 name="dist_loss" 
                 type="number"
