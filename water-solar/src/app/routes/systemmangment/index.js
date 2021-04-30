@@ -34,7 +34,7 @@ const Systemmangment = ({match}) => (
       </span>
       <Divider  className='diver-sys' /><br/>
 
-      <h3><b>Invertors</b></h3>
+      <h3><b>Inverters</b></h3>
       <span>
         <Invertor/>
       </span>

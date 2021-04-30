@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
+import CustomDropzone from "./CustomDropzone";
+import DataSheetFile from './DataSheetFile/index';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -25,8 +26,8 @@ import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
 import { v4 as uuidv4 } from 'uuid';
-import * as type from 'yup';
-import { checkValidation, runValidation } from './utils';
+import {useForm} from 'react-hook-form';
+
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -88,38 +89,7 @@ const styles = (theme) => ({
           width: 300,
       },
     }));
-// start code for dropzone
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
 
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-// end code for dropzone
   const marksW = [
     {
       value: 100,
@@ -134,16 +104,16 @@ const img = {
       label: '600W',
     },
 ];
-const marksV = [
-    {
-      value: 0,
-      label: '0V',
-    },
-    {
-      value: 270,
-      label: '270V',
-    },
-];
+// const marksV = [
+//     {
+//       value: 0,
+//       label: '0V',
+//     },
+//     {
+//       value: 270,
+//       label: '270V',
+//     },
+// ];
 // const marksC = [
 //     {
 //       value: 0,
@@ -155,153 +125,99 @@ const marksV = [
 //     },
 // ];
 
-// validation code
-const initialState = {
-  formData: {
-    brand: '',
-    model: '',
-    cableType: '',
-    current: '',
-    voltage: '',
-    // description: '',
-  },
-  error: {},
-  touched: {},
-  isValid: false
-};
-
-const setState = 'SET_STATE';
-
-function reducer(state, action) {
-  switch(action.type) {
-    case setState:
-      return {
-        ...state,
-        ...action.payload
-      };
-    default:
-      return state;
-  }
-}
-const schema = type.object().shape({
-  brand: type.string().required("Required"),
-  model: type.string().required("Required"),
-  cableType: type.number().required("Required"), 
-  // description: type.string().required("Required"),
-  current: type.number().required("Required"),
-  voltage: type.number().required("Required"),
-});
-// end validation code
 export default function DialogSolarP(props){
+  const {register, handleSubmit, errors }=useForm(); // initialize the hook
     // start code of dialog modal for Solar Panal 
-    const [files, setFiles] = useState([]);
     const {openS,   setOpenS} = props;
     const {solarListObject, setSolarListObject} = props;
     
     // end code of dialog modal for Solar Panal 
-  const solarBrands=props.solarBrands;
-  const [brand, setBrand] = useState("");
-  const [model, setModel] = useState("");
-  const [solarType, setSolarType] = useState("Mono");
-  const [powerW, setPowerW] = useState(150);
-  const [voltage, setVoltage] = useState('');
-  const [current, setCurrent] = useState('');
-  const [cableType, setCableType] = useState("");
-  // const [description, setDescription] = useState("");
-  const [solarListID, setSolarListID] = useState('0'); 
-  const [oldImage, setOldImage] = useState("");
-  const [{
-    formData,
-    error,
-    touched,
-    isValid
-  }, dispatch] = React.useReducer(reducer, initialState);
+    const [brand, setBrand] = useState('');
+    const solarBrands=props.solarBrands;
+    const [solarType, setSolarType] = useState("Mono");
+    const [powerW, setPowerW] = useState(150);
+    const [cableType, setCableType] = useState('');
+    const [cableTypesSelect,setCabletypesSelect]= useState([]);
+    // const [description, setDescription] = useState("");
+    const [image, setImage] = useState({ oldImage: '', filePath: 'brand/solar/solar_list/', btnText: 'Image' });
+    let imageFile = '';
+    const [dataSheet, setDataSheet] = useState({ oldImage: '', filePath: 'brand/solar/solar_list/data_sheet/', btnText: 'Data Sheet' });
+    let dataSheetFile = '';
+  
   const classes = useStyles();
   const handleCloseS = () => {
     emptyForm();
-    handleAllField(false, false);
     setOpenS(false);
   };
+  const eventhandlerIm = (data) => {
+    imageFile = data;
+    // console.log('images file data', data);
+    // console.log('images file', imageFile);
+  };
+  const eventhandlerDaSh = data => {
+    dataSheetFile = data;
+    // console.log('dataSheetFile file', dataSheetFile);
+  };
   const emptyForm = () =>{
-    setSolarListID('0');
     setSolarListObject([]);
-    setFiles([]);
-    setBrand('');
-    setModel('');
     setSolarType("Mono");
     setPowerW(150);
-    setVoltage('');
-    setCurrent('');
-    setCableType("");
     // setDescription("");
-    setOldImage('');
-    setFiles([]);
+    setImage({ ...image, ['oldImage']: ''});
+    setDataSheet({ ...dataSheet, ['oldImage']: ''});
   }
 
-  const handleChangeField = async ({ target: { name, value } }) => {
-    if(name==='brand'){
-      setBrand(value)
+  useEffect(() => {
+    getCabletype();
+    if(solarListObject?.solar_brand_id){
+      setBrand(solarListObject.solar_brand_id);
+    }else{
+      solarBrands.map((sBrand, index) =>  { 
+        if((index+1)===1){setBrand(sBrand.id);}
+      });
     }
-    else if(name==='model'){
-      setModel(value)
+    // setCableType(solarListObject.cable_type_id);
+    if(solarListObject?.cable_type_id){
+      setCableType(solarListObject.cable_type_id);
+    }else{
+      cableTypesSelect.map((cableOption, index) =>  { 
+        if(index===0){setCableType(cableOption.id);}
+      });
     }
-    // else if(name==='description'){
-    //   setDescription(value)
-    // }
+
+    setSolarType(solarListObject.type?solarListObject.type:"Mono");
+    setPowerW(solarListObject.power?solarListObject.power:150);
+    // setDescription(solarListObject.discription);
+    setImage({ ...image, ['oldImage']: solarListObject.image});
+    setDataSheet({ ...dataSheet, ['oldImage']: solarListObject.data_sheet?solarListObject.data_sheet: ''});
     
-    else if(name==='cableType'){
-      setCableType(value)
-    }
-    else if(name==='current'){
-      setCurrent(value)
-    }
-    
-    const schemaErrors = await runValidation(schema, {
-      ...formData, [name]: value
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [name]: value },
-        touched: { ...touched, [name]: true },
-        isValid: checkValidation(schemaErrors)
+  },[solarListObject, props.openS]);
+
+  const onSubmit = (data) => {
+    data['brand'] = brand;
+    data['solarType'] = solarType;
+    data['powerW'] = powerW;
+    data['cableType'] = cableType;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
+    data['serial_no'] = uuidv4();
+
+    // console.log(data);
+    axios.post('api/solarList', data)
+    .then(res => {
+      setOpenS(false);
+      // console.log('result ', res.data);
+        NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+          id="notification.titleHere" />);
+    }).catch(err =>{
+      NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+        id="notification.titleHere"/>);
       }
-    });
-  };
- 
-// dropzone code
- 
-  const {getRootProps, getInputProps} = useDropzone({
-    accept: 'image/*',
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-    }
-  });
+    );
+  }
 
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img alt={file.name}
-             src={file.preview}
-             style={img}
-        />
-      </div>
-    </div>
-  ));
-
-  useEffect(() => () => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
-// end dropzone code
 // start get cable type
-useEffect(() => {
-  getCabletype();
-},[])
-const [cableTypesSelect,setCabletypesSelect]= useState([]);
+ 
 const getCabletype=async () => {
   axios.get('api/cabletype')
     .then(res => {  
@@ -315,88 +231,9 @@ const getCabletype=async () => {
 };
 // end get cable type
 
-useEffect(() => {
-    setSolarListID(solarListObject.id);
-    setBrand(solarListObject.solar_brand_id);
-    setModel(solarListObject.model);
-    setSolarType(solarListObject.type);
-    setPowerW(Math.floor(solarListObject.power));
-    setVoltage(solarListObject.voltage);
-    setCurrent(solarListObject.current);
-    setCableType(solarListObject.cable_type_id);
-    // setDescription(solarListObject.discription);
-    setOldImage(solarListObject.image);
-    
-},[solarListObject])
-useEffect(() => {
-  (solarListObject.id === undefined)? handleAllField(false): handleAllField(true);
-},[openS])
-const handleAllField = async(valid, touchedValid) =>{
-  let f1 = 'brand', f2 = 'model', f3 = 'cableType', f5 = 'current', f6 = 'voltage'/*, f4 = 'description'*/;
-  const schemaErrors = await runValidation(schema, {
-    ...formData, [f1]: brand, [f2]: model, [f3]: cableType, [f5]: current, [f6]: voltage/*, [f4]: description*/
-  });
-  dispatch({
-    type: setState,
-    payload: {
-      error: schemaErrors,
-      formData: { ...formData, [f1]: brand, [f2]: model, [f3]: cableType, [f5]: current, [f6]: voltage/*, [f4]: description*/ },
-      touched: { ...touched, [f1]: false, [f2]: false, [f3]: false, [f5]: false, [f6]: false/*, [f4]: false*/ },
-      isValid: valid
-    }
-  });
-}
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let dataSolarList = {
-      solarListID, brand, model, solarType, powerW, voltage, current, cableType/*, description*/
-    }
-    // console.log(dataSolarList);
-    if(dataSolarList.solarListID===undefined){
-      dataSolarList.solarListID = 0;
-    }
-    if(files.length!==0){
-    var image = '';
-    let file = files[0];
-    let reader = new FileReader();
-    reader.onloadend = (file) => {
-      image = reader.result;
-      dataSolarList['image'] = image;
-      dataSolarList['serial_no'] = uuidv4();
-      axios.post('api/solarList', dataSolarList)
-        .then(res => {
-          setOpenS(false);
-          emptyForm();
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-        }).catch(err =>{
-          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-        )
-    }
-    reader.readAsDataURL(file); 
-  }else{
-    dataSolarList['image'] = 'oldImage';
-    axios.post('api/solarList', dataSolarList)
-        .then(res => {
-          setOpenS(false);
-          emptyForm();
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-        }).catch(err =>{
-          NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-        )
-  } 
-
-  }
     return (
       <Dialog onClose={handleCloseS}  aria-labelledby="customized-dialog-title" open={openS}>
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleCloseS}>
               Add Solar Panal  Device
             </DialogTitle>
@@ -407,6 +244,7 @@ const handleAllField = async(valid, touchedValid) =>{
                     
                         <div className="row">
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                            <TextField id="id" type='hidden' style={{width: '0%'}} name="solarListID" defaultValue={(solarListObject?.id) ? solarListObject?.id : ''} inputRef={register}/>
                                 <TextField size="small"
                                     id="outlined-read-only-input"
                                     label="ID"
@@ -418,30 +256,30 @@ const handleAllField = async(valid, touchedValid) =>{
                                 />
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.brand) && (error && error.brand) ? true : false}>Brand</InputLabel>
-                                  <Select name='brand'
-                                  labelId="demo-simple-select-outlined-label"
-                                  id="demo-simple-select-outlined"
-                                  value={brand}
-                                        onChange={(e) => handleChangeField(e)}
-                                  label="Brand"
-                                  >
-                                  <MenuItem value="">
-                                      <em>None</em>
-                                  </MenuItem>
-                                  {solarBrands.map(brand => 
-                                  <MenuItem value={brand.id}>{brand.name}</MenuItem>
-                                  )}
-                                  </Select>
-                                  <span className={(touched && touched.brand) && (error && error.brand) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
-                                </FormControl>
+                            <FormControl variant="outlined" size="small" className={classes.formControl}>
+                                <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
+                                <Select
+                                name="brand"
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={brand}
+                                onChange={(e) => setBrand(e.target.value)}
+                                label="Brand"
+                                >
+                                <MenuItem value=""> </MenuItem>
+                                {solarBrands.map(sBrand => 
+                                  <MenuItem value={sBrand.id}>{sBrand.name}</MenuItem>
+                                )}
+                                </Select>
+                              </FormControl>
                             </div>
+
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Model" name='model' value={model} onChange={(e) => handleChangeField(e)} variant="outlined" 
-                                error={(touched && touched.model) && (error && error.model) ? true : false}
-                                helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} />
+                                <TextField id="outlined-basic1" size="small" variant="outlined" name="model" className="fullWidthInput" label="Model" defaultValue={solarListObject?.model} inputRef={register({required: true})} 
+                                error={errors.model && true} helperText={errors.model ? '*required' : ''}
+                                />
                             </div>
+
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP group_radio insideFormPaddingWPS">
                               <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                   <input type="radio" class="btn-check" name={`radio${solarType}`} id="btnradio1Mono" autocomplete="off" checked={(solarType==="Mono" || solarType === undefined) ? true : false} value="Mono" onChange={event => setSolarType(event.target.value)}/>
@@ -451,12 +289,12 @@ const handleAllField = async(valid, touchedValid) =>{
                               </div>
                                
                             </div>
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inputAdornmentWrap">
+                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding1 inputAdornmentWrap powerW-solarL">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     Power
                                     </Typography>
                                     <Slider onChange={(event, value) => setPowerW(value)}
-                                        defaultValue={(solarListID !== undefined) ? powerW : 270}
+                                        defaultValue={(powerW) ? powerW : 270}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={5}
@@ -467,22 +305,9 @@ const handleAllField = async(valid, touchedValid) =>{
                                     />
                             </div>
                             
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding2 inputAdornmentWrap">
-                                {/* <Typography id="discrete-slider-small-steps" gutterBottom>
-                                  Voltage
-                                </Typography>
-                                <Slider onChange={(event, value) => setVoltage(value)}
-                                    defaultValue={(solarListID !== undefined) ? voltage : 150}
-                                    getAriaValueText={valuetext}
-                                    aria-labelledby="discrete-slider-small-steps"
-                                    step={20}
-                                    marks={marksV}
-                                    min={0}
-                                    max={270}
-                                    valueLabelDisplay="auto"
-                                /> */}
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                                 <FormControl fullWidth >  
-                                  <TextField size="small" id="outlined-basic3" label="Voltage" variant="outlined"
+                                  <TextField type='number' size="small" id="outlined-basic3-voltage" label="Voltage" variant="outlined"
                                   name="voltage"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">V</InputAdornment>,
@@ -490,28 +315,15 @@ const handleAllField = async(valid, touchedValid) =>{
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  value={voltage} onChange={(e) => handleChangeField(e)}
-                                  error={(touched && touched.voltage) && (error && error.voltage) ? true : false}
-                                  helperText={(touched && touched.voltage) && (error && error.voltage) ? '*required & must be number' : ''}/>
+                                  defaultValue={solarListObject?.voltage} inputRef={register({required: true})} 
+                                  error={errors.voltage && true} helperText={errors.voltage ? '*required' : ''}
+                                 />
                                 </FormControl>
                             </div>
                             
-                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormBPCable">
-                                {/* <Typography id="discrete-slider-small-steps" gutterBottom>
-                                Current
-                                </Typography>
-                                <Slider onChange={(event, value) => setCurrent(value)}
-                                    defaultValue={(solarListID !== undefined) ? current : 150}
-                                    getAriaValueText={valuetext}
-                                    aria-labelledby="discrete-slider-small-steps"
-                                    step={20}
-                                    marks={marksC}
-                                    min={0}
-                                    max={270}
-                                    valueLabelDisplay="auto"
-                                /> */}
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                                 <FormControl fullWidth >  
-                                  <TextField size="small" id="outlined-basic3" label="Current" variant="outlined"
+                                  <TextField type='number' size="small" id="outlined-basic3-current" label="Current" variant="outlined"
                                   name="current"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">A</InputAdornment>,
@@ -519,31 +331,30 @@ const handleAllField = async(valid, touchedValid) =>{
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  value={current} onChange={(e) => handleChangeField(e)}
-                                  error={(touched && touched.current) && (error && error.current) ? true : false}
-                                  helperText={(touched && touched.current) && (error && error.current) ? '*required & must be number' : ''}/>
+                                  defaultValue={solarListObject?.current} inputRef={register({required: true})} 
+                                  error={errors.current && true} helperText={errors.current ? '*required' : ''}
+                                 />
                                 </FormControl>
                                 
                             </div>
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label" error={(touched && touched.cableType) && (error && error.cableType) ? true : false}>Cable Type</InputLabel>
+                                  <InputLabel id="demo-simple-select-outlined-label">Cable Type</InputLabel>
                                   <Select name='cableType'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={cableType}
-                                  onChange={(e) => handleChangeField(e)}
+                                  onChange={(e) => setCableType(e.target.value)}
                                   label="Cable Type"
                                   >
                                   <MenuItem value="">
-                                      <em>None</em>
+                                      <em></em>
                                   </MenuItem>
                                   {cableTypesSelect.map(cableOption => 
                                   <MenuItem value={cableOption.id}>{cableOption.name}</MenuItem>
                                   )}
                                   </Select>
-                                  <span className={(touched && touched.cableType) && (error && error.cableType) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                               </FormControl>
                             </div>    
                             {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -552,22 +363,11 @@ const handleAllField = async(valid, touchedValid) =>{
                                     <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                                 </div>
                             </div> */}
-                            <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
-                                <div className="dropzone-card">
-                                    <div className="dropzone">
-                                        <div {...getRootProps({className: 'dropzone-file-btn'})}>
-                                            <input {...getInputProps()} />
-                                            <p>Upload image</p>
-                                        </div>
-                                    </div>
-                                    <div className="dropzone-content" style={thumbsContainer}>
-                                        {thumbs}
-                                        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-                                        <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
-                                      </spam>): ''): ''}
-                                    </div>
-                                </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                                <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                              <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                             </div>
                         </div>
                    
@@ -577,7 +377,7 @@ const handleAllField = async(valid, touchedValid) =>{
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " name={`isValid ${isValid}`} disabled={!isValid} >Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " >Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

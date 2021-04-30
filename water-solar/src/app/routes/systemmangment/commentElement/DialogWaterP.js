@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CustomDropzone from "./CustomDropzone";
+import DataSheetFile from './DataSheetFile/index';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -184,6 +185,28 @@ const styles = (theme) => ({
       label: '110KW',
     },
   ];
+  const marksHP = [
+    { value: 1, label: '1kg', },
+    { value: 1.5, /*label: '1.5kg',*/ },
+    { value: 2, /*label: '2kg',*/ },
+    { value: 3, /*label: '3kg',*/ },
+    { value: 4, /*label: '4kg',*/ },
+    { value: 5.5, /*label: '5.5kg',*/ },
+    { value: 7.5, /*label: '7.5kg',*/ },
+    { value: 11, /*label: '11kg',*/ },
+    { value: 15, /*label: '15kg',*/ },
+    { value: 20, /*label: '20kg',*/ },
+    { value: 25, /*label: '25kg',*/ },
+    { value: 30, /*label: '30kg',*/ },
+    { value: 40, label: '40kg', },
+    { value: 50, /*label: '50kg',*/ },
+    { value: 60, /*label: '60kg',*/ },
+    { value: 70, label: '70kg', },
+    { value: 75, /*label: '75kg',*/ },
+    { value: 80, /*label: '80kg',*/ },
+    { value: 90, /*label: '90kg',*/ },
+    { value: 100, label: '100kg', },
+  ];
   const marksV = [
     {
       value: 110,
@@ -216,12 +239,13 @@ export default function DialogWaterP(props){
     const {waterListObject, setWaterListObject} = props;
     
     const [powerKW, setPowerKW] = useState(15);
+    const [powerHP, setPowerHP] = useState(15);
     const [voltage, setVoltage] = useState(110);
     const [phase, setPhase] = useState("1Phase");
     // const [description, setDescription] = useState("");
-    const [image, setImage] = useState({ oldImage: '', btnText: 'Image' });
+    const [image, setImage] = useState({ oldImage: '', filePath: 'brand/pumpbrand/pump_list/', btnText: 'Image' });
     let imageFile = '';
-    const [dataSheet, setDataSheet] = useState({ oldImage: '', btnText: 'Data Sheet' });
+    const [dataSheet, setDataSheet] = useState({ oldd: '', filePath: 'brand/pumpbrand/pump_list/data_sheet/', btnText: 'Data Sheet' });
     let dataSheetFile = '';
     const [graph, setGraph] = useState({ oldImage: '', btnText: 'Graph' });
     let graphFile = '';
@@ -244,6 +268,7 @@ export default function DialogWaterP(props){
       setWaterListObject([]);
       setPowerKW(15); 
       setVoltage('');
+      setPowerHP(15); 
       setPhase('1Phase');
       // setDescription("");
       setImage({ ...image, ['oldImage']: ''});
@@ -253,57 +278,41 @@ export default function DialogWaterP(props){
      
     useEffect(() => {
       setPowerKW(waterListObject.power?waterListObject.power:15);
-      // let brandID = waterPumpBrands[0]['id'];
-      // console.log('waterPumpBrands', waterPumpBrands);
+      setPowerHP(waterListObject.power?waterListObject.hp:15);
       
       if(waterListObject?.pump_brand_id){
         setBrand(waterListObject.pump_brand_id);
       }else{
         waterPumpBrands.map((wbrand, index) =>  { 
-          if(index===0){ setBrand(wbrand.id);
-            // console.log('brand indide', brand);
-            // console.log('wbrand.id', wbrand.id);
-          }
-          // console.log('index', index+1);
+          if(index===0){ setBrand(wbrand.id);}
         });
       }
-      // setBrand(waterListObject.pump_brand_id?waterListObject.pump_brand_id :1);
-      console.log('brand', brand);
       setVoltage(waterListObject.voltage?waterListObject.voltage:110);
       setPhase(waterListObject.phase?waterListObject.phase:'1Phase');
       // setDescription(waterListObject.discription);
       setImage({ ...image, ['oldImage']: waterListObject.image});
-      setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet?'data_sheet/'+waterListObject.data_sheet: ''});
+      setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet?waterListObject.data_sheet: ''});
       setGraph({ ...graph, ['oldImage']: waterListObject.graph?'graph/'+waterListObject.graph: ''});
     },[waterListObject, props.openD])
-    
-     
-    
-    
-     
   
     const classes = useStyles();
 
     const onSubmit = (data) => {
       data['brand'] = brand;
       data['powerKW'] = powerKW;
+      data['powerHP'] = powerHP;
       data['phase'] = phase;
       data['voltage'] = voltage;
       data['imageFile'] = imageFile;
       data['dataSheetFile'] = dataSheetFile;
       data['graphFile'] = graphFile;
-      // let dataWaterList = {
-      //   waterListID, brand, name, outlet, current, diameter, powerKW, phase, voltage, imageFile, dataSheetFile, graphFile, /*description,*/
-      // }
-      // if(dataWaterList.waterListID===undefined){
-        //   dataWaterList.waterListID=0;
-        // }
       data['serial_no'] = uuidv4();
-      console.log(data);
+
+      // console.log(data);
       axios.post('api/pumpList', data)
         .then(res => {
           setOpenD(false);
-          console.log('result ', res.data);
+          // console.log('result ', res.data);
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
         }).catch(err =>{
@@ -338,8 +347,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
                               <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-outlined-label"
-                                >Brand</InputLabel>
+                                <InputLabel id="demo-simple-select-outlined-label">Brand</InputLabel>
                                 <Select
                                 name="brand"
                                 labelId="demo-simple-select-outlined-label"
@@ -348,14 +356,11 @@ export default function DialogWaterP(props){
                                 onChange={(e) => setBrand(e.target.value)}
                                 label="Brand"
                                 >
-                                <MenuItem value="">
-                                     
-                                </MenuItem>
+                                <MenuItem value=""> </MenuItem>
                                 {waterPumpBrands.map(wbrand => 
                                   <MenuItem value={wbrand.id}>{wbrand.name}</MenuItem>
                                   )}
                                 </Select>
-                                {/* <span className={errors.brand ? 'displayBlock errorText' : 'displayNone'}>*required</span> */}
                               </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
@@ -448,6 +453,36 @@ export default function DialogWaterP(props){
                               </div>
                                
                             </div>
+                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormBP powerHP inputAdornmentWrap">
+                                <Typography id="discrete-slider-small-steps" gutterBottom >
+                                Power to KW 
+                                </Typography>
+                                <Slider name="powerHP" onChange={(event, value) => setPowerHP(value)}
+                                    defaultValue={(powerHP) ? powerHP : 15}
+                                    getAriaValueText={valuetext}
+                                    aria-labelledby="discrete-slider-small-steps"
+                                    step={null}
+                                    marks={marksHP}
+                                    min={1}
+                                    max={100}
+                                    valueLabelDisplay="auto"
+                                />
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
+                              <FormControl fullWidth >  
+                                <TextField type='number' size="small" id="outlined-basic2" label="Weight" variant="outlined"
+                                  name="weight"  
+                                  InputProps={{
+                                    endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  defaultValue={waterListObject?.weight} inputRef={register({required: true})} 
+                                  error={errors.weight && true} helperText={errors.weight ? '*required' : ''}/>
+                              </FormControl>
+                                
+                            </div>
                             {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name="description"  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
@@ -458,7 +493,7 @@ export default function DialogWaterP(props){
                                 <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
-                              <CustomDropzone formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
+                              <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
                               <CustomDropzone formData={graph} onChange={eventhandlerGr.bind(this)}/>

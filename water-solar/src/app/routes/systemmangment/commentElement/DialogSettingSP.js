@@ -202,7 +202,7 @@ export default function DialogSettingWD(props){
   const solarListModel = props.solarListModel;
   let imageFile = '';
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: solarList_Id},
+    { id: uuidv4(), mId: '' ,mId: '', power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: solarList_Id},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -239,7 +239,7 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    let newElement = { id: uuidv4(), power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, image: '', imageRaw: '', solar_list_id: solarList_Id};
+    let newElement = { id: uuidv4(),mId: '', mId: '', power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, image: '', imageRaw: '', solar_list_id: solarList_Id};
     setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {
@@ -284,11 +284,11 @@ export default function DialogSettingWD(props){
         if(mydata.length !== 0){
           mydata.forEach(elem => {
             // console.log(elem); 
-            mainArray.push({ id: elem.id, power: elem.power, base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, image: elem.image, imageRaw: '', solar_list_id: elem.solar_list_id});
+            mainArray.push({ id: elem.id, mId: elem.id, power: elem.power, base: elem.base, quantity: elem.solar_quantity, panal: elem.panal_quantity, image: elem.image, imageRaw: '', solar_list_id: elem.solar_list_id});
           });
           // console.log('mainArray is: ',mainArray);
         }else{
-          mainArray.push({ id: uuidv4(), power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: id});
+          mainArray.push({ id: uuidv4(), mId: '', power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: id});
         }
         setInputFields(mainArray);
       }).catch(err => {
@@ -304,12 +304,12 @@ export default function DialogSettingWD(props){
       // let data = {
       //     power, base, quantity, panal, files
       // }
-      console.log(inputFields);
+      // console.log(inputFields);
       axios.post('api/solarListSetting', inputFields)
         .then(
             res => {
               // console.log(res);
-              // getWaterPDevices();
+              getSolarListSettings(solarList_Id);
               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
               handleClose();

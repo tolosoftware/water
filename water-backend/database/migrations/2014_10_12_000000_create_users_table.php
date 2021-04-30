@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('status');
             $table->integer('expiration');
             $table->string('userimage');
+            $table->unsignedBigInteger('geolocation_id');
+            $table->foreign('geolocation_id')->references('id')->on('geolocations')->onDelete('cascade');
             $table->timestamps();
         });
     }

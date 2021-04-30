@@ -50,9 +50,16 @@ class PumpListController extends Controller
                 $request->merge(['photo' => $photoname]);
             }
             if($request['dataSheetFile']){
-                $dataSheetName = time().'2.' . explode('/', explode(':', substr($request->dataSheetFile, 0, strpos($request->dataSheetFile, ';')))[1])[1];
-                \Image::make($request->dataSheetFile)->save(public_path('brand/pumpbrand/pump_list/data_sheet/').$dataSheetName);
-                $request->merge(['dataSheet' => $dataSheetName]);
+                
+                $file = $request->get('dataSheetFile');
+                if (strpos($file, ',') !== false) {
+                    @list($encode, $file) = explode(',', $file);
+                }
+                $fileName = base64_decode($file, true);  
+                $dataSheetName = time().'ds.pdf';
+                $destinationPath = public_path('brand/pumpbrand/pump_list/data_sheet/').$dataSheetName;            
+                file_put_contents($destinationPath, $fileName);
+                
             }
             if($request['graphFile']){
                 $graphName = time().'3.' . explode('/', explode(':', substr($request->graphFile, 0, strpos($request->graphFile, ';')))[1])[1];
@@ -68,6 +75,8 @@ class PumpListController extends Controller
                 $pump_list->ampeier = $request['current'];
                 $pump_list->diameter = $request['diameter'];
                 $pump_list->power = $request['powerKW'];
+                $pump_list->hp = $request['powerHP'];
+                $pump_list->weight = $request['weight'];
                 $pump_list->voltage= $request['voltage'];
                 $pump_list->phase= $request['phase'];
                 if($request['imageFile']){
@@ -75,11 +84,11 @@ class PumpListController extends Controller
                     $pump_list->image = $photoname;
                 }
                 if($request['dataSheetFile']){
-                    File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->dataSheetFile);
+                    File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->data_sheet);
                     $pump_list->data_sheet = $dataSheetName;
                 }
                 if($request['graphFile']){
-                    File::delete('brand/pumpbrand/pump_list/graph/'.$pump_list->graphFile);
+                    File::delete('brand/pumpbrand/pump_list/graph/'.$pump_list->graph);
                     $pump_list->graph = $graphName;
                 }
                 $pump_list->discription = 'null';
@@ -96,6 +105,8 @@ class PumpListController extends Controller
                     'power' => $request['powerKW'], 
                     'voltage' => $request['voltage'], 
                     'phase' => $request['phase'], 
+                    'hp' => $request['powerHP'], 
+                    'weight' => $request['weight'], 
                     'image' => $photoname, 
                     'data_sheet' => $dataSheetName, 
                     'graph' => $graphName, 
@@ -153,6 +164,8 @@ class PumpListController extends Controller
     {
         $pump_list = Pump_list::findOrFail($id);
         File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
+        File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->data_sheet);
+        File::delete('brand/pumpbrand/pump_list/graph/'.$pump_list->graph);
         $pump_list->delete();
         return ['message' => 'Selected Solar list has been Deleted'];
     }

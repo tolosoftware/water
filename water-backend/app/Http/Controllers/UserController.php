@@ -15,6 +15,7 @@ use App\Models\Pump_list;
 use App\Models\Solar_list;
 use App\Models\InvertorList;
 use App\Models\Projects;
+use App\Models\Geolocation;
 Use \Carbon\Carbon;
 
 class UserController extends Controller
@@ -24,6 +25,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function userCity(){
+        return Geolocation::all()->unique('city');
+    }
     public function adminDashboard()
     {   
         $pumpbrand = Pump_brands::all();
