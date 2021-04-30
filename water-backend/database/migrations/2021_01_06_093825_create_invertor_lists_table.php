@@ -22,8 +22,9 @@ class CreateInvertorListsTable extends Migration
             $table->decimal('voltage_ac');
             $table->decimal('voltage_dc_min');
             $table->decimal('voltage_dc_max');
-            $table->string('discription');
-            $table->string('image');
+            $table->string('discription')-nullable();
+            $table->string('image')->nullable();
+            $table->string('data_sheet')->nullable();
             $table->timestamps();
         });
     }

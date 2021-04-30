@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
+import CustomDropzone from "./CustomDropzone";
+import DataSheetFile from './DataSheetFile/index';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -23,8 +24,7 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import IntlMessages from 'util/IntlMessages';
 import {NotificationManager} from 'react-notifications';
-import * as type from 'yup';
-import { checkValidation, runValidation } from './utils';
+import {useForm} from 'react-hook-form';
 // end import for dialog 
 // start of dialog modal for Solar Panal 
 const styles = (theme) => ({
@@ -86,38 +86,7 @@ const styles = (theme) => ({
           width: 300,
       },
     }));
-// start code for dropzone
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
-
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-// end code for dropzone
+  
   const marksW = [
     {
       value: 0,
@@ -149,61 +118,34 @@ const marksVolDC = [
     },
 ];
 
-// validation code
-const initialState = {
-  formData: {
-    brand: '',
-    model: '',
-    // description: '',
-  },
-  error: {},
-  touched: {},
-  isValid: false
-};
-
-const setState = 'SET_STATE';
-
-function reducer(state, action) {
-  switch(action.type) {
-    case setState:
-      return {
-        ...state,
-        ...action.payload
-      };
-    default:
-      return state;
-  }
-}
-const schema = type.object().shape({
-  brand: type.string().required("Required"),
-  model: type.string().required("Required"),
-  // description: type.string().required("Required"),
-});
-// end validation code
-
 export default function DialogInvertor(props){
+  const {register, handleSubmit, errors }=useForm(); // initialize the hook
     // start code of dialog modal for Solar Panal 
-    const [files, setFiles] = useState([]);
-    const {openIn,   setOpenIn} = props;
+    const {openIn, setOpenIn} = props;
     const {invertorListObject, setInvertorListObject} = props;
     
     // end code of dialog modal for Solar Panal 
   const invertorBrands=props.invertorBrands;
-  const [brand, setBrand] = useState("");
-  const [model, setModel] = useState("");
+  const [brand, setBrand] = useState('');
   const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
   const [voltageDC, setVoltageDC] = useState([50, 150]);
   // const [description, setDescription] = useState("");
-  const [invertorListID, setInvertorListID] = useState(0); 
-  const [oldImage, setOldImage] = useState("");
 
-  const [{
-    formData,
-    error,
-    touched,
-    isValid
-  }, dispatch] = React.useReducer(reducer, initialState);
+  const [image, setImage] = useState({ oldImage: '', filePath: 'brand/invertor/invertor_list/', btnText: 'Image' });
+    let imageFile = '';
+    const [dataSheet, setDataSheet] = useState({ oldd: '', filePath: 'brand/invertor/invertor_list/data_sheet/', btnText: 'Data Sheet' });
+    let dataSheetFile = '';
+
+  const eventhandlerIm = (data) => {
+    imageFile = data;
+    // console.log('images file data', data);
+    // console.log('images file', imageFile);
+  };
+  const eventhandlerDaSh = data => {
+    dataSheetFile = data;
+    // console.log('dataSheetFile file', dataSheetFile);
+  };
 
   const classes = useStyles();
   const handleCloseS = () => {
@@ -212,159 +154,59 @@ export default function DialogInvertor(props){
   };
   const emptyForm = () =>{
     setInvertorListObject([]);
-    setInvertorListID(0);
-    setBrand('');
-    setModel('');
     setPowerKW(150);
     setVoltage(150);
     setVoltageDC([50, 150]);
     // setDescription("");
-    setOldImage('');
-    setFiles([]);
+    setImage({ ...image, ['oldImage']: ''});
+    setDataSheet({ ...dataSheet, ['oldImage']: ''});
   }
-// dropzone code
- 
-  const {getRootProps, getInputProps} = useDropzone({
-    accept: 'image/*',
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-    }
-  });
 
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img alt={file.name}
-             src={file.preview}
-             style={img}
-        />
-      </div>
-    </div>
-  ));
-
-  useEffect(() => () => {
-    // Make sure to revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
-// end dropzone code
-
-
-useEffect(() => {
-  setEditFieldValuse();
-},[props.invertorListObject])
-
-const setEditFieldValuse = () => {
-  if(invertorListObject.voltage_dc_min!==undefined){
-    let min = Math.floor(invertorListObject.voltage_dc_min);
-    let max = Math.floor(invertorListObject.voltage_dc_max)
+  useEffect(() => {
+    let min = invertorListObject.voltage_dc_min?invertorListObject.voltage_dc_min:10;
+    let max = invertorListObject.voltage_dc_max?invertorListObject.voltage_dc_max:100;
     setVoltageDC([min, max]);
-    // console.log("invertor dc: ", [min, max]);
-  }
-  setInvertorListID(invertorListObject.id);
-  setBrand(invertorListObject.invertor_brand_id);
-  setModel(invertorListObject.model);
-  setPowerKW(Math.floor(invertorListObject.power));
-  setVoltage(Math.floor(invertorListObject.voltage_ac));
-  // setDescription(invertorListObject.discription);
-  setOldImage(invertorListObject.image);
-} 
-useEffect(() => {
-  (invertorListObject.id === undefined)? handleAllField(false): handleAllField(true);
-},[openIn])
-const handleAllField = async(valid) =>{
-  let f1 = 'brand', f2 = 'model'/*, f3 = 'description'*/;
-  const schemaErrors = await runValidation(schema, {
-    ...formData, [f1]: brand, [f2]: model/*, [f3]: description*/
-  });
-  dispatch({
-    type: setState,
-    payload: {
-      error: schemaErrors,
-      formData: { ...formData, [f1]: brand, [f2]: model/*, [f3]: description */},
-      touched: { ...touched, [f1]: false, [f2]: false/*, [f3]: false*/ },
-      isValid: valid
+    if(invertorListObject?.invertor_brand_id){
+      setBrand(invertorListObject.invertor_brand_id);
+    }else{
+      invertorBrands.map((inBrand, index) =>  { 
+        if((index+1)===1){setBrand(inBrand.id);}
+      });
     }
-  });
-}
-  
-  const handleChangeField = async ({ target: { name, value } }) => {
-    if(name==='brand'){
-      setBrand(value)
-    }
-    else if(name==='model'){
-      setModel(value)
-    }
-    // else if(name==='description'){
-    //   setDescription(value)
-    // }
-    
-    const schemaErrors = await runValidation(schema, {
-      ...formData, [name]: value
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [name]: value },
-        touched: { ...touched, [name]: true },
-        isValid: checkValidation(schemaErrors)
-      }
-    });
-  };
+    setPowerKW(invertorListObject.power?invertorListObject.power:20);
+    setVoltage(invertorListObject.voltage_ac?invertorListObject.voltage_ac:50);
+    // setDescription(invertorListObject.discription);
+    setImage({ ...image, ['oldImage']: invertorListObject.image});
+    setDataSheet({ ...dataSheet, ['oldImage']: invertorListObject.data_sheet?invertorListObject.data_sheet: ''});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let dataInvertor = {
-      invertorListID, brand, model, powerKW, voltage, voltageDC/*, description*/
-    }
-    // console.log(dataInvertor);
-    if(dataInvertor.invertorListID===undefined){
-      dataInvertor.invertorListID = 0;
-    }
-    if(files.length!==0){
-      
-        var image = '';
-        let file = files[0];
-        let reader = new FileReader();
-        reader.onloadend = (file) => {
-        image = reader.result;
-        dataInvertor['image'] = image;
-        axios.post('api/invertorList', dataInvertor)
-            .then(res => {
-            setOpenIn(false);
-            emptyForm();
-                NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                id="notification.titleHere" />);
-            }).catch(err =>{
-            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-                id="notification.titleHere"/>);
-            }
-            )
-        }
-        reader.readAsDataURL(file); 
-  }else{
-    dataInvertor['image'] = 'oldImage';
-    axios.post('api/invertorList', dataInvertor)
-        .then(res => {
-          setOpenIn(false);
-          emptyForm();
-            NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-              id="notification.titleHere" />);
-        }).catch(err =>{
+  },[props.invertorListObject, openIn])
+
+  const onSubmit = (data) => {
+    data['brand'] = brand;
+    data['powerKW'] = powerKW;
+    data['voltage'] = voltage;
+    data['voltageDC'] = voltageDC;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
+
+    // console.log(data);
+      axios.post('api/invertorList', data)
+      .then(res => {
+        setOpenIn(false);
+        // emptyForm();
+          NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+          id="notification.titleHere" />);
+      }).catch(err =>{
           NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-            id="notification.titleHere"/>);
-          }
-        )
-  } 
+          id="notification.titleHere"/>);
+      });
 
   }
     return (
       <Dialog onClose={handleCloseS}  aria-labelledby="customized-dialog-title" open={openIn}>
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
             <DialogTitle id="customized-dialog-title" className='customizedDialogWaterP' onClose={handleCloseS}>
-              Add Invertor Device
+              Add Inverter Device
             </DialogTitle>
             <DialogContent dividers>
                 {/* <SolarPanalDeviceForm /> */}
@@ -372,7 +214,8 @@ const handleAllField = async(valid) =>{
                 <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                     
                         <div className="row">
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP"> 
+                            <TextField id="id" type='hidden' style={{width: '0%'}} name="invertorListID" defaultValue={(invertorListObject?.id) ? invertorListObject?.id : ''} inputRef={register}/>
                                 <TextField size="small"
                                     id="outlined-read-only-input"
                                     label="ID"
@@ -385,18 +228,16 @@ const handleAllField = async(valid) =>{
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                 <FormControl variant="outlined" size="small" className={classes.formControl}>
-                                  <InputLabel id="demo-simple-select-outlined-label" 
-                                  error={(touched && touched.brand) && (error && error.brand) ? true : false}>Brand</InputLabel>
+                                  <InputLabel id="demo-simple-select-outlined-label" >Brand</InputLabel>
                                   <Select name='brand'
                                   labelId="demo-simple-select-outlined-label"
                                   id="demo-simple-select-outlined"
                                   value={brand}
-                                        onChange={(e) => handleChangeField(e)}
+                                        onChange={(e) => setBrand(e.target.value)}
                                   label="Brand"
-                                  helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''}   
                                   >
                                   <MenuItem value="">
-                                      <em>None</em>
+                                      <em></em>
                                   </MenuItem>
                                   {invertorBrands.map(brand => 
                                   <MenuItem value={brand.id}>{brand.name}</MenuItem>
@@ -405,7 +246,10 @@ const handleAllField = async(valid) =>{
                                 </FormControl>
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
-                                <TextField id="outlined-basic" size="small" className="fullWidthInput" name='model' label="Model" value={model} onChange={(e) => handleChangeField(e)} error={(touched && touched.model) && (error && error.model) ? true : false} helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} variant="outlined" />
+                                <TextField id="outlined-basic1" size="small" variant="outlined" name="model" className="fullWidthInput" label="Model" defaultValue={invertorListObject?.model} inputRef={register({required: true})} 
+                                error={errors.model && true} helperText={errors.model ? '*required' : ''}
+                                />
+                                {/* <TextField id="outlined-basic" size="small" className="fullWidthInput" name='model' label="Model" value={model} onChange={(e) => handleChangeField(e)} error={(touched && touched.model) && (error && error.model) ? true : false} helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} variant="outlined" /> */}
                             </div>
                              
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inverPower inputAdornmentWrap">
@@ -413,7 +257,7 @@ const handleAllField = async(valid) =>{
                                     Power (KW)
                                     </Typography>
                                     <Slider onChange={(event, value) => setPowerKW(value)}
-                                        defaultValue={(invertorListID !== undefined) ? powerKW : 150}
+                                        defaultValue={powerKW?powerKW:150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -429,7 +273,7 @@ const handleAllField = async(valid) =>{
                                     Voltage (AC)
                                     </Typography>
                                     <Slider onChange={(event, value) => setVoltage(value)}
-                                        defaultValue={(invertorListID !== undefined) ? voltage : 150}
+                                        defaultValue={voltage?voltage:150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
                                         step={20}
@@ -440,7 +284,7 @@ const handleAllField = async(valid) =>{
                                     />
                             </div>
                             
-                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding3 ivertor-dc inputAdornmentWrap">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding3 ivertor-dc pr-slider inputAdornmentWrap">
                                 <Typography id="range-slider" gutterBottom>
                                         Voltage (DC)
                                 </Typography>
@@ -459,22 +303,11 @@ const handleAllField = async(valid) =>{
                                     <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description'  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                 </div>
                             </div> */}
-                            <div className="col-xl-10 col-lg-10 col-md-10 col-12 accessory_file waterPumFile">
-                                <div className="dropzone-card">
-                                    <div className="dropzone">
-                                        <div {...getRootProps({className: 'dropzone-file-btn'})}>
-                                            <input {...getInputProps()} />
-                                            <p>Upload image</p>
-                                        </div>
-                                    </div>
-                                    <div className="dropzone-content" style={thumbsContainer}>
-                                        {thumbs}
-                                        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-                                        <span className={`sp_right_padding`}>Cuurent Image </span>
-                                        <span><img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
-                                      </spam>): ''): ''}
-                                    </div>
-                                </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                                <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                              <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                             </div>
                         </div>
                    
@@ -484,7 +317,7 @@ const handleAllField = async(valid) =>{
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " disabled={!isValid}>Submit</Button>
+            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " >Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

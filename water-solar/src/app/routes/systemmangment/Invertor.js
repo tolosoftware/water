@@ -227,15 +227,24 @@ const Invertor = () => {
     getInvertors();
   },[])
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
+    emptyForm();
     handleAllField(false);
     setOpen(true);
   };
-  const handleChange = (event, newValue) => {
-    setBrand("");
-    // setDescription("");
+  const emptyForm = () =>{
+    setBrand('');
+    setCountry(Country[0]);
+    setInputValue(Country[0]);
+    // setDescription('');
     setInvertorBrandID('0');
     setInvertorBrOldImage("");
+    setFiles([]);
+  }
+  const handleChange = (event, newValue) => {
+    emptyForm();
+    handleAllField(false);
     setValue(newValue);
   };
   const handleChangeIndex = (index) => {
@@ -370,7 +379,7 @@ const deleteInvertorList = (id) =>{
     confirmButtonText: 'Yes, delete it!'
   }).then((result) => {
     if(result.isConfirmed) {
-      axios.delete('api/pumpList/'+id)
+      axios.delete('api/invertorList/'+id)
         .then(res => {
           setVisibility(false);
               // setInvertorLists(res.data)
@@ -417,7 +426,7 @@ const getInvertorLists = async() =>{
   axios.get('api/invertorList')
   .then(res => {  
     setVisibility(false);
-      // console.log(res);
+      console.log(res);
       setInvertorLists(res.data);
     }
 ).catch(err => {
@@ -445,7 +454,6 @@ const deleteInvertorBrand = (id) =>{
       axios.delete('api/invertorbrand/'+id)
         .then(res => {
           setVisibility(false);
-              // setInvertorBrands(res.data)
             setInvertorBrands(invertorBrands.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
@@ -559,8 +567,8 @@ const handleSubmit = (e) => {
             <FlashAutoIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
-            <h3 className="jr-font-weight-medium mb-3">Invertor Brands</h3>
-            <p className="mb-3">List of Current Invertor Brands</p>
+            <h3 className="jr-font-weight-medium mb-3">Inverter Brands</h3>
+            <p className="mb-3">List of Current Inverter Brands</p>
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
@@ -755,7 +763,7 @@ const handleSubmit = (e) => {
 
       <Widget>
         <div className="d-flex flex-row mb-3">
-          <h4 className="mb-0"> List of Invertor</h4>
+          <h4 className="mb-0"> List of Inverter</h4>
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>

@@ -116,10 +116,9 @@ export default function DropzoneSC(props) {
         </div>
         <div className="dropzone-content" style={thumbsContainer}>
             {thumbs}
-            {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-            <span className={`sp_right_padding`}>Cuurent</span>
-            <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/config/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
-            </spam>): ''): ''}
+            {(files.length === 0 )? ((oldImage!=="" && oldImage!==null)? (
+            <span><img src={`${axios.defaults.baseURL}brand/solar/solar_list/config/${oldImage}`} class="img-thumbnail rounded solar_config_img"  alt="Responsive"></img></span>
+            ): ''): ''}
         </div>
     </div>
   );

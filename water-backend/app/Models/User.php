@@ -20,11 +20,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
        'system', 'name','companyname','email','phone',
-        'password','website','status','expiration','userimage'
+        'password','website','status','expiration','userimage','geolocation_id'
     ];
 
   
-
+    public function geolocation()
+    {
+        return $this->belongsTo(Geolocation::class, 'geolocation_id');
+    }
+    
     /**
      * The attributes that should be hidden for arrays.
      *

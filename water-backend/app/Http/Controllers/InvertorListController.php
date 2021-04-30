@@ -39,26 +39,41 @@ class InvertorListController extends Controller
     {
         DB::beginTransaction();
         try {
+            
             $photoname = 0;
-            $id = $request['invertorListID'];
-            if($request['image'] != 'oldImage'){
-                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/invertor/invertor_list/').$photoname);
+            $dataSheetName = 0;
+            if($request['imageFile']){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
+                \Image::make($request->imageFile)->save(public_path('brand/invertor/invertor_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!==0) {
-                $invertorList = InvertorList::findOrFail($id);
+            if($request['dataSheetFile']){
+                $file = $request->get('dataSheetFile');
+                if (strpos($file, ',') !== false) {
+                    @list($encode, $file) = explode(',', $file);
+                }
+                $fileName = base64_decode($file, true);  
+                $dataSheetName = time().'ds.pdf';
+                $destinationPath = public_path('brand/invertor/invertor_list/data_sheet/').$dataSheetName;            
+                file_put_contents($destinationPath, $fileName);
+            }
+            if (!empty($request['invertorListID'])) {
+                $invertorList = InvertorList::findOrFail($request['invertorListID']);
                 $invertorList->invertor_brand_id =  $request['brand'];
                 $invertorList->model = $request['model'];
                 $invertorList->power = $request['powerKW'];
                 $invertorList->voltage_ac = $request['voltage'];
                 $invertorList->voltage_dc_min = $request['voltageDC'][0];
                 $invertorList->voltage_dc_max = $request['voltageDC'][1];
-                if($request->image != 'oldImage'){
+                if($request['imageFile']){
                     File::delete('brand/invertor/invertor_list/'.$invertorList->image);
                     $invertorList->image = $photoname;
                 }
-                $invertorList->discription = 'null';
+                if($request['dataSheetFile']){
+                    File::delete('brand/invertor/invertor_list/data_sheet/'.$invertorList->data_sheet);
+                    $invertorList->data_sheet = $dataSheetName;
+                }
+                $invertorList->discription = '';
                 $invertorList->save();
             }else{
                 InvertorList::create([
@@ -68,15 +83,16 @@ class InvertorListController extends Controller
                     'voltage_ac' => $request['voltage'], 
                     'voltage_dc_min' => $request['voltageDC'][0], 
                     'voltage_dc_max' => $request['voltageDC'][1], 
-                    'discription' => 'null', 
+                    'discription' => '', 
                     'image' => $photoname, 
+                    'data_sheet' => $dataSheetName, 
                 ]);
             }
             // return $request;
            
 
             DB::commit();
-            return ['msg' => 'Solar brand succefully inserted'];
+            return ['msg' => 'Invertor List succefully inserted'];
         } catch (Exception $e) {
             DB::rollback();
         }
@@ -122,11 +138,12 @@ class InvertorListController extends Controller
      * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InvertorList $invertorList)
+    public function destroy($id)
     {
         $invertorList = InvertorList::findOrFail($id);
         File::delete('brand/invertor/invertor_list/'.$invertorList->image);
+        File::delete('brand/invertor/invertor_list/data_sheet/'.$invertorList->data_sheet);
         $invertorList->delete();
-        return ['message' => 'Selected Solar list has been Deleted'];
+        return ['message' => 'Selected Invertor list has been Deleted'];
     }
 }

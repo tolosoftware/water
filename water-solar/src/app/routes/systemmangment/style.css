@@ -20,7 +20,12 @@
     margin-top: 0px !important;
     float: right !important;
 }
-
+.solar_config_img{
+    width: 122px !important;
+    height: 47px !important;
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+}
 .solarCDropzone .dropzone-content>div{
     margin-bottom: 0px !important;
     margin-right: 0px !important;
@@ -222,6 +227,9 @@ background: linear-gradient(0deg, rgba(104,44,48,1) 0%, rgba(165,146,120,1) 40%,
 .insideFormPadding, .insideFormPadding1, .insideFormPadding2, .insideFormPadding3{
 padding: 0px 15px 10px;
 }
+.pr-slider{
+    padding-right: 20px;
+}
 
 .insideFormBPCable{
     padding-bottom: 15px;
@@ -230,6 +238,9 @@ padding: 0px 15px 10px;
 
 .insideFormPadding1 span[data-index="0"].MuiSlider-markLabel {
     left: 9% !important;
+}
+.insideFormPadding1.powerW-solarL span[data-index="0"].MuiSlider-markLabel {
+    left: 4% !important;
 }
 .insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
     left: 6% !important;
@@ -241,10 +252,13 @@ padding: 0px 15px 10px;
     left: 2% !important;
 }
 .insideFormPadding2.ivertor-ac span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3.ivertor-dc span[data-index="0"].MuiSlider-markLabel{
-    left: 2% !important;
+    left: 5% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
+}
+.insideFormPadding1.powerW-solarL span[data-index="1"].MuiSlider-markLabel {
+    left: 96% !important;
 }
 .insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
@@ -314,6 +328,28 @@ padding: 0px 15px 10px;
     left: 10% !important;
 }
 .powerKW-SS1 span[data-index="22"].MuiSlider-markLabel {
+    left: 93% !important;
+}
+.powerHP span[data-index="0"].MuiSlider-markLabel {
+    left: 2% !important;
+}
+.powerHP span[data-index="19"].MuiSlider-markLabel {
+    left: 96% !important;
+}
+.powerHP{
+    margin-bottom: 5px;
+}
+.mb-invertor{
+    margin-bottom: 10px;
+}
+.invertor-config-row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.mb-invertor span[data-index="0"].MuiSlider-markLabel {
+    left: 10% !important;
+}
+.mb-invertor span[data-index="22"].MuiSlider-markLabel {
     left: 93% !important;
 }
 .powerKW-PR span[data-index="22"].MuiSlider-markLabel {
@@ -468,6 +504,18 @@ padding: 0px 15px 10px;
 .dis-wps span[data-index="1"].MuiSlider-markLabel {
     left: 89% !important;
 }
-.mb-invertor{
-    margin-bottom: 10px;
+@media (min-width: 600px){
+   .app-header-horizontal .MuiToolbar-regular {
+        min-height: 80px;
+    }
+}
+.app-logo img {
+    height: 75px;
+}
+.powerW-solarL{
+    padding: 0px 22px 15px 10px;
+}
+.accessory-row .dropzone-content span>a{
+    background-color: transparent;
+    border: 2px dashed #3f51b5;
 }

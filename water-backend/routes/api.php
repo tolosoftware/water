@@ -30,6 +30,7 @@ Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth
 Route::resource('user', UserController::class);
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
+Route::get('userCity',[UserController::class,'userCity']);
 
 //setting
 Route::resource('uom', UomController::class);

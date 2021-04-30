@@ -128,13 +128,15 @@ export default function CustomizedDialogs(props) {
     setUserDataObject(null);
     setFiles([]);
     setOpen(false);
-    };
+  };
    //drop down
   const classes = useStyles();
   const [state, setState] = React.useState({
     expiration: '',
     name: 'hai',
   });
+  const [cities, setCities] = React.useState([]);
+  const [city, setCity] = React.useState('');
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -147,7 +149,7 @@ export default function CustomizedDialogs(props) {
   //end drop down
 
 //drop zone
- const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
   const {getRootProps, getInputProps} = useDropzone({
     accept: 'image/*',
     onDrop: acceptedFiles => {
@@ -173,7 +175,24 @@ export default function CustomizedDialogs(props) {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
-  
+  // useEffect(() => {
+  //   getCity();    
+  // },[open]);
+  // const getCity=async () => {
+  //   axios.get('api/userCity')
+  //         .then( res => {
+  //           console.log(res.data);
+  //           setCities(res.data);
+  //               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+  //               id="notification.titleHere" />);
+  //             }
+  //         ).catch( err =>{
+  //               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+  //               id="notification.titleHere"/>);
+  //             }
+  //         );
+  // };
+
   const onSubmit = (data) => {
     console.log('data in post form', data);
     if(files.length!==0){
@@ -217,7 +236,6 @@ export default function CustomizedDialogs(props) {
 
   return (
     <div className={classes.modlewidth}>
-    
           <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} maxWidth="md" fullWidth="md">
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           User Registration Form
@@ -244,23 +262,16 @@ export default function CustomizedDialogs(props) {
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                  <TextField id="email" className="form-control" label="Email" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
                 </div>
-                   <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                     {userDataOject?.id ? (
-                      <TextField name="new_password" className="form-control" label='New Password' size="small" type="password" variant="outlined" inputRef={register({minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
-                     ):  (
-                      <TextField name="password" className="form-control" label='Password' size="small" type="password" variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
-                     )}
-                  
-                  
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                  {userDataOject?.id ? (
+                  <TextField name="new_password" className="form-control" label='New Password' size="small" type="password" variant="outlined" inputRef={register({minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
+                  ):  (
+                  <TextField name="password" className="form-control" label='Password' size="small" type="password" variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
+                  )}
                 </div>
               </div>
-              
-            
-           
-              
+
               <div className="row mb-5">
-                
-             
                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.website && true} helperText={errors.website && '*required'}/>
                 </div>
@@ -273,12 +284,36 @@ export default function CustomizedDialogs(props) {
               </div>
 
               <div className="row">
+                {/* <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                  <FormControl variant="outlined" className="form-control" size="small">
+                    <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}  >City</InputLabel>
+                    <Select  native
+                      defaultValue={userDataOject?.geolocation_id}
+                      inputRef={register({required: true})}
+                      error={errors.expiration && true}
+                      // helperText={errors.expiration && '*required'}
+                      // value={city}
+                      // onChange={e=> setCity(e.target.value)}
+                      label="city"
+
+                      inputProps={{
+                        name: 'city',
+                        id: 'outlined-city-native-simple',
+                      }}
+                    >
+                      <option aria-label="None" value="" />
+                      
+                      {cities.map(data => 
+                         <option value={data.id}>{data.city}</option>
+                      )}
+                    </Select>
+                    {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
+                  </FormControl>
+                </div>  */}
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-               
-                    <FormControl variant="outlined" className="form-control" size="small">
+                  <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-age-native-simple" error={errors.expiration && true}  >Expiration</InputLabel>
-                    <Select 
-                      native
+                    <Select  native
                       defaultValue={userDataOject?.expiration}
                       inputRef={register({required: true})}
                       error={errors.expiration && true}
@@ -298,9 +333,8 @@ export default function CustomizedDialogs(props) {
                       <option value={12}>12 Month</option>
                     </Select>
                     {errors.expiration && <FormHelperText error={errors.expiration && true}>*required</FormHelperText>}
-                    
                   </FormControl>
-                  </div> 
+                </div> 
 
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    
