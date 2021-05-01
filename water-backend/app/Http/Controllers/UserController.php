@@ -95,6 +95,7 @@ class UserController extends Controller
                 $user->expiration =$request['expiration'];
                 $user->status = $request['status'];
                 $user->website = $request['website'];
+                $user->geolocation_id = $request['city'];
                 if(!empty($request['new_password'])){
                     $user->password = Hash::make($request['new_password']);
                 }
@@ -115,6 +116,7 @@ class UserController extends Controller
                     'status' => $request['status'],
                     'website' => $request['website'],
                     'userimage' => $photoname,
+                    'geolocation_id' => $request['city'],
                 ]);
             }
 

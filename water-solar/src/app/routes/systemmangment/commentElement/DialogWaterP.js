@@ -186,26 +186,26 @@ const styles = (theme) => ({
     },
   ];
   const marksHP = [
-    { value: 1, label: '1kg', },
-    { value: 1.5, /*label: '1.5kg',*/ },
-    { value: 2, /*label: '2kg',*/ },
-    { value: 3, /*label: '3kg',*/ },
-    { value: 4, /*label: '4kg',*/ },
-    { value: 5.5, /*label: '5.5kg',*/ },
-    { value: 7.5, /*label: '7.5kg',*/ },
-    { value: 11, /*label: '11kg',*/ },
-    { value: 15, /*label: '15kg',*/ },
-    { value: 20, /*label: '20kg',*/ },
-    { value: 25, /*label: '25kg',*/ },
-    { value: 30, /*label: '30kg',*/ },
-    { value: 40, label: '40kg', },
-    { value: 50, /*label: '50kg',*/ },
-    { value: 60, /*label: '60kg',*/ },
-    { value: 70, label: '70kg', },
-    { value: 75, /*label: '75kg',*/ },
-    { value: 80, /*label: '80kg',*/ },
-    { value: 90, /*label: '90kg',*/ },
-    { value: 100, label: '100kg', },
+    { value: 1, label: '1hp', },
+    { value: 1.5, /*label: '1.5hp',*/ },
+    { value: 2, /*label: '2hp',*/ },
+    { value: 3, /*label: '3hp',*/ },
+    { value: 4, /*label: '4hp',*/ },
+    { value: 5.5, /*label: '5.5hp',*/ },
+    { value: 7.5, /*label: '7.5hp',*/ },
+    { value: 11, /*label: '11hp',*/ },
+    { value: 15, /*label: '15hp',*/ },
+    { value: 20, /*label: '20hp',*/ },
+    { value: 25, /*label: '25hp',*/ },
+    { value: 30, /*label: '30hp',*/ },
+    { value: 40, label: '40hp', },
+    { value: 50, /*label: '50hp',*/ },
+    { value: 60, /*label: '60hp',*/ },
+    { value: 70, label: '70hp', },
+    { value: 75, /*label: '75hp',*/ },
+    { value: 80, /*label: '80hp',*/ },
+    { value: 90, /*label: '90hp',*/ },
+    { value: 100, label: '100hp', },
   ];
   const marksV = [
     {
@@ -455,7 +455,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormBP powerHP inputAdornmentWrap">
                                 <Typography id="discrete-slider-small-steps" gutterBottom >
-                                Power to KW 
+                                Power to HP 
                                 </Typography>
                                 <Slider name="powerHP" onChange={(event, value) => setPowerHP(value)}
                                     defaultValue={(powerHP) ? powerHP : 15}
