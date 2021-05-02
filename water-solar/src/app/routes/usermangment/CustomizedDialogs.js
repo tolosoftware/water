@@ -269,7 +269,7 @@ export default function CustomizedDialogs(props) {
 
               <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.website && true} helperText={errors.website && '*required'}/>
+                   <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register()} error={errors.website && true} helperText={errors.website && '*required'}/>
                 </div>
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="phone" defaultValue={userDataOject?.phone} className="form-control" label="Phone"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.phone && true} helperText={errors.phone && '*required'}/>

@@ -14,17 +14,17 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const QontoConnector = withStyles({
-  alternativeLabel: {
+  alternativeLabelBrand: {
     top: 10,
     left: 'calc(-50% + 16px)',
     right: 'calc(50% + 16px)',
   },
-  active: {
+  activeBrand: {
     '& $line': {
       borderColor: '#784af4',
     },
   },
-  completed: {
+  completedBrand: {
     '& $line': {
       borderColor: '#784af4',
     },
@@ -43,7 +43,7 @@ const useQontoStepIconStyles = makeStyles({
     height: 22,
     alignItems: 'center',
   },
-  active: {
+  activeBrand: {
     color: '#784af4',
   },
   circle: {
@@ -52,7 +52,7 @@ const useQontoStepIconStyles = makeStyles({
     borderRadius: '50%',
     backgroundColor: 'currentColor',
   },
-  completed: {
+  completedBrand: {
     color: '#784af4',
     zIndex: 1,
     fontSize: 18,
@@ -61,41 +61,41 @@ const useQontoStepIconStyles = makeStyles({
 
 function QontoStepIcon(props) {
   const classes = useQontoStepIconStyles();
-  const { active, completed } = props;
+  const { activeBrand, completedBrand } = props;
 
   return (
     <div
       className={clsx(classes.root, {
-        [classes.active]: active,
+        [classes.activeBrand]: activeBrand,
       })}
     >
-      {completed ? <Check className={classes.completed} /> : <div className={classes.circle} />}
+      {completedBrand ? <Check className={classes.completedBrand} /> : <div className={classes.circle} />}
     </div>
   );
 }
 
 QontoStepIcon.propTypes = {
   /**
-   * Whether this step is active.
+   * Whether this step is activeBrand.
    */
-  active: PropTypes.bool,
+  activeBrand: PropTypes.bool,
   /**
-   * Mark the step as completed. Is passed to child components.
+   * Mark the step as completedBrand. Is passed to child components.
    */
-  completed: PropTypes.bool,
+  completedBrand: PropTypes.bool,
 };
 
 const ColorlibConnector = withStyles({
-  alternativeLabel: {
+  alternativeLabelBrand: {
     top: 22,
   },
-  active: {
+  activeBrand: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
     },
   },
-  completed: {
+  completedBrand: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
@@ -121,12 +121,12 @@ const useColorlibStepIconStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  active: {
+  activeBrand: {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
-  completed: {
+  completedBrand: {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
   },
@@ -134,7 +134,7 @@ const useColorlibStepIconStyles = makeStyles({
 
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
+  const { activeBrand, completedBrand } = props;
 
   const icons = {
     1: <SettingsIcon />,
@@ -145,8 +145,8 @@ function ColorlibStepIcon(props) {
   return (
     <div
       className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
+        [classes.activeBrand]: activeBrand,
+        [classes.completedBrand]: completedBrand,
       })}
     >
       {icons[String(props.icon)]}
@@ -156,13 +156,13 @@ function ColorlibStepIcon(props) {
 
 ColorlibStepIcon.propTypes = {
   /**
-   * Whether this step is active.
+   * Whether this step is activeBrand.
    */
-  active: PropTypes.bool,
+  activeBrand: PropTypes.bool,
   /**
-   * Mark the step as completed. Is passed to child components.
+   * Mark the step as completedBrand. Is passed to child components.
    */
-  completed: PropTypes.bool,
+  completedBrand: PropTypes.bool,
   /**
    * The label displayed in the step icon.
    */
@@ -205,11 +205,11 @@ export default function CustomizedSteppers() {
   const stepsBrand = getStepsBrand();
 
   const handleNextBrand = () => {
-    setActiveStepBrand((prevActiveStep) => prevActiveStep + 1);
+    setActiveStepBrand((prevActiveStepBrand) => prevActiveStepBrand + 1);
   };
 
   const handleBackBrand = () => {
-    setActiveStepBrand((prevActiveStep) => prevActiveStep - 1);
+    setActiveStepBrand((prevActiveStepBrand) => prevActiveStepBrand - 1);
   };
 
   const handleResetBrand = () => {
@@ -218,21 +218,21 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel activeStepBrand={activeStepBrand}>
+      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabel activeStepBrand={activeStepBrand} connector={<QontoConnector />}>
+      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<QontoConnector />}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabel activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
+      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
@@ -243,7 +243,7 @@ export default function CustomizedSteppers() {
         {activeStepBrand === stepsBrand.length ? (
           <div>
             <Typography className={classes.instructions}>
-              All stepsBrand completed - you&apos;re finished
+              All stepsBrand completedBrand - you&apos;re finished
             </Typography>
             <Button onClick={handleResetBrand} className={classes.button}>
               Reset

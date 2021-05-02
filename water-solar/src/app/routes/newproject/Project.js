@@ -47,8 +47,9 @@ import Analyze from "./Analyze";
 
 // Start code for brand stepper selection
 // import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
+// import Step from "@material-ui/core/Step";
+// import StepLabel from "@material-ui/core/StepLabel";
+import PropTypes from 'prop-types';
 import SettingsIcon from "@material-ui/icons/Settings";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import VideoLabelIcon from "@material-ui/icons/VideoLabel";
@@ -250,16 +251,16 @@ const schema = type.object().shape({
 
 // start code of brand stepper
 const ColorlibConnector = withStyles({
-  alternativeLabel: {
+  alternativeLabelBrand: {
     top: 22,
   },
-  active: {
+  activeBrand: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
     },
   },
-  completed: {
+  completedBrand: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
@@ -275,7 +276,7 @@ const ColorlibConnector = withStyles({
 
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
+  const { activeBrand, completedBrand } = props;
 
   const icons = {
     1: <SettingsIcon />,
@@ -286,8 +287,8 @@ function ColorlibStepIcon(props) {
   return (
     <div
       className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
+        [classes.activeBrand]: activeBrand,
+        [classes.completedBrand]: completedBrand,
       })}
     >
       {icons[String(props.icon)]}
@@ -299,19 +300,52 @@ ColorlibStepIcon.propTypes = {
   /**
    * Whether this step is active.
    */
-  active: PropTypes.bool,
+  activeBrand: PropTypes.bool,
   /**
    * Mark the step as completed. Is passed to child components.
    */
-  completed: PropTypes.bool,
+  completedBrand: PropTypes.bool,
   /**
    * The label displayed in the step icon.
    */
   icon: PropTypes.node,
 };
-
+const useColorlibStepIconStyles = makeStyles({
+  root: {
+    backgroundColor: '#ccc',
+    zIndex: 1,
+    color: '#fff',
+    width: 50,
+    height: 50,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activeBrand: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+  },
+  completedBrand: {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+  },
+});
 function getStepsBrand() {
   return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+}
+function getStepContent(step) {
+  switch (step) {
+    case 0:
+      return 'Select campaign settings...';
+    case 1:
+      return 'What is an ad group anyways?';
+    case 2:
+      return 'This is the bit I really care about!';
+    default:
+      return 'Unknown step';
+  }
 }
 // end code of brand stepper
 export default function Project() {
@@ -378,11 +412,11 @@ export default function Project() {
   const [activeStepBrand, setActiveStepBrand] = React.useState(1);
   const stepsBrand = getStepsBrand();
   const handleNextBrand = () => {
-    setActiveStepBrand((prevActiveStep) => prevActiveStep + 1);
+    setActiveStepBrand((prevActiveStepBrand) => prevActiveStepBrand + 1);
   };
 
   const handleBackBrand = () => {
-    setActiveStepBrand((prevActiveStep) => prevActiveStep - 1);
+    setActiveStepBrand((prevActiveStepBrand) => prevActiveStepBrand - 1);
   };
 
   const handleResetBrand = () => {
@@ -792,14 +826,44 @@ export default function Project() {
                           Brand Managment
                         </DialogTitle>
                         <DialogContent dividers>
-                        <Stepper alternativeLabel activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
-                          {stepsBrand.map((label) => (
-                            <Step key={label}>
-                              <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                            </Step>
-                          ))}
-                        </Stepper>
-
+                          <div className={classes.root}>  
+                            <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
+                              {stepsBrand.map((label) => (
+                                <Step key={label}>
+                                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                                </Step>
+                              ))}
+                            </Stepper>
+                            <div>
+                            {activeStepBrand === stepsBrand.length ? (
+                                <div>
+                                  <Typography className={classes.instructions}>
+                                    All stepsBrand completed - you&apos;re finished
+                                  </Typography>
+                                  <Button onClick={handleResetBrand} className={classes.button}>
+                                    Reset
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div>
+                                  <Typography className={classes.instructions}>{getStepContent(activeStepBrand)}</Typography>
+                                  <div>
+                                    <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
+                                      Back
+                                    </Button>
+                                    <Button
+                                      variant="contained"
+                                      color="primary"
+                                      onClick={handleNextBrand}
+                                      className={classes.button}
+                                    >
+                                      {activeStepBrand === stepsBrand.length - 1 ? 'Finish' : 'Next'}
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                        </div>
                           {/* <b>Solar Brands</b> 
                           <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
                             <Sliderr className="slick-app-frame" {...options}>
@@ -855,33 +919,7 @@ export default function Project() {
                           </CardBox>      */}
                         </DialogContent>
                         <DialogActions>
-                          {activeStepBrand === stepsBrand.length ? (
-                            <div>
-                              <Typography className={classes.instructions}>
-                                All stepsBrand completed - you&apos;re finished
-                              </Typography>
-                              <Button onClick={handleResetBrand} className={classes.button}>
-                                Reset
-                              </Button>
-                            </div>
-                          ) : (
-                            <div>
-                              <Typography className={classes.instructions}>{getStepContent(activeStepBrand)}</Typography>
-                              <div>
-                                <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
-                                  Back
-                                </Button>
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={handleNextBrand}
-                                  className={classes.button}
-                                >
-                                  {activeStepBrand === stepsBrand.length - 1 ? 'Finish' : 'Next'}
-                                </Button>
-                              </div>
-                            </div>
-                          )}
+                          
                           <Button
                             onClick={handleClose}
                             color="primary"
@@ -1031,7 +1069,7 @@ export default function Project() {
                       <div className="col-md-12 p-0">
                         <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
                           <TextField
-                            id="outlined-basic"
+                            id="outlined-basic-1"
                             className="form-control"
                             label={`Head ${
                               piplenght && dirtloss
@@ -1075,7 +1113,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="The electrical cable between controller/inverter and submersible pump">
                             <TextField
-                              id="outlined-basic"
+                              id="outlined-basic-2"
                               label="Motor Cable"
                               variant="outlined"
                               placeholder="Motor cable!"
@@ -1114,7 +1152,7 @@ export default function Project() {
                         Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box."
                           >
                             <TextField
-                              id="outlined-basic"
+                              id="outlined-basic-4"
                               label="Pipe-lenght"
                               variant="outlined"
                               placeholder="Pipe lenght!"
@@ -1151,7 +1189,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="Enter your hourly water requirement in average method.">
                             <TextField
-                              id="outlined-basic"
+                              id="outlined-basic-5"
                               label="Water Demand"
                               variant="outlined"
                               placeholder="Water Demand"
@@ -1184,7 +1222,7 @@ export default function Project() {
                         </div>
                         <div className="col-md-6">
                           <TextField
-                            id="outlined-basic"
+                            id="outlined-basic-11"
                             label="Pipe Friction losses"
                             variant="outlined"
                             size="small"
@@ -1333,7 +1371,7 @@ export default function Project() {
                         <div className="row">
                           <div className="col-md-7">
                             <FormControl fullWidth>
-                              <Autocomplete
+                              <Autocomplete size="small"
                                 id="country-select-demo"
                                 onChange={(event, newValue) =>
                                   handlseelctitem(event, newValue, index)
@@ -1378,7 +1416,7 @@ export default function Project() {
                           <div className="col-md-5">
                             <FormControl fullWidth>
                               <TextField
-                                id="outlined-basic"
+                                id="outlined-basic7"
                                 label="Quantity"
                                 variant="outlined"
                                 size="small"
@@ -1438,7 +1476,7 @@ export default function Project() {
                   <div className="row">
                     <div className="col-md-3">
                       <TextField
-                        id="outlined-basic"
+                        id="outlined-basic1"
                         className="form-control"
                         label="Head"
                         variant="outlined"
@@ -1458,7 +1496,7 @@ export default function Project() {
                       />
 
                       <TextField
-                        id="outlined-basic"
+                        id="outlined-basic12"
                         className="form-control"
                         label="Head"
                         variant="outlined"

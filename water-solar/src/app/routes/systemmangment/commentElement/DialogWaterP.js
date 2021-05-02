@@ -370,7 +370,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                               <FormControl fullWidth >  
-                                <TextField type='number' size="small" id="outlined-basic2" label="Outlet" variant="outlined"
+                                <TextField size="small" id="outlined-basic2" label="Outlet" variant="outlined"
                                   name="outlet"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">inch</InputAdornment>,
@@ -378,14 +378,14 @@ export default function DialogWaterP(props){
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  defaultValue={waterListObject?.outlet} inputRef={register({required: true})} 
-                                error={errors.outlet && true} helperText={errors.outlet ? '*required' : ''}/>
+                                  defaultValue={waterListObject?.outlet} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                error={errors.outlet && true} helperText={errors.outlet ? '*Please enter valid number.' : ''}/>
                               </FormControl>
                                 
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
-                                  <TextField type='number' size="small" id="outlined-basic3" label="Current" variant="outlined"
+                                  <TextField size="small" id="outlined-basic3" label="Current" variant="outlined"
                                     name="current"  
                                     InputProps={{
                                       endAdornment: <InputAdornment position="end">A</InputAdornment>,
@@ -393,14 +393,14 @@ export default function DialogWaterP(props){
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    defaultValue={waterListObject?.ampeier} inputRef={register({required: true})} 
-                                    error={errors.current && true} helperText={errors.current ? '*required' : ''}/>
+                                    defaultValue={waterListObject?.ampeier} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                    error={errors.current && true} helperText={errors.current ? '*Please enter valid number.' : ''}/>
                                 </FormControl>
                                 
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                                 <FormControl fullWidth >  
-                                  <TextField type='number' size="small" id="outlined-basic4" label="Diameter" variant="outlined"
+                                  <TextField size="small" id="outlined-basic4" label="Diameter" variant="outlined"
                                     name="diameter"  
                                     InputProps={{
                                       endAdornment: <InputAdornment position="end">inch</InputAdornment>,
@@ -408,8 +408,8 @@ export default function DialogWaterP(props){
                                     InputLabelProps={{
                                       shrink: true,
                                     }}
-                                    defaultValue={waterListObject?.diameter} inputRef={register({required: true})} 
-                                    error={errors.diameter && true} helperText={errors.diameter ? '*required' : ''}
+                                    defaultValue={waterListObject?.diameter} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                    error={errors.diameter && true} helperText={errors.diameter ? '*Please enter valid number.' : ''}
                                     />
                                 </FormControl>
                                 
@@ -470,7 +470,7 @@ export default function DialogWaterP(props){
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                               <FormControl fullWidth >  
-                                <TextField type='number' size="small" id="outlined-basic2" label="Weight" variant="outlined"
+                                <TextField size="small" id="outlined-basic2" label="Weight" variant="outlined"
                                   name="weight"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">kg</InputAdornment>,
@@ -478,8 +478,8 @@ export default function DialogWaterP(props){
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  defaultValue={waterListObject?.weight} inputRef={register({required: true})} 
-                                  error={errors.weight && true} helperText={errors.weight ? '*required' : ''}/>
+                                  defaultValue={waterListObject?.weight} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                  error={errors.weight && true} helperText={errors.weight ? '*Please enter valid number.' : ''}/>
                               </FormControl>
                                 
                             </div>
