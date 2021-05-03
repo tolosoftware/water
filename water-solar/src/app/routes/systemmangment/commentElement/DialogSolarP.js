@@ -307,7 +307,7 @@ const getCabletype=async () => {
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                                 <FormControl fullWidth >  
-                                  <TextField type='number' size="small" id="outlined-basic3-voltage" label="Voltage" variant="outlined"
+                                  <TextField size="small" id="outlined-basic3-voltage" label="Voltage" variant="outlined"
                                   name="voltage"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">V</InputAdornment>,
@@ -315,15 +315,15 @@ const getCabletype=async () => {
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  defaultValue={solarListObject?.voltage} inputRef={register({required: true})} 
-                                  error={errors.voltage && true} helperText={errors.voltage ? '*required' : ''}
+                                  defaultValue={solarListObject?.voltage} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                  error={errors.voltage && true} helperText={errors.voltage ? '*Please enter valid number.' : ''}
                                  />
                                 </FormControl>
                             </div>
                             
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                                 <FormControl fullWidth >  
-                                  <TextField type='number' size="small" id="outlined-basic3-current" label="Current" variant="outlined"
+                                  <TextField size="small" id="outlined-basic3-current" label="Current" variant="outlined"
                                   name="current"  
                                   InputProps={{
                                     endAdornment: <InputAdornment position="end">A</InputAdornment>,
@@ -331,8 +331,8 @@ const getCabletype=async () => {
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  defaultValue={solarListObject?.current} inputRef={register({required: true})} 
-                                  error={errors.current && true} helperText={errors.current ? '*required' : ''}
+                                  defaultValue={solarListObject?.current} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                                  error={errors.current && true} helperText={errors.current ? '*Please enter valid number.' : ''}
                                  />
                                 </FormControl>
                                 

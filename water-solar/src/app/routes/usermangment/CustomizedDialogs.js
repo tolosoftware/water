@@ -175,26 +175,25 @@ export default function CustomizedDialogs(props) {
     // Make sure to revoke the data uris to avoid memory leaks
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
-  // useEffect(() => {
-  //   getCity();    
-  // },[open]);
-  // const getCity=async () => {
-  //   axios.get('api/userCity')
-  //         .then( res => {
-  //           console.log(res.data);
-  //           setCities(res.data);
-  //               NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-  //               id="notification.titleHere" />);
-  //             }
-  //         ).catch( err =>{
-  //               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-  //               id="notification.titleHere"/>);
-  //             }
-  //         );
-  // };
+
+  useEffect(() => {
+    getCity();    
+  },[props.open]);
+  const getCity=async () => {
+    axios.get('api/userCity')
+          .then( res => {
+            // console.log(res.data);
+            setCities(res.data);
+              }
+          ).catch( err =>{
+                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+                id="notification.titleHere"/>);
+              }
+          );
+  };
 
   const onSubmit = (data) => {
-    console.log('data in post form', data);
+    // console.log('data in post form', data);
     if(files.length!==0){
       var userimage = '';
       let file = files[0];
@@ -244,20 +243,17 @@ export default function CustomizedDialogs(props) {
          <DialogContent dividers>
           <div className="row"> 
              <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12">
-             <div className="row mb-5">
-                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                  <TextField id="id" type='hidden' name="id" defaultValue={(userDataOject?.id) ? userDataOject?.id : 0} inputRef={register}/>
-                  <TextField id="name" className="form-control" name="name" defaultValue={userDataOject?.name }  label="Full Name" size="small" variant="outlined" inputRef={register({required: true})} 
-                  error={errors.name && true} helperText={errors.name && '*required'}
-                  />
+              <div className="row mb-5">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                    <TextField id="id" type='hidden' name="id" defaultValue={(userDataOject?.id) ? userDataOject?.id : 0} inputRef={register}/>
+                    <TextField id="name" className="form-control" name="name" defaultValue={userDataOject?.name }  label="Full Name" size="small" variant="outlined" inputRef={register({required: true})} 
+                    error={errors.name && true} helperText={errors.name && '*required'}
+                    />
+                  </div>
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                    <TextField id="companyname" name="companyname" className="form-control" defaultValue={userDataOject?.companyname}  size="small" label="Company Name" variant="outlined" inputRef={register({required: true})} error={errors.companyname && true} helperText={errors.companyname && '*required'}/> 
+                  </div>  
               </div>
-
-               <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                  <TextField id="companyname" name="companyname" className="form-control" defaultValue={userDataOject?.companyname}  size="small" label="Company Name" variant="outlined" inputRef={register({required: true})} error={errors.companyname && true} helperText={errors.companyname && '*required'}/> 
-                </div>  
-              </div>
-
-
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                  <TextField id="email" className="form-control" label="Email" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
@@ -272,19 +268,16 @@ export default function CustomizedDialogs(props) {
               </div>
 
               <div className="row mb-5">
-                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.website && true} helperText={errors.website && '*required'}/>
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                   <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register()} error={errors.website && true} helperText={errors.website && '*required'}/>
                 </div>
-
-                   <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="phone" defaultValue={userDataOject?.phone} className="form-control" label="Phone"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.phone && true} helperText={errors.phone && '*required'}/>
                 </div>    
-
-              
               </div>
 
-              <div className="row">
-                {/* <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+              <div className="row mb-5">
+                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}  >City</InputLabel>
                     <Select  native
@@ -293,7 +286,7 @@ export default function CustomizedDialogs(props) {
                       error={errors.expiration && true}
                       // helperText={errors.expiration && '*required'}
                       // value={city}
-                      // onChange={e=> setCity(e.target.value)}
+                      onChange={e=> setCity(e.target.value)}
                       label="city"
 
                       inputProps={{
@@ -301,7 +294,7 @@ export default function CustomizedDialogs(props) {
                         id: 'outlined-city-native-simple',
                       }}
                     >
-                      <option aria-label="None" value="" />
+                      <option aria-label="None" value="" ></option>
                       
                       {cities.map(data => 
                          <option value={data.id}>{data.city}</option>
@@ -309,8 +302,8 @@ export default function CustomizedDialogs(props) {
                     </Select>
                     {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
                   </FormControl>
-                </div>  */}
-                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                </div> 
+                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-age-native-simple" error={errors.expiration && true}  >Expiration</InputLabel>
                     <Select  native
@@ -335,44 +328,34 @@ export default function CustomizedDialogs(props) {
                     {errors.expiration && <FormHelperText error={errors.expiration && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
-
-                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   
+                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
                    <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
                     {/* <FormLabel component="legend" size="small">Status</FormLabel> */}
-                  <RadioGroup
-                    size="small"
-                      className="d-flex flex-row"
-                      aria-label="status"
+                  <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
                       name="status" defaultValue={(userDataOject?.status)? userDataOject?.status : 'male'} >
-                      <FormControlLabel value="male"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
-                      <FormControlLabel value="female"  inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
-                    </RadioGroup>
+                    <FormControlLabel value="male"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
+                    <FormControlLabel value="female"  inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
+                  </RadioGroup>
                  </FormControl>               
                 </div>    
-
               </div> 
             </div>
-
-            
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
-            
              <section className="container">
                 <div {...getRootProps({className: 'dropzone'})} style={dropzone1}>
                   <input {...getInputProps()} />
                   <p>Uplod Logo</p>
                 </div>
-               <aside style={thumbsContainer}>
-                  {thumbs}
-                  {(files.length === 0 )? ((userDataOject?.userimage!=="" && userDataOject?.userimage!==undefined)? (<spam>
-                    <span className={`sp_right_padding`}>Cuurent Image </span>
-                    <span><img src={`${axios.defaults.baseURL}user/img/${userDataOject?.userimage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
-                  </spam>): ''): ''}
-              </aside>
+                <aside style={thumbsContainer}>
+                    {thumbs}
+                    {(files.length === 0 )? ((userDataOject?.userimage!=="" && userDataOject?.userimage!==undefined)? (<spam>
+                      <span className={`sp_right_padding`}>Cuurent Image </span>
+                      <span><img src={`${axios.defaults.baseURL}user/img/${userDataOject?.userimage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
+                    </spam>): ''): ''}
+                </aside>
               </section>
-              </div>
-
-            </div>                 
+            </div>
+          </div>                 
 
                  
      
