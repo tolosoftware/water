@@ -76,7 +76,7 @@ function DataSheetFile(props) {
         {/* <h3>Accepted File(.pdf)</h3> */}
         <ul>{filesList}</ul>
         {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (
-            <span><a src={`${axios.defaults.baseURL}${filePath}${oldImage}`} class="btn btn-primary">{oldImage}</a></span>
+            <span><a href={`${axios.defaults.baseURL}${filePath}${oldImage}`} class="btn btn-primary">{oldImage}</a></span>
             ): ''): ''}
       </div>
     </div>

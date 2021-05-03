@@ -247,7 +247,7 @@ export default function DialogWaterP(props){
     let imageFile = '';
     const [dataSheet, setDataSheet] = useState({ oldd: '', filePath: 'brand/pumpbrand/pump_list/data_sheet/', btnText: 'Data Sheet' });
     let dataSheetFile = '';
-    const [graph, setGraph] = useState({ oldImage: '', btnText: 'Graph' });
+    const [graph, setGraph] = useState({ oldImage: '', filePath: 'brand/pumpbrand/pump_list/', btnText: 'Graph' });
     let graphFile = '';
     const eventhandlerIm = (data) => {
       imageFile = data;
