@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const QontoConnector = withStyles({
-  alternativeLabelBrand: {
+  alternativeLabel: {
     top: 10,
     left: 'calc(-50% + 16px)',
     right: 'calc(50% + 16px)',
@@ -86,7 +86,7 @@ QontoStepIcon.propTypes = {
 };
 
 const ColorlibConnector = withStyles({
-  alternativeLabelBrand: {
+  alternativeLabel: {
     top: 22,
   },
   activeBrand: {
@@ -218,21 +218,21 @@ export default function CustomizedSteppers() {
 
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand}>
+      <Stepper alternativeLabel activeStepBrand={activeStepBrand}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<QontoConnector />}>
+      <Stepper alternativeLabel activeStepBrand={activeStepBrand} connector={<QontoConnector />}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
+      <Stepper alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
         {stepsBrand.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>

@@ -57,7 +57,12 @@
 .imagebrandhieght{
     height: 100px;
 }
-
+.img_solar_brand_hieght{
+    height: 80px;
+}
+.solar>.brand-logo{
+    padding-bottom: 80%;
+}
 .customslider{
     height: 118px;
 }
