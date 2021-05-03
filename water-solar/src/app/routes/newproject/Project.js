@@ -24,6 +24,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Flags from "country-flag-icons/react/3x2";
 //form import
 import axios from "axios";
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -50,9 +53,9 @@ import Analyze from "./Analyze";
 // import Step from "@material-ui/core/Step";
 // import StepLabel from "@material-ui/core/StepLabel";
 import PropTypes from 'prop-types';
-import SettingsIcon from "@material-ui/icons/Settings";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import VideoLabelIcon from "@material-ui/icons/VideoLabel";
+import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
 import StepConnector from "@material-ui/core/StepConnector";
 import clsx from 'clsx';
 // end code of brand stepper selection
@@ -251,16 +254,16 @@ const schema = type.object().shape({
 
 // start code of brand stepper
 const ColorlibConnector = withStyles({
-  alternativeLabelBrand: {
+  alternativeLabel: {
     top: 22,
   },
-  activeBrand: {
+  active: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
     },
   },
-  completedBrand: {
+  completed: {
     '& $line': {
       backgroundImage:
         'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
@@ -276,19 +279,19 @@ const ColorlibConnector = withStyles({
 
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
-  const { activeBrand, completedBrand } = props;
+  const { active, completed } = props;
 
   const icons = {
-    1: <SettingsIcon />,
-    2: <GroupAddIcon />,
-    3: <VideoLabelIcon />,
+    1: <LocalDrinkIcon />,
+    2: <WbSunnyIcon />,
+    3: <FlashAutoIcon />,
   };
 
   return (
     <div
       className={clsx(classes.root, {
-        [classes.activeBrand]: activeBrand,
-        [classes.completedBrand]: completedBrand,
+        [classes.active]: active,
+        [classes.completed]: completed,
       })}
     >
       {icons[String(props.icon)]}
@@ -300,11 +303,11 @@ ColorlibStepIcon.propTypes = {
   /**
    * Whether this step is active.
    */
-  activeBrand: PropTypes.bool,
+  active: PropTypes.bool,
   /**
    * Mark the step as completed. Is passed to child components.
    */
-  completedBrand: PropTypes.bool,
+  completed: PropTypes.bool,
   /**
    * The label displayed in the step icon.
    */
@@ -322,18 +325,18 @@ const useColorlibStepIconStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  activeBrand: {
+  active: {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
-  completedBrand: {
+  completed: {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
   },
 });
 function getStepsBrand() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+  return ['Select Water Pump Brand', 'Select Solar Brand', 'Select Inverter Brand'];
 }
 function getStepContent(step) {
   switch (step) {
@@ -470,7 +473,7 @@ export default function Project() {
   }
   //end solar and brand
   //Dialog
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -512,6 +515,8 @@ export default function Project() {
   //database data
   const [location, setLocation] = useState([]);
   const [solar, setSolar] = useState([]);
+  const [solarWatts, setSolarWatt] = useState([]);
+  const [solarSelectWatt, setSolarSelectWatt] = useState('');
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
@@ -569,16 +574,19 @@ export default function Project() {
 
   const getProjectdata = async () => {
     setOpenbackdrop(true);
-    axios
-      .get("api/gitprojectdata")
+    handleResetBrand();
+    axios.get("api/gitprojectdata")
       .then((res) => {
+        console.log(res.data)
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setSolar(res.data.solarbrand);
+        setSolarWatt(res.data.solarWatts);
         setPump(res.data.pumpbrand);
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
         setUom(res.data.uom);
+        setOpen(true);
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -782,8 +790,8 @@ export default function Project() {
       </Backdrop>
       <div className={classes.root}>
         <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
+          {steps.map((label, index) => (
+            <Step key={`${label}${index}`}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}
@@ -827,106 +835,156 @@ export default function Project() {
                         </DialogTitle>
                         <DialogContent dividers>
                           <div className={classes.root}>  
-                            <Stepper alternativeLabelBrand activeStepBrand={activeStepBrand} connector={<ColorlibConnector />}>
-                              {stepsBrand.map((label) => (
-                                <Step key={label}>
-                                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                                </Step>
-                              ))}
-                            </Stepper>
-                            <div>
-                            {activeStepBrand === stepsBrand.length ? (
-                                <div>
-                                  <Typography className={classes.instructions}>
-                                    All stepsBrand completed - you&apos;re finished
-                                  </Typography>
-                                  <Button onClick={handleResetBrand} className={classes.button}>
-                                    Reset
-                                  </Button>
-                                </div>
+                          <Stepper style={{paddingLeft:'0px', paddingRight: '0px'}} alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
+                            {stepsBrand.map((label, index) => (
+                              <Step key={`${label}${index}`}>
+                                <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                              </Step>
+                            ))}
+                          </Stepper>
+
+                          <div>
+                              {activeStepBrand === stepsBrand.length ? (
+                                <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
+                                  <Sliderr className="slick-app-frame " {...options}>
+                                    {invertor.map((data,index) => {  
+                                      return <span key={index} onClick={() => invertorbrand(data.id,data.name,index)}>        
+                                          <div class="slick-slide-item">
+                                            <div className={toggelactivestyleinvertor(index)}>
+                                              <div>
+                                                <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                              </div>
+                                              <span> {data.country} {getFlag(data.country)}  </span>          
+                                            </div>
+                                          </div>
+                                        </span>         
+                                      })} 
+                                  </Sliderr>        
+                                </CardBox> 
                               ) : (
                                 <div>
-                                  <Typography className={classes.instructions}>{getStepContent(activeStepBrand)}</Typography>
-                                  <div>
-                                    <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
-                                      Back
-                                    </Button>
-                                    <Button
-                                      variant="contained"
-                                      color="primary"
-                                      onClick={handleNextBrand}
-                                      className={classes.button}
-                                    >
-                                      {activeStepBrand === stepsBrand.length - 1 ? 'Finish' : 'Next'}
-                                    </Button>
-                                  </div>
+                                  <Typography className={classes.instructions}>
+                                    {activeStepBrand===0?
+                                    <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
+                                      <Sliderr className="slick-app-frame " {...options}>
+                                        {pump.map((data,index) => {  
+                                          return <span key={index} onClick={() => pumpbrand(data.id,data.name,index)}>        
+                                              <div class="slick-slide-item">
+                                                <div className={toggelactivestylepump(index)}>
+                                                  <div>
+                                                    <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                                  </div>
+                                                  <span> {data.country} {getFlag(data.country)}  </span>          
+                                                </div>
+                                              </div>
+                                            </span>         
+                                          })} 
+                                      </Sliderr>        
+                                    </CardBox>
+                                    : activeStepBrand===1?
+                                    <div className="row">
+                                      <CardBox styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard" cardStyle="text-center">
+                                        <Sliderr className="slick-app-frame" {...options}>
+                                          {solar.map((data,index) => {  
+                                          return <span key={index} onClick={()=> solarbrand(data.id,data.name,index)} >        
+                                              <div className="slick-slide-item solar">
+                                                <div className={toggelactivestyle(index)}>
+                                                  <div>
+                                                    <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght" alt="Responsive" />
+                                                  </div>
+                                                  <span> {data.country} {getFlag(data.country)}  </span>
+                                                </div>
+                                              </div>
+                                            </span>         
+                                          })} 
+                                        </Sliderr>        
+                                      </CardBox>
+                                      {solarWatts?
+                                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
+                                          <FormControl variant="outlined" size="small" className='form-control'>
+                                            <InputLabel id="demo-simple-select-outlined-label">Solar Power</InputLabel>
+                                            <Select name='solarwatt'
+                                            labelId="demo-simple-select-outlined-label"
+                                            id="demo-simple-select-outlined-solarwatt"
+                                            value={solarSelectWatt}
+                                            onChange={(e) => setSolarSelectWatt(e.target.value)}
+                                            label="Solar Power"
+                                            >
+                                            <MenuItem value="">
+                                                <em></em>
+                                            </MenuItem>
+                                            {solarWatts?.map(watt => 
+                                            <MenuItem value={watt.id}>{watt.power}</MenuItem>
+                                            )}
+                                            </Select>
+                                          </FormControl>
+                                        </div>
+                                      :''}
+                                    </div>
+                                    :activeStepBrand===2? 
+                                    <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
+                                      <Sliderr className="slick-app-frame " {...options}>
+                                        {invertor.map((data,index) => {  
+                                          return <span key={index} onClick={() => invertorbrand(data.id,data.name,index)}>        
+                                              <div class="slick-slide-item">
+                                                <div className={toggelactivestyleinvertor(index)}>
+                                                  <div>
+                                                    <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                                  </div>
+                                                  <span> {data.country} {getFlag(data.country)}  </span>          
+                                                </div>
+                                              </div>
+                                            </span>         
+                                          })} 
+                                      </Sliderr>        
+                                    </CardBox> 
+                                    : ''
+                                    }
+                                  </Typography>
                                 </div>
                               )}
                             </div>
                         </div>
-                          {/* <b>Solar Brands</b> 
-                          <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                            <Sliderr className="slick-app-frame" {...options}>
-                              {solar.map((data,index) => {  
-                              return <span key={index} onClick={()=> solarbrand(data.id,data.name,index)} >        
-                                  <div   className="slick-slide-item">
-                                    <div className={toggelactivestyle(index)}>
-                                      <div>
-                                        <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                      </div>
-                                      <span> {data.country} {getFlag(data.country)}  </span>
-                                    </div>
-                                  </div>
-                                </span>         
-                              })} 
-                            </Sliderr>        
-                          </CardBox>
-
-                          <b>Water pump brands</b> 
-                          <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                            <Sliderr className="slick-app-frame " {...options}>
-                              {pump.map((data,index) => {  
-                                return <span key={index} onClick={() => pumpbrand(data.id,data.name,index)}>        
-                                    <div class="slick-slide-item">
-                                      <div className={toggelactivestylepump(index)}>
-                                        <div>
-                                          <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                        </div>
-                                        <span> {data.country} {getFlag(data.country)}  </span>          
-                                      </div>
-                                    </div>
-                                  </span>         
-                                })} 
-                            </Sliderr>        
-                          </CardBox>   
-
-                          <b>Invertor brands</b> 
-                          <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                            <Sliderr className="slick-app-frame " {...options}>
-                              {invertor.map((data,index) => {  
-                                return <span key={index} onClick={() => invertorbrand(data.id,data.name,index)}>        
-                                    <div class="slick-slide-item">
-                                      <div  className={toggelactivestyleinvertor(index)}>
-                                        <div>
-                                          <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                        </div>
-                                        <span> {data.country} {getFlag(data.country)}  </span>          
-                                      </div>
-                                    </div>
-                                  </span>         
-                                })} 
-                            </Sliderr>        
-                          </CardBox>      */}
                         </DialogContent>
                         <DialogActions>
-                          
+                          <div>
+                            {activeStepBrand === stepsBrand.length ? (
+                              <div>
+                                <Button onClick={handleResetBrand} className={classes.button}>
+                                  Reset
+                                </Button>
+                              </div>
+                            ) : (
+                              <div>
+                                <div>
+                                  <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
+                                    Back
+                                  </Button>
+                                  
+                                  <Button
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={activeStepBrand === stepsBrand.length-1?true:false}
+                                    onClick={handleNextBrand}
+                                    className={classes.button}
+                                  >
+                                    Next
+                                    {/* {activeStepBrand === stepsBrand.length - 1 ? 'Finish' : 'Next'} */}
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          {activeStepBrand === stepsBrand.length-1?
                           <Button
                             onClick={handleClose}
                             color="primary"
                             variant="contained"
+                            disabled={activeStepBrand === stepsBrand.length-1?false:true}
                           >
                             Done
-                          </Button>
+                          </Button>:''}
+                          
                         </DialogActions>
                       </Dialog>
                       {/* end dialog */}
@@ -1020,7 +1078,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <Autocomplete
                             size="small"
-                            id="country-select-demo"
+                            id="country-select-demo2"
                             onChange={(event, newValue) => {
                               handcahngeCity(event, newValue);
                               getIrredation(newValue);
@@ -1372,7 +1430,7 @@ export default function Project() {
                           <div className="col-md-7">
                             <FormControl fullWidth>
                               <Autocomplete size="small"
-                                id="country-select-demo"
+                                id="country-select-demo3"
                                 onChange={(event, newValue) =>
                                   handlseelctitem(event, newValue, index)
                                 }

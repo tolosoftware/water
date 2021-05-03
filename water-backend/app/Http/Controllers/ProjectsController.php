@@ -294,6 +294,11 @@ class ProjectsController extends Controller
         $geolocation = Geolocation::distinct()->count('country');
         $pumpbrand = Pump_brands::all();
         $solarbrand = Solar_brands::all();
+        $solar_list_watts = Solar_list::all()->unique('power');
+        $solar_watts = array();
+        foreach ($solar_list_watts as $key => $value) {
+            array_push($solar_watts, $value);
+        }
         $invertorbrand = InvertorBrand::all();
         $uom = Uom::all();
         $accessories = Accessories_list::all();
@@ -303,7 +308,7 @@ class ProjectsController extends Controller
             ->get();
 
         return response()->json([
-            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand,
+            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'solarWatts'=>$solar_watts,
             'uom'=>$uom , 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
         ]);
     }
