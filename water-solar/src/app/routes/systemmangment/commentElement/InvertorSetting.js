@@ -250,7 +250,7 @@ export default function InvertorSetting(props){
       // let data = {
       //     power, 
       // }
-      console.log(inputFields);
+      // console.log(inputFields);
       axios.post('api/invertorListSetting', inputFields)
         .then(
             res => {

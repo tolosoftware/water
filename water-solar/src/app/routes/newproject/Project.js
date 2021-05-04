@@ -834,117 +834,117 @@ export default function Project() {
                           Brand Managment
                         </DialogTitle>
                         <DialogContent dividers>
-                          <div className={classes.root}>  
-                          <Stepper style={{paddingLeft:'0px', paddingRight: '0px'}} alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
-                            {stepsBrand.map((label, index) => (
-                              <Step key={`${label}${index}`}>
-                                <StepLabel className={`brand-step-${index}`} StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                              </Step>
-                            ))}
-                          </Stepper>
+                          <div className={classes.root}>
+                            <Stepper style={{ paddingLeft: '0px', paddingRight: '0px' }} alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
+                              {stepsBrand.map((label, index) => (
+                                <Step key={`${label}${index}`}>
+                                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                                </Step>
+                              ))}
+                            </Stepper>
 
-                          <div>
+                            <div>
                               {activeStepBrand === stepsBrand.length ? (
                                 <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
                                   <Sliderr className="slick-app-frame " {...options}>
-                                    {invertor.map((data,index) => {  
-                                      return <span key={index} onClick={() => invertorbrand(data.id,data.name,index)}>        
-                                          <div class="slick-slide-item">
-                                            <div className={toggelactivestyleinvertor(index)}>
-                                              <div>
-                                                <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                              </div>
-                                              <span> {data.country} {getFlag(data.country)}  </span>          
+                                    {invertor.map((data, index) => {
+                                      return <span key={index} onClick={() => invertorbrand(data.id, data.name, index)}>
+                                        <div class="slick-slide-item">
+                                          <div className={toggelactivestyleinvertor(index)}>
+                                            <div>
+                                              <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
                                             </div>
+                                            <span> {data.country} {getFlag(data.country)}  </span>
                                           </div>
-                                        </span>         
-                                      })} 
-                                  </Sliderr>        
-                                </CardBox> 
+                                        </div>
+                                      </span>
+                                    })}
+                                  </Sliderr>
+                                </CardBox>
                               ) : (
                                 <div>
                                   <Typography className={classes.instructions}>
-                                    {activeStepBrand===0?
-                                    <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                                      <Sliderr className="slick-app-frame " {...options}>
-                                        {pump.map((data,index) => {  
-                                          return <span key={index} onClick={() => pumpbrand(data.id,data.name,index)}>        
+                                    {activeStepBrand === 0 ?
+                                      <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
+                                        <Sliderr className="slick-app-frame " {...options}>
+                                          {pump.map((data, index) => {
+                                            return <span key={index} onClick={() => pumpbrand(data.id, data.name, index)}>
                                               <div class="slick-slide-item">
                                                 <div className={toggelactivestylepump(index)}>
                                                   <div>
-                                                    <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
-                                                  </div>
-                                                  <span> {data.country} {getFlag(data.country)}  </span>          
-                                                </div>
-                                              </div>
-                                            </span>         
-                                          })} 
-                                      </Sliderr>        
-                                    </CardBox>
-                                    : activeStepBrand===1?
-                                    <div className="row">
-                                      <CardBox styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard" cardStyle="text-center">
-                                        <Sliderr className="slick-app-frame" {...options}>
-                                          {solar.map((data,index) => {  
-                                          return <span key={index} onClick={()=> solarbrand(data.id,data.name,index)} >        
-                                              <div className="slick-slide-item solar">
-                                                <div className={toggelactivestyle(index)}>
-                                                  <div>
-                                                    <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght" alt="Responsive" />
+                                                    <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
                                                   </div>
                                                   <span> {data.country} {getFlag(data.country)}  </span>
                                                 </div>
                                               </div>
-                                            </span>         
-                                          })} 
-                                        </Sliderr>        
+                                            </span>
+                                          })}
+                                        </Sliderr>
                                       </CardBox>
-                                      {solarWatts?
-                                        <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
-                                          <FormControl variant="outlined" size="small" className='form-control'>
-                                            <InputLabel id="demo-simple-select-outlined-label">Solar Power</InputLabel>
-                                            <Select name='solarwatt'
-                                            labelId="demo-simple-select-outlined-label"
-                                            id="demo-simple-select-outlined-solarwatt"
-                                            value={solarSelectWatt}
-                                            onChange={(e) => setSolarSelectWatt(e.target.value)}
-                                            label="Solar Power"
-                                            >
-                                            <MenuItem value="">
-                                                <em></em>
-                                            </MenuItem>
-                                            {solarWatts?.map(watt => 
-                                            <MenuItem value={watt.id}>{watt.power}</MenuItem>
-                                            )}
-                                            </Select>
-                                          </FormControl>
-                                        </div>
-                                      :''}
-                                    </div>
-                                    :activeStepBrand===2? 
-                                    <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                                      <Sliderr className="slick-app-frame " {...options}>
-                                        {invertor.map((data,index) => {  
-                                          return <span key={index} onClick={() => invertorbrand(data.id,data.name,index)}>        
-                                              <div class="slick-slide-item">
-                                                <div className={toggelactivestyleinvertor(index)}>
-                                                  <div>
-                                                    <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                      : activeStepBrand === 1 ?
+                                        <div className="row">
+                                          <CardBox styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard" cardStyle="text-center">
+                                            <Sliderr className="slick-app-frame" {...options}>
+                                              {solar.map((data, index) => {
+                                                return <span key={index} onClick={() => solarbrand(data.id, data.name, index)} >
+                                                  <div className="slick-slide-item solar">
+                                                    <div className={toggelactivestyle(index)}>
+                                                      <div>
+                                                        <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght" alt="Responsive" />
+                                                      </div>
+                                                      <span> {data.country} {getFlag(data.country)}  </span>
+                                                    </div>
                                                   </div>
-                                                  <span> {data.country} {getFlag(data.country)}  </span>          
-                                                </div>
-                                              </div>
-                                            </span>         
-                                          })} 
-                                      </Sliderr>        
-                                    </CardBox> 
-                                    : ''
+                                                </span>
+                                              })}
+                                            </Sliderr>
+                                          </CardBox>
+                                          {solarWatts ?
+                                            <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
+                                              <FormControl variant="outlined" size="small" className='form-control'>
+                                                <InputLabel id="demo-simple-select-outlined-label">Solar Watt</InputLabel>
+                                                <Select name='solarwatt'
+                                                  labelId="demo-simple-select-outlined-label"
+                                                  id="demo-simple-select-outlined-solarwatt"
+                                                  value={solarSelectWatt}
+                                                  onChange={(e) => setSolarSelectWatt(e.target.value)}
+                                                  label="Solar Watt"
+                                                >
+                                                  <MenuItem value="">
+                                                    <em></em>
+                                                  </MenuItem>
+                                                  {solarWatts?.map(watt =>
+                                                    <MenuItem value={watt.id}>{watt.power}W</MenuItem>
+                                                  )}
+                                                </Select>
+                                              </FormControl>
+                                            </div>
+                                            : ''}
+                                        </div>
+                                        : activeStepBrand === 2 ?
+                                          <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
+                                            <Sliderr className="slick-app-frame " {...options}>
+                                              {invertor.map((data, index) => {
+                                                return <span key={index} onClick={() => invertorbrand(data.id, data.name, index)}>
+                                                  <div class="slick-slide-item">
+                                                    <div className={toggelactivestyleinvertor(index)}>
+                                                      <div>
+                                                        <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                                      </div>
+                                                      <span> {data.country} {getFlag(data.country)}  </span>
+                                                    </div>
+                                                  </div>
+                                                </span>
+                                              })}
+                                            </Sliderr>
+                                          </CardBox>
+                                          : ''
                                     }
                                   </Typography>
                                 </div>
                               )}
                             </div>
-                        </div>
+                          </div>
                         </DialogContent>
                         <DialogActions>
                           <div>
@@ -960,11 +960,11 @@ export default function Project() {
                                   <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
                                     Back
                                   </Button>
-                                  
+
                                   <Button
                                     variant="contained"
                                     color="primary"
-                                    disabled={activeStepBrand === stepsBrand.length-1?true:false}
+                                    disabled={activeStepBrand === stepsBrand.length - 1 ? true : false}
                                     onClick={handleNextBrand}
                                     className={classes.button}
                                   >
@@ -975,16 +975,16 @@ export default function Project() {
                               </div>
                             )}
                           </div>
-                          {activeStepBrand === stepsBrand.length-1?
-                          <Button
-                            onClick={handleClose}
-                            color="primary"
-                            variant="contained"
-                            disabled={activeStepBrand === stepsBrand.length-1?false:true}
-                          >
-                            Done
-                          </Button>:''}
-                          
+                          {activeStepBrand === stepsBrand.length - 1 ?
+                            <Button
+                              onClick={handleClose}
+                              color="primary"
+                              variant="contained"
+                              disabled={activeStepBrand === stepsBrand.length - 1 ? false : true}
+                            >
+                              Done
+                          </Button> : ''}
+
                         </DialogActions>
                       </Dialog>
                       {/* end dialog */}
@@ -1008,8 +1008,8 @@ export default function Project() {
                             }}
                             error={
                               touched &&
-                              touched.projectname &&
-                              error && error.projectname
+                                touched.projectname &&
+                                error && error.projectname
                                 ? true
                                 : false
                             }
@@ -1129,14 +1129,13 @@ export default function Project() {
                           <TextField
                             id="outlined-basic-1"
                             className="form-control"
-                            label={`Head ${
-                              piplenght && dirtloss
-                                ? "+ " +
-                                  Math.ceil(
-                                    Number((dirtloss * piplenght) / 100)
-                                  )
-                                : ""
-                            }`}
+                            label={`Head ${piplenght && dirtloss
+                              ? "+ " +
+                              Math.ceil(
+                                Number((dirtloss * piplenght) / 100)
+                              )
+                              : ""
+                              }`}
                             variant="outlined"
                             placeholder="Head !"
                             margin="normal"
