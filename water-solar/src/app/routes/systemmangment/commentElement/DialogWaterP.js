@@ -193,7 +193,7 @@ const marksHP = [
   { value: 4, /*label: '4hp',*/ },
   { value: 5.5, /*label: '5.5hp',*/ },
   { value: 7.5, /*label: '7.5hp',*/ },
-  { value: 11, /*label: '11hp',*/ },
+  { value: 10, /*label: '10hp',*/ },
   { value: 15, /*label: '15hp',*/ },
   { value: 20, /*label: '20hp',*/ },
   { value: 25, /*label: '25hp',*/ },
@@ -223,18 +223,20 @@ const marksV = [
 ];
 
 export default function DialogWaterP(props) {
-  const { register, handleSubmit, errors, reset } = useForm(); // initialize the hook
+  const { register, handleSubmit, formState: { errors }, reset } = useForm(); // initialize the hook
   // start code of dialog modal for water pump
   const { openD, setOpenD } = props;
+  const [saveNew, setSaveNew] = useState(false);
   // const handleClickOpen = () => {
   //     setOpenD(true);
   // };
   const handleClose = () => {
     emptyForm();
     setOpenD(false);
+    setSaveNew(false);
   };
   // end code of dialog modal for water pump
-  const [saveNew, setSaveNew] = useState(false);
+ 
   const [brand, setBrand] = useState('');
   const waterPumpBrands = props.waterPumpBrands;
   const { waterListObject, setWaterListObject } = props;
@@ -294,14 +296,35 @@ export default function DialogWaterP(props) {
     setImage({ ...image, ['oldImage']: waterListObject.image });
     setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet ? waterListObject.data_sheet : '' });
     setGraph({ ...graph, ['oldImage']: waterListObject.graph ? 'graph/' + waterListObject.graph : '' });
-  }, [waterListObject, props.openD])
-  useEffect(()=>{
-    if(saveNew){
-      setWaterListObject([]);
-      emptyForm();
+    if(props.waterListObject?.id){
+      reset({
+        waterListID: waterListObject?.id,
+        name: waterListObject?.model,
+        outlet: waterListObject?.outlet,
+        current: waterListObject?.ampeier,
+        diameter: waterListObject?.diameter,
+        weight: waterListObject?.weight,
+      });
+    }else{
+      if(!(props.waterListObject?.id && saveNew)){
+        reset({
+          waterListID: "",
+          name: "",
+          outlet: "",
+          current: "",
+          diameter: "",
+          weight: "",
+        });
+      }
       
     }
-  }, [saveNew]);
+  }, [waterListObject, props.openD])
+  useEffect(() => {
+    if(saveNew){
+      emptyForm();
+    }
+  }, [saveNew])
+
   const classes = useStyles();
 
   const onSubmit = (data, e) => {
@@ -320,17 +343,14 @@ export default function DialogWaterP(props) {
       .then(res => {
         if(saveNew){
           setWaterListObject([]);
-          emptyForm();
-          props.emptyListObject();
           reset({
-            waterListID: '',
-            name: '',
-            outlet: '',
-            current: '',
-            diameter: '',
-            weight: '',
+            waterListID: "",
+            name: "",
+            outlet: "",
+            current: "",
+            diameter: "",
+            weight: "",
           });
-          console.log('data', data);
         }else{
           setOpenD(false);
         }
@@ -386,13 +406,13 @@ export default function DialogWaterP(props) {
                   </FormControl>
                 </div>
                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP">
-                  <TextField id="outlined-basic1" size="small" variant="outlined" name="name" className="fullWidthInput" label="Name/Model" defaultValue={!saveNew?(waterListObject?.model):''} inputRef={register({ required: true })}
+                  <TextField id="name" size="small" variant="outlined" name="name" className="fullWidthInput" label="Name/Model" defaultValue={(waterListObject?.model)? waterListObject?.model :''} inputRef={register({ required: true })}
                     error={errors.name && true} helperText={errors.name ? '*required' : ''}
                   />
                 </div>
                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
                   <FormControl fullWidth >
-                    <TextField size="small" id="outlined-basic2" label="Outlet" variant="outlined"
+                    <TextField size="small" id="outlet" label="Outlet" variant="outlined"
                       name="outlet"
                       InputProps={{
                         endAdornment: <InputAdornment position="end">inch</InputAdornment>,
@@ -400,7 +420,7 @@ export default function DialogWaterP(props) {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      defaultValue={waterListObject?.outlet} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
+                      defaultValue={(waterListObject?.outlet)?waterListObject?.outlet:''} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
                       error={errors.outlet && true} helperText={errors.outlet ? '*Please enter valid number.' : ''} />
                   </FormControl>
 
@@ -415,8 +435,8 @@ export default function DialogWaterP(props) {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      defaultValue={waterListObject?.ampeier} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
-                      error={errors.current && true} helperText={errors.current ? '*Please enter valid number.' : ''} />
+                      defaultValue={(waterListObject?.ampeier)? waterListObject?.ampeier :''} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
+                      error={errors.current && true} helperText={errors.current ? '*Please enter valid number.' : ''} /> 
                   </FormControl>
 
                 </div>
@@ -430,7 +450,7 @@ export default function DialogWaterP(props) {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      defaultValue={waterListObject?.diameter} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
+                      defaultValue={waterListObject?.diameter?waterListObject?.diameter:''} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
                       error={errors.diameter && true} helperText={errors.diameter ? '*Please enter valid number.' : ''}
                     />
                   </FormControl>
@@ -500,7 +520,7 @@ export default function DialogWaterP(props) {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      defaultValue={waterListObject?.weight} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
+                      defaultValue={waterListObject?.weight?waterListObject?.weight:''} inputRef={register({ required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/, })}
                       error={errors.weight && true} helperText={errors.weight ? '*Please enter valid number.' : ''} />
                   </FormControl>
 
@@ -526,7 +546,7 @@ export default function DialogWaterP(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> setSaveNew(true)}>Save and New</Button>
+          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={waterListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
           <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> setSaveNew(false)}>Submit</Button>
         </DialogActions>
       </form>

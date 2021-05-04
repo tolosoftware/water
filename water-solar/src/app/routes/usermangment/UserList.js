@@ -101,13 +101,14 @@ export const UserList=() => {
             ]}
             data={userdata}
             actions={[
-                {
+              rowData => ({
+                disabled: (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
                 icon: 'edit',
                 tooltip: 'Edit User',
                 onClick: (event, rowData) =>  editUser(rowData)
-                },
+                }),
                 rowData => ({ 
-                  disabled: (rowData['system']===1)? true : false,
+                  disabled: (rowData['system']===1)? true : (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
                   icon: 'delete',
                   color:'primary',  
                   tooltip: 'Delete User',

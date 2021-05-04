@@ -157,6 +157,7 @@ function* signOut() {
     const signOutUser = yield call(signOutRequest);
     if (signOutUser === undefined) {
       localStorage.removeItem('token');
+      //localStorage.removeItem('UserData');
       yield put(userSignOutSuccess(signOutUser));
     } else {
       yield put(showAuthMessage(signOutUser.message));

@@ -126,9 +126,10 @@ const styles = (theme) => ({
 // ];
 
 export default function DialogSolarP(props){
-  const {register, handleSubmit, errors }=useForm(); // initialize the hook
+  const {register, handleSubmit, errors, reset }=useForm(); // initialize the hook
     // start code of dialog modal for Solar Panal 
     const {openS,   setOpenS} = props;
+    const [saveNew, setSaveNew] = useState(false);
     const {solarListObject, setSolarListObject} = props;
     
     // end code of dialog modal for Solar Panal 
@@ -148,6 +149,7 @@ export default function DialogSolarP(props){
   const handleCloseS = () => {
     emptyForm();
     setOpenS(false);
+    setSaveNew(false);
   };
   const eventhandlerIm = (data) => {
     imageFile = data;
@@ -192,6 +194,12 @@ export default function DialogSolarP(props){
     setDataSheet({ ...dataSheet, ['oldImage']: solarListObject.data_sheet?solarListObject.data_sheet: ''});
     
   },[solarListObject, props.openS]);
+  
+  useEffect(() => {
+    if(saveNew){
+      emptyForm();
+    }
+  }, [saveNew])
 
   const onSubmit = (data) => {
     data['brand'] = brand;
@@ -205,7 +213,16 @@ export default function DialogSolarP(props){
     // console.log(data);
     axios.post('api/solarList', data)
     .then(res => {
-      setOpenS(false);
+      if(saveNew){
+        reset({
+          solarListID: "",
+          model: "",
+          voltage: "",
+          current: "",
+        });
+      }else{
+        setOpenS(false);
+      }
       // console.log('result ', res.data);
         NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
           id="notification.titleHere" />);
@@ -377,7 +394,8 @@ const getCabletype=async () => {
             </DialogContent>
             
             <DialogActions>
-            <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " >Submit</Button>
+              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={solarListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
+              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " >Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

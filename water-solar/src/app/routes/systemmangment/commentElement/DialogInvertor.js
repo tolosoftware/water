@@ -65,7 +65,10 @@ const styles = (theme) => ({
   }))(MuiDialogActions);
   // end of dialog modal for Solar Panal 
   function valuetext(value) {
-    return `${value}W`;
+    return `${value}KW`;
+  } 
+  function valuetextDV(value) {
+    return `${value}V`;
   } 
   const useStyles = makeStyles((theme) => ({
       formControl: {
@@ -87,34 +90,122 @@ const styles = (theme) => ({
       },
     }));
   
-  const marksW = [
-    {
-      value: 0,
-      label: '0W',
-    },
-    {
-      value: 270,
-      label: '270W',
-    },
-];
-const marksV = [
-    {
-      value: 0,
-      label: '0V',
-    },
-    {
-      value: 270,
-      label: '270V',
-    },
-];
+    const marksKW = [
+      {
+        value: 0.75,
+        label: '0.75KW',
+      },
+      {
+        value: 1.1,
+        // label: '1.1KW',
+      },
+      {
+        value: 1.5,
+        // label: '1.5KW',
+      },
+      {
+        value: 2.2,
+        // label: '2.2KW',
+      },
+      {
+        value: 3,
+        // label: '3KW',
+      },
+      {
+        value: 4,
+        // label: '4KW',
+      },
+      {
+        value: 5.5,
+        // label: '5.5KW',
+      },
+      {
+        value: 7.5,
+        // label: '7.5KW',
+      },
+      {
+        value: 11,
+        // label: '11KW',
+      },
+      {
+        value: 15,
+        // label: '15KW',
+      },
+      {
+        value: 18.5,
+        // label: '18.5KW',
+      },
+      {
+        value: 22,
+        // label: '22KW',
+      },
+      {
+        value: 30,
+        // label: '30KW',
+      },
+      {
+        value: 37,
+        // label: '37KW',
+      },
+      {
+        value: 45,
+        // label: '45KW',
+      },
+      {
+        value: 52,
+        // label: '52KW',
+      },
+      {
+        value: 55,
+        // label: '55KW',
+      },
+      {
+        value: 60,
+        // label: '60KW',
+      },
+      {
+        value: 67,
+        // label: '67KW',
+      },
+      {
+        value: 75,
+        // label: '75KW',
+      },
+      {
+        value: 81,
+        // label: '81KW',
+      },
+      {
+        value: 92,
+        // label: '92KW',
+      },
+      {
+        value: 110,
+        label: '110KW',
+      },
+    ];
+    const marksV = [
+      {
+        value: 110,
+        label: '110V',
+      },
+      {
+        value: 220,
+        // label: '220V',
+      },
+      {
+        value: 380,
+        label: '380V',
+      },
+    ];
 const marksVolDC = [
     {
-      value: 0,
-      label: '0V',
+      value: 100,
+      label: '100V',
     },
     {
-      value: 270,
-      label: '270V',
+      value: 900,
+      label: '900V',
     },
 ];
 
@@ -129,7 +220,7 @@ export default function DialogInvertor(props){
   const [brand, setBrand] = useState('');
   const [powerKW, setPowerKW] = useState(150);
   const [voltage, setVoltage] = useState(100);
-  const [voltageDC, setVoltageDC] = useState([50, 150]);
+  const [voltageDC, setVoltageDC] = useState([100, 500]);
   // const [description, setDescription] = useState("");
 
   const [image, setImage] = useState({ oldImage: '', filePath: 'brand/invertor/invertor_list/', btnText: 'Image' });
@@ -156,7 +247,7 @@ export default function DialogInvertor(props){
     setInvertorListObject([]);
     setPowerKW(150);
     setVoltage(150);
-    setVoltageDC([50, 150]);
+    setVoltageDC([100, 500]);
     // setDescription("");
     setImage({ ...image, ['oldImage']: ''});
     setDataSheet({ ...dataSheet, ['oldImage']: ''});
@@ -260,10 +351,10 @@ export default function DialogInvertor(props){
                                         defaultValue={powerKW?powerKW:150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
-                                        marks={marksW}
-                                        min={0}
-                                        max={270}
+                                        step={null}
+                                        marks={marksKW}
+                                        min={0.75}
+                                        max={110}
                                         valueLabelDisplay="auto"
                                     />
                             </div>
@@ -276,10 +367,10 @@ export default function DialogInvertor(props){
                                         defaultValue={voltage?voltage:150}
                                         getAriaValueText={valuetext}
                                         aria-labelledby="discrete-slider-small-steps"
-                                        step={20}
+                                        step={null}
                                         marks={marksV}
-                                        min={0}
-                                        max={270}
+                                        min={110}
+                                        max={380}
                                         valueLabelDisplay="auto"
                                     />
                             </div>
@@ -292,17 +383,17 @@ export default function DialogInvertor(props){
                                     value={voltageDC}
                                     valueLabelDisplay="auto"
                                     aria-labelledby="range-slider"
-                                    getAriaValueText={valuetext}
-                                    min={0}
-                                    max={270}
+                                    getAriaValueText={valuetextDV}
+                                    min={100}
+                                    max={900}
                                     marks={marksVolDC}
                                 />
                             </div>
-                            {/* <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
                                 <div class="form-group">
-                                    <textarea class={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description'  value={description} onChange={(e) => handleChangeField(e)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
+                                    <textarea class={`form-control form-control-lg`} id='description' name='description' defaultValue={invertorListObject?.description} inputRef={register} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                                 </div>
-                            </div> */}
+                            </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
                                 <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                             </div>

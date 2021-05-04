@@ -806,7 +806,7 @@ export default function Project() {
             </div>
           ) : (
             <div>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 {activeStep === 0 ? (
                   <div className="row">
                     <div className="col-md-4">
