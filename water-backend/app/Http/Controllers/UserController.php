@@ -88,7 +88,6 @@ class UserController extends Controller
             if ($id!=='0') {
                 $user = User::findOrFail($id);
                 $user->name = $request['name'];
-                $user->system = 0;
                 $user->companyname = $request['companyname'];
                 $user->email = $request['email'];
                 $user->phone = $request['phone'];
