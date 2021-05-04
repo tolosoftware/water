@@ -231,6 +231,7 @@ export default function DialogWaterP(props) {
   //     setOpenD(true);
   // };
   const handleClose = () => {
+    formReset();
     emptyForm();
     setOpenD(false);
     setSaveNew(false);
@@ -293,7 +294,7 @@ export default function DialogWaterP(props) {
     setVoltage(waterListObject.voltage ? waterListObject.voltage : 110);
     setPhase(waterListObject.phase ? waterListObject.phase : '1Phase');
     // setDescription(waterListObject.discription);
-    setImage({ ...image, ['oldImage']: waterListObject.image });
+    setImage({ ...image, ['oldImage']: waterListObject.image?waterListObject.image:'' });
     setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet ? waterListObject.data_sheet : '' });
     setGraph({ ...graph, ['oldImage']: waterListObject.graph ? 'graph/' + waterListObject.graph : '' });
     if(props.waterListObject?.id){
@@ -305,28 +306,21 @@ export default function DialogWaterP(props) {
         diameter: waterListObject?.diameter,
         weight: waterListObject?.weight,
       });
-    }else{
-      if(!(props.waterListObject?.id && saveNew)){
-        reset({
-          waterListID: "",
-          name: "",
-          outlet: "",
-          current: "",
-          diameter: "",
-          weight: "",
-        });
-      }
-      
     }
+   
   }, [waterListObject, props.openD])
-  useEffect(() => {
-    if(saveNew){
-      emptyForm();
-    }
-  }, [saveNew])
 
   const classes = useStyles();
-
+  const formReset = ()=>{
+    reset({
+      waterListID: "",
+      name: "",
+      outlet: "",
+      current: "",
+      diameter: "",
+      weight: "",
+    });
+  };
   const onSubmit = (data, e) => {
     data['brand'] = brand;
     data['powerKW'] = powerKW;
@@ -343,16 +337,9 @@ export default function DialogWaterP(props) {
       .then(res => {
         if(saveNew){
           setWaterListObject([]);
-          reset({
-            waterListID: "",
-            name: "",
-            outlet: "",
-            current: "",
-            diameter: "",
-            weight: "",
-          });
+          formReset();
         }else{
-          setOpenD(false);
+          handleClose();
         }
         // console.log('result ', res.data);
         NotificationManager.success(<IntlMessages id="notification.successMessage" />, <IntlMessages
@@ -547,7 +534,7 @@ export default function DialogWaterP(props) {
 
         <DialogActions>
           <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={waterListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> setSaveNew(false)}>Submit</Button>
+          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> saveNew?setSaveNew(false):''}>Submit</Button>
         </DialogActions>
       </form>
     </Dialog>

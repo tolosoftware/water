@@ -30,6 +30,8 @@ import Systemmangment from './routes/systemmangment';
 import Knowledgebase from './routes/knowledgebase';
 import Activities from './routes/activities';
 import Newproject from './routes/newproject';
+import Sizing from './routes/sizing';
+import Download from './routes/download';
 import Usermangment from './routes/usermangment';
 //end custom component
 import {
@@ -90,6 +92,8 @@ class App extends React.Component {
                 <Route path={`${match.url}/project-summary/:id`} component={Knowledgebase} />
                 <Route path={`${match.url}/activities`} component={Activities} />
                 <Route path={`${match.url}/newproject`} component={Newproject} />
+                <Route path={`${match.url}/sizing`} component={Sizing} />
+                <Route path={`${match.url}/download`} component={Download} />
                 <Route path={`${match.url}/usermangment`} component={Usermangment} />
                 {/* end custom route component  */}
               

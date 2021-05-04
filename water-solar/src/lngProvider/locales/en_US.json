@@ -129,6 +129,8 @@
   "sidebar.appModule.contactRedux": "Contact Redux",
   "sidebar.system-management": "System Management",
   "sidebar.setting": "Settings",
+  "sidebar.download": "Download",
+  "sidebar.sizing": "Sizing",
   "sidebar.icons": "Icons",
   "sidebar.icons.material": "Google Material Icons",
   "sidebar.extraElements": "Extra Elements",

@@ -311,14 +311,14 @@ const WaterPump = () => {
 
     setPumpListId(listId);
     setPumpListModel(pumpModel);
-    console.log("list id: ", listId);
+    // console.log("list id: ", listId);
     setOpenWSD(true);
   }
   // End code of water pumps list setting 
 
   // start delete function Water Device list
   const deleteWaterList = (id) => {
-    console.log("it is id of that water pump brand: ", id);
+    // console.log("it is id of that water pump brand: ", id);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -366,7 +366,7 @@ const WaterPump = () => {
   // end get solar pabal list
 
   const editWaterBrand = (dataValue) => {
-    console.log(dataValue);
+    // console.log(dataValue);
     setBrand(dataValue.name);
     setCountry(dataValue.country);
     // setDescription(dataValue.discription);
@@ -403,7 +403,7 @@ const WaterPump = () => {
   }
   const deleteWaterPumpBrand = (id) => {
     setVisibility(true)
-    console.log("it is id of that water pump brand: ", id);
+    // console.log("it is id of that water pump brand: ", id);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -555,10 +555,6 @@ const WaterPump = () => {
     setWaterListObject(waterListObj);
     setOpenD(true);
   }
-  const emptyListObject = ()=>{
-    setWaterListObject([]);
-    console.log('set water list onject', waterListObject);
-  };
   return (
     <div className="row">
       <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -768,7 +764,6 @@ const WaterPump = () => {
           waterPumpBrands={waterPumpBrands}
           waterListObject={waterListObject}
           setWaterListObject={setWaterListObject}
-          emptyListObject={emptyListObject.bind(this)}
         />
         <DialogSettingWD
           pumpListId={pumpListId}

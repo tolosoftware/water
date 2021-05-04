@@ -67,8 +67,8 @@ export default function AccessoriesForm(props) {
     }
     // setType(accessoryObject.accessories_type_id);
     // setDescription(accessoryObject.discription);
-    setImage({ ...image, ['oldImage']: accessoryObject.image});
-    setDataSheet({ ...dataSheet, ['oldImage']: accessoryObject.data_sheet?accessoryObject.data_sheet: ''});
+    setImage({ ...image, oldImage: accessoryObject.image?accessoryObject.image:''});
+    setDataSheet({ ...dataSheet, oldImage: accessoryObject.data_sheet?accessoryObject.data_sheet: ''});
   },[props.accessoryObject])
   useEffect(() => {
     if(props.getValue===1){

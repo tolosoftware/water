@@ -147,6 +147,7 @@ export default function DialogSolarP(props){
   
   const classes = useStyles();
   const handleCloseS = () => {
+    formReset();
     emptyForm();
     setOpenS(false);
     setSaveNew(false);
@@ -190,16 +191,27 @@ export default function DialogSolarP(props){
     setSolarType(solarListObject.type?solarListObject.type:"Mono");
     setPowerW(solarListObject.power?solarListObject.power:150);
     // setDescription(solarListObject.discription);
-    setImage({ ...image, ['oldImage']: solarListObject.image});
+    setImage({ ...image, ['oldImage']: solarListObject.image?solarListObject.image:''});
     setDataSheet({ ...dataSheet, ['oldImage']: solarListObject.data_sheet?solarListObject.data_sheet: ''});
+
+    if(props.solarListObject?.id){
+      reset({
+        solarListID: solarListObject.id,
+        model: solarListObject.model,
+        voltage: solarListObject.voltage,
+        current: solarListObject.current,
+      });
+    }
     
   },[solarListObject, props.openS]);
-  
-  useEffect(() => {
-    if(saveNew){
-      emptyForm();
-    }
-  }, [saveNew])
+  const formReset = ()=>{
+    reset({
+      solarListID: "",
+      model: "",
+      voltage: "",
+      current: "",
+    });
+  };
 
   const onSubmit = (data) => {
     data['brand'] = brand;
@@ -214,14 +226,10 @@ export default function DialogSolarP(props){
     axios.post('api/solarList', data)
     .then(res => {
       if(saveNew){
-        reset({
-          solarListID: "",
-          model: "",
-          voltage: "",
-          current: "",
-        });
+        setSolarListObject([]);
+        formReset();
       }else{
-        setOpenS(false);
+        handleCloseS();
       }
       // console.log('result ', res.data);
         NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
@@ -395,7 +403,7 @@ const getCabletype=async () => {
             
             <DialogActions>
               <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={solarListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
-              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg " >Submit</Button>
+              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> saveNew?setSaveNew(false):''}>Submit</Button>
             </DialogActions>
           </form>
       </Dialog>
