@@ -838,7 +838,7 @@ export default function Project() {
                           <Stepper style={{paddingLeft:'0px', paddingRight: '0px'}} alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
                             {stepsBrand.map((label, index) => (
                               <Step key={`${label}${index}`}>
-                                <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                                <StepLabel className={`brand-step-${index}`} StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
                               </Step>
                             ))}
                           </Stepper>
