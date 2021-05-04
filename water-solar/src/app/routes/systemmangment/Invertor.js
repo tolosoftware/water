@@ -426,7 +426,7 @@ const getInvertorLists = async() =>{
   axios.get('api/invertorList')
   .then(res => {  
     setVisibility(false);
-      console.log(res);
+      // console.log(res);
       setInvertorLists(res.data);
     }
 ).catch(err => {
@@ -777,6 +777,8 @@ const handleSubmit = (e) => {
                 <th>ID</th>
                 <th>Model</th>
                 <th>Power (KW)</th>
+                <th>Voltage (V)</th>
+                <th>Current (A)</th>
                 <th>Voltage (AC)</th>
                 <th>Voltage (DC)</th>
                 {/* <th>Image</th> */}
@@ -795,7 +797,9 @@ const handleSubmit = (e) => {
                   </div>
                 </td>
                 <td>{invertor.power}</td>
-                <td>{invertor.voltage_ac}</td>
+                <td>{invertor.voltage}</td>
+                <td>{invertor.current}</td>
+                <td>{invertor.voltage_ac_min} - {invertor.voltage_ac_max}</td>
                 <td>{invertor.voltage_dc_min} - {invertor.voltage_dc_max}</td>
                 {/* <td>
                   <div className="d-flex align-items-center">

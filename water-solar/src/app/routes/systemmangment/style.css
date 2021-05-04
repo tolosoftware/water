@@ -242,8 +242,20 @@ padding: 0px 15px 10px;
 .insideFormPadding1.powerW-solarL span[data-index="0"].MuiSlider-markLabel {
     left: 4% !important;
 }
+.insideFormPadding2.ivertor-vol{
+    padding: 0px 21px 15px 15px;
+}
+.insideFormPadding2.ivertor-vol span[data-index="0"].MuiSlider-markLabel {
+    left: 7% !important;
+}
+.insideFormPadding2.ivertor-vol span[data-index="3"].MuiSlider-markLabel {
+    left: 92% !important;
+}
 .insideFormPadding1.inverPower span[data-index="0"].MuiSlider-markLabel {
     left: 6% !important;
+}
+.insideFormPadding1.inverPower span[data-index="23"].MuiSlider-markLabel {
+    left: 95% !important;
 }
 .insideFormPadding2 span[data-index="0"].MuiSlider-markLabel{
     left: 3% !important;
@@ -252,7 +264,7 @@ padding: 0px 15px 10px;
     left: 2% !important;
 }
 .insideFormPadding2.ivertor-ac span[data-index="0"].MuiSlider-markLabel, .insideFormPadding3.ivertor-dc span[data-index="0"].MuiSlider-markLabel{
-    left: 5% !important;
+    left: 7% !important;
 }
 .insideFormPadding1 span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
@@ -272,8 +284,11 @@ padding: 0px 15px 10px;
 .insideFormPadding2 span[data-index="1"].MuiSlider-markLabel{
     left: 93% !important;
 }
-.insideFormPadding2.ivertor-ac span[data-index="1"].MuiSlider-markLabel{
-    left: 92% !important;
+.insideFormPadding3.ivertor-ac span[data-index="0"].MuiSlider-markLabel{
+    left: 7% !important;
+}
+.insideFormPadding3.ivertor-ac span[data-index="1"].MuiSlider-markLabel{
+    left: 93% !important;
 }
 .insideFormPadding3 span[data-index="1"].MuiSlider-markLabel{
     left: 96% !important;

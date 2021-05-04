@@ -327,7 +327,7 @@ const onButtonClick = (listId, solarModel) => {
 
 const deleteSolarBrand = (id) =>{
   setVisibility(true)
-  console.log("it is id of that water pump brand: ", id);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -377,7 +377,7 @@ const getSolarBrands = async() =>{
 // start delete function solar panel list
 const deleteSolarList = (id) =>{
   setVisibility(true)
-  console.log("it is id of that water pump brand: ", id);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",

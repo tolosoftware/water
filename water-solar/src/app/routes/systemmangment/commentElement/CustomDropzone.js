@@ -113,7 +113,7 @@ const btnText = props?.formData.btnText;
         </div>
         <div className="dropzone-content" style={thumbsContainer}>
             {thumbs}
-            {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
+            {(files.length === 0 )? ((oldImage!=="" && oldImage!=='0')? (<spam>
             <span className={`sp_right_padding`}>Cuurent {btnText} </span>
             <span><img src={`${axios.defaults.baseURL}${filePath}${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
             </spam>): ''): ''}

@@ -75,7 +75,7 @@ function DataSheetFile(props) {
       <div className="dropzone-content">
         {/* <h3>Accepted File(.pdf)</h3> */}
         <ul>{filesList}</ul>
-        {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (
+        {(files.length === 0 )? ((oldImage!=="" && oldImage!=='0')? (
             <span><a href={`${axios.defaults.baseURL}${filePath}${oldImage}`} class="btn btn-primary">{oldImage}</a></span>
             ): ''): ''}
       </div>
