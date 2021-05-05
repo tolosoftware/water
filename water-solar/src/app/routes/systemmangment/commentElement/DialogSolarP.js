@@ -212,7 +212,27 @@ export default function DialogSolarP(props){
       current: "",
     });
   };
-
+  const handleData =  (data)=>{
+    data['brand'] = brand;
+    data['solarType'] = solarType;
+    data['powerW'] = powerW;
+    data['cableType'] = cableType;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
+    data['serial_no'] = uuidv4();
+    axios.post('api/solarList', data)
+    .then(res => {
+      formReset();
+      setSaveNew(true);
+      // console.log('result ', res.data);
+        NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
+          id="notification.titleHere" />);
+    }).catch(err =>{
+      NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+        id="notification.titleHere"/>);
+      }
+    );
+  }
   const onSubmit = (data) => {
     data['brand'] = brand;
     data['solarType'] = solarType;
@@ -225,12 +245,8 @@ export default function DialogSolarP(props){
     // console.log(data);
     axios.post('api/solarList', data)
     .then(res => {
-      if(saveNew){
-        setSolarListObject([]);
-        formReset();
-      }else{
-        handleCloseS();
-      }
+      setSaveNew(false);
+      handleCloseS();
       // console.log('result ', res.data);
         NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
           id="notification.titleHere" />);
@@ -402,8 +418,8 @@ const getCabletype=async () => {
             </DialogContent>
             
             <DialogActions>
-              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={solarListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
-              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> saveNew?setSaveNew(false):''}>Submit</Button>
+              <Button variant="contained" color="primary" className="jr-btn jr-btn-lg" disabled={solarListObject?.id? true : false} onClick={handleSubmit(handleData)}>Save & New</Button>
+              <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg">Submit</Button>
             </DialogActions>
           </form>
       </Dialog>

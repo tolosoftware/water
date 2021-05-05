@@ -39,8 +39,8 @@ class SolarListController extends Controller
     {
         DB::beginTransaction();
         try {
-            $photoname = 0;
-            $dataSheetName = 0;
+            $photoname = null;
+            $dataSheetName = null;
             if($request['imageFile']){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
                 \Image::make($request->imageFile)->save(public_path('brand/solar/solar_list/').$photoname);
