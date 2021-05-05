@@ -40,9 +40,9 @@ class PumpListController extends Controller
         try {
 
             // return $request;
-            $photoname = 0;
-            $dataSheetName = 0;
-            $graphName = 0;
+            $photoname = null;
+            $dataSheetName = null;
+            $graphName = null;
              
             if($request['imageFile']){
                 $photoname = time().'1.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
