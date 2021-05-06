@@ -17,6 +17,7 @@ use App\Models\InvertorList;
 use App\Models\Projects;
 use App\Models\Geolocation;
 Use \Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -25,6 +26,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function signupRequest(Request $request){
+        return $request;
+        Mail::send('mail.activation', $user, function ($message) use ($user) {
+            $message->to($user['email']);
+            $message->subject('scqq.blogspot.com - Activation Code');
+        });
+    }
+
     public function userCity(){
         return Geolocation::all()->unique('city');
     }

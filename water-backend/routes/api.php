@@ -32,6 +32,9 @@ Route::resource('user', UserController::class);
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
 Route::get('userCity',[UserController::class,'userCity']);
 
+// Registration Request from Users
+Route::post('signupRequest',[UserController::class,'signupRequest']);
+
 //setting
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);

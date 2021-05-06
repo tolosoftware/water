@@ -166,8 +166,8 @@ export default function DialogSolarP(props){
     setSolarType("Mono");
     setPowerW(150);
     // setDescription("");
-    setImage({ ...image, ['oldImage']: ''});
-    setDataSheet({ ...dataSheet, ['oldImage']: ''});
+    setImage({ ...image, oldImage: ''});
+    setDataSheet({ ...dataSheet, oldImage: ''});
   }
 
   useEffect(() => {
@@ -191,8 +191,8 @@ export default function DialogSolarP(props){
     setSolarType(solarListObject.type?solarListObject.type:"Mono");
     setPowerW(solarListObject.power?solarListObject.power:150);
     // setDescription(solarListObject.discription);
-    setImage({ ...image, ['oldImage']: solarListObject.image?solarListObject.image:''});
-    setDataSheet({ ...dataSheet, ['oldImage']: solarListObject.data_sheet?solarListObject.data_sheet: ''});
+    setImage({ ...image, oldImage: solarListObject.image?solarListObject.image:''});
+    setDataSheet({ ...dataSheet, oldImage: solarListObject.data_sheet?solarListObject.data_sheet: ''});
 
     if(props.solarListObject?.id){
       reset({
