@@ -202,7 +202,7 @@ export default function DialogSettingWD(props){
   const solarListModel = props.solarListModel;
   let imageFile = '';
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), mId: '' ,mId: '', power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: solarList_Id},
+    { id: uuidv4(), mId: '', power: 15, base: 'Manual Tracker', quantity: '', panal: '', image: '', imageRaw: '', solar_list_id: solarList_Id},
   ]);
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map(i => {
@@ -239,7 +239,7 @@ export default function DialogSettingWD(props){
     setInputFields(newInputFields);
   }
   const handleAddFields = () => {
-    let newElement = { id: uuidv4(),mId: '', mId: '', power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, image: '', imageRaw: '', solar_list_id: solarList_Id};
+    let newElement = { id: uuidv4(), mId: '', power: inputFields[inputFields.length-1].power, base: inputFields[inputFields.length-1].base, quantity: inputFields[inputFields.length-1].quantity, panal: inputFields[inputFields.length-1].panal, image: '', imageRaw: '', solar_list_id: solarList_Id};
     setInputFields([...inputFields, newElement])
   }
   const handleRemoveFields = id => {

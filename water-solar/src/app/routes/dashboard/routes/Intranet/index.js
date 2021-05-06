@@ -33,21 +33,7 @@ function getFlag(countryname) {
       return '';
   }
 }
-const products = [
-  {
-    image: '/images/System details layout.png'
-  }, {
-    image: '/images/Hight layout.png'
-  }, {
-    image: '/images/outlet layout.png'
-  }, {
-    image: '/images/Motor Cable layout.png'
-  }, {
-    image: '/images/Pipe layout.png'
-  }, {
-    image: '/images/System layout.png'
-  }
-];
+
 const testimonials = [
   {
     content: 'All the Lorem Ipsum generators on the Internet tend to repeat, making this the first true generator on the Internet.',
@@ -86,106 +72,7 @@ const testimonials = [
     title: 'Director, Abc LLC'
   }
 ]; 
-const projects = [
-  {
-    id: 1,
-    name: "Jambo Admin",
-    date: "Oct 21",
-    status: "Completed",
-    color: "success",
-    progressValue: 98,
-    teamList: [
-      {id: 1, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 2, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 3, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 4, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 2,
-    name: 'Chatbull',
-    date: "Oct 22",
-    status: "On Hold",
-    color: "warning",
-    progressValue: 70,
-    teamList: [
-      {id: 5, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 6, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 7, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 8, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 3,
-    name: 'Mouldifi',
-    date: "Nov 12",
-    status: "Delayed",
-    color: "info",
-    progressValue: 40,
-    teamList: [
-      {id: 9, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 10, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 11, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 12, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 4,
-    name: 'Simplify Timer',
-    date: "Nov 21",
-    status: "Completed",
-    color: "success",
-    progressValue: 98,
-    teamList: [
-      {id: 13, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 14, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 15, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 16, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 5,
-    name: 'Clevex',
-    date: "Aug 21",
-    status: "Cancelled",
-    color: "danger",
-    progressValue: 38,
-    teamList: [
-      {id: 17, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 18, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 19, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 20, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 6,
-    name: 'Simplify Timer',
-    date: "Dec 12",
-    status: "Completed",
-    color: "success",
-    progressValue: 24,
-    teamList: [
-      {id: 21, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 22, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 23, image: 'https://via.placeholder.com/120x120', name: ''},
-      {id: 24, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-  {
-    id: 7,
-    name: "Clevex",
-    date: "Sep 15",
-    status: "Cancelled",
-    color: "danger",
-    progressValue: 24,
-    teamList: [
-      {id: 25, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 26, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 27, image: 'https://via.placeholder.com/150x150', name: ''},
-      {id: 28, image: 'https://via.placeholder.com/150x150', name: ''},
-    ]
-  },
-];
+
 const styles = theme => ({
   backdrop: {
    zIndex: theme.zIndex.drawer + 1,
