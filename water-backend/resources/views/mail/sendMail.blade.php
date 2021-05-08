@@ -1,7 +1,11 @@
 <html>
 <head></head>
 <body style="background: black; color: white">
-<h1>{{$name}}</h1>
-<p>{{$email}}</p>
+<h3>Client Name: {{$name}}</h3>
+<p>Email: {{$email}}</p>
+<p>Phone: {{$phone}}</p>
+<p>Company Name: {{$companyname}}</p>
+<p>City: {{$city}}</p>
+Company Logo has been Attached 
 </body>
 </html>

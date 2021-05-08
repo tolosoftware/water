@@ -18,7 +18,7 @@ use App\Models\InvertorList;
 use App\Models\Projects;
 use App\Models\Geolocation;
 Use \Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+
 
 
 class UserController extends Controller
@@ -29,11 +29,55 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function signupRequest(Request $request){
-       
-        Mail::send('mail.activation', $user, function ($message) use ($user) {
-            $message->to($user['email']);
-            $message->subject('scqq.blogspot.com - Activation Code');
+        // return $request;
+
+        $photoname = null;
+        if($request['companyLogo']){
+            $photoname = time().'1.' . explode('/', explode(':', substr($request->companyLogo, 0, strpos($request->companyLogo, ';')))[1])[1];
+            \Image::make($request->companyLogo)->save(public_path('temp/').$photoname);
+            $request->merge(['photo' => $photoname]);
+        }
+        $user = [
+            'name'=> $request['name'],
+            'companyname'=> $request['companyname'],
+            'logo'=> $photoname,
+            'email'=> $request['email'],
+            'phone'=> $request['phone'],
+            'website'=> $request['website'],
+        ];
+        $user['name'] = $request['name'];
+        $user['companyname'] = $request['companyname'];
+        $user['phone'] = $request['phone'];
+        $user['email'] = $request['email'];
+        $user['logo'] = $photoname;
+        $user['city'] = Geolocation::findOrFail($request['city'])->city;
+        $user['website'] = $request['website'];
+        // $title = "newsletter subscriber";
+
+        // $content = "This is a new newsletter subscriber.";
+    
+        
+        // Mail::send('mail.sendMail', ['title' => $title, 'content' => $content], function ($message) use ($user)
+        // {
+    
+        //     $message->from($request['email'], 'Admin');
+    
+        //     $message->to('mail@tolosoft.co');
+    
+            
+        //     //Add a subject
+        //     $message->subject("Newsletter new subscriber");
+    
+        // });
+    
+        Mail::send('mail.sendMail', $user, function ($message) use ($user) {
+            $message->from($user['email'], $user['companyname']);
+            $message->to('mail@tolosoft.co');
+            $message->subject('Sign Up Request');
+            //Attach file
+            $message->attach(public_path('temp/').$user['logo']);
         });
+        return response()->json(['message' => 'Request completed']);
     }
 
     public function userCity(){
