@@ -39,44 +39,77 @@ class InvertorListController extends Controller
     {
         DB::beginTransaction();
         try {
-            $photoname = 0;
-            $id = $request['invertorListID'];
-            if($request['image'] != 'oldImage'){
-                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/invertor/invertor_list/').$photoname);
+            
+            $photoname = null;
+            $dataSheetName = null;
+            $diameterName = null;
+            if($request['imageFile']){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
+                \Image::make($request->imageFile)->save(public_path('brand/invertor/invertor_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!==0) {
-                $invertorList = InvertorList::findOrFail($id);
+            if($request['diameterFile']){
+                $diameterName = time().'.' . explode('/', explode(':', substr($request->diameterFile, 0, strpos($request->diameterFile, ';')))[1])[1];
+                \Image::make($request->diameterFile)->save(public_path('brand/invertor/invertor_list/diameter/').$diameterName);
+                $request->merge(['photo' => $diameterName]);
+            }
+            if($request['dataSheetFile']){
+                $file = $request->get('dataSheetFile');
+                if (strpos($file, ',') !== false) {
+                    @list($encode, $file) = explode(',', $file);
+                }
+                $fileName = base64_decode($file, true);  
+                $dataSheetName = time().'ds.pdf';
+                $destinationPath = public_path('brand/invertor/invertor_list/data_sheet/').$dataSheetName;            
+                file_put_contents($destinationPath, $fileName);
+            }
+            if (!empty($request['invertorListID'])) {
+                $invertorList = InvertorList::findOrFail($request['invertorListID']);
                 $invertorList->invertor_brand_id =  $request['brand'];
                 $invertorList->model = $request['model'];
                 $invertorList->power = $request['powerKW'];
-                $invertorList->voltage_ac = $request['voltage'];
+                $invertorList->voltage = $request['voltage'];
+                $invertorList->current = $request['current'];
                 $invertorList->voltage_dc_min = $request['voltageDC'][0];
                 $invertorList->voltage_dc_max = $request['voltageDC'][1];
-                if($request->image != 'oldImage'){
+                $invertorList->voltage_ac_min = $request['voltageAC'][0];
+                $invertorList->voltage_ac_max = $request['voltageAC'][1];
+                if($request['imageFile']){
                     File::delete('brand/invertor/invertor_list/'.$invertorList->image);
                     $invertorList->image = $photoname;
                 }
-                $invertorList->discription = 'null';
+                if($request['diameterFile']){
+                    File::delete('brand/invertor/invertor_list/diameter/'.$invertorList->diameter);
+                    $invertorList->diameter = $diameterName;
+                }
+                if($request['dataSheetFile']){
+                    File::delete('brand/invertor/invertor_list/data_sheet/'.$invertorList->data_sheet);
+                    $invertorList->data_sheet = $dataSheetName;
+                }
+                $invertorList->discription = $request['description'];
                 $invertorList->save();
             }else{
                 InvertorList::create([
                     'invertor_brand_id' => $request['brand'], 
                     'model' => $request['model'], 
                     'power' => $request['powerKW'], 
-                    'voltage_ac' => $request['voltage'], 
+                    'voltage' => $request['voltage'], 
+                    'current' => $request['current'], 
                     'voltage_dc_min' => $request['voltageDC'][0], 
                     'voltage_dc_max' => $request['voltageDC'][1], 
-                    'discription' => 'null', 
+                    'voltage_ac_min' => $request['voltageAC'][0], 
+                    'voltage_ac_max' => $request['voltageAC'][1], 
+                    'discription' => $request['description'], 
                     'image' => $photoname, 
+                    'data_sheet' => $dataSheetName,  
+                    'diameter' => $diameterName,  
                 ]);
             }
             // return $request;
            
 
             DB::commit();
-            return ['msg' => 'Solar brand succefully inserted'];
+            return ['msg' => 'Invertor List succefully inserted'];
         } catch (Exception $e) {
             DB::rollback();
         }
@@ -122,11 +155,13 @@ class InvertorListController extends Controller
      * @param  \App\Models\InvertorList  $invertorList
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InvertorList $invertorList)
+    public function destroy($id)
     {
         $invertorList = InvertorList::findOrFail($id);
         File::delete('brand/invertor/invertor_list/'.$invertorList->image);
+        File::delete('brand/invertor/invertor_list/data_sheet/'.$invertorList->data_sheet);
+        File::delete('brand/invertor/invertor_list/diameter/'.$invertorList->diameter);
         $invertorList->delete();
-        return ['message' => 'Selected Solar list has been Deleted'];
+        return ['message' => 'Selected Invertor list has been Deleted'];
     }
 }

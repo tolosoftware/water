@@ -21,8 +21,9 @@ class UserInfoPopup extends React.Component {
         </div>
       
         <span className="jr-link dropdown-item text-muted" onClick={() => {
-          console.log("Try to logoput");
-          this.props.userSignOut()
+          //this.props.userSignOut()
+          localStorage.removeItem("token");
+          this.props.history.push("/signin");
         }}>
           <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.logout"/>

@@ -156,7 +156,9 @@ export default function GeoLocationIrradiation(props){
     ];
     const timeLable = ['6:00-7:00 AM', '7:00-8:00 AM', '8:00-9:00 AM', '9:00-10:00 AM', '10:00-11:00 AM', '11:00-12:00 AM', '12:00-1:00 PM', '1:00-2:00 PM','2:00-3:00 PM','3:00-4:00 PM','4:00-5:00 PM','5:00-6:00 PM', '6:00-7:00 PM'];
     
-    const timeName = ['time6_7', 'time7_8', 'time8_9', 'time9_10', 'time10_11', 'time11_12', 'time12_1', 'time1_2', 'time2_3', 'time3_4', 'time4_5', 'time5_6', 'time6_7p'];
+    const timeName = [
+      'time6_7', 'time7_8', 'time8_9', 'time9_10', 'time10_11', 'time11_12', 'time12_1', 'time1_2', 'time2_3', 'time3_4', 'time4_5', 'time5_6', 'time6_7p'
+    ];
     const data1 = [
       {name: '6-7', Irradiation: inputFieldsIrr1[0].time6_7, amt: 2400},
       {name: '7-8', Irradiation: inputFieldsIrr1[0].time7_8, amt: 2210},
@@ -260,7 +262,7 @@ export default function GeoLocationIrradiation(props){
       {name: '3-4', Irradiation: inputFieldsIrr7[0].time3_4, amt: 2100},
       {name: '4-5', Irradiation: inputFieldsIrr7[0].time4_5, amt: 2100},
       {name: '5-6', Irradiation: inputFieldsIrr7[0].time5_6, amt: 2100},
-      {name: '6-7', Irradiation: inputFieldsIrr8[0].time6_7p, amt: 2100},
+      {name: '6-7', Irradiation: inputFieldsIrr7[0].time6_7p, amt: 2100},
     ];
     const data8 = [
       {name: '6-7', Irradiation: inputFieldsIrr8[0].time6_7, amt: 2400},
@@ -454,14 +456,14 @@ export default function GeoLocationIrradiation(props){
         const newInputFieldsIrr = inputFieldsIrr6.map(i => {
           i[event.target.name] = event.target.value
           return i;
-        })
+        });
         setInputFieldsIrr6(newInputFieldsIrr);
       }  
       else if (month_id === 7){
         const newInputFieldsIrr = inputFieldsIrr7.map(i => {
           i[event.target.name] = event.target.value
           return i;
-        })
+        });
         setInputFieldsIrr7(newInputFieldsIrr);
       }  
       else if (month_id === 8){

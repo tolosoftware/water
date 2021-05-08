@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextField from '@material-ui/core/TextField';
-import {useDropzone} from "react-dropzone";
+import CustomDropzone from "./CustomDropzone";
+import DataSheetFile from './DataSheetFile/index';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 // import InputLabel from '@material-ui/core/InputLabel';
@@ -12,11 +13,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
-import * as type from 'yup';
-import { checkValidation, runValidation } from './utils';
+import {useForm} from 'react-hook-form';
 
 // end code for country selection 
-const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(0),
       minWidth: "100%",
@@ -32,136 +32,59 @@ const useStyles = makeStyles((theme) => ({
         },
     },
   }));
-// start code for dropzone
-  const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
-  };
-  
-  const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-  };
-  
-  const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-  };
-  
-  const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-  };
-// end code for dropzone
-
-// validation code
-const initialState = {
-  formData: {
-    // type: '',
-    name: '',
-    model: '',
-    uom: '',
-    min_quantity: '',
-    max_quantity: '',
-    // description: '',
-  },
-  error: {},
-  touched: {},
-  isValid: false
-};
-
-const setState = 'SET_STATE';
-
-function reducer(state, action) {
-  switch(action.type) {
-    case setState:
-      return {
-        ...state,
-        ...action.payload
-      };
-    default:
-      return state;
-  }
-}
-const schema = type.object().shape({
-  // type: type.number().required("Required"),
-  name: type.string().required("Required"),
-  model: type.string().required("Required"),
-  uom: type.object().required("Required"),
-  min_quantity: type.number().required("Required"),
-  max_quantity: type.number().required("Required"),
-  // description: type.string().required("Required"),
-});
-// end validation code
 
 export default function AccessoriesForm(props) {
+  const {register, handleSubmit, errors }=useForm(); // initialize the hook
   // const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [model, setModel] = useState("");
   // const [description, setDescription] = useState("");
-  const [min_quantity, setMin_quantity] = useState(""); 
-  const [max_quantity, setMax_quantity] = useState(""); 
-  const [uom, setUom] = useState({});
+  const [uom, setUom] = useState([]);
+  const [uom1, setUom1] = useState([]);
   const [uomList, setUomList] = useState([]);
-  const [{
-    formData,
-    error,
-    touched,
-    isValid
-  }, dispatch] = React.useReducer(reducer, initialState);
+  const accessoryObject = props.accessoryObject;
+  const [image, setImage] = useState({ oldImage: '', filePath: 'accessories/', btnText: 'Accessory Image' });
+  let imageFile = '';
+  const [dataSheet, setDataSheet] = useState({ oldImage: '', filePath: 'accessories/data_sheet/', btnText: 'Data Sheet' });
+  let dataSheetFile = '';
+  const eventhandlerIm = (data) => {
+    imageFile = data;
+    // console.log('images file data', data);
+    // console.log('images file', imageFile);
+  };
+  const eventhandlerDaSh = data => {
+    dataSheetFile = data;
+    // console.log('dataSheetFile file', dataSheetFile);
+  };
   const classes = useStyles();
-  
-// dropzone code
-  const [files, setFiles] = useState([]);
-  const {getRootProps, getInputProps} = useDropzone({
-      accept: 'image/*',
-      maxFiles:1,
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-    }
-  });
-
-  const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img alt={file.name}
-             src={file.preview}
-             style={img}
-        />
-      </div>
-    </div>
-  ));
-  
-// end dropzone code
-  
-
 // const [accessoriestype,setAccessoriestype]= useState([]);
- useEffect(() => {
-    // getAccessoriestype();
+  useEffect(() => {
     getUOM();
   },[])
   
- 
-  const accessoryObject = props.accessoryObject;
-  const [accessoryID, setAccessoryID] = useState('0'); 
-  const [oldImage, setOldImage] = useState("");
+  useEffect(() => {
+    if(accessoryObject?.uom_id){
+      getUomObj(accessoryObject.uom_id);
+      // setUom(accessoryObject.uom_id);
+    }
+    // setType(accessoryObject.accessories_type_id);
+    // setDescription(accessoryObject.discription);
+    setImage({ ...image, oldImage: accessoryObject.image?accessoryObject.image:''});
+    setDataSheet({ ...dataSheet, oldImage: accessoryObject.data_sheet?accessoryObject.data_sheet: ''});
+  },[props.accessoryObject])
+  useEffect(() => {
+    if(props.getValue===1){
+      console.log('inside of getValue', uom1)
+      setUom(uom1);
+    }
+
+  },[uom1, props.getValue])
+
   const getUOM=async () => {
     axios.get('api/uom')
       .then(res => {  
          setUomList(res.data)
+         let data = res.data[0];
+        //  console.log('data first one', data);
+         setUom1(data);
         }
     ).catch(err => {
            NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
@@ -169,27 +92,6 @@ export default function AccessoriesForm(props) {
           }
       )
   }; 
-  useEffect(() => {
-    setEditFieldValuse();
-    (accessoryObject.id === undefined)? handleAllField(false): handleAllField(true);
-  },[accessoryObject])
-  
-  const setEditFieldValuse = () => {
-    setAccessoryID(accessoryObject.id);
-    // setType(accessoryObject.accessories_type_id);
-    setName(accessoryObject.name);
-    setModel(accessoryObject.model);
-    setMin_quantity(accessoryObject.min_quantity); 
-    setMax_quantity(accessoryObject.max_quantity);
-    // console.log('uom_id before if', accessoryObject.uom_id);
-    if(accessoryObject.uom_id !== undefined){
-      // console.log('uom_id inside if', accessoryObject.uom_id);
-      getUomObj(accessoryObject.uom_id);
-    } 
-    // setDescription(accessoryObject.discription);
-    setOldImage(accessoryObject.image);
-  } 
-
   const getUomObj = (id) => {
     axios.get('api/uom/'+id)
       .then(res => {  
@@ -214,124 +116,30 @@ export default function AccessoriesForm(props) {
   //     )
   // };  
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let data = {
-      accessoryID, name, model ,min_quantity, max_quantity/*, type, description*/
-    }
+  const onSubmit = (data) => {
     data['uom']=uom.id;
     data['uom_name']=uom.name;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
     // console.log("filese: ", data);
-    if(data.accessoryID===undefined){
-      data.accessoryID = 0;
-    }
-    if(files.length!==0){
-      // console.log('inside if', data.accessoryID);
-      var image = '';
-      let file = files[0];
-      let reader = new FileReader();
-      reader.onloadend = (file) => {
-        image = reader.result;
-        data['image'] = image;
-        axios.post('api/accessories', data)
-          .then(res => {
-                // console.log(res.data);
-                  NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                id="notification.titleHere" />);
-              }
-          ).catch(err =>{
-                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-                id="notification.titleHere"/>);
-              }
-          )
-      }
-      reader.readAsDataURL(file);
-    }
-    else{
-      // console.log('inside else:', files.length);
-      data['image'] = 'oldImage';
       axios.post('api/accessories', data)
-          .then(res => {
-            // console.log(res.data);
+        .then(res => {
+              // console.log(res.data);
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
-                id="notification.titleHere" />);
-              }
-          ).catch(err =>{
-                NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
-                id="notification.titleHere"/>);
-              }
-          )
-    }
+              id="notification.titleHere" />);
+            }
+        ).catch(err =>{
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+            }
+        );
   }
-  const handleAllField = async(valid) =>{
-    let /*f1 = 'type',*/ f2 = 'name', f3 = 'model', f4='uom', f5='min_quantity', f6= 'max_quantity'/*, f7='description'*/;
-      const schemaErrors = await runValidation(schema, {
-        ...formData, /*[f1]: type,*/ [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity/*, [f7]: description */
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, /*[f1]: type,*/ [f2]: name, [f3]: model, [f4]: uom, [f5]: min_quantity, [f6]: max_quantity/*, [f7]: description*/ },
-          touched: { ...touched, /*[f1]: false,*/ [f2]: false, [f3]: false, [f4]: false, [f5]: false, [f6]: false/*, [f7]: false*/ },
-          isValid: valid
-        }
-      });
-  }
-  const handleUom = async (event, value) => {
-    setUom(value);
-    let name = 'uom';
-    const schemaErrors = await runValidation(schema, {
-      ...formData, [name]: value
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [name]: value },
-        touched: { ...touched, [name]: true },
-        isValid: checkValidation(schemaErrors)
-      }
-    });
-  };
-  const handleChangeField = async ({ target: { name, value } }) => {
-    // if(name==='type'){
-    //   setType(value)
-    // }
-    // else 
-    if(name==='name'){
-      setName(value)
-    }
-    else if(name==='model'){
-      setModel(value)
-    }
-    else if(name==='min_quantity'){
-      setMin_quantity(value)
-    }
-    else if(name==='max_quantity'){
-      setMax_quantity(value)
-    }
-    // else if(name==='description'){
-    //   setDescription(value)
-    // }
-    
-    const schemaErrors = await runValidation(schema, {
-      ...formData, [name]: value
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [name]: value },
-        touched: { ...touched, [name]: true },
-        isValid: checkValidation(schemaErrors)
-      }
-    });
-  };
+  
+  
   return (
     <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12">
-            <form autoComplete="off" onSubmit={handleSubmit}>
+            <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
             
                     {/* <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP"> */}
@@ -357,18 +165,22 @@ export default function AccessoriesForm(props) {
                         </FormControl> */}
                     {/* </div> */}
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" name='name' value={name} onChange={(e) => handleChangeField(e)}
-                         error={(touched && touched.name) && (error && error.name) ? true : false}
-                         helperText={(touched && touched.name) && (error && error.name) ? '*required' : ''} variant="outlined" />
+                    <TextField id="id" type='hidden' style={{width: '0%'}} name="accessoryID" defaultValue={(accessoryObject?.id) ? accessoryObject?.id : ''} inputRef={register}/>
+                        <TextField id="outlined-basic" size="small" className="fullWidthInput" label="Name" name='name' variant="outlined"
+                        defaultValue={accessoryObject?.name} inputRef={register({required: true})} 
+                        error={errors.name && true} helperText={errors.name ? '*required' : ''}
+                        />
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-mod" size="small" className="fullWidthInput" label="Model" name='model' value={model} onChange={(e) => handleChangeField(e)} error={(touched && touched.model) && (error && error.model) ? true : false}
-                                helperText={(touched && touched.model) && (error && error.model) ? '*required' : ''} variant="outlined" />
+                        <TextField id="outlined-basic-mod" size="small" className="fullWidthInput" label="Model" name='model' variant="outlined"
+                        defaultValue={accessoryObject?.model} inputRef={register({required: true})} 
+                        error={errors.model && true} helperText={errors.model ? '*required' : ''}
+                        />
                     </div>
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
                         
                         <Autocomplete  size="small"
-                          id="country-select-demo" value={uom}  onChange={(event, newValue) => handleUom(event, newValue)}
+                          id="country-select-demo" value={uom}  onChange={(event, newValue) => setUom(newValue)}
                           style={{ width: 300 }}
                           options={uomList}
                           classes={{
@@ -388,8 +200,6 @@ export default function AccessoriesForm(props) {
                               variant="outlined"
                               placeholder="pick UoM!"
                               name="uom"
-                              error={(touched && touched.uom) && (error && error.uom) ? true : false}
-                              helperText={(touched && touched.uom) && (error && error.uom) ? '*required' : ''}
                               InputLabelProps={{
                                 shrink: true,
                               }}
@@ -403,11 +213,17 @@ export default function AccessoriesForm(props) {
                     </div>
                     
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" name='min_quantity' value={min_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.min_quantity) && (error && error.min_quantity) ? true : false} helperText={(touched && touched.min_quantity) && (error && error.min_quantity) ? '*required' : ''} variant="outlined" />
+                        <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" name='min_quantity' variant="outlined"
+                        defaultValue={accessoryObject?.min_quantity} inputRef={register({required: true})} 
+                        error={errors.min_quantity && true} helperText={errors.min_quantity ? '*required' : ''}
+                        />
                     </div>
 
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
-                        <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' value={max_quantity} onChange={(e) => handleChangeField(e)} error={(touched && touched.max_quantity) && (error && error.max_quantity) ? true : false} helperText={(touched && touched.max_quantity) && (error && error.max_quantity) ? '*required' : ''} variant="outlined" />
+                        <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' variant="outlined" 
+                        defaultValue={accessoryObject?.max_quantity} inputRef={register({required: true})} 
+                        error={errors.max_quantity && true} helperText={errors.max_quantity ? '*required' : ''}
+                        />
                     </div>
                         
                     {/* <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
@@ -416,27 +232,14 @@ export default function AccessoriesForm(props) {
                             <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
                         </div>
                     </div> */}
-                    <div className="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 accessory_file">
-                        <div className="dropzone-card">
-                            <div className="dropzone">
-                                <div {...getRootProps({className: 'dropzone-file-btn'})}>
-                                    <input {...getInputProps()} />
-                                    <p>Drag 'n' drop Accessory image <br/> Single file</p>
-                                </div>
-                            </div>
-                            <div className="dropzone-content" style={thumbsContainer}>
-                                {thumbs}
-                                {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
-                                  <span className={`sp_right_padding`}>Cuurent Image </span>
-                                  <span><img src={`${axios.defaults.baseURL}accessories/${oldImage}`} class="img-thumbnail rounded acc_img_width"  alt="Responsive"></img></span>
-                                </spam>): ''): ''}
-                                
-                                 
-                            </div>
-                        </div>
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-12 waterPumFile waterPumpListFile">
+                        <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                     </div>
-                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 btnAccessory">
-                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn" disabled={!isValid}>Submit</Button>
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-12 waterPumFile waterPumpListFile accessory-row">
+                      <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
+                    </div>
+                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 btnAccessory">
+                     <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>
             </form>

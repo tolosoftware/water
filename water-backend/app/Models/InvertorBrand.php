@@ -13,4 +13,9 @@ class InvertorBrand extends Model
       protected $fillable = [
        'name', 'country','discription','image'
     ];
+
+    public function invertorlist()
+    {
+        return $this->hasMany(InvertorList::class, 'invertor_brand_id');
+    }
 }

@@ -30,6 +30,10 @@ Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth
 Route::resource('user', UserController::class);
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
+Route::get('userCity',[UserController::class,'userCity']);
+
+// Registration Request from Users
+Route::post('signupRequest',[UserController::class,'signupRequest']);
 
 //setting
 Route::resource('uom', UomController::class);
@@ -63,3 +67,10 @@ Route::resource('new_location', GeolocationController::class);
 Route::resource('irradiation', IrradiationController::class);
 // End Routes of System Management of Water Soalr
 
+//for clear cache 
+Route::get('/cc', function () {
+    $exitCode = Artisan::call('config:cache');
+    $exitCode = Cache::flush();
+    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+    return redirect($actual_link);
+  });

@@ -7,11 +7,11 @@ const Footer = () => {
       <footer className="app-footer">
         <span className="d-inline-block">Copyright Company Name &copy; 2021</span>
         <Button
-          href="https://codecanyon.net/cart/configure_before_adding/20978545?license=regular&ref=phpbits&size=source&support=bundle_12month&_ga=2.172338659.1340179557.1515677375-467259501.1481606413"
+          href="#"
           target="_blank"
           size="small"
           color="primary"
-        ><IntlMessages id="itolo"/></Button>
+        ><IntlMessages id="water_is_life"/></Button>
       </footer>
     );
   }
