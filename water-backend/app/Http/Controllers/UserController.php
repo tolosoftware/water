@@ -18,6 +18,7 @@ use App\Models\InvertorList;
 use App\Models\Projects;
 use App\Models\Geolocation;
 Use \Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 
 class UserController extends Controller
@@ -28,44 +29,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function signupRequest(Request $request){
-        // return $request;
-
-        $photoname = null;
-        if($request['companyLogo']){
-            $photoname = time().'1.' . explode('/', explode(':', substr($request->companyLogo, 0, strpos($request->companyLogo, ';')))[1])[1];
-            \Image::make($request->companyLogo)->save(public_path('temp/').$photoname);
-            $request->merge(['photo' => $photoname]);
-        }
-        $user = [
-            'name'=> $request['name'],
-            'companyname'=> $request['companyname'],
-            'logo'=> $photoname,
-            'email'=> $request['email'],
-            'city'=> $request['city'],
-            'phone'=> $request['phone'],
-            'website'=> $request['website'],
-        ];
-        // $title = "newsletter subscriber";
-
-        // $content = "This is a new newsletter subscriber.";
-    
-        
-        // Mail::send('mail.sendMail', ['title' => $title, 'content' => $content], function ($message) //use ($attach)
-        // {
-    
-        //     $message->from($request['email'], 'Admin');
-    
-        //     $message->to('mail@tolosoft.co');
-    
-            
-        //     //Add a subject
-        //     $message->subject("Newsletter new subscriber");
-    
-        // });
-    
-        Mail::send('mail.sendMail', $user, function ($message) use ($user) {
-            $message->to('mail@tolosoft.co');
-            $message->subject('Sign Up Request');
+       
+        Mail::send('mail.activation', $user, function ($message) use ($user) {
+            $message->to($user['email']);
+            $message->subject('scqq.blogspot.com - Activation Code');
         });
     }
 
