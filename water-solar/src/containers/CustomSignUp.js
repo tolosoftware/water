@@ -190,7 +190,7 @@ export default function CustomSignUp(props) {
                         <IntlMessages id="notification.successMessageSignIp" />,
                         <IntlMessages id="notification.titleHereSingUp" />
                         );
-                        // handleClose();
+                        handleClose();
                     })
                     .catch((err) => {
                         NotificationManager.error(

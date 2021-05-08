@@ -301,7 +301,7 @@ class ProjectsController extends Controller
         }
         $invertorbrand = InvertorBrand::all();
         $uom = Uom::all();
-        $accessories = Accessories_list::all();
+        $accessories = Accessories_list::with('uom')->get();
         $country = DB::table('geolocations')
             ->select('country')
             ->groupBy('country')

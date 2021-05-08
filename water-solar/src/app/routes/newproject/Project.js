@@ -12,6 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from 'uuid';
 //css
 import "./custome.css";
 //validation
@@ -541,24 +542,46 @@ export default function Project() {
   const [piplenght, setPiplenght] = React.useState();
   const [dirtloss, setDirtloss] = React.useState(5);
   const [discharge, setDischarge] = React.useState("");
-
+  const [inputFields, setInputFields] = useState([
+    { id: uuidv4(), item: "", quantity: "", uomAc:"" },
+  ]);
   //start dynomic form
   const handlseelctitem = (event, value, id) => {
-    inputFields[id].item = value.id;
+
+    const newInputFields = inputFields.map(i => {
+      if(id === i.id) {
+        i['item'] = value;
+        i['uomAc'] = value.uom.acronym;
+      }
+      return i;
+    })
+
+    // inputFields[id].item = value.id;
+    // inputFields[id].uomAc = value.uom.acronym;
+    setInputFields(newInputFields);
+    console.log("value of accessories inputFields", inputFields);
+    // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
   };
 
-  const handlchangquantity = (value, index) => {
-    inputFields[index].quantity = value;
+  const handlchangquantity = (value, id) => {
+    // inputFields[index].quantity = value;
+    const newInputFields = inputFields.map(i => {
+      if(id === i.id) {
+        i['quantity'] = value;
+      }
+      return i;
+    })
+
+    setInputFields(newInputFields);
+
   };
 
-  const [inputFields, setInputFields] = useState([
-    { id: "", item: "", quantity: "" },
-  ]);
+ 
 
   const handleAddFields = () => {
     setInputFields([
       ...inputFields,
-      { id: "", item: "", uomid: "", quantity: "" },
+      { id: "", item: "", uomid: "", quantity: "", uomAc:"" },
     ]);
   };
 
@@ -1430,8 +1453,9 @@ export default function Project() {
                             <FormControl fullWidth>
                               <Autocomplete size="small"
                                 id="country-select-demo3"
+                                defaultValue={inputField.item}
                                 onChange={(event, newValue) =>
-                                  handlseelctitem(event, newValue, index)
+                                  handlseelctitem(event, newValue, inputField.id)
                                 }
                                 style={{ width: 300 }}
                                 options={accessories}
@@ -1482,9 +1506,12 @@ export default function Project() {
                                 name="Quantity"
                                 type="number"
                                 onChange={(event) =>
-                                  handlchangquantity(event.target.value, index)
+                                  handlchangquantity(event.target.value, inputField.id)
                                 }
-                                //value={inputFields.quantity}
+                                value={inputField.quantity}
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">{inputField.uomAc?inputField.uomAc:'m'}</InputAdornment>,
+                                }}
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
