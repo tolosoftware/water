@@ -57,6 +57,7 @@ Route::resource('accessories', AccessoriesListController::class);
 //project 
 Route::get('gitprojectdata', [ProjectsController::class,'gitprojectdata']);
 Route::resource('project', ProjectsController::class);
+Route::get('getSolarWatt/{id}',[ProjectsController::class,'getSolarWatt']);
 Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
 Route::post('project-analyze',[ProjectsController::class,'analyze']);
 Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);

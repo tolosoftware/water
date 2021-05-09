@@ -13,5 +13,8 @@ class Solar_brands extends Model
     protected $fillable = [
         'name', 'country','discription','image'
     ];
-
+    public function solar_lists()
+    {
+        return $this->hasMany(Solar_list::class, 'solar_brand_id');
+    }
 }
