@@ -230,6 +230,8 @@
   "notification.warningMessage": "Warning message",
   "notification.closeAfter3000ms": "Close after 3000ms",
   "notification.errorMessage": "Error message",
+  "notification.errorMessageSolarList": "For Selected Brand System Cann't Find Any Solar Watt",
+  "notification.titleHereSolarList": "Select other Brand",
   "notification.errorMessageSingUp": "Please Check and try again!",
   "notification.titleHereSingUp": "Sign Up Request",
   "notification.titleHere": "Title here",

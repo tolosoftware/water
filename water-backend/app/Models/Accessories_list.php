@@ -13,4 +13,9 @@ class Accessories_list extends Model
     protected $fillable = [
         'accessories_type_id','name','model','uom_id', 'uom_name','min_quantity', 'max_quantity', 'discription','image', 'data_sheet'
     ];
+
+    public function uom()
+    {
+        return $this->belongsTo(Uom::class, 'uom_id');
+    }
 }
