@@ -553,6 +553,10 @@ export default function Project() {
   const [city, setCity] = React.useState([]);
   const [daynomichead, setDaynomichead] = useState();
   const [motorcable, setMotorcable] = React.useState("");
+<<<<<<< HEAD
+  const [solarCable, setSolarCable] = React.useState();
+=======
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
   const [piplenght, setPiplenght] = React.useState();
   const [dirtloss, setDirtloss] = React.useState(5);
   const [discharge, setDischarge] = React.useState("");
@@ -651,7 +655,11 @@ export default function Project() {
     setCitylocation(city?.id);
   };
 
+<<<<<<< HEAD
+  const [imagepath, setImagepath] = useState("/Layouts/1-system layout.jpg");
+=======
   const [imagepath, setImagepath] = useState("/images/General layout.png");
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
   const [myImage, setMyImage] = useState(
     "img-thumbnail rounded mx-auto d-block"
   );
@@ -686,12 +694,110 @@ export default function Project() {
     if (wichInput === "dirt" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
+<<<<<<< HEAD
+      setImagepath("/Layouts/7-pipe friction layout.jpg");
+=======
       setImagepath("/images/System layout.png");
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
     }
 
     if (wichInput === "dirt" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
+<<<<<<< HEAD
+        setImagepath("/Layouts/7-pipe friction layout.jpg");
+      }
+    }
+
+    if (wichInput === "waterDeman" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/6-water demand layout.jpg");
+    }
+
+    if (wichInput === "waterDeman" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/6-water demand layout.jpg");
+      }
+    }
+
+    if (wichInput === "motor" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/4-motor cable layout.jpg");
+    }
+
+    if (wichInput === "motor" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/4-motor cable layout.jpg");
+      }
+    }
+
+    if (wichInput === "head" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/2-Head layout.jpg");
+    }
+
+    if (wichInput === "head" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/2-Head layout.jpg");
+      }
+    }
+
+    if (wichInput === "solarCable" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/3-Solar cable layout.jpg");
+    }
+
+    if (wichInput === "solarCable" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/3-Solar cable layout.jpg");
+      }
+    }
+
+    if (wichInput === "temp" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/system layout with details.jpg");
+    }
+    if (wichInput === "temp" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/system layout with details.jpg");
+      }
+    }
+
+    if (wichInput === "pip" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/5-Pipe lenght layout.jpg");
+    }
+    if (wichInput === "pip" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/5-Pipe lenght layout.jpg");
+      }
+    }
+  };
+  const dirtlossMouseLeave = (wichfunction) => {
+    // setEvaluation(true);
+    if (wichfunction === "fout") {
+      setFoucus(false);
+      setMyImage(" img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/1-system layout.jpg");
+    }
+
+    if (!foucus) {
+      setMyImage(" img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/1-system layout.jpg");
+    }
+=======
         setImagepath("/images/System layout.png");
       }
     }
@@ -758,6 +864,7 @@ export default function Project() {
       setMyImage(" img-thumbnail rounded mx-auto d-block");
       setImagepath("/images/General layout.png");
     }
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
   };
 
   const [evaluation, setEvaluation] = useState(false);
@@ -766,6 +873,26 @@ export default function Project() {
     setOpenbackdrop(true);
 
     let alldata = {
+<<<<<<< HEAD
+      projectname,
+      country,
+      city,
+      daynomichead,
+      solarCable,
+      motorcable,
+      piplenght,
+      discharge,
+      dirtloss,
+      bas,
+      inputFields,
+      pumpvalue,
+      solarvalue,
+      solarSelectWatt,
+      invertorvalue,
+    };
+    alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
+    console.log('all Data ', alldata);
+=======
       daynomichead,
       city,
       country,
@@ -779,11 +906,16 @@ export default function Project() {
       invertorvalue,
       discharge,
     };
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
     axios
       .post("api/project", alldata)
       .then((res) => {
         setOpenbackdrop(false);
+<<<<<<< HEAD
+        handleNext();
+=======
         // handleNext();
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
         NotificationManager.success(
           <IntlMessages id="notification.successMessage" />,
           <IntlMessages id="notification.titleHere" />
@@ -809,12 +941,22 @@ export default function Project() {
       solarvalue,
       solarSelectWatt,
       invertorvalue,
+<<<<<<< HEAD
+      citylocation,
+      dynamicHead,
+      solarCable,
+      motorcable,
+      piplenght,
+      discharge,
+      dirtloss,
+=======
       dynamicHead,
       dirtloss,
       motorcable,
       citylocation,
       discharge,
       piplenght,
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
       bas,
     };
     // console.log('dynamicHead', dynamicHead);
@@ -1104,6 +1246,7 @@ export default function Project() {
                                 name="country"
                                 InputLabelProps={{
                                   shrink: true,
+<<<<<<< HEAD
                                 }}
                                 //  error={(touched && touched.country) && (error && error.country) ? true : false}
 
@@ -1154,6 +1297,58 @@ export default function Project() {
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
+=======
+                                }}
+                                //  error={(touched && touched.country) && (error && error.country) ? true : false}
+
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: "new-password",
+                                }}
+                              />
+                            )}
+                          />
+                        </div>
+
+                        <div className="col-md-6">
+                          <Autocomplete
+                            size="small"
+                            id="country-select-demo2"
+                            onChange={(event, newValue) => {
+                              handcahngeCity(event, newValue);
+                              getIrredation(newValue);
+                            }}
+                            style={{ width: 300 }}
+                            options={dbcity}
+                            classes={{
+                              option: classes.option,
+                            }}
+                            defaultValue={city}
+                            error={
+                              touched && touched.city && error && error.city
+                                ? true
+                                : false
+                            }
+                            autoHighlight
+                            getOptionLabel={(option) =>
+                              option ? option.city : ""
+                            }
+                            renderOption={(option) => (
+                              <React.Fragment>{option.city}</React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField
+                                size="small"
+                                {...params}
+                                label="Select the City"
+                                variant="outlined"
+                                placeholder="pick the City !"
+                                margin="normal"
+                                name="city"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
                                 inputProps={{
                                   ...params.inputProps,
                                   autoComplete: "new-password",
@@ -1165,6 +1360,214 @@ export default function Project() {
                       </div>
 
                       <Divider className="mb-3 mt-3" />
+<<<<<<< HEAD
+                      <div className="row">
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
+                            <TextField
+                              id="outlined-basic-1"
+                              className="form-control"
+                              label={`Head ${piplenght && dirtloss
+                                ? "+ " +
+                                Math.ceil(
+                                  Number((dirtloss * piplenght) / 100)
+                                )
+                                : ""
+                                }`}
+                              variant="outlined"
+                              placeholder="Head !"
+                              margin="normal"
+                              name="head"
+                              type="number"
+                              size="small"
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={daynomichead}
+                              onChange={(event) =>
+                                setDaynomichead(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("head", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() => dirtlossMouseOver("head", "focus")}
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="Enter the length of the electrical cable between the solar panels and pump controller/inverter">
+                            <TextField
+                              id="outlined-basic-2_solar"
+                              label="Solar Cable"
+                              variant="outlined"
+                              placeholder="Solar cable!"
+                              margin="normal"
+                              name="solar_cable"
+                              type="number"
+                              size="small"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              value={solarCable}
+                              onChange={(event) =>
+                                setSolarCable(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("solarCable", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() =>
+                                dirtlossMouseOver("solarCable", "focus")
+                              }
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="The electrical cable between controller/inverter and submersible pump">
+                            <TextField
+                              id="outlined-basic-2"
+                              label="Motor Cable"
+                              variant="outlined"
+                              placeholder="Motor cable!"
+                              margin="normal"
+                              name="motor_cable"
+                              type="number"
+                              size="small"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              value={motorcable}
+                              onChange={(event) =>
+                                setMotorcable(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("motor", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() =>
+                                dirtlossMouseOver("motor", "focus")
+                              }
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                        <div className="col-md-6">
+                          <BootstrapTooltip
+                            title="Pipe line from the submersible pump outlet to the delivery point.
+                        Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box."
+                          >
+                            <TextField
+                              id="outlined-basic-4"
+                              label="Pipe-lenght"
+                              variant="outlined"
+                              placeholder="Pipe lenght!"
+                              margin="normal"
+                              name="motor_cable"
+                              type="number"
+                              size="small"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              value={piplenght}
+                              onChange={(event) =>
+                                setPiplenght(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("pip", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() => dirtlossMouseOver("pip", "focus")}
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="Enter your hourly water requirement in average method.">
+                            <TextField
+                              id="outlined-basic-5"
+                              label="Water Demand"
+                              variant="outlined"
+                              placeholder="Water Demand"
+                              margin="normal"
+                              name="discharge"
+                              size="small"
+                              type="number"
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m³/h
+                                  </InputAdornment>
+                                ),
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={discharge}
+                              onChange={(event) =>
+                                setDischarge(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("waterDeman", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() => dirtlossMouseOver("waterDeman", "focus")}
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                        <div className="col-md-6">
+                          <TextField
+                            id="outlined-basic-11"
+                            label="Pipe Friction losses"
+                            variant="outlined"
+                            size="small"
+                            placeholder="Pipe Friction losses!"
+                            margin="normal"
+                            name="dist_loss"
+                            type="number"
+                            min="0"
+                            max="10"
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  %
+=======
 
                       <div className="col-md-12 p-0">
                         <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
@@ -1188,12 +1591,34 @@ export default function Project() {
                               endAdornment: (
                                 <InputAdornment position="end">
                                   m
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
                                 </InputAdornment>
                               ),
                             }}
                             InputLabelProps={{
                               shrink: true,
                             }}
+<<<<<<< HEAD
+                            value={piplenght >= 500 ? 10 : dirtloss}
+                            onChange={(event) =>
+                              setDirtloss(
+                                event.target.value >= 0 &&
+                                  event.target.value <= 10
+                                  ? event.target.value
+                                  : 5
+                              )
+                            }
+                            onMouseOver={() =>
+                              dirtlossMouseOver("dirt", "hover")
+                            }
+                            onMouseLeave={() => dirtlossMouseLeave("xy")}
+                            onFocus={() => dirtlossMouseOver("dirt", "focus")}
+                            onBlur={() => dirtlossMouseLeave("fout")}
+                          />
+                        </div>
+                      </div>
+
+=======
                             value={daynomichead}
                             onChange={(event) =>
                               setDaynomichead(event.target.value)
@@ -1360,6 +1785,7 @@ export default function Project() {
                         </div>
                       </div>
 
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
                       <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap mt-3 project_bas_field">
                         <BootstrapTooltip title="Select your solar panels mounting type. Note: Manual is more efficient than fix/ground mounting structures.">
                           <div
@@ -1414,9 +1840,15 @@ export default function Project() {
                           </div>
                         </BootstrapTooltip>
                       </div>
+<<<<<<< HEAD
 
                       <Divider className="mb-3 mt-3" />
 
+=======
+
+                      <Divider className="mb-3 mt-3" />
+
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
                       <Button
                         size="large"
                         color="primary"
@@ -1563,7 +1995,11 @@ export default function Project() {
 
                     <div className="col-md-8">
                       <img
+<<<<<<< HEAD
+                        src="/Layouts/system layout with details.jpg"
+=======
                         src="/images/General layout.png"
+>>>>>>> 23cf9c04e25ec8a15fa8e670d8383cba32d52e78
                         className=" img-thumbnail rounded mx-auto d-block"
                         alt="Responsive"
                       />

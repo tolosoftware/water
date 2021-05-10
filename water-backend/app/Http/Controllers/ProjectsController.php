@@ -356,15 +356,20 @@ class ProjectsController extends Controller
         DB::beginTransaction();
         try {
         $project =  Projects::create([
-            'country' => $request['country']['country'],
+            'country' => $request['city']['country'],
             'city_id' => $request['city']['id'],
             'name' => $request['projectname'],
-            'discription' => $request['discription'],
-            'dirt_loss' => $request['dirtloss'],
-            'motor_cable' =>$request['motorcable'],
             'daynomic_head' => $request['daynomichead'],
+            'solar_cable' => $request['solarCable'],
+            'motor_cable' =>$request['motorcable'],
             'daily_output' => $request['discharge'],
+            'dirt_loss' => $request['dirtloss'],
+            'solar_base' => $request['bas'],
+            'solar_watt' => $request['solarSelectWatt'],
+            'pip_length' => $request['piplenght'],
+            'discription' => $request['discription'],
             'solar_brand_id' => $request['solarvalue'],
+            'user_id' => $request['user_id'],
             'pump_brand_id' => $request['pumpvalue'],
             'invertor_brand_id' => $request['invertorvalue'],
             
@@ -373,7 +378,7 @@ class ProjectsController extends Controller
         foreach($request->inputFields as $value){
             Project_accessories::create([
                 'project_id' => $project->id,
-                'accessories_id' => $value['item'],
+                'accessories_id' => $value['item']['id'],
                 'quantity' => $value['quantity'],
 
             ]);
