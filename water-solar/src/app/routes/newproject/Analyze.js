@@ -238,7 +238,7 @@ export default function Analyze(props) {
                     </ResponsiveContainer>
                   
 
-                </div>
+            </div>
             <div className="col-md-5">
                <span class="badge badge-primary ml-4">Average = 50</span>
                     <ResponsiveContainer width="100%" height={250}>

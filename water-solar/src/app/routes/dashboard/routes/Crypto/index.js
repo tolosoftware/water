@@ -9,14 +9,20 @@ import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
 import CardBox from 'components/CardBox';
 import SendMoney from "./SendMoney";
+import UserExpiration from './UserExpiration';
 import PumpList from "./PumpList";
 import SolarList from "./SolarList";
 import InvertorList from "./InvertorList";
 import TestimonialCarousel from './testimonial/index';
 import Slider from "react-slick";
 import {Area, AreaChart, ResponsiveContainer} from "recharts";
+import Card from '@material-ui/core/Card';
 //country flag
 import Flags from 'country-flag-icons/react/3x2';
+import Divider from "@material-ui/core/Divider";
+
+import Firstrow from './Firstrow';
+import Secondrow from './Secondrow';
 
 function getFlag(countryname) {
   switch (countryname) {
@@ -215,102 +221,22 @@ const handleToggle = (type) => {
       </Backdrop>
        
       <div className="row">
-          <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
-                  heading>
-            {/* <div><IntlMessages id="component.carousel.testimonial"/><IntlMessages id="component.carousel.testimonialTxt"/></div> */}
-            <TestimonialCarousel testimonials={testimonials}/>
-          </CardBox>
-          <div className="col-xl-5 col-lg-5 col-md-12 col-12 user-list-sect">
-            <SendMoney usersData={users}/>
-          </div>
-          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-            <div className="jr-card jr-card-full">
-              <div
-                className={isHide === true ? `jr-fillchart bg-${projectChart.bgColor} jr-fillchart-nocontent` : `jr-fillchart bg-${projectChart.bgColor} jr-overlay-fillchart`}>
-                <div className="card-title mb-3">{projectChart.title}</div>
-                <ResponsiveContainer width="100%" height={75}>
-                  <AreaChart data={increamentData}
-                              margin={{top: 0, right: 0, left: 0, bottom: 0}}>
-                    <Area dataKey='pv' strokeWidth={0} stackId="2" stroke='#273894' fill="#273894"
-                          fillOpacity={1}/>
-                  </AreaChart>
-                </ResponsiveContainer>
-                <div className="jr-fillchart-content">
-                  <div className="card-title mb-4">{projectChart.title}</div>
-                  <h2 className="mb-2 jr-fs-xl jr-font-weight-medium">{projects.length}</h2>
-                  {proOfThMonth > 0}
-                  <p className="mb-0 jr-fs-sm"><span
-                    className={`jr-font-weight-medium jr-fs-md jr-chart-${projectChart.styleName}`}>{proOfThMonth}
-                    </span>{projectChart.desc}</p>
-                </div>
-                <div className="jr-fillchart-btn-close" onClick={handleToggle.bind(this,'proBtn')}><i
-                  className="zmdi zmdi-close"/></div>
-                <div className="jr-fillchart-btn" onClick={handleToggle.bind(this, 'proBtn')}><i
-                  className={`zmdi zmdi-equalizer jr-fs-lg`}/>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-            <div className="jr-card jr-card-full">
-                <div
-                  className={isHide2 === true ? `jr-fillchart bg-pink accent-2 jr-fillchart-nocontent` : `jr-fillchart bg-pink accent-2 jr-overlay-fillchart`}>
-                  <div className="card-title mb-3">DOWNLOADS</div>
-                  <ResponsiveContainer width="100%" height={75}>
-                    <AreaChart data={increamentData}
-                                margin={{top: 0, right: 0, left: 0, bottom: 0}}>
-                      <Area dataKey='pv' strokeWidth={0} stackId="2" stroke='#da2361' fill="#da2361"
-                            fillOpacity={1}/>
-                    </AreaChart>
-                  </ResponsiveContainer>
-                  <div className="jr-fillchart-content">
-                    <div className="card-title mb-4">DOWNLOADS</div>
-                    <h2 className="mb-2 jr-fs-xl jr-font-weight-medium">384</h2>
-                    {proOfThMonth > 0}
-                    <p className="mb-0 jr-fs-sm"><span
-                      className={`jr-font-weight-medium jr-fs-md jr-chart-down`}>34
-                      </span>This month</p>
-                  </div>
-                  <div className="jr-fillchart-btn-close" onClick={handleToggle.bind(this,'downBtn')}><i
-                    className="zmdi zmdi-close"/></div>
-                  <div className="jr-fillchart-btn" onClick={handleToggle.bind(this,'downBtn')}><i
-                    className={`zmdi zmdi-equalizer jr-fs-lg`}/>
-                  </div>
-                </div>
-              </div>
+        <Firstrow/>
+      </div>
+
+      <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12 pl-0 pr-0">
+        <div className="row">
+           <Secondrow/>
+        </div>
+      </CardBox>
+
+      
+      <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12 pl-0 pr-0" cardStyle="text-center"
+                    heading={"All Brands"}>
             
-          </div>
-          <div className="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-           <div className="jr-card jr-card-full">
-              <div
-                className={isHide1 === true ? `jr-fillchart bg-info jr-fillchart-nocontent` : `jr-fillchart bg-info jr-overlay-fillchart`}>
-                <div className="card-title mb-3">USERS</div>
-                <ResponsiveContainer width="100%" height={75}>
-                  <AreaChart data={increamentData}
-                              margin={{top: 0, right: 0, left: 0, bottom: 0}}>
-                    <Area dataKey='pv' strokeWidth={0} stackId="2" stroke='#0c8e9f' fill="#0c8e9f"
-                          fillOpacity={1}/>
-                  </AreaChart>
-                </ResponsiveContainer>
-                <div className="jr-fillchart-content">
-                  <div className="card-title mb-4">USERS</div>
-                  <h2 className="mb-2 jr-fs-xl jr-font-weight-medium">{users.length+1}</h2>
-                  {proOfThMonth > 0}
-                  <p className="mb-0 jr-fs-sm"><span
-                    className={`jr-font-weight-medium jr-fs-md jr-chart-down`}>{users.length}
-                    </span>Over All</p>
-                </div>
-                <div className="jr-fillchart-btn-close" onClick={handleToggle.bind(this,'userBtn')}><i
-                  className="zmdi zmdi-close"/></div>
-                <div className="jr-fillchart-btn" onClick={handleToggle.bind(this,'userBtn')}><i
-                  className={`zmdi zmdi-equalizer jr-fs-lg`}/>
-                </div>
-              </div>
-            </div>
-          </div>
-          <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
-                    heading={<IntlMessages id="Water Pump Brands"/>}>
-              {/* <div><IntlMessages id="component.carousel.productTxt"/></div> */}
+
+              <div className="row">
+              <div className="col-md-4">
               <Slider className="slick-app-frame" {...options} >
                 {pump.map((data,index) => {
                   return <div class="slick-slide-item">
@@ -325,13 +251,12 @@ const handleToggle = (type) => {
                 })} 
                 
               </Slider>
-            </CardBox>
-          <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
-           <PumpList pumpLists={pumpLists}/>
-          </div>
-          <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
-                    heading={<IntlMessages id="Solar Brands"/>}>
-              {/* <div><IntlMessages id="component.carousel.productTxt"/></div> */}
+               <Divider className="mb-3 mt-1" />
+              <h3 className="mt-3">Pump Brands</h3>
+              </div>
+
+              <div className="col-md-4">
+
               <Slider className="slick-app-frame" {...options} >
                 {solar.map((data,index) => {
                   return <div class="slick-slide-item">
@@ -345,33 +270,52 @@ const handleToggle = (type) => {
                 })} 
                 
               </Slider>
-            </CardBox>
-          
-          <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
-          <SolarList solarLists={solarLists} />
-          </div>
+                  <Divider className="mb-3 mt-1" />
+              <h3 className="mt-3">Solar Brands</h3>
 
-          <CardBox styleName="col-xl-5 col-lg-5 col-md-12 col-12 dashboard-brand" cardStyle="text-center"
-                    heading={<IntlMessages id="Invertor Brands"/>}>
-              {/* <div><IntlMessages id="component.carousel.productTxt"/></div> */}
-              <Slider className="slick-app-frame" {...options} >
-                {invertorBrand.map((data,index) => {
-                  return <div class="slick-slide-item">
-                    <div className="brand-logo">
-                      <div className="brand-logo-inner">
-                        <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} alt="Clients"/>
+              </div>
+              <div className="col-md-4">
+                <Slider className="slick-app-frame" {...options} >
+                  {solar.map((data,index) => {
+                    return <div class="slick-slide-item">
+                      <div className="brand-logo">
+                        <div className="brand-logo-inner">
+                          <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`} alt="Clients"/>
+                        </div>
                       </div>
-                    </div>
-                    <span> {data.country} {getFlag(data.country)}  </span>
-                  </div>  
-                })} 
-                
-              </Slider>
-            </CardBox>
+                      <span> {data.country} {getFlag(data.country)}  </span>
+                    </div>  
+                  })} 
+                  
+                </Slider>
+                  <Divider className="mb-3 mt-1" />
+                  <h3 className="mt-3">Invertor Brands</h3>
+                </div>
+
+
+              </div>
+      </CardBox>
+
+      <div className="row">
+
+       <div className="col-xl-5 col-lg-5 col-md-12 col-12 user-list-sect">
+            <SendMoney usersData={users}/>
+        </div>
+
+          <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
+                  heading>
+            {/* <div><IntlMessages id="component.carousel.testimonial"/><IntlMessages id="component.carousel.testimonialTxt"/></div> */}
+            <TestimonialCarousel testimonials={testimonials}/>
+          </CardBox>
+
           
-          <div className="col-xl-7 col-lg-7 col-md-12 col-12 dashborad-brand-list">
-          <InvertorList invertorLists={invertorLists} />
-          </div>
+
+      </div>
+
+       <div className="row">
+        <CardBox styleName="col-lg-5" >
+          <UserExpiration/>
+        </CardBox>
       </div>
     </div>
   );
