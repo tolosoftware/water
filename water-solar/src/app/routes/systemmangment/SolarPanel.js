@@ -327,7 +327,7 @@ const onButtonClick = (listId, solarModel) => {
 
 const deleteSolarBrand = (id) =>{
   setVisibility(true)
-  console.log("it is id of that water pump brand: ", id);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -377,7 +377,7 @@ const getSolarBrands = async() =>{
 // start delete function solar panel list
 const deleteSolarList = (id) =>{
   setVisibility(true)
-  console.log("it is id of that water pump brand: ", id);
+  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -391,7 +391,6 @@ const deleteSolarList = (id) =>{
       axios.delete('api/solarList/'+id)
         .then(res => {
           setVisibility(false)
-          setSolarLists(res.data)
           setSolarLists(solarLists.filter((value) => value.id !==id));
           NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
           id="notification.titleHere" />);
@@ -483,24 +482,6 @@ const editSolarList = (solarListObject) =>{
   setOpenS(true)
 }
 const handleAllField = async(valid) =>{
-  // const f1 = ['brand', 'country', 'description'];
-  // const f2 = [brand, country, description];
-
-  // for (let index = 0; index < f1.length; index++) {
-  //   // const element = array[index];
-  //   const schemaErrors = await runValidation(schema, {
-  //     ...formData, [f1[index]]: f2[index]
-  //   });
-  //   dispatch({
-  //     type: setState,
-  //     payload: {
-  //       error: schemaErrors,
-  //       formData: { ...formData, [f1[index]]: f2[index] },
-  //       touched: { ...touched, [f1[index]]: false},
-  //       isValid: valid
-  //     }
-  //   });
-  // }
   let f1 = 'brand', f2 = 'country'/*, f3 = 'description'*/;
   const schemaErrors = await runValidation(schema, {
     ...formData, [f1]: brand, [f2]: country/*, [f3]: description*/

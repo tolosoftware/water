@@ -39,15 +39,25 @@ class SolarListController extends Controller
     {
         DB::beginTransaction();
         try {
-            $photoname = 0;
-            $id = $request['solarListID'];
-            if($request['image'] != 'oldImage'){
-                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('brand/solar/solar_list/').$photoname);
+            $photoname = null;
+            $dataSheetName = null;
+            if($request['imageFile']){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
+                \Image::make($request->imageFile)->save(public_path('brand/solar/solar_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!==0) {
-                $solar_list = Solar_list::findOrFail($id);
+            if($request['dataSheetFile']){
+                $file = $request->get('dataSheetFile');
+                if (strpos($file, ',') !== false) {
+                    @list($encode, $file) = explode(',', $file);
+                }
+                $fileName = base64_decode($file, true);  
+                $dataSheetName = time().'ds.pdf';
+                $destinationPath = public_path('brand/solar/solar_list/data_sheet/').$dataSheetName;            
+                file_put_contents($destinationPath, $fileName);
+            }
+            if (!empty($request['solarListID'])) {
+                $solar_list = Solar_list::findOrFail($request['solarListID']);
                 $solar_list->solar_brand_id =  $request['brand'];
                 $solar_list->model = $request['model'];
                 $solar_list->type = $request['solarType'];
@@ -55,9 +65,13 @@ class SolarListController extends Controller
                 $solar_list->voltage = $request['voltage'];
                 $solar_list->current = $request['current'];
                 $solar_list->cable_type_id = $request['cableType'];
-                if($request->image != 'oldImage'){
+                if($request['imageFile']){
                     File::delete('brand/solar/solar_list/'.$solar_list->image);
                     $solar_list->image = $photoname;
+                }
+                if($request['dataSheetFile']){
+                    File::delete('brand/solar/solar_list/data_sheet/'.$solar_list->data_sheet);
+                    $solar_list->data_sheet = $dataSheetName;
                 }
                 $solar_list->discription = 'null';
                 $solar_list->save();
@@ -72,7 +86,8 @@ class SolarListController extends Controller
                     'current' => $request['current'], 
                     'cable_type_id' => $request['cableType'], 
                     'discription' => 'null', 
-                    'image' => $photoname, 
+                    'image' => $photoname,
+                    'data_sheet' => $dataSheetName,
                 ]);
             }
             // return $request;
@@ -129,6 +144,7 @@ class SolarListController extends Controller
     {
         $solar_list = Solar_list::findOrFail($id);
         File::delete('brand/solar/solar_list/'.$solar_list->image);
+        File::delete('brand/solar/solar_list/data_sheet/'.$solar_list->data_sheet);
         $solar_list->delete();
         return ['message' => 'Selected Solar list has been Deleted'];
     }

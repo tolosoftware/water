@@ -40,28 +40,42 @@ class AccessoriesListController extends Controller
         // return $request;
         DB::beginTransaction();
         try {
-            $photoname = 0;
+            $photoname = null;
+            $dataSheetName = null;
             $id = $request['accessoryID'];
-            if($request['image'] != 'oldImage'){
-                $photoname = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
-                \Image::make($request->image)->save(public_path('accessories/').$photoname);
+            if($request['imageFile']){
+                $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
+                \Image::make($request->imageFile)->save(public_path('accessories/').$photoname);
                 $request->merge(['photo' => $photoname]);
             }
-            if ($id!==0) {
+            if($request['dataSheetFile']){
+                $file = $request->get('dataSheetFile');
+                if (strpos($file, ',') !== false) {
+                    @list($encode, $file) = explode(',', $file);
+                }
+                $fileName = base64_decode($file, true);  
+                $dataSheetName = time().'ds.pdf';
+                $destinationPath = public_path('accessories/data_sheet/').$dataSheetName;            
+                file_put_contents($destinationPath, $fileName);
+            }
+            if (!empty($request['accessoryID'])) {
                 // return "it inside if ". $id;
-                $accessories_list = Accessories_list::findOrFail($id);
-                $accessories_list->accessories_type_id = $request['type'];
+                $accessories_list = Accessories_list::findOrFail($request['accessoryID']);
                 $accessories_list->name = $request['name'];
                 $accessories_list->model = $request['model'];
                 $accessories_list->uom_id = $request['uom'];
                 $accessories_list->uom_name = $request['uom_name'];
                 $accessories_list->min_quantity = $request['min_quantity'];
                 $accessories_list->max_quantity = $request['max_quantity'];
-                if($request->image != 'oldImage'){
+                if($request['imageFile']){
                     File::delete('accessories/'.$accessories_list->image);
                     $accessories_list->image = $photoname;
                 }
-                $accessories_list->discription = 'null';
+                if($request['dataSheetFile']){
+                    File::delete('accessories/data_sheet/'.$accessories_list->data_sheet);
+                    $accessories_list->data_sheet = $dataSheetName;
+                }
+                $accessories_list->discription = '';
                 $accessories_list->save();
                
             }else{
@@ -76,6 +90,7 @@ class AccessoriesListController extends Controller
                     'max_quantity' =>$request['max_quantity'],
                     'discription' => 'null',
                     'image' => $photoname,
+                    'data_sheet' => $dataSheetName,
                 ]);
             }
             
@@ -130,6 +145,7 @@ class AccessoriesListController extends Controller
     {
         $accessories_list = Accessories_list::findOrFail($id);
         File::delete('accessories/'.$accessories_list->image);
+        File::delete('accessories/data_sheet/'.$accessories_list->data_sheet);
         $accessories_list->delete();
         return ['message' => 'Geo Location Deleted'];
     }

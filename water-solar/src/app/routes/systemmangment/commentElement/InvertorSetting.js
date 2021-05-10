@@ -11,7 +11,10 @@ import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
+// code for small steps
+import Slider from '@material-ui/core/Slider';
+
 // import {useDropzone} from "react-dropzone";
 import { v4 as uuidv4 } from 'uuid';
 // code for small steps
@@ -59,7 +62,103 @@ const styles = (theme) => ({
   }))(MuiDialogActions);
   // end of dialog modal for Solar Panal 
 
-  // end code for dropzone
+  function valuetext(value) {
+    return `${value}KW`;
+  } 
+  const marksKW = [
+    {
+      value: 0.75,
+      label: '0.75KW',
+    },
+    {
+      value: 1.1,
+      // label: '1.1KW',
+    },
+    {
+      value: 1.5,
+      // label: '1.5KW',
+    },
+    {
+      value: 2.2,
+      // label: '2.2KW',
+    },
+    {
+      value: 3,
+      // label: '3KW',
+    },
+    {
+      value: 4,
+      // label: '4KW',
+    },
+    {
+      value: 5.5,
+      // label: '5.5KW',
+    },
+    {
+      value: 7.5,
+      // label: '7.5KW',
+    },
+    {
+      value: 11,
+      // label: '11KW',
+    },
+    {
+      value: 15,
+      // label: '15KW',
+    },
+    {
+      value: 18.5,
+      // label: '18.5KW',
+    },
+    {
+      value: 22,
+      // label: '22KW',
+    },
+    {
+      value: 30,
+      // label: '30KW',
+    },
+    {
+      value: 37,
+      // label: '37KW',
+    },
+    {
+      value: 45,
+      // label: '45KW',
+    },
+    {
+      value: 52,
+      // label: '52KW',
+    },
+    {
+      value: 55,
+      // label: '55KW',
+    },
+    {
+      value: 60,
+      label: '60KW',
+    },
+    {
+      value: 67,
+      // label: '67KW',
+    },
+    {
+      value: 75,
+      // label: '75KW',
+    },
+    {
+      value: 81,
+      // label: '81KW',
+    },
+    {
+      value: 92,
+      // label: '92KW',
+    },
+    {
+      value: 110,
+      label: '110KW',
+    },
+  ];
 export default function InvertorSetting(props){
     // start code of dialog modal for Solar Panal 
     const {openSID, setOpenSID} = props;
@@ -71,13 +170,25 @@ export default function InvertorSetting(props){
   const invertorList_Id = props.invertorListId;
   const invertorListModel = props.invertorListModel;
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), power: '', invertor_list_id: invertorList_Id},
+    { id: uuidv4(), power: 15, invertor_list_id: invertorList_Id},
   ]);
 
-  const handleChangeInput = (id, event) => {
+  // const handleChangeInput = (id, event) => {
+  //   const newInputFields = inputFields.map(i => {
+  //     if(id === i.id) {
+  //       i[event.target.name] = event.target.value
+  //     }
+  //     return i;
+  //   })
+    
+  //   setInputFields(newInputFields);
+  // }
+  const handleChangeStep = (id, event, value, name) => {
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        i[event.target.name] = event.target.value
+        if('power' === name){
+          i['power'] = value;
+        }
       }
       return i;
     })
@@ -123,7 +234,7 @@ export default function InvertorSetting(props){
           });
           // console.log('mainArray is: ',mainArray);
         }else{
-          mainArray.push({ id: uuidv4(), power: '', invertor_list_id: id});
+          mainArray.push({ id: uuidv4(), power: 15, invertor_list_id: id});
         }
         setInputFields(mainArray);
       }).catch(err => {
@@ -139,7 +250,7 @@ export default function InvertorSetting(props){
       // let data = {
       //     power, 
       // }
-      console.log(inputFields);
+      // console.log(inputFields);
       axios.post('api/invertorListSetting', inputFields)
         .then(
             res => {
@@ -168,11 +279,11 @@ export default function InvertorSetting(props){
                     <div className="col-xl-12 col-lg-12 col-md-12 col-12">
                   
                     {/* <div key={id_field = inputField.id}> */}
-                    
-                      <div className="row insideSPDS paddingBottom ">
-                        { inputFields.map(inputField => (
-                          <div key={id_field = inputField.id} className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 insideFormPaddingWPS inWPS3 inputAdornmentWrap mb-invertor">
-                              <TextField required size="small" name='power' value={inputField.power} onChange={event => handleChangeInput(inputField.id, event)}
+                    { inputFields.map(inputField => (
+                      <div className="row paddingBottom invertor-config-row">
+                        
+                          <div key={id_field = inputField.id} className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-invertor">
+                              {/* <TextField required size="small" name='power' value={inputField.power} onChange={event => handleChangeInput(inputField.id, event)}
                                   id="outlined-number1"
                                   label="Invertor Power"
                                   type="number"
@@ -180,10 +291,23 @@ export default function InvertorSetting(props){
                                       shrink: true,
                                   }}
                                   variant="outlined"
+                              /> */}
+                              <Typography id="discrete-slider-small-steps" gutterBottom >
+                              Power to KW 
+                              </Typography>
+                              <Slider name="power" onChange={(event, value) => handleChangeStep(inputField.id, event, value, 'power')}
+                                  defaultValue={(inputField.power)?inputField.power: 15 }
+                                  getAriaValueText={valuetext}
+                                  aria-labelledby="discrete-slider-small-steps"
+                                  step={null}
+                                  marks={marksKW}
+                                  min={0.75}
+                                  max={110}
+                                  valueLabelDisplay="auto"
                               />
                           </div>
-                        )) }
                       </div>
+                       )) }
                   {/*  </div> */}
                  
               </div>

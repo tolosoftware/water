@@ -63,12 +63,16 @@ function Accessories() {
   // start code for taps 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [getValue, setGetValue] = React.useState(0);
   const [accessoryObject, setAccessoryObject] =React.useState([]);
-
   const handleChange = (event, newValue) => {
     setAccessoryObject('');
     if(newValue===0){
       getAccessories();
+      setGetValue(0);
+    }
+    if(newValue===1){
+      setGetValue(1);
     }
     setValue(newValue);
   };
@@ -186,7 +190,7 @@ const deletAccessory=(id) => {
           />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <AccessoriesForm accessoryObject={accessoryObject} />
+        <AccessoriesForm accessoryObject={accessoryObject} getValue={getValue}/>
       </TabPanel>
     <NotificationContainer />
   </div>

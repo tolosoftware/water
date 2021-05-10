@@ -38,11 +38,12 @@ const thumbsContainer = {
 export default function CustomDropzone(props) {
 const [files, setFiles] = useState([]);
 const oldImage = props?.formData.oldImage;
+const filePath = props?.formData.filePath;
 const btnText = props?.formData.btnText;
  // dropzone code
     
  const {getRootProps, getInputProps} = useDropzone({
-    accept: 'image/*',
+    accept: 'image/*,',
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
@@ -112,9 +113,9 @@ const btnText = props?.formData.btnText;
         </div>
         <div className="dropzone-content" style={thumbsContainer}>
             {thumbs}
-            {(files.length === 0 )? ((oldImage!=="" && oldImage!==undefined)? (<spam>
+            {(files.length === 0 )? ((oldImage!=="" && oldImage!=='0' && oldImage!==0)? (<spam>
             <span className={`sp_right_padding`}>Cuurent {btnText} </span>
-            <span><img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
+            <span><img src={`${axios.defaults.baseURL}${filePath}${oldImage}`} class="img-thumbnail rounded edit_img_width"  alt="Responsive"></img></span>
             </spam>): ''): ''}
         </div>
     </div>
