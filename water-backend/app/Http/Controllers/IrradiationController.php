@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Irradiation;
+use App\Models\Geolocation;
 use Illuminate\Http\Request;
+Use \Carbon\Carbon;
 use DB;
 class IrradiationController extends Controller
 {
@@ -15,6 +17,86 @@ class IrradiationController extends Controller
     public function index()
     {
         return Irradiation::all();
+    }
+
+    public function irridation(){
+        $kabul = Geolocation::where('city','Kabul')->first();
+        $herat = Geolocation::where('city','Herat')->first();
+        $balkh = Geolocation::where('city','Balkh')->first();
+        $kandahar = Geolocation::where('city','Kandahar')->first();
+        $date = Carbon::now();
+        $kabulirr = Irradiation::where(['geolocation_id'=>$kabul->id,'month_id'=> $date->month])->first();
+        $heratirr = Irradiation::where(['geolocation_id'=>$herat->id,'month_id'=> $date->month])->first();
+        $balkhirr = Irradiation::where(['geolocation_id'=>$balkh->id,'month_id'=> $date->month])->first();
+        $kandaharirr = Irradiation::where(['geolocation_id'=>$kandahar->id,'month_id'=> $date->month])->first();
+    
+          $kabulnow =  [
+            ['name'=>'6:00am', 'value'=>$kabulirr->t6am],
+            ['name'=>'7:00am', 'value'=>$kabulirr->t7am],
+            ['name'=>'8:00am', 'value'=>$kabulirr->t8am],
+            ['name'=>'9:00am', 'value'=>$kabulirr->t9am],
+            ['name'=>'10:00am', 'value'=>$kabulirr->t10am],
+            ['name'=>'11:00am', 'value'=>$kabulirr->t11am],
+            ['name'=>'12:00am', 'value'=>$kabulirr->t12am],
+            ['name'=>'1:00pm', 'value'=>$kabulirr->t1pm],
+            ['name'=>'2:00pm', 'value'=>$kabulirr->t2pm],
+            ['name'=>'3:00pm', 'value'=>$kabulirr->t3pm],
+            ['name'=>'4:00pm', 'value'=>$kabulirr->t4pm],
+            ['name'=>'5:00pm', 'value'=>$kabulirr->t5pm],
+            ['name'=>'6:00pm', 'value'=>$kabulirr->t6pm],  
+        ];
+        $heratnow =  [
+            ['name'=>'6:00am', 'value'=>$heratirr->t6am],
+            ['name'=>'7:00am', 'value'=>$heratirr->t7am],
+            ['name'=>'8:00am', 'value'=>$heratirr->t8am],
+            ['name'=>'9:00am', 'value'=>$heratirr->t9am],
+            ['name'=>'10:00am', 'value'=>$heratirr->t10am],
+            ['name'=>'11:00am', 'value'=>$heratirr->t11am],
+            ['name'=>'12:00am', 'value'=>$heratirr->t12am],
+            ['name'=>'1:00pm', 'value'=>$heratirr->t1pm],
+            ['name'=>'2:00pm', 'value'=>$heratirr->t2pm],
+            ['name'=>'3:00pm', 'value'=>$heratirr->t3pm],
+            ['name'=>'4:00pm', 'value'=>$heratirr->t4pm],
+            ['name'=>'5:00pm', 'value'=>$heratirr->t5pm],
+            ['name'=>'6:00pm', 'value'=>$heratirr->t6pm],  
+        ];
+
+        $balkhnow =  [
+            ['name'=>'6:00am', 'value'=>$balkhirr->t6am],
+            ['name'=>'7:00am', 'value'=>$balkhirr->t7am],
+            ['name'=>'8:00am', 'value'=>$balkhirr->t8am],
+            ['name'=>'9:00am', 'value'=>$balkhirr->t9am],
+            ['name'=>'10:00am', 'value'=>$balkhirr->t10am],
+            ['name'=>'11:00am', 'value'=>$balkhirr->t11am],
+            ['name'=>'12:00am', 'value'=>$balkhirr->t12am],
+            ['name'=>'1:00pm', 'value'=>$balkhirr->t1pm],
+            ['name'=>'2:00pm', 'value'=>$balkhirr->t2pm],
+            ['name'=>'3:00pm', 'value'=>$balkhirr->t3pm],
+            ['name'=>'4:00pm', 'value'=>$balkhirr->t4pm],
+            ['name'=>'5:00pm', 'value'=>$balkhirr->t5pm],
+            ['name'=>'6:00pm', 'value'=>$balkhirr->t6pm],  
+        ];
+        $kandaharnow =  [
+            ['name'=>'6:00am', 'value'=>$kandaharirr->t6am],
+            ['name'=>'7:00am', 'value'=>$kandaharirr->t7am],
+            ['name'=>'8:00am', 'value'=>$kandaharirr->t8am],
+            ['name'=>'9:00am', 'value'=>$kandaharirr->t9am],
+            ['name'=>'10:00am', 'value'=>$kandaharirr->t10am],
+            ['name'=>'11:00am', 'value'=>$kandaharirr->t11am],
+            ['name'=>'12:00am', 'value'=>$kandaharirr->t12am],
+            ['name'=>'1:00pm', 'value'=>$kandaharirr->t1pm],
+            ['name'=>'2:00pm', 'value'=>$kandaharirr->t2pm],
+            ['name'=>'3:00pm', 'value'=>$kandaharirr->t3pm],
+            ['name'=>'4:00pm', 'value'=>$kandaharirr->t4pm],
+            ['name'=>'5:00pm', 'value'=>$kandaharirr->t5pm],
+            ['name'=>'6:00pm', 'value'=>$kandaharirr->t6pm],  
+        ];
+
+        return response()->json([
+            'kabul'=> $kabulnow , 'herat'=>$heratnow,
+            'balkh' => $balkhnow, 'kandahar'=>$kandaharnow,
+        ]);
+
     }
 
     /**

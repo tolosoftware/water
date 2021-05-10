@@ -80,6 +80,10 @@ class UserController extends Controller
         return response()->json(['message' => 'Request completed']);
     }
 
+    public function getUserProject($id){
+        
+    }
+
     public function userCity(){
         return Geolocation::all()->unique('city');
     }

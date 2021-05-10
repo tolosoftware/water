@@ -25,9 +25,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // });
     
 
- Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
+Route::get('userproject/{id}',[UserController::class,'getUserProject']);
+
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
 Route::get('userCity',[UserController::class,'userCity']);
@@ -62,9 +64,13 @@ Route::post('project-analyze',[ProjectsController::class,'analyze']);
 Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
 
 
+
+
+
 // Start Route for System Management of Water Solar
 Route::resource('new_location', GeolocationController::class);
 Route::resource('irradiation', IrradiationController::class);
+Route::get('irridation', [IrradiationController::class,'irridation']);
 // End Routes of System Management of Water Soalr
 
 //for clear cache 
