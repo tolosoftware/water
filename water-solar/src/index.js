@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-// axios.defaults.baseURL='http://water.tolosoft.net/app/public/';
+// axios.defaults.baseURL='https://awm.solar/app/public/';
 axios.defaults.baseURL='http://localhost:8000/';
 
 const rootEl = document.getElementById('app-site');
