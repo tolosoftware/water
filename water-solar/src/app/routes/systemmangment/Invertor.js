@@ -422,10 +422,10 @@ const editInvertorList = (invertorListObject) =>{
 // start get WaterPump panal list
 
 const getInvertorLists = async() =>{
-  setVisibility(true);
+  // setVisibility(true);
   axios.get('api/invertorList')
   .then(res => {  
-    setVisibility(false);
+    // setVisibility(false);
       // console.log(res);
       setInvertorLists(res.data);
     }

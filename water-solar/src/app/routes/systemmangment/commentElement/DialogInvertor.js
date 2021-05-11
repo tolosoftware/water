@@ -206,7 +206,7 @@ export default function DialogInvertor(props) {
     }
     setPowerKW(invertorListObject.power ? invertorListObject.power : 15);
     setVoltage(invertorListObject.voltage_ac ? invertorListObject.voltage_ac : 220);
-    setDescription(invertorListObject.discription);
+    setDescription(invertorListObject.discription?invertorListObject.discription:'');
     setImage({ ...image, oldImage: invertorListObject.image?invertorListObject.image:''});
     setDataSheet({ ...dataSheet, oldImage: invertorListObject.data_sheet ? invertorListObject.data_sheet : '' });
     setDiameter({ ...diameter, oldImage: invertorListObject.diameter ? invertorListObject.diameter : '' });
@@ -227,7 +227,30 @@ export default function DialogInvertor(props) {
       current: "",
     });
   };
-
+  const handleData =  (data)=>{
+    data['brand'] = brand;
+    data['powerKW'] = powerKW;
+    data['voltage'] = voltage;
+    data['voltageDC'] = voltageDC;
+    data['voltageAC'] = voltageAC;
+    data['description'] = description;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
+    data['diameterFile'] = diameterFile;
+    // console.log("Inverter Data:", data);
+    axios.post('api/invertorList', data)
+      .then(res => {
+          setInvertorListObject([]);
+          formReset();
+          setSaveNew(true);
+        // console.log(res.data);
+        NotificationManager.success(<IntlMessages id="notification.successMessage" />, <IntlMessages
+          id="notification.titleHere" />);
+      }).catch(err => {
+        NotificationManager.error(<IntlMessages id="notification.errorMessage" />, <IntlMessages
+          id="notification.titleHere" />);
+      });
+  };
   const onSubmit = (data) => {
     data['brand'] = brand;
     data['powerKW'] = powerKW;
@@ -242,12 +265,8 @@ export default function DialogInvertor(props) {
     // console.log("Inverter Data:", data);
     axios.post('api/invertorList', data)
       .then(res => {
-        if(saveNew){
-          setInvertorListObject([]);
-          formReset();
-        }else{
-          handleCloseS();
-        }
+        setSaveNew(false);
+        handleCloseS();
         // console.log(res.data);
         // setOpenIn(false);
         // emptyForm();
@@ -408,8 +427,8 @@ export default function DialogInvertor(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={invertorListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> saveNew?setSaveNew(false):''}>Submit</Button>
+          <Button variant="contained" color="primary" className="jr-btn jr-btn-lg" disabled={invertorListObject?.id? true : false} onClick={handleSubmit(handleData)}>Save & New</Button>
+          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg">Submit</Button>
         </DialogActions>
       </form>
     </Dialog>

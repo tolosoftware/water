@@ -40,8 +40,8 @@ class AccessoriesListController extends Controller
         // return $request;
         DB::beginTransaction();
         try {
-            $photoname = 0;
-            $dataSheetName = 0;
+            $photoname = null;
+            $dataSheetName = null;
             $id = $request['accessoryID'];
             if($request['imageFile']){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];

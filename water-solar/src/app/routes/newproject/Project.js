@@ -12,6 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from 'uuid';
 //css
 import "./custome.css";
 //validation
@@ -338,18 +339,18 @@ const useColorlibStepIconStyles = makeStyles({
 function getStepsBrand() {
   return ['Select Water Pump Brand', 'Select Solar Brand', 'Select Inverter Brand'];
 }
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return 'Select campaign settings...';
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown step';
-  }
-}
+// function getStepContent(step) {
+//   switch (step) {
+//     case 0:
+//       return 'Select campaign settings...';
+//     case 1:
+//       return 'What is an ad group anyways?';
+//     case 2:
+//       return 'This is the bit I really care about!';
+//     default:
+//       return 'Unknown step';
+//   }
+// }
 // end code of brand stepper
 export default function Project() {
   const [{ formData, error, touched, isValid }, dispatch] = React.useReducer(
@@ -379,7 +380,7 @@ export default function Project() {
 
   const handgleCountry = async (event, value) => {
     setCountry(value);
-    let name = "country";
+    // let name = "country";
     // const schemaErrors = await runValidation(schema, {
     //   ...formData, [name]: value
     // });
@@ -428,33 +429,48 @@ export default function Project() {
   // end brand stepper State code
 
   //solar and pump
-  const [solarbrandname, setSolarbrandname] = useState();
+  // const [solarbrandname, setSolarbrandname] = useState();
   const solarbrand = (id, name, index) => {
     setSolarstate(index);
     setSolarvalue(id);
-    setSolarbrandname(name);
+    // setSolarbrandname(name);
   };
-  const [pumpbrandname, setPumpbrandname] = useState();
+  // const [pumpbrandname, setPumpbrandname] = useState();
   const pumpbrand = (id, name, index) => {
     setPumpstate(index);
     setPumpvalue(id);
-    setPumpbrandname(name);
+    // setPumpbrandname(name);
   };
 
-  const [invertorbrandname, setInvertorbrandname] = useState();
+  // const [invertorbrandname, setInvertorbrandname] = useState();
   const invertorbrand = (id, name, index) => {
     setInvertorstate(index);
     setInvertorvalue(id);
-    setInvertorbrandname(name);
+    // setInvertorbrandname(name);
   };
 
-  function toggelactivestyle(index) {
+  function toggelactivestyle(index, id) {
     if (solarstate === index) {
       return "activebrand brand-logo";
     } else {
       return "brand-logo";
     }
   }
+  const getSolarWatts = (id)=>{
+    axios.get("api/getSolarWatt/"+id)
+      .then((res) => {
+        // console.log('result', res.data);
+        // console.log('length', res.data.length);
+        setSolarWatt(res.data);
+        setSolarSelectWatt(res.data[0].id);
+      })
+      .catch((err) => {
+        NotificationManager.error(
+          <IntlMessages id="notification.errorMessageSolarList" />,
+          <IntlMessages id="notification.titleHereSolarList" />
+        );
+      });
+  };
 
   function toggelactivestylepump(index) {
     if (pumpstate === index) {
@@ -520,7 +536,6 @@ export default function Project() {
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
-  const [uom, setUom] = useState([]);
   const [dbcity, setDbcity] = useState([]);
   //pump and solar
   const [solarstate, setSolarstate] = useState("");
@@ -538,27 +553,46 @@ export default function Project() {
   const [city, setCity] = React.useState([]);
   const [daynomichead, setDaynomichead] = useState();
   const [motorcable, setMotorcable] = React.useState("");
+  const [solarCable, setSolarCable] = React.useState();
   const [piplenght, setPiplenght] = React.useState();
   const [dirtloss, setDirtloss] = React.useState(5);
   const [discharge, setDischarge] = React.useState("");
-
+  const [inputFields, setInputFields] = useState([
+    { id: uuidv4(), item: "", quantity: "", uomAc:"" },
+  ]);
   //start dynomic form
   const handlseelctitem = (event, value, id) => {
-    inputFields[id].item = value.id;
+
+    const newInputFields = inputFields.map(i => {
+      if(id === i.id) {
+        i['item'] = value;
+        i['uomAc'] = value? value.uom?.acronym :'m';
+      }
+      return i;
+    })
+
+    // inputFields[id].item = value.id;
+    // inputFields[id].uomAc = value.uom.acronym;
+    setInputFields(newInputFields);
+    console.log("value of accessories inputFields", inputFields);
+    // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
   };
 
-  const handlchangquantity = (value, index) => {
-    inputFields[index].quantity = value;
+  const handlchangquantity = (value, id) => {
+    // inputFields[index].quantity = value;
+    const newInputFields = inputFields.map(i => {
+      if(id === i.id) {
+        i['quantity'] = value;
+      }
+      return i;
+    })
+    setInputFields(newInputFields);
   };
-
-  const [inputFields, setInputFields] = useState([
-    { id: "", item: "", quantity: "" },
-  ]);
 
   const handleAddFields = () => {
     setInputFields([
       ...inputFields,
-      { id: "", item: "", uomid: "", quantity: "" },
+      { id: uuidv4(), item: "", uomid: "", quantity: "", uomAc:"" },
     ]);
   };
 
@@ -577,15 +611,13 @@ export default function Project() {
     handleResetBrand();
     axios.get("api/gitprojectdata")
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setSolar(res.data.solarbrand);
-        setSolarWatt(res.data.solarWatts);
         setPump(res.data.pumpbrand);
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
-        setUom(res.data.uom);
         setOpen(true);
       })
       .catch((err) => {
@@ -617,10 +649,10 @@ export default function Project() {
 
   const [citylocation, setCitylocation] = useState("");
   const getIrredation = (city) => {
-    setCitylocation(city.id);
+    setCitylocation(city?.id);
   };
 
-  const [imagepath, setImagepath] = useState("/images/General layout.png");
+  const [imagepath, setImagepath] = useState("/Layouts/1-system layout.jpg");
   const [myImage, setMyImage] = useState(
     "img-thumbnail rounded mx-auto d-block"
   );
@@ -655,63 +687,89 @@ export default function Project() {
     if (wichInput === "dirt" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/System layout.png");
+      setImagepath("/Layouts/7-pipe friction layout.jpg");
     }
 
     if (wichInput === "dirt" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/System layout.png");
+        setImagepath("/Layouts/7-pipe friction layout.jpg");
+      }
+    }
+
+    if (wichInput === "waterDeman" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/6-water demand layout.jpg");
+    }
+
+    if (wichInput === "waterDeman" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/6-water demand layout.jpg");
       }
     }
 
     if (wichInput === "motor" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/Motor Cable layout.png");
+      setImagepath("/Layouts/4-motor cable layout.jpg");
     }
 
     if (wichInput === "motor" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/Motor Cable layout.png");
+        setImagepath("/Layouts/4-motor cable layout.jpg");
       }
     }
 
     if (wichInput === "head" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/Hight layout.png");
+      setImagepath("/Layouts/2-Head layout.jpg");
     }
 
     if (wichInput === "head" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/Hight layout.png");
+        setImagepath("/Layouts/2-Head layout.jpg");
+      }
+    }
+
+    if (wichInput === "solarCable" && wichfunction === "focus") {
+      setFoucus(true);
+      setMyImage("img-thumbnail rounded mx-auto d-block");
+      setImagepath("/Layouts/3-Solar cable layout.jpg");
+    }
+
+    if (wichInput === "solarCable" && wichfunction === "hover") {
+      if (!foucus) {
+        setMyImage("img-thumbnail rounded mx-auto d-block");
+        setImagepath("/Layouts/3-Solar cable layout.jpg");
       }
     }
 
     if (wichInput === "temp" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/System details layout.png");
+      setImagepath("/Layouts/system layout with details.jpg");
     }
     if (wichInput === "temp" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/System details layout.png");
+        setImagepath("/Layouts/system layout with details.jpg");
       }
     }
 
     if (wichInput === "pip" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/Pipe layout.png");
+      setImagepath("/Layouts/5-Pipe lenght layout.jpg");
     }
     if (wichInput === "pip" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/Pipe layout.png");
+        setImagepath("/Layouts/5-Pipe lenght layout.jpg");
       }
     }
   };
@@ -720,12 +778,12 @@ export default function Project() {
     if (wichfunction === "fout") {
       setFoucus(false);
       setMyImage(" img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/General layout.png");
+      setImagepath("/Layouts/1-system layout.jpg");
     }
 
     if (!foucus) {
       setMyImage(" img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/General layout.png");
+      setImagepath("/Layouts/1-system layout.jpg");
     }
   };
 
@@ -735,18 +793,24 @@ export default function Project() {
     setOpenbackdrop(true);
 
     let alldata = {
-      daynomichead,
-      city,
-      country,
       projectname,
-      dirtloss,
+      country,
+      city,
+      daynomichead,
+      solarCable,
       motorcable,
-      solarvalue,
-      pumpvalue,
-      inputFields,
-      invertorvalue,
+      piplenght,
       discharge,
+      dirtloss,
+      bas,
+      inputFields,
+      pumpvalue,
+      solarvalue,
+      solarSelectWatt,
+      invertorvalue,
     };
+    alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
+    console.log('all Data ', alldata);
     axios
       .post("api/project", alldata)
       .then((res) => {
@@ -768,17 +832,27 @@ export default function Project() {
 
   const [evaluationdata, setEvaluationdata] = React.useState("");
   const evaluationfunction = () => {
+    let dynamicHead = Number(daynomichead) + Math.ceil(
+      Number((dirtloss * piplenght) / 100)
+    );
+
     let evalData = {
-      daynomichead,
-      dirtloss,
-      motorcable,
-      citylocation,
-      solarvalue,
+      projectname,
       pumpvalue,
-      discharge,
+      solarvalue,
+      solarSelectWatt,
+      invertorvalue,
+      citylocation,
+      dynamicHead,
+      solarCable,
+      motorcable,
       piplenght,
+      discharge,
+      dirtloss,
       bas,
     };
+    // console.log('dynamicHead', dynamicHead);
+    // console.log('evalData', evalData);
     setEvaluation(true);
     setEvaluationdata(evalData);
   };
@@ -886,9 +960,9 @@ export default function Project() {
                                           <CardBox styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard" cardStyle="text-center">
                                             <Sliderr className="slick-app-frame" {...options}>
                                               {solar.map((data, index) => {
-                                                return <span key={index} onClick={() => solarbrand(data.id, data.name, index)} >
+                                                return <span key={index} onClick={() => {solarbrand(data.id, data.name, index); getSolarWatts(data.id);}} >
                                                   <div className="slick-slide-item solar">
-                                                    <div className={toggelactivestyle(index)}>
+                                                    <div className={toggelactivestyle(index, data.id)}>
                                                       <div>
                                                         <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght" alt="Responsive" />
                                                       </div>
@@ -902,13 +976,14 @@ export default function Project() {
                                           {solarWatts ?
                                             <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
                                               <FormControl variant="outlined" size="small" className='form-control'>
-                                                <InputLabel id="demo-simple-select-outlined-label">Solar Watt</InputLabel>
+                                                <InputLabel id="demo-simple-select-outlined-label" error={solarWatts.length === 0 && true} >Solar Watt</InputLabel>
                                                 <Select name='solarwatt'
                                                   labelId="demo-simple-select-outlined-label"
                                                   id="demo-simple-select-outlined-solarwatt"
                                                   value={solarSelectWatt}
                                                   onChange={(e) => setSolarSelectWatt(e.target.value)}
                                                   label="Solar Watt"
+                                                  error={solarWatts.length === 0 && true}
                                                 >
                                                   <MenuItem value="">
                                                     <em></em>
@@ -1088,6 +1163,7 @@ export default function Project() {
                             classes={{
                               option: classes.option,
                             }}
+                            defaultValue={city}
                             error={
                               touched && touched.city && error && error.city
                                 ? true
@@ -1123,49 +1199,85 @@ export default function Project() {
                       </div>
 
                       <Divider className="mb-3 mt-3" />
-
-                      <div className="col-md-12 p-0">
-                        <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
-                          <TextField
-                            id="outlined-basic-1"
-                            className="form-control"
-                            label={`Head ${piplenght && dirtloss
-                              ? "+ " +
-                              Math.ceil(
-                                Number((dirtloss * piplenght) / 100)
-                              )
-                              : ""
-                              }`}
-                            variant="outlined"
-                            placeholder="Head !"
-                            margin="normal"
-                            name="head"
-                            type="number"
-                            size="small"
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  m
-                                </InputAdornment>
-                              ),
-                            }}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={daynomichead}
-                            onChange={(event) =>
-                              setDaynomichead(event.target.value)
-                            }
-                            onMouseOver={() =>
-                              dirtlossMouseOver("head", "hover")
-                            }
-                            onMouseLeave={() => dirtlossMouseLeave("xy")}
-                            onFocus={() => dirtlossMouseOver("head", "focus")}
-                            onBlur={() => dirtlossMouseLeave("fout")}
-                          />
-                        </BootstrapTooltip>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
+                            <TextField
+                              id="outlined-basic-1"
+                              className="form-control"
+                              label={`Head ${piplenght && dirtloss
+                                ? "+ " +
+                                Math.ceil(
+                                  Number((dirtloss * piplenght) / 100)
+                                )
+                                : ""
+                                }`}
+                              variant="outlined"
+                              placeholder="Head !"
+                              margin="normal"
+                              name="head"
+                              type="number"
+                              size="small"
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={daynomichead}
+                              onChange={(event) =>
+                                setDaynomichead(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("head", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() => dirtlossMouseOver("head", "focus")}
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
+                        <div className="col-md-6">
+                          <BootstrapTooltip title="Enter the length of the electrical cable between the solar panels and pump controller/inverter">
+                            <TextField
+                              id="outlined-basic-2_solar"
+                              label="Solar Cable"
+                              variant="outlined"
+                              placeholder="Solar cable!"
+                              margin="normal"
+                              name="solar_cable"
+                              type="number"
+                              size="small"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    m
+                                  </InputAdornment>
+                                ),
+                              }}
+                              value={solarCable}
+                              onChange={(event) =>
+                                setSolarCable(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("solarCable", "hover")
+                              }
+                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() =>
+                                dirtlossMouseOver("solarCable", "focus")
+                              }
+                              onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </BootstrapTooltip>
+                        </div>
                       </div>
-
                       <div className="row">
                         <div className="col-md-6">
                           <BootstrapTooltip title="The electrical cable between controller/inverter and submersible pump">
@@ -1269,10 +1381,10 @@ export default function Project() {
                                 setDischarge(event.target.value)
                               }
                               onMouseOver={() =>
-                                dirtlossMouseOver("dirt", "hover")
+                                dirtlossMouseOver("waterDeman", "hover")
                               }
                               onMouseLeave={() => dirtlossMouseLeave("xy")}
-                              onFocus={() => dirtlossMouseOver("dirt", "focus")}
+                              onFocus={() => dirtlossMouseOver("waterDeman", "focus")}
                               onBlur={() => dirtlossMouseLeave("fout")}
                             />
                           </BootstrapTooltip>
@@ -1389,18 +1501,18 @@ export default function Project() {
                     <div className="col-md-8 rSPrSection">
                       {evaluation === true ? (
                         <>
-                          <div className="row ">
+                          {/* <div className="row ">
                             <div className="col-md-12">
                               <h2>Project Name : {projectname} </h2>{" "}
                             </div>
-                          </div>
+                          </div> */}
                           {/* <div className="row ">
                             <div className="col-md-4"><strong>Country Name:</strong> {country ? country.country : ""}</div>
                             <div className="col-md-4"><strong>City Name:</strong> {city.city}</div>
                              <div className="col-md-4"><strong>Location:</strong> {projectname} </div>
                           </div> */}
                           {/* <Divider className="m-4"/> */}
-                          <div className="row m-1">
+                          <div >
                             <Analyze
                               evaluationdata={evaluationdata}
                               citylocation={citylocation}
@@ -1430,8 +1542,9 @@ export default function Project() {
                             <FormControl fullWidth>
                               <Autocomplete size="small"
                                 id="country-select-demo3"
+                                defaultValue={inputField.item}
                                 onChange={(event, newValue) =>
-                                  handlseelctitem(event, newValue, index)
+                                  handlseelctitem(event, newValue, inputField.id)
                                 }
                                 style={{ width: 300 }}
                                 options={accessories}
@@ -1440,13 +1553,11 @@ export default function Project() {
                                 }}
                                 autoHighlight
                                 getOptionLabel={(option) =>
-                                  option
-                                    ? option.name + "/" + option.uom_name
-                                    : ""
+                                  option ? option.name : ""
                                 }
                                 renderOption={(option) => (
                                   <React.Fragment>
-                                    {option.name + " -> " + option.uom_name}
+                                    {option.name }
                                   </React.Fragment>
                                 )}
                                 renderInput={(params) => (
@@ -1482,9 +1593,12 @@ export default function Project() {
                                 name="Quantity"
                                 type="number"
                                 onChange={(event) =>
-                                  handlchangquantity(event.target.value, index)
+                                  handlchangquantity(event.target.value, inputField.id)
                                 }
-                                //value={inputFields.quantity}
+                                value={inputField.quantity}
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">{inputField.uomAc?inputField.uomAc:'m'}</InputAdornment>,
+                                }}
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
@@ -1519,7 +1633,7 @@ export default function Project() {
 
                     <div className="col-md-8">
                       <img
-                        src="/images/General layout.png"
+                        src="/Layouts/system layout with details.jpg"
                         className=" img-thumbnail rounded mx-auto d-block"
                         alt="Responsive"
                       />
@@ -1627,6 +1741,7 @@ export default function Project() {
                   <Button
                     variant="contained"
                     color="secondary"
+                    type='button'
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.backButton}

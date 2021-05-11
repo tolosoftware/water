@@ -107,6 +107,7 @@ export default function Analyze(props) {
   const [energy,setEnergy]=useState([]);
   const [hrOutputP,setHrOutputP]=useState([]);
   const [monthlyHrOutput,setMonthlyHrOutput]=useState([]);
+  const [dataError,setDataError]=useState(false);
 
   const docalculculation=() => {
     setOpenbackdrop(true);
@@ -123,11 +124,13 @@ export default function Analyze(props) {
           setEnergy(res.data.energy);
           setHrOutputP(res.data.hrOutputP);
           setMonthlyHrOutput(res.data.monthlyHrOutput);
+          setDataError(false);
              NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
               id="notification.titleHere" />);
             }
       ).catch(err => {
         setOpenbackdrop(false);
+        setDataError(true);
               NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
               id="notification.titleHere"/>);
             } 
@@ -155,14 +158,23 @@ export default function Analyze(props) {
         )
   }
   return (
-    <>
-
+    <div className="row m-1">
+      {dataError ? <div className="row justify-content-center ">
+        <Alert severity="warning" color="info">
+          <h1 color="warning">
+            Please Change the Brand and check your input and try again!
+          </h1>
+        </Alert>
+      </div> : ''}
+      <div className="col-md-12">
+        <h2>Project Name : {props.projectname} </h2>{" "}
+      </div>
       <Backdrop className={classes.backdrop} open={openbackdrop} >
         <CircularProgress color="inherit" />
       </Backdrop> 
       
 
-    <div className={classes.root}>
+      <div className={classes.root}>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -238,7 +250,7 @@ export default function Analyze(props) {
                     </ResponsiveContainer>
                   
 
-                </div>
+            </div>
             <div className="col-md-5">
                <span class="badge badge-primary ml-4">Average = 50</span>
                     <ResponsiveContainer width="100%" height={250}>
@@ -356,7 +368,7 @@ export default function Analyze(props) {
         ):""}
         
       </div>
- <NotificationContainer/>
-    </>  
+      <NotificationContainer/>
+    </div>  
   );
 }

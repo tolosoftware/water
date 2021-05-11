@@ -11,4 +11,9 @@ class Uom extends Model
     protected $fillable = [
         'name', 'acronym'
     ];
+
+    public function accessoryList()
+    {
+        return $this->hasMany(Accessories_list::class, 'uom_id');
+    }
 }

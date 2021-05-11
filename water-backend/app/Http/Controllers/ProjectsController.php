@@ -164,15 +164,15 @@ class ProjectsController extends Controller
     }
 
     public function analyze(Request $request){
-    //    return $request;
+        //    return $request;
        $selectedpump = array();
        $avaDischarge;
-       $pumps = Pump_list::with(['pump_config','pump_brand'])->get();
+       $pumps = Pump_list::where('pump_brand_id', $request['pumpvalue'])->with(['pump_config','pump_brand'])->get();
         // return $pumps;
         foreach($pumps as $eachpump){
              foreach($eachpump['pump_config'] as $pumconfig){
                 
-                if($request['daynomichead'] > $pumconfig['min_head'] &&  $request['daynomichead'] <= $pumconfig['max_head']){
+                if($request['dynamicHead'] > $pumconfig['min_head'] &&  $request['dynamicHead'] <= $pumconfig['max_head']){
                     if($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']){
                         $avaDischarge = ($pumconfig['min_discharge'] + $pumconfig['max_discharge'])/2;
                         if($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length']){
@@ -195,7 +195,14 @@ class ProjectsController extends Controller
         $hrOutputP = [];
         $monthlyHrOutput = [];
         if($selectedpump[0]->power != null){
-            $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])->get()->first();
+            // $pumps = Solar_list::where('solar_brand_id', $request['solarvalue'])->with(['solar_config','solar_brand'])->get();
+            $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])
+            // ->where('power', $request['solarSelectWatt'])->where('solar_brand_id', $request['solarvalue'])
+            ->whereHas('solar_list', function($query) use ($request){
+                return $query->where('id', $request['solarSelectWatt'])
+                ->where('solar_brand_id', $request['solarvalue']);
+            })
+            ->get()->first();
             // return  $solar;
             if($solar && $request['citylocation'] != null){
                 $energyData = $this->getEnergy($request['citylocation'], $solar['solar_list']['power'], $avaDischarge, $request['dirtloss']);
@@ -212,8 +219,6 @@ class ProjectsController extends Controller
             'pupm'=> $selectedpump , 'solar'=>$solar, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput
         ]);
     }
-
-    
 
     public function getIrredation($city_id){
         $eachmonthfinaltotal = array();
@@ -289,28 +294,31 @@ class ProjectsController extends Controller
       
     }
 
-
     public function gitprojectdata(){
         $geolocation = Geolocation::distinct()->count('country');
         $pumpbrand = Pump_brands::all();
         $solarbrand = Solar_brands::all();
-        $solar_list_watts = Solar_list::all()->unique('power');
-        $solar_watts = array();
-        foreach ($solar_list_watts as $key => $value) {
-            array_push($solar_watts, $value);
-        }
         $invertorbrand = InvertorBrand::all();
-        $uom = Uom::all();
-        $accessories = Accessories_list::all();
+        $accessories = Accessories_list::with('uom')->get();
         $country = DB::table('geolocations')
             ->select('country')
             ->groupBy('country')
             ->get();
 
         return response()->json([
-            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'solarWatts'=>$solar_watts,
-            'uom'=>$uom , 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
+            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
         ]);
+    }
+
+    public function getSolarWatt($id){
+        return Solar_list::where('solar_brand_id', $id)->get()->unique('power');
+        // $solar_list_watts = Solar_list::all()->unique('power');
+        // $solar_watts = array();
+        // foreach ($solar_list_watts as $key => $value) {
+        //     array_push($solar_watts, $value);
+        // }
+
+        // return response()->json(['solarWatts'=>$solar_list_watts]);
     }
 
     public function getcity($country){
@@ -348,15 +356,20 @@ class ProjectsController extends Controller
         DB::beginTransaction();
         try {
         $project =  Projects::create([
-            'country' => $request['country']['country'],
+            'country' => $request['city']['country'],
             'city_id' => $request['city']['id'],
             'name' => $request['projectname'],
-            'discription' => $request['discription'],
-            'dirt_loss' => $request['dirtloss'],
-            'motor_cable' =>$request['motorcable'],
             'daynomic_head' => $request['daynomichead'],
+            'solar_cable' => $request['solarCable'],
+            'motor_cable' =>$request['motorcable'],
             'daily_output' => $request['discharge'],
+            'dirt_loss' => $request['dirtloss'],
+            'solar_base' => $request['bas'],
+            'solar_watt' => $request['solarSelectWatt'],
+            'pip_length' => $request['piplenght'],
+            'discription' => $request['discription'],
             'solar_brand_id' => $request['solarvalue'],
+            'user_id' => $request['user_id'],
             'pump_brand_id' => $request['pumpvalue'],
             'invertor_brand_id' => $request['invertorvalue'],
             
@@ -365,7 +378,7 @@ class ProjectsController extends Controller
         foreach($request->inputFields as $value){
             Project_accessories::create([
                 'project_id' => $project->id,
-                'accessories_id' => $value['item'],
+                'accessories_id' => $value['item']['id'],
                 'quantity' => $value['quantity'],
 
             ]);

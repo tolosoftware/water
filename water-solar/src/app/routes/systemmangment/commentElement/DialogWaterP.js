@@ -275,9 +275,9 @@ export default function DialogWaterP(props) {
     setPowerHP(15);
     setPhase('1Phase');
     // setDescription("");
-    setImage({ ...image, ['oldImage']: '' });
-    setDataSheet({ ...dataSheet, ['oldImage']: '' });
-    setGraph({ ...graph, ['oldImage']: '' });
+    setImage({ ...image, oldImage: '' });
+    setDataSheet({ ...dataSheet, oldImage: '' });
+    setGraph({ ...graph, oldImage: '' });
   }
 
   useEffect(() => {
@@ -294,9 +294,9 @@ export default function DialogWaterP(props) {
     setVoltage(waterListObject.voltage ? waterListObject.voltage : 110);
     setPhase(waterListObject.phase ? waterListObject.phase : '1Phase');
     // setDescription(waterListObject.discription);
-    setImage({ ...image, ['oldImage']: waterListObject.image?waterListObject.image:'' });
-    setDataSheet({ ...dataSheet, ['oldImage']: waterListObject.data_sheet ? waterListObject.data_sheet : '' });
-    setGraph({ ...graph, ['oldImage']: waterListObject.graph ? 'graph/' + waterListObject.graph : '' });
+    setImage({ ...image, oldImage: waterListObject.image?waterListObject.image:'' });
+    setDataSheet({ ...dataSheet, oldImage: waterListObject.data_sheet ? waterListObject.data_sheet : '' });
+    setGraph({ ...graph, oldImage: waterListObject.graph ? 'graph/' + waterListObject.graph : '' });
     if(props.waterListObject?.id){
       reset({
         waterListID: waterListObject?.id,
@@ -321,6 +321,32 @@ export default function DialogWaterP(props) {
       weight: "",
     });
   };
+  const handleData =  (data)=>{
+    data['brand'] = brand;
+    data['powerKW'] = powerKW;
+    data['powerHP'] = powerHP;
+    data['phase'] = phase;
+    data['voltage'] = voltage;
+    data['imageFile'] = imageFile;
+    data['dataSheetFile'] = dataSheetFile;
+    data['graphFile'] = graphFile;
+    data['serial_no'] = uuidv4();
+    console.log("form data of handle Data", data);
+
+    axios.post('api/pumpList', data)
+      .then(res => {
+          setWaterListObject([]);
+          formReset();
+          setSaveNew(true);
+        // console.log('result ', res.data);
+        NotificationManager.success(<IntlMessages id="notification.successMessage" />, <IntlMessages
+          id="notification.titleHere" />);
+      }).catch(err => {
+        NotificationManager.error(<IntlMessages id="notification.errorMessage" />, <IntlMessages
+          id="notification.titleHere" />);
+      }
+      );
+  };
   const onSubmit = (data, e) => {
     data['brand'] = brand;
     data['powerKW'] = powerKW;
@@ -331,16 +357,12 @@ export default function DialogWaterP(props) {
     data['dataSheetFile'] = dataSheetFile;
     data['graphFile'] = graphFile;
     data['serial_no'] = uuidv4();
-
-    // console.log(data);
+    
+    console.log(data);
     axios.post('api/pumpList', data)
       .then(res => {
-        if(saveNew){
-          setWaterListObject([]);
-          formReset();
-        }else{
-          handleClose();
-        }
+        setSaveNew(false);
+        handleClose();
         // console.log('result ', res.data);
         NotificationManager.success(<IntlMessages id="notification.successMessage" />, <IntlMessages
           id="notification.titleHere" />);
@@ -533,8 +555,8 @@ export default function DialogWaterP(props) {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" disabled={waterListObject?.id? true : false} onClick={e=> setSaveNew(true)}>Save & New</Button>
-          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg" onClick={e=> saveNew?setSaveNew(false):''}>Submit</Button>
+          <Button variant="contained" color="primary" className="jr-btn jr-btn-lg" disabled={waterListObject?.id? true : false} onClick={handleSubmit(handleData)}>Save & New</Button>
+          <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg">Submit</Button>
         </DialogActions>
       </form>
     </Dialog>

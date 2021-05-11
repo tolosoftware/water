@@ -1,0 +1,12 @@
+.page-heading, .dashboard {
+    padding: 16px !important;
+   
+}
+
+.page-heading, .sizing {
+    background-color: '#00aeef' !important;
+}
+
+.displaystyle {
+    display: none;
+}

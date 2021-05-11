@@ -20,16 +20,22 @@ class CreateProjectsTable extends Migration
             $table->foreign('city_id')->references('id')->on('geolocations');
             $table->string('name');
             $table->string('discription')->nullable();
-            $table->decimal('dirt_loss');
-            $table->decimal('motor_cable');
-            $table->decimal('daynomic_head');
-            $table->decimal('daily_output');
+            $table->string('daynomic_head');
+            $table->string('solar_cable');
+            $table->string('motor_cable');
+            $table->string('pip_length');
+            $table->enum('solar_base', ['Manual Tracker', 'Ground Structure']);
+            $table->string('daily_output');
+            $table->string('dirt_loss');
+            $table->string('solar_watt');
             $table->unsignedBigInteger('solar_brand_id');
             $table->foreign('solar_brand_id')->references('id')->on('solar_brands');
             $table->unsignedBigInteger('pump_brand_id');
             $table->foreign('pump_brand_id')->references('id')->on('pump_brands');
             $table->unsignedBigInteger('invertor_brand_id');
             $table->foreign('invertor_brand_id')->references('id')->on('invertor_brands');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
