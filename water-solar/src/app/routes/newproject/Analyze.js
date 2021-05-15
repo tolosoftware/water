@@ -4,8 +4,10 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
+import {ReportProblem} from '@material-ui/icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+import { UncontrolledAlert } from 'reactstrap';
 
 //form
 import axios from 'axios';
@@ -159,12 +161,15 @@ export default function Analyze(props) {
   }
   return (
     <div className="row m-1">
-      {dataError ? <div className="row justify-content-center ">
-        <Alert severity="warning" color="info">
-          <h1 color="warning">
-            Please Change the Brand and check your input and try again!
-          </h1>
-        </Alert>
+      {dataError ? <div className="row justify-content-center " style={{margin: 'auto'}}>
+      <UncontrolledAlert className="alert-addon-card bg-danger bg-danger text-white shadow-lg justify-content-center">
+          <span className="icon-addon alert-addon">
+            <ReportProblem/>
+            {/* <i className="zmdi zmdi-danger zmdi-hc-fw zmdi-hc-lg" /> */}
+          </span>
+
+          <h2 className="d-inline-block">Please Change the Brand, your input values and try again!</h2>
+        </UncontrolledAlert>
       </div> : ''}
       <div className="col-md-12">
         <h2>Project Name : {props.projectname} </h2>{" "}
@@ -327,7 +332,7 @@ export default function Analyze(props) {
 
             <div className="row">
               <div className="col-md-4"><strong>Power: {sugestedpump[0].power}</strong></div>
-              <div className="col-md-4"><strong>Current: {sugestedpump[0].Ampeier} </strong> </div>
+              <div className="col-md-4"><strong>Current: {sugestedpump[0].ampeier} </strong> </div>
               <div className="col-md-4"><strong>Cable: {cable.name}</strong>  </div>
             </div> 
             </>
@@ -349,7 +354,7 @@ export default function Analyze(props) {
           <div className="row">
               <div className="col-md-4"><strong>Made in: {solarbrand.country}</strong> {getFlag(solarbrand.country)} </div>
             <div className="col-md-4"><strong>Brand: {solarbrand.name}</strong> </div>
-              <div className="col-md-4"><strong>Model: {solar.model}</strong> </div>
+              <div className="col-md-4"><strong>Model: {solar.solar_list.model}</strong> </div>
          </div> 
       
          <div className="row">
