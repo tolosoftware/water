@@ -36,6 +36,7 @@
     "isomorphic-fetch": "^3.0.0",
     "jspdf": "^2.3.1",
     "jss-rtl": "^0.2.3",
+    "lodash": "^4.17.21",
     "material-table": "^1.69.2",
     "material-ui-pickers": "^2.2.4",
     "moment": "^2.24.0",

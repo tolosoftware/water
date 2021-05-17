@@ -21,8 +21,53 @@ Use \Carbon\Carbon;
 
 
 
+
 class UserController extends Controller
 {
+
+    public function provenceUser(){
+        $user = Geolocation::with('users')->get();
+        $provenceUser = array();
+        foreach($user as $val){
+            $x =  [
+                'provence'=> $val['city'],
+                'user'=>count($val['users']),
+            ];
+            array_push($provenceUser,$x);
+        }
+        return $provenceUser;
+    }
+
+    public function getUserProject($id){
+        $eachmonth = array();
+        $currenTmonth = Carbon::now()->month;
+        $currenTyear = Carbon::now()->year;
+      
+        for($i=1 ; $i<=12; $i++){
+            $permonth = Projects::where('user_id',$id)->whereYear('created_at',$currenTyear)
+            ->whereMonth('created_at', '=', $i)->get();
+            $countEachmonth = $permonth->count();
+            array_push($eachmonth,$countEachmonth);
+        }
+
+        $monthlyHrOutput =  [
+            ['name'=>'Jan', 'value'=>$eachmonth[0]],
+            ['name'=>'Feb', 'value'=>$eachmonth[1]],
+            ['name'=>'Mar', 'value'=>$eachmonth[2]],
+            ['name'=>'Apr', 'value'=>$eachmonth[3]],
+            ['name'=>'May', 'value'=>$eachmonth[4]],
+            ['name'=>'Jun', 'value'=>$eachmonth[5]],
+            ['name'=>'Jul', 'value'=>$eachmonth[6]],
+            ['name'=>'Aug', 'value'=>$eachmonth[7]],
+            ['name'=>'Sep', 'value'=>$eachmonth[8]],
+            ['name'=>'Oct', 'value'=>$eachmonth[9]],
+            ['name'=>'Nov', 'value'=>$eachmonth[10]],
+            ['name'=>'Dec', 'value'=>$eachmonth[11]],  
+        ];
+
+        return $monthlyHrOutput;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -80,9 +125,7 @@ class UserController extends Controller
         return response()->json(['message' => 'Request completed']);
     }
 
-    public function getUserProject($id){
-        
-    }
+ 
 
     public function userCity(){
         return Geolocation::all()->unique('city');
