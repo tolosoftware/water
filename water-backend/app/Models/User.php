@@ -28,6 +28,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Geolocation::class, 'geolocation_id');
     }
+    public function projects()
+    {
+        return $this->hasMany(Projects::class, 'user_id');
+    }
     
     /**
      * The attributes that should be hidden for arrays.

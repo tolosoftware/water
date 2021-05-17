@@ -18,5 +18,9 @@ class Projects extends Model
     {
         return $this->belongsTo(Geolocation::class, 'city_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 }

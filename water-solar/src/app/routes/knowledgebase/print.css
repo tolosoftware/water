@@ -11,3 +11,15 @@
   
  
 }
+table.report-container{
+  page-break-after: always;
+}
+tr.report-page-break .report-content-cell {
+  page-break-before: always;
+}
+thead.report-header{
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-footer-group;
+}
