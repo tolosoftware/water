@@ -411,7 +411,8 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Projects::where('id', $id)->with('geolocation')->with('user')->get();
+        $project = Projects::where('id', $id)->with(['geolocation', 'user'])->get();
+        $projectAccessories = Project_accessories::where('project_id', $id)->with('accessoriesListWithUom')->get();
         $irradiation = $this->getIrrWithAva($project[0]->city_id);
         $dynamicHead = ($project[0]->daynomic_head + ceil(($project[0]->dirt_loss * $project[0]->pip_length) / 100));
         $discharge =$project[0]->daily_output;
@@ -463,8 +464,7 @@ class ProjectsController extends Controller
          }
 
         return response()->json([
-            'project'=> $project, 'irradiation'=>$irradiation, 'dynamicHead'=>$dynamicHead,'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable,  
-             'energyWithOutPut'=>$energyWithOutPut
+            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'dynamicHead'=>$dynamicHead,'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ]);
     }
     public function getIrrWithAva($city_id){
