@@ -27,7 +27,7 @@ const SendMoney = ({ usersData }) => {
     axios
       .get("api/userproject/" + JSON.parse(localStorage.getItem("UserData")).id)
       .then((res) => {
-        setUser(res.data.kabul);
+        setUser(res.data);
       })
       .catch((err) => {});
   };
@@ -43,12 +43,12 @@ const SendMoney = ({ usersData }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Legend />
-          <Bar dataKey="value" fill="#ffc658" />
+          <Bar dataKey="value" fill="#00a54f" />
         </BarChart>
       </ResponsiveContainer>
-      <h3 className="pl-5">Design Project By this User</h3>
       <Divider className="mb-3" />
-      <h4 className="pl-5">In 12 last Months</h4>
+      <h3 className="pl-5">Design Project By this User (Current year)</h3>
+    
     </Widget>
   );
 };
