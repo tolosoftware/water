@@ -124,17 +124,13 @@ export const UserList=() => {
           
         </div>
           <div className="col-md-4">
-           
-            
             <div className="" onClick={()=> setOpen(true)}>  
-            
              <Widget styleName={`bg-blue darken-4 text-white`}>
               <div className="d-flex flex-row justify-content-center">
                 <i className={`zmdi zmdi-plus-circle-o zmdi-hc-2x`}/>
               </div>
               <div className="text-center">
                 <h3 className="jr-font-weight-medium mb-3">Add New User</h3>
-               
               </div>
               </Widget>
             </div>  

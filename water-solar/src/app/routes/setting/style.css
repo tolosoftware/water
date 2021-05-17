@@ -1,4 +1,4 @@
 .tableheight{
-    height: 380px !important;
+    min-height: 380px !important;
     
 }

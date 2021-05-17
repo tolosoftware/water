@@ -29,6 +29,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
 Route::get('userproject/{id}',[UserController::class,'getUserProject']);
+Route::get('provenceUser',[UserController::class,'provenceUser']);
 
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
@@ -64,6 +65,7 @@ Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
 Route::post('project-analyze',[ProjectsController::class,'analyze']);
 Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
 
+Route::resource('post', PostController::class);
 
 
 

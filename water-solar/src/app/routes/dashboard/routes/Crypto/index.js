@@ -23,6 +23,7 @@ import Divider from "@material-ui/core/Divider";
 
 import Firstrow from './Firstrow';
 import Secondrow from './Secondrow';
+import ProvenceUsers from './ProvenceUsers';
 
 function getFlag(countryname) {
   switch (countryname) {
@@ -134,13 +135,14 @@ const projectChart={
 const classes = useStyles();
 useEffect(() => {
     getDashboardData();
+    getPost();
     
 },[])
  
 const options = {
-  dots: false,
+  dots: true,
   infinite: true,
-  arrows: true,
+  arrows: false,
   speed: 500,
   slidesToShow: 2,
   marginRight: 10,
@@ -213,10 +215,21 @@ const handleToggle = (type) => {
        }
      )
  };
+
+ const [post, setPost]=useState();
+ const getPost=async () =>{
+  axios.get('api/post')
+     .then(res => {  
+      setPost(res.data);
+     }
+   ).catch(err => {
+   })
+ }
+
   return (
     <div className="dashboard animated slideInUpTiny animation-duration-3">
       {/* <ContainerHeader match={match} title={<IntlMessages id="sidebar.dashboard.dashbord"/>}/> */}
-      <Backdrop className={classes.backdrop} open={openbackdrop} >
+       <Backdrop className={classes.backdrop} open={openbackdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>
        
@@ -224,17 +237,23 @@ const handleToggle = (type) => {
         <Firstrow/>
       </div>
 
+      <div className="row">
+          <div className="col-xl-5 col-lg-5 col-md-7 col-12 user-list-sect">
+              <SendMoney usersData={users}/>
+          </div>
+          <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12" >
+          <ProvenceUsers/>
+          </CardBox>  
+      </div>
+      
       <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12 pl-0 pr-0">
         <div className="row">
            <Secondrow/>
         </div>
       </CardBox>
 
-      
       <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12 pl-0 pr-0" cardStyle="text-center"
                     heading={"All Brands"}>
-            
-
               <div className="row">
               <div className="col-md-4">
               <Slider className="slick-app-frame" {...options} >
@@ -244,13 +263,13 @@ const handleToggle = (type) => {
                       <div className="brand-logo-inner">
                         <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`} alt="Clients"/>
                       </div>
-                      
                     </div>
                     <span> {data.country} {getFlag(data.country)}  </span>
                   </div>  
                 })} 
-                
+               
               </Slider>
+
                <Divider className="mb-3 mt-1" />
               <h3 className="mt-3">Pump Brands</h3>
               </div>
@@ -291,32 +310,39 @@ const handleToggle = (type) => {
                   <Divider className="mb-3 mt-1" />
                   <h3 className="mt-3">Invertor Brands</h3>
                 </div>
-
-
               </div>
       </CardBox>
-
-      <div className="row">
-
-       <div className="col-xl-5 col-lg-5 col-md-12 col-12 user-list-sect">
-            <SendMoney usersData={users}/>
-        </div>
-
-          <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
-                  heading>
-            {/* <div><IntlMessages id="component.carousel.testimonial"/><IntlMessages id="component.carousel.testimonialTxt"/></div> */}
-            <TestimonialCarousel testimonials={testimonials}/>
-          </CardBox>
-
-          
-
-      </div>
 
        <div className="row">
         <CardBox styleName="col-lg-5" >
           <UserExpiration/>
+        
+        </CardBox>
+
+        <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
+                  heading>
+            <div><strong>All Completed Project</strong></div>
+            <TestimonialCarousel testimonials={testimonials}/>
+          </CardBox>
+
+      </div>
+
+      <div className="row">
+        {/* <CardBox styleName="col-xl-6 col-lg-6 col-md-6 col-6 ">
+        <p>test</p>
+        </CardBox> */}
+
+        <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12">
+          <>
+          <h2>Todays Post</h2>
+          <Divider className="mb-3 mt-1" />
+          <h3 className="mb-2"><b>{post?.title}</b></h3>
+          <h4>{post?.discription}</h4>
+          </>
         </CardBox>
       </div>
+
+     
     </div>
   );
 };
