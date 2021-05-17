@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 const ProjectSummary = ({ match }) => {
     const [openbackdrop, setOpenbackdrop] = useState(false);
     const [projectDetails, setProjectDetails] = useState([]);
+    const [projectAccessories, setProjectAccessories] = useState([]);
     const [irradiation, setIrradiation] = useState([]);
     const [energyWithOutPut, setEnergyWithOutPut] = useState([]);
     const [pupm, setPupm] = useState([]);
@@ -78,6 +79,7 @@ const ProjectSummary = ({ match }) => {
             .then(res => {
               console.log('res', res.data);
               setProjectDetails(res.data.project[0]);
+              setProjectAccessories(res.data.projectAccessories);
               setIrradiation(res.data.irradiation);
               setEnergyWithOutPut(res.data.energyWithOutPut);
               setPupm(res.data.pupm);
@@ -153,7 +155,7 @@ const ProjectSummary = ({ match }) => {
                                             <div class="footer-info" style={{paddingBottom: '30px'}}>
                                                 <Divider className="mb-2 mt-2" />
                                                 <div style={{float: 'left', display: 'inline-block'}}>Created by: M (Solar AW water pump planner)</div>
-                                                <div style={{float: 'right',  display: 'inline-block'}}>Water Is Life</div>
+                                                <div id="page-number" style={{float: 'right',  display: 'inline-block'}}>Water Is Life</div>
                                             </div>
                                         </td>
                                     </tr>

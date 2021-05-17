@@ -22,5 +22,9 @@ class Projects extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function project_accessories()
+    {
+        return $this->hasMany(Project_accessories::class, 'project_id');
+    }
 
 }

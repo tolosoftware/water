@@ -18,4 +18,8 @@ class Accessories_list extends Model
     {
         return $this->belongsTo(Uom::class, 'uom_id');
     }
+    public function project_accessories()
+    {
+        return $this->hasMany(Project_accessories::class, 'accessories_id');
+    }
 }

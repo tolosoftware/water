@@ -23,3 +23,12 @@ thead.report-header{
 tfoot.report-footer {
   display: table-footer-group;
 }
+@page {
+  @bottom-right {
+   content: counter(page) " of " counter(pages);
+  }
+}
+tfoot.report-footer #page-number:after {
+  counter-increment: page;
+  content: counter(page) "/" counter(pages);
+}
