@@ -9,7 +9,12 @@ class Cable_type extends Model
 {
     use HasFactory;
 
-      protected $fillable = [
+    protected $fillable = [
         'name'
     ];
+
+    public function solar_list()
+    {
+        return $this->hasMany(Solar_list::class, 'cable_type_id');
+    }
 }
