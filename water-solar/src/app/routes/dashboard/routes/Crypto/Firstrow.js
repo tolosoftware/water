@@ -43,14 +43,17 @@ const Firstrow = () => {
       
 
          <div className="col-md-3">
-            <Widget styleName={`bg-success text-white dashboard`}>
-             <div className="d-flex flex-row justify-content-center">
-               <ListAltIcon fontSize="large"/>
-             </div>
-             <div className="text-center">
-               <h4 className="jr-font-weight-medium mb-3">Data Sheet</h4>
-             </div>
-             </Widget>
+        
+             <NavLink className="prepend-icon linkstyle" to="/app/datasheet" style={{textDecoration:'none'}}>
+              <Widget styleName={`bg-success text-white dashboard`}>
+              <div className="d-flex flex-row justify-content-center">
+                <ListAltIcon fontSize="large"/>
+              </div>
+              <div className="text-center">
+                <h4 className="jr-font-weight-medium mb-3">Data Sheet</h4>
+              </div>
+              </Widget>
+            </NavLink>
          </div>
       
 

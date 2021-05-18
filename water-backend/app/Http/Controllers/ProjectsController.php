@@ -397,7 +397,7 @@ class ProjectsController extends Controller
         }
 
         DB::commit();
-        return ['msg' => 'Project Success full Inserted'];
+        return $project->id;
     } catch (Exception $e) {
         DB::rollback();
     }

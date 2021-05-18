@@ -33,6 +33,7 @@ import Newproject from './routes/newproject';
 import Sizing from './routes/sizing';
 import Download from './routes/download';
 import Usermangment from './routes/usermangment';
+import Datasheet from './routes/datasheet';
 //end custom component
 import {
   ABOVE_THE_HEADER,
@@ -95,6 +96,8 @@ class App extends React.Component {
                 <Route path={`${match.url}/sizing`} component={Sizing} />
                 <Route path={`${match.url}/download`} component={Download} />
                 <Route path={`${match.url}/usermangment`} component={Usermangment} />
+                <Route path={`${match.url}/datasheet`} component={Datasheet} />
+                
                 {/* end custom route component  */}
               
                 <Route path={`${match.url}/dashboard`} component={Dashboard}/>
@@ -140,7 +143,7 @@ class App extends React.Component {
             <Footer/>
           </main>
         </div>
-        <ColorOption/>
+        {/* <ColorOption/> */}
       </div>
     );
   }

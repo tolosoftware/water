@@ -21,12 +21,13 @@ import SearchBox from 'components/SearchBox';
 import './style.css'
 
 
-
+import Switch from '@material-ui/core/Switch';
 import {switchLanguage, toggleCollapsedNav} from 'actions/Setting';
 import IntlMessages from 'util/IntlMessages';
 
 import Menu from 'components/TopNav/Menu';
 import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
+import {changeDirection, setDarkTheme, setThemeColor} from 'actions/index';
 
 class Header extends React.Component {
 
@@ -145,7 +146,15 @@ class Header extends React.Component {
     this.props.history.push('app/setting');
   }
 
+  handleDarkTheme = () => {
+    this.props.setDarkTheme();
+    const body = document.body.classList;
+    body.toggle(this.props.themeColor);
+    body.toggle('dark-theme');
+  };
+
   render() {
+    const {themeColor, darkTheme, isDirectionRTL} = this.props;
     const {drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
 
@@ -179,51 +188,11 @@ class Header extends React.Component {
           <Menu/>}
 
           <ul className="header-notifications list-inline ml-auto">
-            <li className="list-inline-item">
-              <Dropdown
-                className="quick-menu app-notification"
-                isOpen={this.state.apps}
-                toggle={this.onAppsSelect.bind(this)}>
-
-                <DropdownToggle
-                  className="d-inline-block"
-                  tag="span"
-                  data-toggle="dropdown">
-                  <span className="app-notification-menu">
-                    <i className="zmdi zmdi-apps zmdi-hc-fw zmdi-hc-lg"/>
-                    <span>Apps</span>
-                  </span>
-                </DropdownToggle>
-
-                <DropdownMenu>
-                  {this.Apps()}
-                </DropdownMenu>
-              </Dropdown>
-            </li>
-            <li className="d-inline-block d-lg-none list-inline-item">
-              <Dropdown
-                className="quick-menu nav-searchbox"
-                isOpen={this.state.searchBox}
-                toggle={this.onSearchBoxSelect.bind(this)}>
-
-                <DropdownToggle
-                  className="d-inline-block"
-                  tag="span"
-                  data-toggle="dropdown">
-                  <IconButton className="icon-btn">
-                    <i className="zmdi zmdi-search zmdi-hc-fw"/>
-                  </IconButton>
-                </DropdownToggle>
-
-                <DropdownMenu right className="p-0">
-                  <SearchBox styleName="search-dropdown" placeholder=""
-                             onChange={this.updateSearchText.bind(this)}
-                             value={this.state.searchText}/>
-                </DropdownMenu>
-              </Dropdown>
-            </li>
-          
             <li className="list-inline-item mail-tour">
+                <Switch color="primary"
+                    checked={darkTheme}
+                    onChange={this.handleDarkTheme}
+                />
             </li>
 
             {navigationStyle === HORIZONTAL_NAVIGATION &&
@@ -267,4 +236,4 @@ const mapStateToProps = ({settings}) => {
   return {drawerType, navigationStyle, horizontalNavPosition}
 };
 
-export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, switchLanguage})(Header));
+export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, switchLanguage,setThemeColor, setDarkTheme})(Header));

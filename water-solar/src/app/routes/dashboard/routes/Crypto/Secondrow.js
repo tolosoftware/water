@@ -1,10 +1,4 @@
 import React,  { useState, useEffect } from "react";
-import CardBox from 'components/CardBox';
-import Widget from "components/Widget/index";
-import WebIcon from '@material-ui/icons/Web';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import InfoIcon from '@material-ui/icons/Info';
-import ListAltIcon from '@material-ui/icons/ListAlt';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Divider from "@material-ui/core/Divider";

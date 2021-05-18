@@ -58,8 +58,8 @@ class YearlyProfitChart extends Component {
 
       return {
         labels: [
-          'red',
-          'sky',
+          'Used Days',
+          'Remining Days',
         ],
         
         datasets: [{

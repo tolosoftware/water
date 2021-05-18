@@ -10,8 +10,8 @@ const options = {
   slidesToShow: 1,
   marginRight: 10,
   slidesToScroll: 1,
-  innerHeight: 200,
-  outerHeight: 200,
+  innerHeight: 215,
+  outerHeight: 215,
 };
 const TestimonialCarousel = ({testimonials}) => {
   return (

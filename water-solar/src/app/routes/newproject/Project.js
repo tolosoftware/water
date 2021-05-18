@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from "react-router";
 //css
 import "./custome.css";
 //validation
@@ -353,6 +354,7 @@ function getStepsBrand() {
 // }
 // end code of brand stepper
 export default function Project() {
+  const history = useHistory();
   const [{ formData, error, touched, isValid }, dispatch] = React.useReducer(
     reducer,
     initialState
@@ -787,6 +789,7 @@ export default function Project() {
     }
   };
 
+  const [projectID, setProjectID]= useState(0);
   const [evaluation, setEvaluation] = useState(false);
   const { register, handleSubmit } = useForm(); // initialize the hook
   const onSubmit = (data) => {
@@ -815,6 +818,7 @@ export default function Project() {
       .post("api/project", alldata)
       .then((res) => {
         setOpenbackdrop(false);
+        setProjectID(res.data);
         handleNext();
         NotificationManager.success(
           <IntlMessages id="notification.successMessage" />,
@@ -1724,12 +1728,16 @@ export default function Project() {
 
                         <Button
                           variant="contained"
-                          color="success"
+                          color="primary"
                           className="mt-5 p-3"
                           size="large"
+                          onClick={()=> 
+                            history.push('/app/project-summary/'+projectID)
+                          }
                         >
                           View project summary
                         </Button>
+
                       </div>
                     </div>
                   </div>
