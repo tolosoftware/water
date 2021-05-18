@@ -18,4 +18,8 @@ class Config_solar extends Model
     {
         return $this->belongsTo(Solar_list::class, 'solar_list_id');
     }
+    public function solarListWithCable()
+    {
+        return $this->belongsTo(Solar_list::class, 'solar_list_id')->with('cable');
+    }
 }

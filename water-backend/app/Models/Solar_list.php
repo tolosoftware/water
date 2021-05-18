@@ -23,4 +23,8 @@ class Solar_list extends Model
     {
         return $this->belongsTo(Solar_brands::class, 'solar_brand_id');
     }
+    public function cable()
+    {
+        return $this->belongsTo(Cable_type::class, 'cable_type_id');
+    }
 }
