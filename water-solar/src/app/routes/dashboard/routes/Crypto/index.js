@@ -25,6 +25,8 @@ import Firstrow from './Firstrow';
 import Secondrow from './Secondrow';
 import ProvenceUsers from './ProvenceUsers';
 
+import './dashstyle.css';
+
 function getFlag(countryname) {
   switch (countryname) {
     case 'Afghanistan':
@@ -319,9 +321,9 @@ const handleToggle = (type) => {
         
         </CardBox>
 
-        <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide" cardStyle="text-center"
+        <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide sliderstylepadding" cardStyle="text-center"
                   heading>
-            <div><strong>All Completed Project</strong></div>
+            {/* <div><strong>All Completed Project</strong></div> */}
             <TestimonialCarousel testimonials={testimonials}/>
           </CardBox>
 

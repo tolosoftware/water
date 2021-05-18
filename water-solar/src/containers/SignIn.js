@@ -62,10 +62,10 @@ class SignIn extends React.Component {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("UserData", JSON.stringify(res.data.user));
 
-        if (res.data.user.system === 1) {
+        if (res.data.user.system == 1) {
           this.props.history.push("app/dashboard/crypto");
         } else {
-          this.props.history.push("app/dashboard/intranet");
+          this.props.history.push("app/dashboard/crypto");
         }
       })
       .catch((err) => {

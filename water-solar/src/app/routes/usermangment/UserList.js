@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 //classes
 import UserInside from './UserInside';
+import SendMoney from '../dashboard/routes/Crypto/SendMoney';
 import CustomizedDialogs from "./CustomizedDialogs";
 export const UserList=() => {
   const [visibility,setVisibility]= useState(false);
@@ -135,9 +136,9 @@ export const UserList=() => {
               </Widget>
             </div>  
             
-            <CardBox styleName="col-lg-12 p-0" heading="User Insides Chart" >
-            <UserInside/>
-           </CardBox>  
+            
+            <SendMoney/>
+          
           </div>
         </div>  
 
