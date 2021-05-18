@@ -411,7 +411,8 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Projects::where('id', $id)->with('geolocation')->with('user')->get();
+        $project = Projects::where('id', $id)->with(['geolocation', 'user'])->get();
+        $projectAccessories = Project_accessories::where('project_id', $id)->with('accessoriesListWithUom')->get();
         $irradiation = $this->getIrrWithAva($project[0]->city_id);
         $dynamicHead = ($project[0]->daynomic_head + ceil(($project[0]->dirt_loss * $project[0]->pip_length) / 100));
         $discharge =$project[0]->daily_output;
@@ -441,30 +442,37 @@ class ProjectsController extends Controller
          if($selectedpump[1]->cable_type_id != null){
              $cable = Cable_type::where('id',$selectedpump[1]->cable_type_id)->get()->first();
          }
-         $solar = [];
-         $energyWithOutPut = [];
-         if($selectedpump[0]->power != null){
-             $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solar_list'])
-             ->whereHas('solar_list', function($query) use ($project){
-                 return $query->where('id', $project[0]->solar_watt)
-                 ->where('solar_brand_id', $project[0]->solar_brand_id);
-             })
-             ->get()->first();
-             // return  $solar;
-             if($solar){
-                $energyWithOutPut = $this->getEnergy($project[0]->city_id, $solar['solar_list']['power'], $avaDischarge, $project[0]->dirt_loss);
-               
-             }
-         }
-         // return $selectedpump[0]->power;
-         $solarbrand = [];
-         if($solar['solar_list']->solar_brand_id != null){
-             $solarbrand = Solar_brands::where('id',$solar['solar_list']->solar_brand_id)->get()->first();
-         }
+        $solar = [];
+        $inverter = [];
+        $energyWithOutPut = [];
+        if($selectedpump[0]->power != null){
+            // $inverter = Invertrer::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solarListWithCable'])
+            // ->whereHas('solarListWithCable', function($query) use ($project){
+            //     return $query->where('id', $project[0]->solar_watt)
+            //     ->where('solar_brand_id', $project[0]->solar_brand_id);
+            // })
+            // ->get()->first();
+
+            $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solarListWithCable'])
+            ->whereHas('solarListWithCable', function($query) use ($project){
+                return $query->where('id', $project[0]->solar_watt)
+                ->where('solar_brand_id', $project[0]->solar_brand_id);
+            })
+            ->get()->first();
+            // return  $solar;
+            if($solar){
+            $energyWithOutPut = $this->getEnergy($project[0]->city_id, $solar['solarListWithCable']['power'], $avaDischarge, $project[0]->dirt_loss);
+            
+        }
+        }
+        // return $selectedpump[0]->power;
+        $solarbrand = [];
+        if($solar['solarListWithCable']->solar_brand_id != null){
+            $solarbrand = Solar_brands::where('id',$solar['solarListWithCable']->solar_brand_id)->get()->first();
+        }
 
         return response()->json([
-            'project'=> $project, 'irradiation'=>$irradiation, 'dynamicHead'=>$dynamicHead,'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable,  
-             'energyWithOutPut'=>$energyWithOutPut
+            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'dynamicHead'=>$dynamicHead,'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ]);
     }
     public function getIrrWithAva($city_id){

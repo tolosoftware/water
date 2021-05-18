@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 const ProjectSummary = ({ match }) => {
     const [openbackdrop, setOpenbackdrop] = useState(false);
     const [projectDetails, setProjectDetails] = useState([]);
+    const [projectAccessories, setProjectAccessories] = useState([]);
     const [irradiation, setIrradiation] = useState([]);
     const [energyWithOutPut, setEnergyWithOutPut] = useState([]);
     const [pupm, setPupm] = useState([]);
@@ -78,6 +79,7 @@ const ProjectSummary = ({ match }) => {
             .then(res => {
               console.log('res', res.data);
               setProjectDetails(res.data.project[0]);
+              setProjectAccessories(res.data.projectAccessories);
               setIrradiation(res.data.irradiation);
               setEnergyWithOutPut(res.data.energyWithOutPut);
               setPupm(res.data.pupm);
@@ -153,7 +155,7 @@ const ProjectSummary = ({ match }) => {
                                             <div class="footer-info" style={{paddingBottom: '30px'}}>
                                                 <Divider className="mb-2 mt-2" />
                                                 <div style={{float: 'left', display: 'inline-block'}}>Created by: M (Solar AW water pump planner)</div>
-                                                <div style={{float: 'right',  display: 'inline-block'}}>Water Is Life</div>
+                                                <div id="page-number" style={{float: 'right',  display: 'inline-block'}}>Water Is Life</div>
                                             </div>
                                         </td>
                                     </tr>
@@ -171,13 +173,13 @@ const ProjectSummary = ({ match }) => {
                                                         </thead>
                                                         {/* Afghanistan, Herat, Long: 34° Lat: 69° */}
                                                         <tbody>
-                                                            <tr><td style={{ width: '20%' }}>Location:</td><td>{`${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}, Long: ${projectDetails?.geolocation?.longtitude}° Lat: ${projectDetails?.geolocation?.latitude}°`}</td></tr>
-                                                            <tr><td>Designer:</td><td>{projectDetails?.user?.name}</td></tr>
+                                                            <tr><td style={{ width: '20%' }}>Location:</td><td>{projectDetails?(`${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}, Long: ${projectDetails?.geolocation?.longtitude}° Lat: ${projectDetails?.geolocation?.latitude}°`):''}</td></tr>
+                                                            <tr><td>Designer:</td><td>{projectDetails? projectDetails?.user?.name:''}</td></tr>
                                                             <tr><td>Avg. Hourly water:</td><td>10(m³/h)</td></tr>
                                                             <tr><td>Avg. Daily water:</td><td>100(m³/d)</td></tr>
                                                             
-                                                            <tr><td>Total Dynamic head:</td><td>{Number(projectDetails?.daynomic_head) + Math.ceil(Number((projectDetails?.dirt_loss * projectDetails?.pip_length) / 100))}(m)</td></tr>
-                                                            <tr><td>Pipe Friction losses:</td><td>{projectDetails?.dirt_loss}(%)</td></tr>
+                                                            <tr><td>Total Dynamic head:</td><td>{projectDetails? (Number(projectDetails?.daynomic_head) + Math.ceil(Number((projectDetails?.dirt_loss * projectDetails?.pip_length) / 100))): ''}(m)</td></tr>
+                                                            <tr><td>Pipe Friction losses:</td><td>{projectDetails? projectDetails?.dirt_loss:''}(%)</td></tr>
                                                         </tbody>
                                                     </Table>
                                                 </div>
@@ -195,13 +197,13 @@ const ProjectSummary = ({ match }) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr><td style={{ width: '20%' }}>Solar</td><td style={{ width: '60%' }}>TOMMA TECH 270W poly crystalline 36V 8.5A</td><td style={{ width: '10%' }}>png</td><td style={{ width: '10%' }}>30</td></tr>
-                                                            <tr><td>Pump</td><td>Pedrollo 10HP 7.5kw 380V</td><td>pc</td><td>1</td></tr>
+                                                            <tr><td style={{ width: '20%' }}>Solar</td><td style={{ width: '60%' }}>{solarBrand?(solarBrand?.name + " " + solarList?.solar_list_with_cable?.power +"W " + solarList?.solar_list_with_cable?.type + " crystalline " +  solarList?.solar_list_with_cable?.voltage + "V " + solarList?.solar_list_with_cable?.current + "A"): ''}</td><td style={{ width: '10%' }}>png</td><td style={{ width: '10%' }}>{solarList? solarList?.solar_quantity: ''}</td></tr>
+                                                            <tr><td>Pump</td><td>{pupm? (pupm[0]?.pump_brand?.name + " " + pupm[0]?.hp +"HP " + pupm[0]?.power + "Kw " + pupm[0]?.voltage + "V"): ''}</td><td>pc</td><td>1</td></tr>
                                                             <tr><td>Controller</td><td>Vacon Ip66 7.5kw 380V</td><td>pc</td><td>1</td></tr>
-                                                            <tr><td>Structure</td><td>Maunal tracker</td><td>set</td><td>3</td></tr>
-                                                            <tr><td>Motor Cable</td><td>3*4mm2</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>Solar Cable</td><td>2*6mm2</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>Pipline</td><td>polyeithline 2inch </td><td>m</td><td>100</td></tr>
+                                                            <tr><td>Structure</td><td>{solarList? solarList?.base: ''}</td><td>set</td><td>{solarList? solarList?.panal_quantity: ''}</td></tr>
+                                                            <tr><td>Motor Cable</td><td>{cable ? cable?.name : ""}</td><td>m</td><td>{projectDetails? projectDetails?.motor_cable:''}</td></tr>
+                                                            <tr><td>Solar Cable</td><td>{solarList ? (solarList?.solar_list_with_cable?.cable?.name) : ""}</td><td>m</td><td>{projectDetails? projectDetails?.solar_cable:''}</td></tr>
+                                                            <tr><td>Pipline</td><td>polyeithline 2inch </td><td>m</td><td>{projectDetails? projectDetails?.pip_length:''}</td></tr>
                                                         </tbody>
                                                     </Table>
                                                 </div>
@@ -219,14 +221,18 @@ const ProjectSummary = ({ match }) => {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr><td style={{ width: '20%' }}>Flaut switch</td><td style={{ width: '60%' }}>Mechanical sensor for reservoir</td><td style={{ width: '10%' }} >png</td><td style={{ width: '10%' }}>30</td></tr>
-                                                            <tr><td>Controller box</td><td>Controller Box</td><td>pc</td><td>1</td></tr>
+                                                            {projectAccessories.map((projectAccessory, index) => (
+                                                                <tr key={index}><td style={{ width: '20%' }}>{projectAccessory.accessories_list_with_uom?.name}</td><td style={{ width: '60%' }}>{projectAccessory.accessories_list_with_uom?.model}</td><td style={{ width: '10%' }} >{projectAccessory.accessories_list_with_uom?.uom?.acronym}</td><td style={{ width: '10%' }}>{projectAccessory.quantity}</td></tr>
+                                                                
+                                                            ))}
+                                                            
+                                                            {/* <tr><td>Controller box</td><td>Controller Box</td><td>pc</td><td>1</td></tr>
                                                             <tr><td>PV combiner</td><td>DC wires combiner box</td><td>pc</td><td>1</td></tr>
                                                             <tr><td>fiting</td><td>Elbo, stard, etc</td><td>set</td><td>3</td></tr>
                                                             <tr><td>EMT</td><td>Emt pip for cabling</td><td>m</td><td>100</td></tr>
                                                             <tr><td>Sensor Cable</td><td>for cabling</td><td>m</td><td>100</td></tr>
                                                             <tr><td>safety rope</td><td>2*1.5</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>wire tie</td><td>for submersible</td><td>m</td><td>100</td></tr>
+                                                            <tr><td>wire tie</td><td>for submersible</td><td>m</td><td>100</td></tr> */}
                                                         </tbody>
                                                     </Table>
                                                 </div>
@@ -414,8 +420,8 @@ const ProjectSummary = ({ match }) => {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr><td style={{ width: '60%' }}>Brand:</td><td>TOMMATECH</td></tr>
-                                                                    <tr><td>Model:</td><td>TT270-60P</td></tr>
+                                                                    <tr><td style={{ width: '60%' }}>Brand:</td><td>{solarBrand ? solarBrand?.name:""}</td></tr>
+                                                                    <tr><td>Model:</td><td>{solarList? solarList?.solar_list_with_cable?.model:''}</td></tr>
                                                                     <tr><td>Rated Maximum power (Pmax):</td><td>270Wp</td></tr>
                                                                     <tr><td>Voltage at Maximum power(Vmp):</td><td>31.3V</td></tr>
                                                                     <tr><td>Current at Maximum power(Imp):</td><td>8.79A</td></tr>
@@ -463,22 +469,22 @@ const ProjectSummary = ({ match }) => {
                                                                             </tr> */}
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr><td>Brand:</td><td>Pedrollo</td></tr>
-                                                                            <tr><td>Model:</td><td>TT270-60P</td></tr>
-                                                                            <tr><td>Power:</td><td>4Kw</td></tr>
-                                                                            <tr><td>Hors power:</td><td>5.5HP</td></tr>
-                                                                            <tr><td>Current:</td><td>8.8A</td></tr>
-                                                                            <tr><td>Voltage:</td><td>380V</td></tr>
-                                                                            <tr><td>Outlet:</td><td>2inch</td></tr>
-                                                                            <tr><td>Diameter:</td><td>4inch</td></tr>
-                                                                            <tr><td>Weight:</td><td>26kg</td></tr>
-                                                                            <tr><td>Made in:</td><td>Italy</td></tr>
+                                                                            <tr><td>Brand:</td><td>{pupm? (pupm[0]?.pump_brand?.name) : ""}</td></tr>
+                                                                            <tr><td>Model:</td><td>{pupm? (pupm[0]?.model) : ""}</td></tr>
+                                                                            <tr><td>Power:</td><td>{pupm? (pupm[0]?.power) : ""}Kw</td></tr>
+                                                                            <tr><td>Hors power:</td><td>{pupm? (pupm[0]?.hp) : ""}HP</td></tr>
+                                                                            <tr><td>Current:</td><td>{pupm? (pupm[0]?.ampeier) : ""}A</td></tr>
+                                                                            <tr><td>Voltage:</td><td>{pupm? (pupm[0]?.voltage) : ""}V</td></tr>
+                                                                            <tr><td>Outlet:</td><td>{pupm? (pupm[0]?.outlet) : ""}inch</td></tr>
+                                                                            <tr><td>Diameter:</td><td>{pupm? (pupm[0]?.diameter) : ""}inch</td></tr>
+                                                                            <tr><td>Weight:</td><td>{pupm? (pupm[0]?.weight) : ""}kg</td></tr>
+                                                                            <tr><td>Made in:</td><td>{pupm? (pupm[0]?.pump_brand?.country) : ""}</td></tr>
                                                                         </tbody>
                                                                     </Table>
                                                                 </div>
                                                             </div>
                                                             <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12" style={{ padding: '0px', paddingTop: '35px' }}>
-                                                                <img src="/images/Graph.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`:"/images/Graph.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -489,7 +495,7 @@ const ProjectSummary = ({ match }) => {
 
                                                     </div>
                                                     <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12">
-                                                        <img src="/images/pump.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '550px' }} alt="Responsive" />
+                                                        <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`:"/images/pump.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '550px' }} alt="Responsive" />
                                                     </div>
                                                 </div>
                                             </div>
