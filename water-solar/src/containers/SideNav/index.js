@@ -42,7 +42,7 @@ class SideNav extends React.PureComponent {
                   paper: 'side-nav',
                 }}
         >
-          <UserInfo/>
+          
           <SidenavContent/>
         </Drawer>
       </div>
