@@ -105,7 +105,7 @@ const ProjectSummary = ({ match }) => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             <div className="app-wrapper">
-                <ContainerHeader match={match} title={<IntlMessages id="Project Summary" />} />
+                {/* <ContainerHeader match={match} title={<IntlMessages id="Project Summary" />} /> */}
 
                 <div className="row" >
 
@@ -156,7 +156,7 @@ const ProjectSummary = ({ match }) => {
                                         <td class="report-footer-cell">
                                             <div class="footer-info" style={{paddingBottom: '30px'}}>
                                                 <Divider className="mb-2 mt-2" />
-                                                <div style={{float: 'left', display: 'inline-block'}}>Created by: M (Solar AW water pump planner)</div>
+                                                <div style={{float: 'left', display: 'inline-block'}}>Created by: AWM (Solar AW water pump planner)</div>
                                                 <div id="page-number" style={{float: 'right',  display: 'inline-block'}}>Water Is Life</div>
                                             </div>
                                         </td>

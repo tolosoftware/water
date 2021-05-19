@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
@@ -564,11 +565,12 @@ export default function Project() {
   ]);
   //start dynomic form
   const handlseelctitem = (event, value, id) => {
-
+    console.log('value of item ', value);
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
         i['item'] = value;
         i['uomAc'] = value? value.uom?.acronym :'m';
+        console.log("i['item']", i['item']);
       }
       return i;
     })
@@ -580,7 +582,7 @@ export default function Project() {
     // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
   };
 
-  const handlchangquantity = (value, id) => {
+  const handlchangquantity = (value, id, ) => {
     // inputFields[index].quantity = value;
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
@@ -1207,7 +1209,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
                             <TextField
-                              id="outlined-basic-1"
+                              id="outlined-basic-1_head"
                               className="form-control"
                               label={`Head ${piplenght && dirtloss
                                 ? "+ " +
@@ -1538,11 +1540,11 @@ export default function Project() {
 
                 {activeStep === 1 ? (
                   <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-6">
                       <h3>Project Accessories</h3>
                       {inputFields.map((inputField, index) => (
                         <div className="row">
-                          <div className="col-md-7">
+                          <div className="col-md-6">
                             <FormControl fullWidth>
                               <Autocomplete size="small"
                                 id="country-select-demo3"
@@ -1550,6 +1552,12 @@ export default function Project() {
                                 onChange={(event, newValue) =>
                                   handlseelctitem(event, newValue, inputField.id)
                                 }
+                                // onMouseOver={() =>
+                                //   accessoryMouseOver(inputField.item, "hover")
+                                // }
+                                // onMouseLeave={() => accessoryMouseLeave("xy")}
+                                // onFocus={() => accessoryMouseOver(inputField.item, "focus")}
+                                // onBlur={() => accessoryMouseLeave("fout")}
                                 style={{ width: 300 }}
                                 options={accessories}
                                 classes={{
@@ -1585,7 +1593,7 @@ export default function Project() {
                               />
                             </FormControl>
                           </div>
-                          <div className="col-md-5">
+                          <div className="col-md-3">
                             <FormControl fullWidth>
                               <TextField
                                 id="outlined-basic7"
@@ -1597,7 +1605,13 @@ export default function Project() {
                                 name="Quantity"
                                 type="number"
                                 onChange={(event) =>
-                                  handlchangquantity(event.target.value, inputField.id)
+                                  handlchangquantity(
+                                    (event.target.value >= inputField?.item?.min_quantity &&
+                                    event.target.value <= inputField?.item?.max_quantity
+                                    ? event.target.value
+                                    : inputField?.item?.min_quantity), inputField.id
+                                    )
+
                                 }
                                 value={inputField.quantity}
                                 InputProps={{
@@ -1609,6 +1623,24 @@ export default function Project() {
                               />
                             </FormControl>
                           </div>
+                        
+                          <div className="col-md-3">
+                            <FormControl fullWidth>
+                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${oldinputField?.item?.data_sheet}`} class="btn btn-primary">
+                            <Button
+                                style={{marginTop: '16px'}}
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<CloudDownloadIcon />}
+                              >
+                                Download
+                              </Button>
+                            </a>
+                              
+                            </FormControl>
+                          </div>
+                        
                         </div>
                       ))}
 
@@ -1635,7 +1667,7 @@ export default function Project() {
                       </IconButton>
                     </div>
 
-                    <div className="col-md-8">
+                    <div className="col-md-6">
                       <img
                         src="/Layouts/system layout with details.jpg"
                         className=" img-thumbnail rounded mx-auto d-block"
@@ -1718,13 +1750,13 @@ export default function Project() {
                           </h1>
                         </Alert>
 
-                        <p className="mt-3 p-4">
+                        {/* <p className="mt-3 p-4">
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry. Lorem Ipsum has been the
                           industry's standard dummy text ever since the 1500s,
                           when an unknown printer took a galley of type and
                           scrambled
-                        </p>
+                        </p> */}
 
                         <Button
                           variant="contained"
