@@ -18,4 +18,8 @@ class InvertorList extends Model
     {
         return $this->belongsTo(InvertorBrand::class, 'invertor_brand_id');
     }
+    public function inverter_config()
+    {
+        return $this->hasMany(Config_Invertor::class, 'invertor_list_id');
+    }
 }

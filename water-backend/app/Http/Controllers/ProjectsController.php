@@ -12,6 +12,7 @@ use App\Models\Pump_list;
 use App\Models\Solar_list;
 use App\Models\Config_solar;
 use App\Models\Cable_type;
+use App\Models\InvertorList;
 
 
 
@@ -151,6 +152,11 @@ class ProjectsController extends Controller
                 ['name'=>'17:00', 'hrOutput'=>round(($hrEnergy[11]['hrEn']/$maxValue)*($avaDischarge), 2)],  
                 ['name'=>'18:00', 'hrOutput'=>round(($hrEnergy[12]['hrEn']/$maxValue)*($avaDischarge), 2)],  
             ];
+            $hrAvaOfOut = 0;
+            foreach ($hrOutputP as $value) {
+                $hrAvaOfOut = $hrAvaOfOut + $value['hrOutput'];
+            }
+
             $monthlyHrOutput =  [
                 ['name'=>'Jan', 'MonthlyOutput'=>$monthlyHrOutputData[0]],
                 ['name'=>'Feb', 'MonthlyOutput'=>$monthlyHrOutputData[1]],
@@ -171,7 +177,7 @@ class ProjectsController extends Controller
             }
             array_push($monthlyHrOutput, ['name'=>'Ava', 'MonthlyOutput'=>round($monthlyAvaOfOut/12, 2)]);
             
-            $energyResulty = ['hrEnergy' =>$hrEnergy, 'energyForEachMonth' => $energyForEachMonth, 'hrOutputP' => $hrOutputP, 'monthlyHrOutput' => $monthlyHrOutput];
+            $energyResulty = ['hrEnergy' =>$hrEnergy, 'energyForEachMonth' => $energyForEachMonth, 'hrOutputP' => $hrOutputP, 'monthlyHrOutput' => $monthlyHrOutput, 'hrAvaOfOut'=>round($hrAvaOfOut/13, 2), 'monthlyAvaOfOut'=>round($monthlyAvaOfOut/12, 2)];
             return $energyResulty;
     }
 
@@ -446,12 +452,11 @@ class ProjectsController extends Controller
         $inverter = [];
         $energyWithOutPut = [];
         if($selectedpump[0]->power != null){
-            // $inverter = Invertrer::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solarListWithCable'])
-            // ->whereHas('solarListWithCable', function($query) use ($project){
-            //     return $query->where('id', $project[0]->solar_watt)
-            //     ->where('solar_brand_id', $project[0]->solar_brand_id);
-            // })
-            // ->get()->first();
+            $inverter = InvertorList::where('invertor_brand_id',$project[0]->invertor_brand_id)->with(['inverter_config', 'invertor_brand'])
+            ->whereHas('inverter_config', function($query) use ($selectedpump){
+                return $query->where('power', $selectedpump[0]->power);
+            })
+            ->get()->first();
 
             $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solarListWithCable'])
             ->whereHas('solarListWithCable', function($query) use ($project){
@@ -472,7 +477,7 @@ class ProjectsController extends Controller
         }
 
         return response()->json([
-            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'dynamicHead'=>$dynamicHead,'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
+            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ]);
     }
     public function getIrrWithAva($city_id){

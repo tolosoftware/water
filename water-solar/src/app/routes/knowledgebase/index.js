@@ -69,6 +69,7 @@ const ProjectSummary = ({ match }) => {
     const [pupm, setPupm] = useState([]);
     const [solarBrand, setSolarBrand] = useState([]);
     const [solarList, setSolarList] = useState([]);
+    const [inverter, setInverter] = useState([]);
     const [cable, setCable] = useState([]);
 
     const classes = useStyles();
@@ -85,6 +86,7 @@ const ProjectSummary = ({ match }) => {
               setPupm(res.data.pupm);
               setSolarBrand(res.data.solarbrand);
               setSolarList(res.data.solarList);
+              setInverter(res.data.inverter);
               setCable(res.data.cable);
 
               setOpenbackdrop(false);
@@ -175,11 +177,11 @@ const ProjectSummary = ({ match }) => {
                                                         <tbody>
                                                             <tr><td style={{ width: '20%' }}>Location:</td><td>{projectDetails?(`${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}, Long: ${projectDetails?.geolocation?.longtitude}° Lat: ${projectDetails?.geolocation?.latitude}°`):''}</td></tr>
                                                             <tr><td>Designer:</td><td>{projectDetails? projectDetails?.user?.name:''}</td></tr>
-                                                            <tr><td>Avg. Hourly water:</td><td>10(m³/h)</td></tr>
-                                                            <tr><td>Avg. Daily water:</td><td>100(m³/d)</td></tr>
+                                                            <tr><td>Avg. Hourly water:</td><td>{energyWithOutPut?.hrAvaOfOut}(m³/h)</td></tr>
+                                                            <tr><td>Avg. Daily water:</td><td>{energyWithOutPut?.monthlyAvaOfOut}(m³/d)</td></tr>
                                                             
-                                                            <tr><td>Total Dynamic head:</td><td>{projectDetails? (Number(projectDetails?.daynomic_head) + Math.ceil(Number((projectDetails?.dirt_loss * projectDetails?.pip_length) / 100))): ''}(m)</td></tr>
-                                                            <tr><td>Pipe Friction losses:</td><td>{projectDetails? projectDetails?.dirt_loss:''}(%)</td></tr>
+                                                            <tr><td>Total Dynamic head:</td><td>{projectDetails?.daynomic_head}(m)</td></tr>
+                                                            <tr><td>Pipe Friction losses:</td><td>{Math.ceil(Number((projectDetails?.dirt_loss * projectDetails?.pip_length) / 100))}m ({projectDetails? projectDetails?.dirt_loss:''}%)</td></tr>
                                                         </tbody>
                                                     </Table>
                                                 </div>
@@ -199,7 +201,7 @@ const ProjectSummary = ({ match }) => {
                                                         <tbody>
                                                             <tr><td style={{ width: '20%' }}>Solar</td><td style={{ width: '60%' }}>{solarBrand?(solarBrand?.name + " " + solarList?.solar_list_with_cable?.power +"W " + solarList?.solar_list_with_cable?.type + " crystalline " +  solarList?.solar_list_with_cable?.voltage + "V " + solarList?.solar_list_with_cable?.current + "A"): ''}</td><td style={{ width: '10%' }}>png</td><td style={{ width: '10%' }}>{solarList? solarList?.solar_quantity: ''}</td></tr>
                                                             <tr><td>Pump</td><td>{pupm? (pupm[0]?.pump_brand?.name + " " + pupm[0]?.hp +"HP " + pupm[0]?.power + "Kw " + pupm[0]?.voltage + "V"): ''}</td><td>pc</td><td>1</td></tr>
-                                                            <tr><td>Controller</td><td>Vacon Ip66 7.5kw 380V</td><td>pc</td><td>1</td></tr>
+                                                            <tr><td>Controller</td><td>{inverter? inverter?.invertor_brand?.name + " " + inverter?.power + "kw " + inverter?.voltage + "V": ''}</td><td>pc</td><td>1</td></tr>
                                                             <tr><td>Structure</td><td>{solarList? solarList?.base: ''}</td><td>set</td><td>{solarList? solarList?.panal_quantity: ''}</td></tr>
                                                             <tr><td>Motor Cable</td><td>{cable ? cable?.name : ""}</td><td>m</td><td>{projectDetails? projectDetails?.motor_cable:''}</td></tr>
                                                             <tr><td>Solar Cable</td><td>{solarList ? (solarList?.solar_list_with_cable?.cable?.name) : ""}</td><td>m</td><td>{projectDetails? projectDetails?.solar_cable:''}</td></tr>
@@ -268,8 +270,8 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
+                                    <tr className='pageBreak'>
+                                        <td className="report-content-cell">
                                             <div className={`main`}>
                                                 <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Output</h4>
                                                 <Divider className="mb-3 mt-3" />
@@ -377,7 +379,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
@@ -452,7 +454,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row">
@@ -489,7 +491,7 @@ const ProjectSummary = ({ match }) => {
                                                         </div>
                                                         <div className="row">
                                                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                                <img src="/images/dimentaion.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '150px' }} alt="Responsive" />
+                                                                <img src="/images/dimentaion.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '150px', paddingTop: '30px' }} alt="Responsive" />
                                                             </div>
                                                         </div>
 
@@ -517,34 +519,32 @@ const ProjectSummary = ({ match }) => {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr><td style={{ width: '32%' }}>Brand:</td><td>Pedrollo</td></tr>
-                                                                    <tr><td>Model:</td><td>TT270-60P</td></tr>
-                                                                    <tr><td>Power:</td><td>4Kw</td></tr>
+                                                                    <tr><td style={{ width: '32%' }}>Brand:</td><td>{inverter? inverter?.invertor_brand?.name: ''}</td></tr>
+                                                                    <tr><td>Model:</td><td>{inverter? inverter?.model: ''}</td></tr>
+                                                                    <tr><td>Power:</td><td>{inverter? inverter?.power: ''}Kw</td></tr>
                                                                     <tr><td>Hors power:</td><td>5.5HP</td></tr>
-                                                                    <tr><td>Current:</td><td>8.8A</td></tr>
-                                                                    <tr><td>Voltage:</td><td>380V</td></tr>
-                                                                    <tr><td>Outlet:</td><td>2inch</td></tr>
-                                                                    <tr><td>Diameter:</td><td>4inch</td></tr>
+                                                                    <tr><td>Current:</td><td>{inverter? inverter?.current: ''}A</td></tr>
+                                                                    <tr><td>Voltage:</td><td>{inverter? inverter?.voltage: ''}V</td></tr>
                                                                     <tr><td>Weight:</td><td>26kg</td></tr>
-                                                                    <tr><td>Made in:</td><td>Italy</td></tr>
+                                                                    <tr><td>Made in:</td><td>{inverter? inverter?.invertor_brand?.country: ''}</td></tr>
                                                                 </tbody>
                                                             </Table>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12" style={{ paddingLeft: '0px', paddingTop: '50px' }}>
-                                                        <img src="/images/controller.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                        <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`:"/images/controller.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
                                                     </div>
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{height: 'fit-content', marginTop: '-130px'}}>
+                                                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{height: 'fit-content', marginTop: '-130px'}}>
                                                         <img src="/images/controllerConfig.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                    </div>
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingTop: '75px' }}>
-                                                        <img src="/images/controllerDimention.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                    </div> */}
+                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ marginTop: '-215px' }}>
+                                                        <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`:"/images/controllerDimention.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row" style={{ marginTop: '20px' }}>
@@ -561,7 +561,7 @@ const ProjectSummary = ({ match }) => {
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr><td style={{ width: '32%' }}>Brand:</td><td>No</td></tr>
-                                                                    <tr><td>Model:</td><td>Manual tracker</td></tr>
+                                                                    <tr><td>Model:</td><td>{projectDetails? projectDetails?.solar_base: ''}</td></tr>
                                                                     <tr><td>Capacity:</td><td>4/6/8/10/12 panels</td></tr>
                                                                 </tbody>
                                                             </Table>
@@ -582,20 +582,20 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr class="report-page-break">
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell ">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />
                                                 <strong>Wiring Diagram</strong>
                                                 <div className="row">
                                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                        <img src="/images/wiring.png" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
+                                                        <img src={solarList? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`:"/images/wiring.png"} className="img-thumbnail " alt="Responsive" style={{ border: 'none', paddingBottom: '20px' }} />
                                                     </div>
                                                 </div>                          
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr class="report-page-break">
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />
@@ -615,12 +615,13 @@ const ProjectSummary = ({ match }) => {
                                                         <h5>8- Water meter</h5>
                                                     </div>
                                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingLeft: '70px' }}>
+                                                        
                                                         <h5>9- Garden</h5>
                                                         <h5>10- Swimming pool</h5>
                                                         <h5>11- Water reservoir</h5>
                                                         <h5>12- Flaut switch</h5>
                                                         <h5>13- Flaut switch Ele. cable</h5>
-                                                        <h5>14- ResidenƟal Houses</h5>
+                                                        <h5>14- Residential Houses</h5>
                                                         <h5>15- Toilet</h5>
                                                     </div>
 
@@ -628,7 +629,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr class="report-page-break">
+                                    <tr className='pageBreak'>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />
@@ -661,7 +662,7 @@ const ProjectSummary = ({ match }) => {
                                 <div className="col-md-6 d-flex justify-content-center p-1">
                                     <Pdf targetRef={ref.current} filename="Project summary.pdf" >
                                         {({ toPdf }) => (
-                                            <Button variant="contained" color="primary" onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
+                                            <Button variant="contained" color="primary" disabled={true} onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
                                         )}
 
                                     </Pdf>
