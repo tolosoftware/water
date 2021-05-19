@@ -5,7 +5,7 @@ import IntlMessages from 'util/IntlMessages';
 const Footer = () => {
     return (
       <footer className="app-footer">
-        <span className="d-inline-block">Copyright Company Name &copy; 2021</span>
+        <span className="d-inline-block">Copyright Amu Water Managment System &copy; 2021</span>
         <Button
           href="#"
           target="_blank"

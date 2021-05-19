@@ -33,3 +33,12 @@
     margin-right: 10px;
     margin-left: 50px;
 }
+
+.sliderstylepadding{
+    padding-bottom: 0px  !important;
+}
+
+.dashboard-slide .jr-card {
+    padding: 20px;
+    padding-bottom: 20px !important;
+}

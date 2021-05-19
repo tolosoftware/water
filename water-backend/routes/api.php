@@ -30,6 +30,7 @@ Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth
 Route::resource('user', UserController::class);
 Route::get('userproject/{id}',[UserController::class,'getUserProject']);
 Route::get('provenceUser',[UserController::class,'provenceUser']);
+Route::get('expir/{id}',[UserController::class,'getexpiration']);
 
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);

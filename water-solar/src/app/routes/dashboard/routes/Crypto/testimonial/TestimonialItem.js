@@ -6,7 +6,7 @@ const TestimonialItem = ({testimonial}) => {
   const {avatar} = testimonial;
   return (
     <div className="testimonial text-center">
-      <img alt="avatar" className="size-420 rounded mx-auto mb-2 mb-sm-4" src={avatar}/>
+      <img alt="avatar" className="size-440 rounded mx-auto mb-2 mb-sm-4" src={avatar}/>
       {/* <span className="testimonial__quote"><FormatQuote/></span> */}
       {/* <p>
         {content}

@@ -24,6 +24,26 @@ Use \Carbon\Carbon;
 
 class UserController extends Controller
 {
+    public function getexpiration($id){
+        $user = User::find($id);
+
+        $start = $user->created_at;
+        $startDate = $user->created_at;
+        $expiration = $user->expiration * 30;
+        $expirDate = $start->addDays($expiration);
+
+        $remaning =  $expirDate->diffInDays(Carbon::now());
+        
+
+        $data = [
+            'reminingDays' => $remaning,
+            'used' => $expiration-$remaning,
+            'startDate' => $startDate->format('Y-m-d'),
+            'endDate' => $expirDate->format('Y-m-d'),
+        ];
+
+        return $data;
+    }
 
     public function provenceUser(){
         $user = Geolocation::with('users')->get();
