@@ -50,6 +50,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import CloseIcon from "@material-ui/icons/Close";
 //analize project
 import Analyze from "./Analyze";
+import Preview from "./Preview";
 
 // Start code for brand stepper selection
 // import Stepper from "@material-ui/core/Stepper";
@@ -565,12 +566,12 @@ export default function Project() {
   ]);
   //start dynomic form
   const handlseelctitem = (event, value, id) => {
-    console.log('value of item ', value);
+    // console.log('value of item ', value);
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
         i['item'] = value;
         i['uomAc'] = value? value.uom?.acronym :'m';
-        console.log("i['item']", i['item']);
+        // console.log("i['item']", i['item']);
       }
       return i;
     })
@@ -578,7 +579,7 @@ export default function Project() {
     // inputFields[id].item = value.id;
     // inputFields[id].uomAc = value.uom.acronym;
     setInputFields(newInputFields);
-    console.log("value of accessories inputFields", inputFields);
+    // console.log("value of accessories inputFields", inputFields);
     // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
   };
 
@@ -662,30 +663,57 @@ export default function Project() {
   );
   const [foucus, setFoucus] = useState(false);
 
+  const [accImgPath, SetAccImgPath] = useState();
+  const accessoryMouseOver = (input, wichfunction) => {
+    // console.log('input value', input);
+    // setEvaluation(false);
+    if (wichfunction === "focus") {
+      setFoucus(true);
+      SetAccImgPath(input.image);
+    }
+
+    if (wichfunction === "hover") {
+      if (!foucus) {
+        SetAccImgPath(input.image);
+      }
+    }
+  }
+  const accessoryMouseLeave = (input, wichfunction) => {
+    // setEvaluation(true);
+    if (wichfunction === "fout") {
+      setFoucus(false);
+      SetAccImgPath(input.image);
+    }
+
+    if (!foucus) {
+      SetAccImgPath(input.image);
+    }
+  };
+
   const dirtlossMouseOver = (wichInput, wichfunction) => {
     // setEvaluation(false);
     if (wichInput === "MT" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/Hight layout.png");
+      setImagepath("/images/structure.PNG");
     }
 
     if (wichInput === "MT" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/Hight layout.png");
+        setImagepath("/images/structure.PNG");
       }
     }
     if (wichInput === "GS" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/System layout.png");
+      setImagepath("/images/Ground.jpg");
     }
 
     if (wichInput === "GS" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/System layout.png");
+        setImagepath("/images/Ground.jpg");
       }
     }
     if (wichInput === "dirt" && wichfunction === "focus") {
@@ -793,6 +821,7 @@ export default function Project() {
 
   const [projectID, setProjectID]= useState(0);
   const [evaluation, setEvaluation] = useState(false);
+  const [submited, setSubmited] = useState(false);
   const { register, handleSubmit } = useForm(); // initialize the hook
   const onSubmit = (data) => {
     setOpenbackdrop(true);
@@ -815,13 +844,14 @@ export default function Project() {
       invertorvalue,
     };
     alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
-    console.log('all Data ', alldata);
+    // console.log('all Data ', alldata);
     axios
       .post("api/project", alldata)
       .then((res) => {
         setOpenbackdrop(false);
         setProjectID(res.data);
-        handleNext();
+        setSubmited(true);
+        // handleNext();
         NotificationManager.success(
           <IntlMessages id="notification.successMessage" />,
           <IntlMessages id="notification.titleHere" />
@@ -861,6 +891,35 @@ export default function Project() {
     // console.log('evalData', evalData);
     setEvaluation(true);
     setEvaluationdata(evalData);
+  };
+
+  const [openPre, setOpenPre] = useState(false);
+  const [previewData, setPreviewData] = useState([]);
+  const handlePreview = ()=> {
+    console.log('preview data', previewData);
+    let alldata = {
+      projectname,
+      country,
+      city,
+      daynomichead,
+      solarCable,
+      motorcable,
+      piplenght,
+      discharge,
+      dirtloss,
+      bas,
+      inputFields,
+      pumpvalue,
+      solarvalue,
+      solarSelectWatt,
+      invertorvalue,
+    };
+    alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
+    setPreviewData(alldata);
+    console.log('preview data', previewData);
+    if(previewData){
+      setOpenPre(true);
+    }
   };
 
   return (
@@ -1522,6 +1581,7 @@ export default function Project() {
                             <Analyze
                               evaluationdata={evaluationdata}
                               citylocation={citylocation}
+                              projectname={projectname}
                             />
                           </div>
                         </>
@@ -1552,12 +1612,12 @@ export default function Project() {
                                 onChange={(event, newValue) =>
                                   handlseelctitem(event, newValue, inputField.id)
                                 }
-                                // onMouseOver={() =>
-                                //   accessoryMouseOver(inputField.item, "hover")
-                                // }
-                                // onMouseLeave={() => accessoryMouseLeave("xy")}
-                                // onFocus={() => accessoryMouseOver(inputField.item, "focus")}
-                                // onBlur={() => accessoryMouseLeave("fout")}
+                                onMouseOver={() =>
+                                  accessoryMouseOver(inputField.item, "hover")
+                                }
+                                onMouseLeave={() => accessoryMouseLeave(inputField.item, "xy")}
+                                onFocus={() => accessoryMouseOver(inputField.item, "focus")}
+                                onBlur={() => accessoryMouseLeave(inputField.item, "fout")}
                                 style={{ width: 300 }}
                                 options={accessories}
                                 classes={{
@@ -1624,17 +1684,17 @@ export default function Project() {
                             </FormControl>
                           </div>
                         
-                          <div className="col-md-3">
+                          <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                             <FormControl fullWidth>
-                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${oldinputField?.item?.data_sheet}`} class="btn btn-primary">
+                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}>
                             <Button
-                                style={{marginTop: '16px'}}
+                                style={{marginTop: '16px', padding: '6px 6px'}}
                                 variant="contained"
                                 color="default"
                                 className={classes.button}
                                 startIcon={<CloudDownloadIcon />}
                               >
-                                Download
+                                Data Sheet
                               </Button>
                             </a>
                               
@@ -1669,7 +1729,7 @@ export default function Project() {
 
                     <div className="col-md-6">
                       <img
-                        src="/Layouts/system layout with details.jpg"
+                        src={accImgPath? `${axios.defaults.baseURL}accessories/${accImgPath}`:"/Layouts/system layout with details.jpg"}
                         className=" img-thumbnail rounded mx-auto d-block"
                         alt="Responsive"
                       />
@@ -1682,94 +1742,38 @@ export default function Project() {
                 {activeStep === 2 ? (
                   <div className="row">
                     <div className="col-md-3">
-                      <TextField
-                        id="outlined-basic1"
-                        className="form-control"
-                        label="Head"
-                        variant="outlined"
-                        placeholder="Head !"
-                        margin="normal"
-                        name="head"
-                        type="number"
-                        size="small"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">m</InputAdornment>
-                          ),
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-
-                      <TextField
-                        id="outlined-basic12"
-                        className="form-control"
-                        label="Head"
-                        variant="outlined"
-                        placeholder="Head !"
-                        margin="normal"
-                        name="head"
-                        type="number"
-                        size="small"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">m</InputAdornment>
-                          ),
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-
-                      <TextField
-                        id="outlined-basic"
-                        className="form-control"
-                        label="Head"
-                        variant="outlined"
-                        placeholder="Head !"
-                        margin="normal"
-                        name="head"
-                        type="number"
-                        size="small"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">m</InputAdornment>
-                          ),
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
+                      
                     </div>
                     <div className="col-md-9">
                       <div className="row justify-content-center ">
-                        <Alert severity="success" color="info">
-                          <h1 color="success">
-                            Congratulations Project Successfully Inserted !
-                          </h1>
-                        </Alert>
+                      
+                        {submited? 
+                          <Alert severity="success" color="info">
+                            <h1 color="success">
+                              Congratulations Project Successfully Inserted !
+                            </h1>
+                          </Alert>
+                        :""}
+                        
 
-                        {/* <p className="mt-3 p-4">
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry's standard dummy text ever since the 1500s,
-                          when an unknown printer took a galley of type and
-                          scrambled
-                        </p> */}
+                        <p className="mt-3 p-4">
+                          Your Project Is Ready To Save it!,  You can preview your Project before submit it.
+                        </p>
+                        
+                      </div>
 
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className="mt-5 p-3"
-                          size="large"
-                          onClick={()=> 
-                            history.push('/app/project-summary/'+projectID)
-                          }
-                        >
-                          View project summary
-                        </Button>
-
+                      <div className="row justify-content-center ">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            className="mt-5 p-3"
+                            size="large"
+                            onClick={e=>handlePreview()}
+                            // history.push('/app/project-summary/'+projectID)
+                          >
+                            View project summary
+                          </Button>
+                        <Preview open={openPre} setOpen={setOpenPre} previewData={previewData}/> 
                       </div>
                     </div>
                   </div>
@@ -1790,29 +1794,21 @@ export default function Project() {
                   </Button>
 
                   {activeStep === steps.length - 2 ? (
-                    <Button variant="contained" color="primary" type="submit">
-                      Submit
+                    <Button variant="contained" color="primary" onClick={handleNext}>
+                    Next
                     </Button>
                   ) : (
                     ""
                   )}
 
                   {activeStep === steps.length - 3 ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                    >
-                      Next
-                    </Button>
+                    <Button  variant="contained" color="primary" onClick={handleNext}>Next</Button>
                   ) : (
                     ""
                   )}
 
                   {activeStep === steps.length - 1 ? (
-                    <Button variant="contained" color="primary" disabled>
-                      Next
-                    </Button>
+                    <Button variant="contained" color="primary" type="submit">Submit</Button>
                   ) : (
                     ""
                   )}
