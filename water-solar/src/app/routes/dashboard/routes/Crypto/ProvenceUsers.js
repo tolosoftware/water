@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import provencedata from './provencedata';
 import Divider from "@material-ui/core/Divider";
 import axios from "axios";
 

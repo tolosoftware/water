@@ -130,26 +130,41 @@ class SidenavContent extends Component {
             </NavLink>
           </li>
 
-          <li className="menu no-arrow">
+          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+            <li className="nav-item">
+                <NavLink className="prepend-icon" to="/app/datasheet">
+                  <span className="nav-text"><IntlMessages id="sidebar.download" /></span>
+                </NavLink>
+            </li>
+          ) : ''}
+
+          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+            <li className="menu no-arrow">
             <NavLink to="/app/systemmangment">
               <i className="zmdi zmdi-widgets zmdi-hc-fw"/>
               <span className="nav-text">System Management</span>
             </NavLink>
           </li>
+          ) : ''}
 
-          <li className="menu no-arrow">
+        
+       {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+            <li className="menu no-arrow">
             <NavLink to="/app/usermangment">
               <i className="zmdi zmdi-account-add zmdi-hc-fw"/>
               <span className="nav-text">User Management</span>
             </NavLink>
-          </li>
+            </li>
+          ) : ''}
 
-          <li className="menu no-arrow">
-            <NavLink to="/app/setting">
-              <i className="zmdi zmdi-wrench zmdi-hc-fw"/>
-              <span className="nav-text">Setting</span>
-            </NavLink>
-          </li>
+      {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+             <li className="menu no-arrow">
+             <NavLink to="/app/setting">
+               <i className="zmdi zmdi-wrench zmdi-hc-fw"/>
+               <span className="nav-text">Setting</span>
+             </NavLink>
+           </li>
+          ) : ''}
 
         </ul>
       </CustomScrollbars>

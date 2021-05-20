@@ -1076,7 +1076,7 @@ export default function Project() {
                             id="outlined-basic"
                             label="Poject Name"
                             variant="outlined"
-                            placeholder="Project name !"
+                            placeholder="Project name!"
                             margin="normal"
                             size="small"
                             name="projectname"
@@ -1207,7 +1207,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
                             <TextField
-                              id="outlined-basic-1"
+                              id="head"
                               className="form-control"
                               label={`Head ${piplenght && dirtloss
                                 ? "+ " +

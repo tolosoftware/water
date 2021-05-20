@@ -139,12 +139,8 @@ export const UserList=() => {
             <CardBox styleName="" >
               <UserExpiration/>
             </CardBox>
-           
-          
           </div>
         </div>  
-
     </>
- 
-      )
+  )
 }

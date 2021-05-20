@@ -8,6 +8,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import './dashstyle.css';
 import Aboutawm from './Aboutawm';
 import { NavLink, withRouter } from 'react-router-dom';
+import './dashstyle.css';
 const Firstrow = () => {
   const [open,setOpen]=React.useState(false);  
   return (
@@ -15,7 +16,7 @@ const Firstrow = () => {
 
         <div className="col-md-3">
           <NavLink className="prepend-icon linkstyle" to="/app/newproject" style={{textDecoration:'none'}}>
-              <Widget styleName={`bg-primary text-white dashboard`}>
+              <Widget styleName={`coloring text-white dashboard`} >
               <div className="d-flex flex-row justify-content-center">
                 <WebIcon fontSize="large"/>
               </div>
@@ -29,7 +30,7 @@ const Firstrow = () => {
 
          <div className="col-md-3">
            <NavLink className="prepend-icon linkstyle" to="/app/activities" style={{textDecoration:'none'}}>
-            <Widget styleName={`bg-secondary text-white dashboard`}>
+            <Widget styleName={`coloringSecondary text-white dashboard`}>
               <div className="d-flex flex-row justify-content-center">
                 <AccountBalanceIcon fontSize="large"/>
               </div>

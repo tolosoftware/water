@@ -14,7 +14,7 @@ class UserInfoPopup extends React.Component {
                alt="User"/>
           <div className="user-detail ml-2">
             <h4 className="user-name mb-0">{JSON.parse(localStorage.getItem('UserData')).name}</h4>
-            <small>{JSON.parse(localStorage.getItem('UserData')).system===1?(
+            <small>{JSON.parse(localStorage.getItem('UserData')).system==1?(
               <p>Administrator</p>
             ):(<p>System User</p>)}</small>
           </div>
