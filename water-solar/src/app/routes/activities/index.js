@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 // import IntlMessages from "util/IntlMessages";
 import {ProjectList} from './ProjectList';
 import SameDataComposedChart from './SameDataComposedChart';
+import SendMoney from '../dashboard/routes/Crypto/SendMoney';
 import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
 
@@ -32,9 +33,9 @@ const activities=({match,props}) => {
             </NavLink>
              </div>
                 
-          <CardBox styleName="col-lg-12" heading="User Insides Chart" className="p-0">
-            <SameDataComposedChart />
-          </CardBox>
+         
+            <SendMoney />
+         
             
         </div>
       </div>

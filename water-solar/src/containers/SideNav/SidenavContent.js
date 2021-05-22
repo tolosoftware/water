@@ -112,7 +112,7 @@ class SidenavContent extends Component {
           <li className="menu no-arrow">
             <NavLink to="/app/dashboard/crypto">
               <i className="zmdi zmdi-view-dashboard zmdi-hc-fw"/>
-              <span className="nav-text">dashboard</span>
+              <span className="nav-text">Dashboard</span>
             </NavLink>
           </li>
 
@@ -130,26 +130,46 @@ class SidenavContent extends Component {
             </NavLink>
           </li>
 
-          <li className="menu no-arrow">
+         
+           
+
+            <li className="menu no-arrow">
+            <NavLink to="/app/datasheet">
+              <i className="zmdi zmdi-cloud-download zmdi-hc-fw"/>
+              <span className="nav-text">Download</span>
+            </NavLink>
+            </li>
+
+
+         
+
+          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+            <li className="menu no-arrow">
             <NavLink to="/app/systemmangment">
               <i className="zmdi zmdi-widgets zmdi-hc-fw"/>
               <span className="nav-text">System Management</span>
             </NavLink>
           </li>
+          ) : ''}
 
-          <li className="menu no-arrow">
+        
+       {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+            <li className="menu no-arrow">
             <NavLink to="/app/usermangment">
               <i className="zmdi zmdi-account-add zmdi-hc-fw"/>
               <span className="nav-text">User Management</span>
             </NavLink>
-          </li>
+            </li>
+          ) : ''}
 
-          <li className="menu no-arrow">
-            <NavLink to="/app/setting">
-              <i className="zmdi zmdi-wrench zmdi-hc-fw"/>
-              <span className="nav-text">Setting</span>
-            </NavLink>
-          </li>
+      {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+             <li className="menu no-arrow">
+             <NavLink to="/app/setting">
+               <i className="zmdi zmdi-wrench zmdi-hc-fw"/>
+               <span className="nav-text">Setting</span>
+             </NavLink>
+           </li>
+          ) : ''}
 
         </ul>
       </CustomScrollbars>

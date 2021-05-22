@@ -41,51 +41,33 @@ function getFlag(countryname) {
       return '';
   }
 }
-const increamentData = [
-  {name: 'Page A', pv: 200},
-  {name: 'Page B', pv: 1200},
-  {name: 'Page C', pv: 600},
-  {name: 'Page D', pv: 1600},
-  {name: 'Page D', pv: 1000},
-  {name: 'Page H', pv: 2260},
-  {name: 'Page K', pv: 800},
-];
+
 const testimonials = [
   {
     content: 'All the Lorem Ipsum generators on the Internet tend to repeat, making this the first true generator on the Internet.',
-    avatar: '/images/General layout.png',
+    avatar: '/images/slider/1.jpeg',
     name: 'Alex Dolgove',
     title: 'BDM G-axon'
   }, {
     content: 'Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)',
-    avatar: '/images/System layout.png',
+    avatar: '/images/slider/2.jpeg',
     name: 'Domnic Brown',
     title: 'Product Head'
-  }, {
-    content: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ',
-    avatar: '/images/Pipe layout.png',
-    name: 'Jeson Born',
-    title: 'Director, Abc LLC'
-  }, {
+  },  {
     content: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, ',
-    avatar: '/images/Motor Cable layout.png',
+    avatar: '/images/slider/3.jpeg',
     name: 'John Smith',
     title: 'Chief Engineer'
   }, {
     content: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form',
-    avatar: '/images/outlet layout.png',
+    avatar: '/images/slider/4.jpeg',
     name: 'Min Chan',
     title: 'Director, Abc LLC'
   }, {
     content: 'It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures',
-    avatar: '/images/Hight layout.png',
+    avatar: '/images/slider/3.jpeg',
     name: 'Stella Johnson',
     title: 'Engineer Lead'
-  }, {
-    content: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections ',
-    avatar: '/images/System details layout.png',
-    name: 'Steve Smith',
-    title: 'Director, Abc LLC'
   }
 ]; 
 const useStyles = makeStyles((theme) => ({

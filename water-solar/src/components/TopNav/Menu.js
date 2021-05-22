@@ -88,33 +88,16 @@ class Menu extends Component {
         <ul className="navbar-nav navbar-nav-mega">
 
           <li className="nav-item">
-            {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
-              <NavLink className="prepend-icon" to="/app/dashboard/crypto">
+             <NavLink className="prepend-icon" to="/app/dashboard/crypto">
                 <span className="nav-text"><IntlMessages id="sidebar.dashboard" /></span>
               </NavLink>
-            ) : ''}
-            {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
-              <NavLink className="prepend-icon" to="/app/dashboard/intranet">
-                <span className="nav-text"><IntlMessages id="sidebar.dashboard" /></span>
-              </NavLink>
-            ) : ''}
           </li>
 
-          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
-            <li className="nav-item mega-menu">
+          <li className="nav-item mega-menu">
                 <NavLink className="prepend-icon" to="/app/newproject">
-                  <span className="nav-text"><IntlMessages id="sidebar.newproject" /></span>
+                  <span className="nav-text">Sizing</span>
                 </NavLink>
             </li>
-          ) : ''}
-
-          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
-            <li className="nav-item">
-                <NavLink className="prepend-icon" to="/app/sizing">
-                  <span className="nav-text"><IntlMessages id="sidebar.sizing" /></span>
-                </NavLink>
-            </li>
-          ) : ''}
 
           <li className="nav-item">
             <NavLink className="prepend-icon" to="/app/activities">
@@ -122,42 +105,40 @@ class Menu extends Component {
             </NavLink>
           </li>
 
-          {/* <li className="nav-item">
-           
-                <NavLink className="prepend-icon" to="/app/Knowledgebase">
-                      <span className="nav-text"><IntlMessages id="sidebar.knowledge"/></span>
-               </NavLink>
-          </li> */}
+          <li className="nav-item">
+            <NavLink className="prepend-icon" to="/app/datasheet">
+              <span className="nav-text">Download</span>
+            </NavLink>
+          </li>
+
+      
 
           {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
             <li className="nav-item">
                 <NavLink className="prepend-icon" to="/app/systemmangment">
-                  <span className="nav-text"><IntlMessages id="sidebar.system-management" /></span>
+                  <span className="nav-text">System Management</span>
                 </NavLink>
           
             </li>
           ) : ''}
+
           {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
             <li className="nav-item">
               
                 <NavLink className="prepend-icon" to="/app/usermangment">
-                  <span className="nav-text"><IntlMessages id="sidebar.usermangment" /></span>
+                  <span className="nav-text">User Management</span>
                 </NavLink>
             </li>
            ) : ''}
-          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
-            <li className="nav-item">
-                <NavLink className="prepend-icon" to="/app/download">
-                  <span className="nav-text"><IntlMessages id="sidebar.download" /></span>
-                </NavLink>
-            </li>
-          ) : ''}
-
+        
+          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+            
           <li className="nav-item">
-            <NavLink className="prepend-icon" to="/app/setting">
-              <span className="nav-text"><IntlMessages id="sidebar.setting" /></span>
-            </NavLink>
-          </li>
+          <NavLink className="prepend-icon" to="/app/setting">
+            <span className="nav-text">Setting</span>
+          </NavLink>
+           </li>
+          ) : ''}
 
 
         </ul>

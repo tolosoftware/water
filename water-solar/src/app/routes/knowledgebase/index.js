@@ -109,10 +109,10 @@ const ProjectSummary = ({ match }) => {
 
                 <div className="row" >
 
-                    <div className="col-md-9" ref={ref}>
+                    <div className="col-md-9" >
                     
 
-                        <Paper elevation={0} className="mb-3 p-4 project-summary">
+                        <Paper elevation={0} className="mb-3 p-4 project-summary" ref={ref}>
                             <table class="report-container" style={{width: '100%'}}>
                                 <thead class="report-header">
                                     <tr>
@@ -659,14 +659,16 @@ const ProjectSummary = ({ match }) => {
                     <div className="col-md-3">
                         <Paper elevation={0} className="mb-3 p-4">
                             <div className="row ">
+
                                 <div className="col-md-6 d-flex justify-content-center p-1">
                                     <Pdf targetRef={ref.current} filename="Project summary.pdf" >
                                         {({ toPdf }) => (
-                                            <Button variant="contained" color="primary" disabled={true} onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
+                                            <Button variant="contained" color="primary"  onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
                                         )}
 
                                     </Pdf>
                                 </div>
+
                                 <div className="col-md-6 d-flex justify-content-center p-1">
 
                                     <ReactToPrint

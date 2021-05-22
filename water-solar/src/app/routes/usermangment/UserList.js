@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 //classes
 import UserInside from './UserInside';
-import SendMoney from '../dashboard/routes/Crypto/SendMoney';
+import UserExpiration from '../dashboard/routes/Crypto/UserExpiration';
 import CustomizedDialogs from "./CustomizedDialogs";
 export const UserList=() => {
   const [visibility,setVisibility]= useState(false);
@@ -136,13 +136,11 @@ export const UserList=() => {
               </Widget>
             </div>  
             
-            
-            <SendMoney/>
-          
+            <CardBox styleName="" >
+              <UserExpiration/>
+            </CardBox>
           </div>
         </div>  
-
     </>
- 
-      )
+  )
 }
