@@ -23,7 +23,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 //chart 
 //chart iports
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import data from './data';
 import { makeStyles } from '@material-ui/core/styles';
 import './print.css';
 //backdrop
@@ -74,9 +73,9 @@ const ProjectSummary = ({ match }) => {
 
     const classes = useStyles();
     useEffect(()=>{
-        if(match.params.id !== 0){
+        if(match.params?.id !== 0){
             setOpenbackdrop(true);
-            axios.get('api/project/'+ match.params.id)
+            axios.get('api/project/'+ match.params?.id)
             .then(res => {
               console.log('res', res.data);
               setProjectDetails(res.data.project[0]);
@@ -98,7 +97,8 @@ const ProjectSummary = ({ match }) => {
                 } 
             )
         }
-    }, [match.params.id]);
+        // console.log('match ',match);
+    }, [match.params?.id]);
     return (
         <>
             <Backdrop className={classes.backdrop} open={openbackdrop}>
@@ -177,7 +177,7 @@ const ProjectSummary = ({ match }) => {
                                                         <tbody>
                                                             <tr><td style={{ width: '20%' }}>Location:</td><td>{projectDetails?(`${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}, Long: ${projectDetails?.geolocation?.longtitude}° Lat: ${projectDetails?.geolocation?.latitude}°`):''}</td></tr>
                                                             <tr><td>Designer:</td><td>{projectDetails? projectDetails?.user?.name:''}</td></tr>
-                                                            <tr><td>Avg. Hourly water:</td><td>{energyWithOutPut?.hrAvaOfOut}(m³/h)</td></tr>
+                                                            <tr><td>Avg. Hourly water:</td><td>{projectDetails? projectDetails?.daily_output:''}(m³/h)</td></tr>
                                                             <tr><td>Avg. Daily water:</td><td>{energyWithOutPut?.monthlyAvaOfOut}(m³/d)</td></tr>
                                                             
                                                             <tr><td>Total Dynamic head:</td><td>{projectDetails?.daynomic_head}(m)</td></tr>
