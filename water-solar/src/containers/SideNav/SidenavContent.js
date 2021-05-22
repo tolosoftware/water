@@ -112,7 +112,7 @@ class SidenavContent extends Component {
           <li className="menu no-arrow">
             <NavLink to="/app/dashboard/crypto">
               <i className="zmdi zmdi-view-dashboard zmdi-hc-fw"/>
-              <span className="nav-text">dashboard</span>
+              <span className="nav-text">Dashboard</span>
             </NavLink>
           </li>
 
@@ -130,15 +130,20 @@ class SidenavContent extends Component {
             </NavLink>
           </li>
 
-          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
-            <li className="nav-item">
-                <NavLink className="prepend-icon" to="/app/datasheet">
-                  <span className="nav-text"><IntlMessages id="sidebar.download" /></span>
-                </NavLink>
-            </li>
-          ) : ''}
+         
+           
 
-          {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+            <li className="menu no-arrow">
+            <NavLink to="/app/datasheet">
+              <i className="zmdi zmdi-cloud-download zmdi-hc-fw"/>
+              <span className="nav-text">Download</span>
+            </NavLink>
+            </li>
+
+
+         
+
+          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
             <li className="menu no-arrow">
             <NavLink to="/app/systemmangment">
               <i className="zmdi zmdi-widgets zmdi-hc-fw"/>
@@ -148,7 +153,7 @@ class SidenavContent extends Component {
           ) : ''}
 
         
-       {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+       {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
             <li className="menu no-arrow">
             <NavLink to="/app/usermangment">
               <i className="zmdi zmdi-account-add zmdi-hc-fw"/>
@@ -157,7 +162,7 @@ class SidenavContent extends Component {
             </li>
           ) : ''}
 
-      {JSON.parse(localStorage.getItem('UserData')).system == 0 ? (
+      {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
              <li className="menu no-arrow">
              <NavLink to="/app/setting">
                <i className="zmdi zmdi-wrench zmdi-hc-fw"/>

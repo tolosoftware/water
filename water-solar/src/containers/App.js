@@ -169,7 +169,7 @@ const RestrictedRoute = ({component: Component, authUser, ...rest}) =>
         if(user.system===1) {
            return ( <Redirect to={'/app/dashboard/crypto'}/> );
         } else {
-           return ( <Redirect to={'/app/dashboard/intranet'}/> );
+           return ( <Redirect to={'/app/dashboard/crypto'}/> );
         }
        
       } else {

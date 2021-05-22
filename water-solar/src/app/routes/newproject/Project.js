@@ -219,6 +219,10 @@ function getFlag(countryname) {
       return <Flags.CH title="United States" className="customflag" />;
     case "Iran":
       return <Flags.IR title="United States" className="customflag" />;
+    case "Germany":
+      return <Flags.DE title="United States" className="customflag" />;
+    case "Turkey":
+      return <Flags.TR title="United States" className="customflag" />;
     default:
       return "";
   }
@@ -1250,6 +1254,7 @@ export default function Project() {
                             <TextField
                               id="outlined-basic-2_solar"
                               label="Solar Cable"
+                              fullWidth={true}
                               variant="outlined"
                               placeholder="Solar cable!"
                               margin="normal"
@@ -1286,6 +1291,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="The electrical cable between controller/inverter and submersible pump">
                             <TextField
+                              fullWidth={true}
                               id="outlined-basic-2"
                               label="Motor Cable"
                               variant="outlined"
@@ -1325,6 +1331,7 @@ export default function Project() {
                         Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box."
                           >
                             <TextField
+                              fullWidth={true}
                               id="outlined-basic-4"
                               label="Pipe-lenght"
                               variant="outlined"
@@ -1362,6 +1369,7 @@ export default function Project() {
                         <div className="col-md-6">
                           <BootstrapTooltip title="Enter your hourly water requirement in average method.">
                             <TextField
+                              fullWidth={true}
                               id="outlined-basic-5"
                               label="Water Demand"
                               variant="outlined"
@@ -1395,6 +1403,7 @@ export default function Project() {
                         </div>
                         <div className="col-md-6">
                           <TextField
+                            fullWidth={true}
                             id="outlined-basic-11"
                             label="Pipe Friction losses"
                             variant="outlined"
@@ -1437,12 +1446,13 @@ export default function Project() {
                       <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap mt-3 project_bas_field">
                         <BootstrapTooltip title="Select your solar panels mounting type. Note: Manual is more efficient than fix/ground mounting structures.">
                           <div
-                            class="btn-group"
+                            className="btn-group"
                             role="group"
                             aria-label="Basic radio toggle button group"
                           >
                             <input
                               type="radio"
+                              className="form-control"
                               class="btn-check"
                               name={"btnradio1"}
                               id={"btnradio1"}
@@ -1464,6 +1474,7 @@ export default function Project() {
                               Manual Tracker
                             </label>
                             <input
+                              className="form-control"
                               type="radio"
                               class="btn-check"
                               name={"btnradio2"}
@@ -1495,7 +1506,8 @@ export default function Project() {
                         size="large"
                         color="primary"
                         variant="contained"
-                        className="form-control mb-3 p-4"
+                        fullWidth={true}
+                        className="mb-3 p-2"
                         onClick={() => evaluationfunction()}
                         disabled={!isValid}
                       >
