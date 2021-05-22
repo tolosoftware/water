@@ -12,8 +12,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-// import Summaryheader
-
+import SummaryProject from '../knowledgebase/index';
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
@@ -30,20 +30,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Preview(props) {
   const classes = useStyles();
-  const {open, setOpen, previewData} = props;
+  const {open, setOpen, match, setProjectID, setPreviewData} = props;
 
-  useEffect(() => {
-    if(previewData){
-      console.log('preview Data in preview page', previewData);
-    }
-  }, [previewData]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
-    setOpen(false);
+    axios.delete('api/project/'+match.params?.id)
+      .then(res => {
+        setOpen(false);
+        setProjectID(0);
+        setPreviewData({params: {id: 0},});
+      }
+      ).catch( err =>{
+        console.log(err);
+        setOpen(false);
+      })    
   };
 
   return (
@@ -58,16 +61,16 @@ export default function Preview(props) {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Sound
+              Back
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
         <List>
           <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
+            <SummaryProject match={match} />
           </ListItem>
           <Divider />
           <ListItem button>
