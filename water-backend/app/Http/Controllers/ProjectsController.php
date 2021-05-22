@@ -394,12 +394,15 @@ class ProjectsController extends Controller
         ]);
 
         foreach($request->inputFields as $value){
-            Project_accessories::create([
-                'project_id' => $project->id,
-                'accessories_id' => $value['item']['id'],
-                'quantity' => $value['quantity'],
-
-            ]);
+            if($value['item']){
+                Project_accessories::create([
+                    'project_id' => $project->id,
+                    'accessories_id' => $value['item']['id'],
+                    'quantity' => $value['quantity'],
+    
+                ]);
+            }
+           
         }
 
         DB::commit();
