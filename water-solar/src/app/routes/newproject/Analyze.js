@@ -116,7 +116,7 @@ export default function Analyze(props) {
     // console.log("props evaluationdata: ", props.evaluationdata);
        axios.post('api/project-analyze', props.evaluationdata)
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           setOpenbackdrop(false);
           setSugestedpump(res.data.pupm);
           setCable(res.data.cable);
