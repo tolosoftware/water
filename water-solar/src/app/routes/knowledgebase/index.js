@@ -134,7 +134,7 @@ const ProjectSummary = ({ match }) => {
                                                                     <i className="zmdi zmdi-phone zmdi-hc-fw "/>
                                                                 </Button>
                                                                 <Button className="jr-btn">
-                                                                    <i className="zmdi zmdi-map zmdi-hc-fw"/>
+                                                                    <i className="zmdi zmdi-pin zmdi-hc-fw"/>
                                                                 </Button>
                                                             </ButtonGroup>
                                                         </span>
@@ -172,7 +172,7 @@ const ProjectSummary = ({ match }) => {
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
                                                             <tr className={classes.headTr}>
-                                                                <th>Input Summary</th><th style={{ textAlign: 'right' }}>Monday , 25,April,2021</th>
+                                                                <th>Input Summary</th><th style={{ textAlign: 'right' }}>{projectDetails? projectDetails?.projectDate:''}</th>
                                                             </tr>
                                                         </thead>
                                                         {/* Afghanistan, Herat, Long: 34° Lat: 69° */}
@@ -488,7 +488,7 @@ const ProjectSummary = ({ match }) => {
                                                                 </div>
                                                             </div>
                                                             <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12" style={{ padding: '0px', paddingTop: '35px' }}>
-                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`:"/images/Graph.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`:"/images/graph.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
                                                             </div>
                                                         </div>
                                                         <div className="row">
@@ -499,7 +499,7 @@ const ProjectSummary = ({ match }) => {
 
                                                     </div>
                                                     <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12">
-                                                        <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`:"/images/pump.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '550px' }} alt="Responsive" />
+                                                        <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`:"/images/pump.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '460px' }} alt="Responsive" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -574,7 +574,7 @@ const ProjectSummary = ({ match }) => {
                                                     <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
                                                     </div>
                                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                        <img src="/images/structure.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', width: '70%', float: 'right' }} alt="Responsive" />
+                                                        <img src={(projectDetails?.solar_base === "Ground Structure")?"/images/structure.png":"/images/manual.jpg"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', width: '70%', float: 'right' }} alt="Responsive" />
                                                     </div>
                                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{ paddingTop: '15px' }}>
                                                         <strong>Note: Image may be deferent with actual product as this is a graphic design.</strong>

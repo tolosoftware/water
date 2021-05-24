@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone');
             $table->string('website');
-            $table->string('status');
+            $table->enum('status', ['pending', 'active', 'inactive']);
             $table->integer('expiration');
             $table->string('userimage');
             $table->unsignedBigInteger('geolocation_id');

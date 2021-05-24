@@ -43,11 +43,16 @@ class PumpListController extends Controller
             $photoname = null;
             $dataSheetName = null;
             $graphName = null;
-             
+            $diameterName = null;
             if($request['imageFile']){
                 $photoname = time().'1.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
                 \Image::make($request->imageFile)->save(public_path('brand/pumpbrand/pump_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
+            }
+            if($request['diameterFile']){
+                $diameterName = time().'.' . explode('/', explode(':', substr($request->diameterFile, 0, strpos($request->diameterFile, ';')))[1])[1];
+                \Image::make($request->diameterFile)->save(public_path('brand/pumpbrand/pump_list/diameter/').$diameterName);
+                $request->merge(['photo' => $diameterName]);
             }
             if($request['dataSheetFile']){
                 
@@ -83,6 +88,10 @@ class PumpListController extends Controller
                     File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
                     $pump_list->image = $photoname;
                 }
+                if($request['diameterFile']){
+                    File::delete('brand/pumpbrand/pump_list/diameter/'.$pump_list->diameter_file);
+                    $pump_list->diameter_file = $diameterName;
+                }
                 if($request['dataSheetFile']){
                     File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->data_sheet);
                     $pump_list->data_sheet = $dataSheetName;
@@ -108,6 +117,7 @@ class PumpListController extends Controller
                     'hp' => $request['powerHP'], 
                     'weight' => $request['weight'], 
                     'image' => $photoname, 
+                    'diameter_file' => $diameterName,  
                     'data_sheet' => $dataSheetName, 
                     'graph' => $graphName, 
                     'discription' => 'null', 
@@ -164,6 +174,7 @@ class PumpListController extends Controller
     {
         $pump_list = Pump_list::findOrFail($id);
         File::delete('brand/pumpbrand/pump_list/'.$pump_list->image);
+        File::delete('brand/pumpbrand/pump_list/diameter/'.$pump_list->diameter_file);
         File::delete('brand/pumpbrand/pump_list/data_sheet/'.$pump_list->data_sheet);
         File::delete('brand/pumpbrand/pump_list/graph/'.$pump_list->graph);
         $pump_list->delete();

@@ -75,7 +75,7 @@ class AccessoriesListController extends Controller
                     File::delete('accessories/data_sheet/'.$accessories_list->data_sheet);
                     $accessories_list->data_sheet = $dataSheetName;
                 }
-                $accessories_list->discription = '';
+                $accessories_list->discription = $request['description'];
                 $accessories_list->save();
                
             }else{
@@ -88,7 +88,7 @@ class AccessoriesListController extends Controller
                     'uom_name' => $request['uom_name'],
                     'min_quantity' =>$request['min_quantity'],
                     'max_quantity' =>$request['max_quantity'],
-                    'discription' => 'null',
+                    'discription' => $request['description'],
                     'image' => $photoname,
                     'data_sheet' => $dataSheetName,
                 ]);

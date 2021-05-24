@@ -11,7 +11,7 @@ class Pump_list extends Model
     protected $table = 'pump_lists';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'serial_no','pump_brand_id','model','outlet','ampeier','diameter','power','phase','hp','weight','voltage', 'discription', 'image','data_sheet','graph'
+        'serial_no','pump_brand_id','model','outlet','ampeier','diameter','power','phase','hp','weight','voltage', 'discription', 'image', 'diameter_file', 'data_sheet','graph'
     ];
 
     public function pump_config()

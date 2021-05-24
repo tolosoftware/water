@@ -31,6 +31,7 @@ class CreatePumpListsTable extends Migration
             $table->string('image')->nullable();
             $table->string('data_sheet')->nullable();
             $table->string('graph')->nullable();
+            $table->string('diameter_file')->nullable();
             $table->timestamps();
         });
     }
