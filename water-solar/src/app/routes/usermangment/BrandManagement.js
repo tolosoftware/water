@@ -1,5 +1,5 @@
-import React /*, { useEffect, useState }*/ from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, {useEffect, useState} from "react";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -9,16 +9,14 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
-// form dependency
-// import { TextField, InputLabel, Select } from "@material-ui/core";
-// import {
-//   FormControl,
-//   RadioGroup,
-//   FormControlLabel,
-//   Radio,
-//   FormHelperText,
-// } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
+import Spinner from 'react-spinner-material';
+
 import "./stayle.css";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -30,7 +28,14 @@ import {
 import IntlMessages from "util/IntlMessages";
 
 //drop down
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  formControl: {
+    margin: theme.spacing(3),
+  },
+}));
 
 //end drop down
 const styles = (theme) => ({
@@ -80,12 +85,52 @@ const DialogActions = withStyles((theme) => ({
 export default function BrandManagement(props) {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const { open, setOpen, userId } = props;
+  const [visibility,setVisibility]= useState(false);
+  const [pumpBrand,setPumpBrand]= useState([]);
+  const [solarBrand,setSolarBrand]= useState([]);
+  const [inverterBrand,setInverterBrand]= useState([]);
 
   const handleClose = () => {
     setOpen(false);
   };
   //drop down
   const classes = useStyles();
+  const [state, setState] = React.useState({
+    gilad: true,
+    jason: false,
+    antoine: false,
+  });
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  const { gilad, jason, antoine } = state;
+
+  useEffect(() => {
+    const getUserBrand=async (userId) => {
+      setVisibility(true);
+     axios.get('api/userBrand/'+userId)
+        .then(
+            res => {
+              setVisibility(false);
+              setPumpBrand(res.data.pumpBrand);
+              setSolarBrand(res.data.solarBrand);
+              setInverterBrand(res.data.inverterBrand);
+            }
+        ).catch(err =>{
+              setVisibility(false);
+              console.log(err);
+              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
+              id="notification.titleHere"/>);
+            }
+           
+        )
+    };
+    if(open){
+      getUserBrand(userId);
+    }
+  }, [open, userId])
 
   const onSubmit = (data) => {
     // console.log('data in post form', data);
@@ -120,7 +165,92 @@ export default function BrandManagement(props) {
         </DialogTitle>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent dividers>
-            <div className="row">asdf</div>
+            <div className="row">
+            {visibility ? (
+                <span className="row justify-content-center">
+                  <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                </span>
+              ) : 
+              <>
+                <div className="col-xl-4 col-lg-4 col-md-4 col-4">
+                  <div className={classes.root}>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Pump Brand</FormLabel>
+                      <FormGroup>
+                        {pumpBrand?.map((brand, index) => 
+                          <FormControlLabel key={index}
+                            control={<Checkbox checked={jason} onChange={handleChange} name={brand?.name} />}
+                            label={brand?.name}
+                          />
+                        )}
+                        
+                        <FormControlLabel
+                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
+                          label="Jason Killian"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
+                          label="Antoine Llorca"
+                        />
+                      </FormGroup>
+                      <FormHelperText>Be careful</FormHelperText>
+                    </FormControl>
+                  </div>
+                </div>
+            
+                <div className="col-xl-4 col-lg-4 col-md-4 col-4">
+                  <div className={classes.root}>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Solar Brand</FormLabel>
+                      <FormGroup>
+                        {solarBrand?.map((brand, index) => 
+                          <FormControlLabel key={index}
+                            control={<Checkbox checked={gilad} onChange={handleChange} name={brand?.name} />}
+                            label={brand?.name}
+                          />
+                        )}
+                        <FormControlLabel
+                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
+                          label="Jason Killian"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
+                          label="Antoine Llorca"
+                        />
+                      </FormGroup>
+                      <FormHelperText>Be careful</FormHelperText>
+                    </FormControl>
+                  </div>
+                </div>
+            
+                <div className="col-xl-4 col-lg-4 col-md-4 col-4">
+                  <div className={classes.root}>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Inverter Brand</FormLabel>
+                      <FormGroup>
+                        {inverterBrand?.map((brand, index) => 
+                          <FormControlLabel key={index}
+                            control={<Checkbox checked={gilad} onChange={handleChange} name={brand?.name} />}
+                            label={brand?.name}
+                          />
+                        )}
+                        <FormControlLabel
+                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
+                          label="Jason Killian"
+                        />
+                        <FormControlLabel
+                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
+                          label="Antoine Llorca"
+                        />
+                      </FormGroup>
+                      <FormHelperText>Be careful</FormHelperText>
+                    </FormControl>
+                  </div>
+                </div>
+              </>
+              }
+              
+            </div>
           </DialogContent>
           <DialogActions>
             <Button

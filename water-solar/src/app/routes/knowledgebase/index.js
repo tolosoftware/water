@@ -665,7 +665,7 @@ const ProjectSummary = ({ match }) => {
                             <div className="row ">
 
                                 <div className="col-md-6 d-flex justify-content-center p-1">
-                                    <Pdf targetRef={ref} filename="Project summary.pdf" options={options}>
+                                    <Pdf targetRef={ref} filename="Project summary.pdf" /*options={options}*/ >
                                         {({ toPdf }) => (
                                             <Button variant="contained" color="primary"  onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
                                         )}
