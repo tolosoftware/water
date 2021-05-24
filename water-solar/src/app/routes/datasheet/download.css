@@ -1,0 +1,19 @@
+@media (min-width: 768px){
+    .custom-margin .col-md-2 {
+        flex: 0 0 19.66667%;
+        max-width: 19.66667%;
+    }
+}
+
+
+@media (min-width: 992px)
+{
+    .custom-row-card .col-lg-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.table-height{
+    height: 400px !important;
+}

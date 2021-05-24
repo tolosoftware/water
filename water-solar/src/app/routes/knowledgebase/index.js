@@ -111,8 +111,10 @@ const ProjectSummary = ({ match }) => {
 
                     <div className="col-md-9" >
                     
+                        <div ref={ref} >
+                        {/* style={{width: 800,  background: 'blue'}} */}
+                        <Paper elevation={0} className="mb-3 p-4 project-summary" >
 
-                        <Paper elevation={0} className="mb-3 p-4 project-summary" ref={ref}>
                             <table class="report-container" style={{width: '100%'}}>
                                 <thead class="report-header">
                                     <tr>
@@ -654,6 +656,8 @@ const ProjectSummary = ({ match }) => {
                 
                         </Paper>
 
+                        </div>
+
                     </div>
 
                     <div className="col-md-3">
@@ -661,7 +665,7 @@ const ProjectSummary = ({ match }) => {
                             <div className="row ">
 
                                 <div className="col-md-6 d-flex justify-content-center p-1">
-                                    <Pdf targetRef={ref.current} filename="Project summary.pdf" >
+                                    <Pdf targetRef={ref} filename="Project summary.pdf" options={options}>
                                         {({ toPdf }) => (
                                             <Button variant="contained" color="primary"  onClick={toPdf} startIcon={<CloudDownloadIcon />} className="float-right"> Download </Button>
                                         )}
