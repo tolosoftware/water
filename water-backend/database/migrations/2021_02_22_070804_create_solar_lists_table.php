@@ -28,6 +28,7 @@ class CreateSolarListsTable extends Migration
             $table->string('discription');
             $table->string('image')->nullable();
             $table->string('data_sheet')->nullable();
+            $table->string('diameter')->nullable();
             $table->timestamps();
         });
     }

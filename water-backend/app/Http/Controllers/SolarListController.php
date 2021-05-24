@@ -41,10 +41,16 @@ class SolarListController extends Controller
         try {
             $photoname = null;
             $dataSheetName = null;
+            $diameterName = null;
             if($request['imageFile']){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->imageFile, 0, strpos($request->imageFile, ';')))[1])[1];
                 \Image::make($request->imageFile)->save(public_path('brand/solar/solar_list/').$photoname);
                 $request->merge(['photo' => $photoname]);
+            }
+            if($request['diameterFile']){
+                $diameterName = time().'.' . explode('/', explode(':', substr($request->diameterFile, 0, strpos($request->diameterFile, ';')))[1])[1];
+                \Image::make($request->diameterFile)->save(public_path('brand/solar/solar_list/diameter/').$diameterName);
+                $request->merge(['photo' => $diameterName]);
             }
             if($request['dataSheetFile']){
                 $file = $request->get('dataSheetFile');
@@ -69,6 +75,10 @@ class SolarListController extends Controller
                     File::delete('brand/solar/solar_list/'.$solar_list->image);
                     $solar_list->image = $photoname;
                 }
+                if($request['diameterFile']){
+                    File::delete('brand/solar/solar_list/diameter/'.$solar_list->diameter);
+                    $solar_list->diameter = $diameterName;
+                }
                 if($request['dataSheetFile']){
                     File::delete('brand/solar/solar_list/data_sheet/'.$solar_list->data_sheet);
                     $solar_list->data_sheet = $dataSheetName;
@@ -88,6 +98,7 @@ class SolarListController extends Controller
                     'discription' => 'null', 
                     'image' => $photoname,
                     'data_sheet' => $dataSheetName,
+                    'diameter' => $diameterName,  
                 ]);
             }
             // return $request;
@@ -144,6 +155,7 @@ class SolarListController extends Controller
     {
         $solar_list = Solar_list::findOrFail($id);
         File::delete('brand/solar/solar_list/'.$solar_list->image);
+        File::delete('brand/solar/solar_list/diameter/'.$solar_list->diameter);
         File::delete('brand/solar/solar_list/data_sheet/'.$solar_list->data_sheet);
         $solar_list->delete();
         return ['message' => 'Selected Solar list has been Deleted'];

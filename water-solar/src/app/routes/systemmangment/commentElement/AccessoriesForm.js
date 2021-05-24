@@ -36,9 +36,9 @@ import {useForm} from 'react-hook-form';
 export default function AccessoriesForm(props) {
   const {register, handleSubmit, errors }=useForm(); // initialize the hook
   // const [type, setType] = useState("");
-  // const [description, setDescription] = useState("");
   const [uom, setUom] = useState([]);
   const [uom1, setUom1] = useState([]);
+  const [description, setDescription] = useState("");
   const [uomList, setUomList] = useState([]);
   const accessoryObject = props.accessoryObject;
   const [image, setImage] = useState({ oldImage: '', filePath: 'accessories/', btnText: 'Accessory Image' });
@@ -66,16 +66,17 @@ export default function AccessoriesForm(props) {
       // setUom(accessoryObject.uom_id);
     }
     // setType(accessoryObject.accessories_type_id);
-    // setDescription(accessoryObject.discription);
+    setDescription(accessoryObject.discription);
     setImage({ ...image, oldImage: accessoryObject.image?accessoryObject.image:''});
     setDataSheet({ ...dataSheet, oldImage: accessoryObject.data_sheet?accessoryObject.data_sheet: ''});
   },[props.accessoryObject])
+  
   useEffect(() => {
     if(props.getValue===1){
-      console.log('inside of getValue', uom1)
+      // console.log('inside of getValue', uom1)
       setUom(uom1);
     }
-
+   
   },[uom1, props.getValue])
 
   const getUOM=async () => {
@@ -119,6 +120,7 @@ export default function AccessoriesForm(props) {
   const onSubmit = (data) => {
     data['uom']=uom.id;
     data['uom_name']=uom.name;
+    data['description']=description;
     data['imageFile'] = imageFile;
     data['dataSheetFile'] = dataSheetFile;
     // console.log("filese: ", data);
@@ -219,26 +221,25 @@ export default function AccessoriesForm(props) {
                         />
                     </div>
 
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' variant="outlined" 
                         defaultValue={accessoryObject?.max_quantity} inputRef={register({required: true})} 
                         error={errors.max_quantity && true} helperText={errors.max_quantity ? '*required' : ''}
                         />
                     </div>
                         
-                    {/* <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                         <div className="form-group">
-                            <textarea className={`form-control form-control-lg ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`} name='description' value={description} onChange={(e) => handleChangeField(e)} rows="2"  placeholder="Short Description"></textarea>
-                            <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
+                        <textarea class={`form-control form-control-lg`} id='description' name='description' value={description} onChange={e => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                         </div>
-                    </div> */}
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-12 waterPumFile waterPumpListFile">
+                    </div>
+                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 waterPumFile waterPumpListFile">
                         <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-12 waterPumFile waterPumpListFile accessory-row">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-12 waterPumFile waterPumpListFile accessory-row">
                       <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 btnAccessory">
+                    <div className="col-xl-1 col-lg-1 col-md-2 col-sm-12 col-12 btnAccessory">
                      <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>

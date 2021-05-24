@@ -587,11 +587,15 @@ export default function Project() {
     // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
   };
 
-  const handlchangquantity = (value, id, ) => {
+  const handlchangquantity = (value, id) => {
     // inputFields[index].quantity = value;
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        i['quantity'] = value;
+        if((value >= i?.item?.min_quantity && value <= i?.item?.max_quantity)){
+          i['quantity'] = value;
+        }else{
+          i['quantity'] = i?.item?.min_quantity;
+        }
       }
       return i;
     })
@@ -699,25 +703,25 @@ export default function Project() {
     if (wichInput === "MT" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/structure.PNG");
+      setImagepath("/images/structure.png");
     }
 
     if (wichInput === "MT" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/structure.PNG");
+        setImagepath("/images/structure.png");
       }
     }
     if (wichInput === "GS" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/Ground.jpg");
+      setImagepath("/images/ground.jpg");
     }
 
     if (wichInput === "GS" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/Ground.jpg");
+        setImagepath("/images/ground.jpg");
       }
     }
     if (wichInput === "dirt" && wichfunction === "focus") {
@@ -1680,13 +1684,17 @@ export default function Project() {
                                 placeholder="Quantity"
                                 margin="normal"
                                 name="Quantity"
+                                min={inputField?.item?.min_quantity}
+                                max={inputField?.item?.max_quantity}
                                 type="number"
                                 onChange={(event) =>
                                   handlchangquantity(
-                                    (event.target.value >= inputField?.item?.min_quantity &&
-                                    event.target.value <= inputField?.item?.max_quantity
-                                    ? event.target.value
-                                    : inputField?.item?.min_quantity), inputField.id
+
+                                    // ((event.target.value >= inputField?.item?.min_quantity &&
+                                    // event.target.value <= inputField?.item?.max_quantity)? 
+                                    event.target.value
+                                    // : inputField?.item?.min_quantity)
+                                    , inputField.id
                                     )
 
                                 }

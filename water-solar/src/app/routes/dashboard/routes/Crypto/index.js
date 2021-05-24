@@ -318,7 +318,14 @@ const handleToggle = (type) => {
 
         <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12">
           <>
-          <h2>Todays Post</h2>
+          <h2>
+            <span>
+              Todays Post
+            </span>
+            <span style={{float: 'right'}}>
+              {post?.date}
+            </span>
+            </h2>
           <Divider className="mb-3 mt-1" />
           <h3 className="mb-2"><b>{post?.title}</b></h3>
           <h4>{post?.discription}</h4>
