@@ -31,7 +31,6 @@ import Knowledgebase from './routes/knowledgebase';
 import Activities from './routes/activities';
 import Newproject from './routes/newproject';
 import Sizing from './routes/sizing';
-import Download from './routes/download';
 import Usermangment from './routes/usermangment';
 import Datasheet from './routes/datasheet';
 //end custom component
@@ -94,7 +93,6 @@ class App extends React.Component {
                 <Route path={`${match.url}/activities`} component={Activities} />
                 <Route path={`${match.url}/newproject`} component={Newproject} />
                 <Route path={`${match.url}/sizing`} component={Sizing} />
-                <Route path={`${match.url}/download`} component={Download} />
                 <Route path={`${match.url}/usermangment`} component={Usermangment} />
                 <Route path={`${match.url}/datasheet`} component={Datasheet} />
                 

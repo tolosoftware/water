@@ -77,6 +77,15 @@ Route::resource('irradiation', IrradiationController::class);
 Route::get('irridation', [IrradiationController::class,'irridation']);
 // End Routes of System Management of Water Soalr
 
+//datasheet
+
+Route::get('pv-module', [DatasheetController::class,'pvModule']);
+Route::get('pump', [DatasheetController::class,'pump']);
+Route::get('controller', [DatasheetController::class,'controller']);
+Route::get('accessoriesdownload', [DatasheetController::class,'accessoriesdownload']);
+
+
+
 //for clear cache 
 Route::get('/cc', function () {
     $exitCode = Artisan::call('config:cache');
