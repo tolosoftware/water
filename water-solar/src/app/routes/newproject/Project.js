@@ -853,13 +853,13 @@ export default function Project() {
       .post("api/project", alldata)
       .then((res) => {
         setOpenbackdrop(false);
-        setProjectID(res.data);
-        setSubmited(true);
+        // setProjectID(res.data);
         // handleNext();
-        NotificationManager.success(
-          <IntlMessages id="notification.successMessage" />,
-          <IntlMessages id="notification.titleHere" />
-        );
+        setSubmited(true);
+          NotificationManager.success(
+            <IntlMessages id="notification.successMessage" />,
+            <IntlMessages id="notification.titleHere" />
+          );
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -898,34 +898,39 @@ export default function Project() {
   };
 
   const [openPre, setOpenPre] = useState(false);
-  const [previewData, setPreviewData] = useState([]);
+  const [previewData, setPreviewData] = useState({});
   const handlePreview = ()=> {
-    console.log('preview data', previewData);
+    setOpenbackdrop(true);
     let alldata = {
-      projectname,
-      country,
-      city,
-      daynomichead,
-      solarCable,
-      motorcable,
-      piplenght,
-      discharge,
-      dirtloss,
-      bas,
-      inputFields,
-      pumpvalue,
-      solarvalue,
-      solarSelectWatt,
-      invertorvalue,
+      projectname,  country, city,
+      daynomichead, solarCable, motorcable, piplenght,
+      discharge, dirtloss, bas, inputFields,
+      pumpvalue, solarvalue, solarSelectWatt, invertorvalue,
     };
     alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
-    setPreviewData(alldata);
-    console.log('preview data', previewData);
-    if(previewData){
-      setOpenPre(true);
-    }
+    // console.log('all Data ', alldata);
+    axios
+      .post("api/project", alldata)
+      .then((res) => {
+        setOpenbackdrop(false);
+        setProjectID(res.data);
+        const dataM = {params: {id: res.data},};
+        setPreviewData(dataM);
+      })
+      .catch((err) => {
+        setOpenbackdrop(false);
+        
+      });
   };
-
+  useEffect(() => {
+    // console.log('preview data', previewData);
+    if(previewData && projectID){
+      if(projectID !== 0){
+        setOpenPre(true);
+      }
+    }
+    
+  }, [previewData, projectID]);
   return (
     <>
       <Backdrop className={classes.backdrop} open={openbackdrop}>
@@ -1756,7 +1761,7 @@ export default function Project() {
                     <div className="col-md-3">
                       
                     </div>
-                    <div className="col-md-9">
+                    <div className="col-md-12">
                       <div className="row justify-content-center ">
                       
                         {submited? 
@@ -1766,11 +1771,16 @@ export default function Project() {
                             </h1>
                           </Alert>
                         :""}
-                        
+                        {(projectname && country &&
+                              city && daynomichead && solarCable&& motorcable &&
+                              piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
+                              solarvalue && solarSelectWatt && invertorvalue)? <p className="mt-3 p-4">
+                              Your Project Is Ready To Save it!,  You can preview your Project before submit it.
+                            </p> : ''}
 
-                        <p className="mt-3 p-4">
+                        {/* <p className="mt-3 p-4">
                           Your Project Is Ready To Save it!,  You can preview your Project before submit it.
-                        </p>
+                        </p> */}
                         
                       </div>
 
@@ -1778,14 +1788,18 @@ export default function Project() {
                           <Button
                             variant="contained"
                             color="primary"
-                            className="mt-5 p-3"
+                            className="p-3"
                             size="large"
+                            disabled = {(projectname && country &&
+                              city && daynomichead && solarCable&& motorcable &&
+                              piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
+                              solarvalue && solarSelectWatt && invertorvalue)? false : true}
                             onClick={e=>handlePreview()}
                             // history.push('/app/project-summary/'+projectID)
                           >
                             View project summary
                           </Button>
-                        <Preview open={openPre} setOpen={setOpenPre} previewData={previewData}/> 
+                        <Preview open={openPre} setOpen={setOpenPre} match={previewData} setPreviewData={setPreviewData} projectID={projectID} setProjectID={setProjectID}/> 
                       </div>
                     </div>
                   </div>
@@ -1820,7 +1834,10 @@ export default function Project() {
                   )}
 
                   {activeStep === steps.length - 1 ? (
-                    <Button variant="contained" color="primary" type="submit">Submit</Button>
+                    <Button variant="contained" color="primary" type="submit" disabled = {(projectname && country &&
+                      city && daynomichead && solarCable&& motorcable &&
+                      piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
+                      solarvalue && solarSelectWatt && invertorvalue)? false : true}>Submit</Button>
                   ) : (
                     ""
                   )}
