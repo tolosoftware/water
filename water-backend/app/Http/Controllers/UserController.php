@@ -24,6 +24,20 @@ Use \Carbon\Carbon;
 
 class UserController extends Controller
 {
+    public function getUserBrand($id){
+        $pumpBrand = Pump_brands::all();
+        $solarBrand = Solar_brands::all();
+        $inverterBrand = InvertorBrand::all();
+
+        $data = [
+            'pumpBrand' => $pumpBrand,
+            'solarBrand' => $solarBrand,
+            'inverterBrand' => $inverterBrand,
+        ];
+
+        return $data;
+    }
+
     public function getexpiration($id){
         $user = User::find($id);
 
