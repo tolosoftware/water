@@ -165,7 +165,7 @@ const ProjectSummary = ({ match }) => {
                                     </tr>
                                 </tfoot>
                                 <tbody class="report-content">
-                                    <tr>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="table-responsive-material mb-3">
@@ -187,12 +187,6 @@ const ProjectSummary = ({ match }) => {
                                                         </tbody>
                                                     </Table>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
                                                 <div className="table-responsive-material mb-3">
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
@@ -211,12 +205,7 @@ const ProjectSummary = ({ match }) => {
                                                         </tbody>
                                                     </Table>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
+                                            
                                                 <div className="table-responsive-material mb-3">
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
@@ -229,32 +218,35 @@ const ProjectSummary = ({ match }) => {
                                                                 <tr key={index}><td style={{ width: '20%' }}>{projectAccessory.accessories_list_with_uom?.name}</td><td style={{ width: '60%' }}>{projectAccessory.accessories_list_with_uom?.model}</td><td style={{ width: '10%' }} >{projectAccessory.accessories_list_with_uom?.uom?.acronym}</td><td style={{ width: '10%' }}>{projectAccessory.quantity}</td></tr>
                                                                 
                                                             ))}
-                                                            
-                                                            {/* <tr><td>Controller box</td><td>Controller Box</td><td>pc</td><td>1</td></tr>
-                                                            <tr><td>PV combiner</td><td>DC wires combiner box</td><td>pc</td><td>1</td></tr>
-                                                            <tr><td>fiting</td><td>Elbo, stard, etc</td><td>set</td><td>3</td></tr>
-                                                            <tr><td>EMT</td><td>Emt pip for cabling</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>Sensor Cable</td><td>for cabling</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>safety rope</td><td>2*1.5</td><td>m</td><td>100</td></tr>
-                                                            <tr><td>wire tie</td><td>for submersible</td><td>m</td><td>100</td></tr> */}
                                                         </tbody>
                                                     </Table>
                                                 </div>
+                                            
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {/* <tr>
+                                        <td class="report-content-cell">
+                                            <div className={`main`}>
+                                                
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
-                                                {/* <h4 style={{ textAlign: 'center' }}>Daily Average output/month</h4> */}
-                                                <h4 style={{ textAlign: 'center' }}>Daily Average output/month</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                <div className="row justify-content-center">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Output [m³]
-                                                    </div>
+                                                
+                                            </div>
+                                        </td>
+                                    </tr> */}
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                        <td class="report-content-cell">
+                                            <div className={`main`}>
+                                                <div className="row">
                                                     <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10  col-xs-12">
-
+                                                        <h4 style={{ textAlign: 'center' }}>Daily Average output/month</h4>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span>Output [m³]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={energyWithOutPut?.monthlyHrOutput}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -268,20 +260,10 @@ const ProjectSummary = ({ match }) => {
                                                             </BarChart>
                                                         </ResponsiveContainer>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='pageBreak'>
-                                        <td className="report-content-cell">
-                                            <div className={`main`}>
-                                                <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Output</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                <div className="row center">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Output [m³]
-                                                    </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10  col-xs-12">
+                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Output</h4>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span>Output [m³]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={energyWithOutPut?.hrOutputP}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -296,20 +278,12 @@ const ProjectSummary = ({ match }) => {
                                                         </ResponsiveContainer>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <h4 style={{ textAlign: 'center', marginTop: '4rem' }}>Irradiation value in deferent months of year</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                {/* <strong>Irradiation</strong> */}
+
                                                 <div className="row">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Irradiation [kwh/m2]
-                                                    </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
+                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Irradiation value in deferent months of year</h4>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span>Irradiation [kwh/m2]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={irradiation?.monthIrrs}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -322,21 +296,11 @@ const ProjectSummary = ({ match }) => {
                                                                 <Bar dataKey="value" fill="#FAA74B" />
                                                             </BarChart>
                                                         </ResponsiveContainer>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                <div className="row">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Irradiation [kwh/m2]
-                                                    </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                    </div>      
+                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
+                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
+                                                        <Divider className="mb-3 mt-3" />                                                       
+                                                        <span>Irradiation [kwh/m2]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={irradiation?.dailyIrrs}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -349,21 +313,12 @@ const ProjectSummary = ({ match }) => {
                                                                 <Bar dataKey="value" fill="#FAA74B" />
                                                             </BarChart>
                                                         </ResponsiveContainer>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Energy value in deferent months of year</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                <div className="row">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Energy [kwh]
-                                                    </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                    </div> 
+
+                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
+                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Energy value in deferent months of year</h4>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span>Energy [kwh]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={energyWithOutPut?.energyForEachMonth}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -377,20 +332,10 @@ const ProjectSummary = ({ match }) => {
                                                             </BarChart>
                                                         </ResponsiveContainer>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr className='pageBreak'>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
-                                                <Divider className="mb-3 mt-3" />
-                                                <div className="row">
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12" style={{ paddingTop: '11.5%', textAlign: 'center' }}>
-                                                        Energy [kwh]
-                                                        </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
+                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span>Energy [kwh]</span>
                                                         <ResponsiveContainer width="100%" height={250}>
                                                             <BarChart data={energyWithOutPut?.hrEnergy}
                                                                 margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
@@ -404,11 +349,13 @@ const ProjectSummary = ({ match }) => {
                                                             </BarChart>
                                                         </ResponsiveContainer>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row">
@@ -456,7 +403,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='pageBreak'>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row">
@@ -505,7 +452,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row" style={{ marginTop: '20px' }}>
@@ -546,7 +493,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='pageBreak'>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row" style={{ marginTop: '20px' }}>
@@ -584,7 +531,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='pageBreak'>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell ">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />
@@ -597,7 +544,7 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='pageBreak'>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />
@@ -607,31 +554,54 @@ const ProjectSummary = ({ match }) => {
                                                         <img src="/Layouts/system layout with details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
                                                     </div>
                                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingLeft: '70px' }}>
-                                                        <h5>1- Solar panels</h5>
-                                                        <h5>2- Pump controller</h5>
-                                                        <h5>3- Submersible</h5>
-                                                        <h5>4- well probe sensors</h5>
-                                                        <h5>5- Pump electrical cable</h5>
-                                                        <h5>6- Non return valve</h5>
-                                                        <h5>7- Pressure Gauge</h5>
-                                                        <h5>8- Water meter</h5>
+                                                        <div className="table-responsive-material">
+                                                            <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                <thead className="table-head-sm th-border-b">
+                                                                    <tr className={classes.headSolarS}>
+                                                                        {/* <th><strong>Strucuter specification:</strong></th>
+                                                                        <th></th> */}
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr><td><h5>1- Solar panels</h5></td></tr>
+                                                                    <tr><td><h5>2- Pump controller</h5></td></tr>
+                                                                    <tr><td><h5>3- Submersible</h5></td></tr>
+                                                                    <tr><td><h5>4- well probe sensors</h5></td></tr>
+                                                                    <tr><td><h5>5- Pump electrical cable</h5></td></tr>
+                                                                    <tr><td><h5>6- Non return valve</h5></td></tr>
+                                                                    <tr><td><h5>7- Pressure Gauge</h5></td></tr>
+                                                                    <tr><td><h5>8- Water meter</h5></td></tr>
+                                                                </tbody>
+                                                            </Table>
+                                                        </div>
                                                     </div>
                                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingLeft: '70px' }}>
-                                                        
-                                                        <h5>9- Garden</h5>
-                                                        <h5>10- Swimming pool</h5>
-                                                        <h5>11- Water reservoir</h5>
-                                                        <h5>12- Flaut switch</h5>
-                                                        <h5>13- Flaut switch Ele. cable</h5>
-                                                        <h5>14- Residential Houses</h5>
-                                                        <h5>15- Toilet</h5>
+                                                        <div className="table-responsive-material">
+                                                            <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                <thead className="table-head-sm th-border-b">
+                                                                    <tr className={classes.headSolarS}>
+                                                                        {/* <th><strong>Strucuter specification:</strong></th>
+                                                                        <th></th> */}
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr><td><h5>9- Garden</h5></td></tr>
+                                                                    <tr><td><h5>10- Swimming pool</h5></td></tr>
+                                                                    <tr><td><h5>11- Water reservoir</h5></td></tr>
+                                                                    <tr><td><h5>12- Flaut switch</h5></td></tr>
+                                                                    <tr><td><h5>13- Flaut switch Ele. cable</h5></td></tr>
+                                                                    <tr><td><h5>14- Residential Houses</h5></td></tr>
+                                                                    <tr><td><h5>15- Toilet</h5></td></tr>
+                                                                </tbody>
+                                                            </Table>
+                                                        </div>  
                                                     </div>
 
                                                 </div>                         
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr className='pageBreak'>
+                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <Divider className="mb-3 mt-3" />

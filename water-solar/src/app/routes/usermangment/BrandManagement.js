@@ -104,6 +104,33 @@ export default function BrandManagement(props) {
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
+  const handleChangeP = (id, value) => {
+    const newPumpBrand = pumpBrand.map(i => {
+      if(i.id === id){
+        i['user_brand_role'][0]['checked'] = value
+      }
+      return i;
+    })
+    setPumpBrand(newPumpBrand);
+  };
+  const handleChangeS = (id, value) => {
+    const newBrand = solarBrand.map(i => {
+      if(i.id === id){
+        i['user_brand_role'][0]['checked'] = value
+      }
+      return i;
+    })
+    setSolarBrand(newBrand);
+  };
+  const handleChangeI = (id, value) => {
+    const newBrand = inverterBrand.map(i => {
+      if(i.id === id){
+        i['user_brand_role'][0]['checked'] = value
+      }
+      return i;
+    })
+    setInverterBrand(newBrand);
+  };
 
   const { gilad, jason, antoine } = state;
 
@@ -132,10 +159,13 @@ export default function BrandManagement(props) {
     }
   }, [open, userId])
 
-  const onSubmit = (data) => {
-    // console.log('data in post form', data);
+  const onSubmit = () => {
+    let data ={
+      'pumpBrand': pumpBrand, 'solarBrand': solarBrand, 'inverterBrand': inverterBrand,
+    }
+    console.log('data in post form', data);
     axios
-      .post("api/user", data)
+      .post("api/postUserBrand", data)
       .then((res) => {
         NotificationManager.success(
           <IntlMessages id="notification.successMessage" />,
@@ -167,9 +197,11 @@ export default function BrandManagement(props) {
           <DialogContent dividers>
             <div className="row">
             {visibility ? (
-                <span className="row justify-content-center">
-                  <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-                </span>
+                <div className="col-xl-12 col-lg-12 col-md-12 col-12 justify-content-center">
+                  <span className="row justify-content-center">
+                    <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                  </span>
+                </div>
               ) : 
               <>
                 <div className="col-xl-4 col-lg-4 col-md-4 col-4">
@@ -179,19 +211,10 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {pumpBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={jason} onChange={handleChange} name={brand?.name} />}
+                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeP(brand?.id, event.target.checked)} name={brand?.name}  />}
                             label={brand?.name}
                           />
                         )}
-                        
-                        <FormControlLabel
-                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-                          label="Jason Killian"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-                          label="Antoine Llorca"
-                        />
                       </FormGroup>
                       <FormHelperText>Be careful</FormHelperText>
                     </FormControl>
@@ -205,18 +228,11 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {solarBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={gilad} onChange={handleChange} name={brand?.name} />}
+                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeS(brand?.id, event.target.checked)} name={brand?.name} />}
                             label={brand?.name}
                           />
                         )}
-                        <FormControlLabel
-                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-                          label="Jason Killian"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-                          label="Antoine Llorca"
-                        />
+                       
                       </FormGroup>
                       <FormHelperText>Be careful</FormHelperText>
                     </FormControl>
@@ -230,18 +246,11 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {inverterBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={gilad} onChange={handleChange} name={brand?.name} />}
+                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeI(brand?.id, event.target.checked)} name={brand?.name} />}
                             label={brand?.name}
                           />
                         )}
-                        <FormControlLabel
-                          control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-                          label="Jason Killian"
-                        />
-                        <FormControlLabel
-                          control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-                          label="Antoine Llorca"
-                        />
+                        
                       </FormGroup>
                       <FormHelperText>Be careful</FormHelperText>
                     </FormControl>

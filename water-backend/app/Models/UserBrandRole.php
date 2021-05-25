@@ -9,7 +9,7 @@ class UserBrandRole extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'checked', 'pump_id', 'solar_id', 'invertor_id'
+        'checked', 'pump_id', 'solar_id', 'invertor_id', 'user_id'
     ];
 
     public function pumpBrand()
@@ -23,5 +23,9 @@ class UserBrandRole extends Model
     public function inverterBrand()
     {
         return $this->belongsTo(InvertorBrand::class, 'invertor_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

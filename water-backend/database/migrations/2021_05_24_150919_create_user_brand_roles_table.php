@@ -22,6 +22,8 @@ class CreateUserBrandRolesTable extends Migration
             $table->foreign('solar_id')->references('id')->on('solar_brands')->onDelete('cascade');
             $table->unsignedBigInteger('invertor_id')->nullable();
             $table->foreign('invertor_id')->references('id')->on('invertor_brands')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

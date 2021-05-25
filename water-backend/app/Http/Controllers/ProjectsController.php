@@ -317,11 +317,23 @@ class ProjectsController extends Controller
       
     }
 
-    public function gitprojectdata(){
+    public function gitprojectdata($id){
         $geolocation = Geolocation::distinct()->count('country');
-        $pumpbrand = Pump_brands::all();
-        $solarbrand = Solar_brands::all();
-        $invertorbrand = InvertorBrand::all();
+        $pumpbrand = Pump_brands::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
+        $solarbrand = Solar_brands::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
+        $invertorbrand = InvertorBrand::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
         $accessories = Accessories_list::with('uom')->get();
         $country = DB::table('geolocations')
             ->select('country')

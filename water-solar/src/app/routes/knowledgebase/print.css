@@ -1,8 +1,9 @@
 table.report-container{
   page-break-after: always;
 }
-tr.report-page-break .report-content-cell {
-  page-break-before: always;
+#report-page-break {
+  page-break-after: always !important;
+  break-after: page;
 }
 thead.report-header{
   display: table-header-group;
@@ -10,16 +11,16 @@ thead.report-header{
 tfoot.report-footer {
   display: table-footer-group;
 }
-BODY tr.pageBreak{
+BODY #report-page-break{
   counter-reset: page;      /* Create a page counter scope */
 }
 tfoot.report-footer #page-number:after {
   content: " Page " counter(page, decimal) ". ";
   counter-increment: page;  /* Add 1 to page */
 }
-/* .pageBreak {
+/* #report-page-break {
   page-break-before: always;
-}
+} 
 tfoot.report-footer #page-number:after {
   content: "Page " counter(page);
   counter-increment: page;
@@ -29,12 +30,15 @@ tfoot.report-footer #page-number:after {
   body {
   	font-size: 13pt;
   }
-  
-  main {
+  #report-page-break {
+    page-break-after: always !important;
+    break-after: page;
+  }
+  /* .main {
     float: none !important;
     margin: 0 2% 0 18% !important;
     width: 80% !important;
-  }
+  } */
 
   
 }

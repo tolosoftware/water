@@ -17,6 +17,7 @@ use App\Models\Solar_list;
 use App\Models\InvertorList;
 use App\Models\Projects;
 use App\Models\Geolocation;
+use App\Models\UserBrandRole;
 Use \Carbon\Carbon;
 
 
@@ -26,9 +27,43 @@ class UserController extends Controller
 {
     public function getUserBrand($id){
         $pumpBrand = Pump_brands::all();
-        $solarBrand = Solar_brands::all();
-        $inverterBrand = InvertorBrand::all();
+        foreach ($pumpBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('pump_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'pump_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
 
+        $solarBrand = Solar_brands::all();
+        foreach ($solarBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('solar_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'solar_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
+
+        $inverterBrand = InvertorBrand::all();
+        foreach ($inverterBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('invertor_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'invertor_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
         $data = [
             'pumpBrand' => $pumpBrand,
             'solarBrand' => $solarBrand,
@@ -36,6 +71,18 @@ class UserController extends Controller
         ];
 
         return $data;
+    }
+    public function postUserBrand(Request $request){
+        foreach ($request['pumpBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('pump_id', $value['user_brand_role'][0]['pump_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        foreach ($request['solarBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('solar_id', $value['user_brand_role'][0]['solar_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        foreach ($request['inverterBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('invertor_id', $value['user_brand_role'][0]['invertor_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        // return $request;
     }
 
     public function getexpiration($id){
