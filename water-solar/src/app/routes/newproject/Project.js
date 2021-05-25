@@ -15,6 +15,8 @@ import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from 'uuid';
 import { useHistory } from "react-router";
+import Spinner from 'react-spinner-material';
+
 //css
 import "./custome.css";
 //validation
@@ -591,11 +593,11 @@ export default function Project() {
     // inputFields[index].quantity = value;
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        if((value >= i?.item?.min_quantity && value <= i?.item?.max_quantity)){
+        // if((value >= Number(i?.item?.min_quantity) && value <= Number(i?.item?.max_quantity))){
           i['quantity'] = value;
-        }else{
-          i['quantity'] = i?.item?.min_quantity;
-        }
+        // }else{
+        //   i['quantity'] = Number(i?.item?.min_quantity);
+        // }
       }
       return i;
     })
@@ -622,7 +624,8 @@ export default function Project() {
   const getProjectdata = async () => {
     setOpenbackdrop(true);
     handleResetBrand();
-    axios.get("api/gitprojectdata")
+    var id = JSON.parse(localStorage.getItem('UserData')).id;
+    axios.get("api/gitprojectdata/"+id)
       .then((res) => {
         // console.log(res.data)
         setOpenbackdrop(false);
@@ -670,19 +673,23 @@ export default function Project() {
     "img-thumbnail rounded mx-auto d-block"
   );
   const [foucus, setFoucus] = useState(false);
-
+  const [loadImg,setLoadImg]= useState(false);
   const [accImgPath, SetAccImgPath] = useState();
   const accessoryMouseOver = (input, wichfunction) => {
     // console.log('input value', input);
     // setEvaluation(false);
     if (wichfunction === "focus") {
       setFoucus(true);
+      setLoadImg(true);
       SetAccImgPath(input.image);
+      setLoadImg(false);
     }
 
     if (wichfunction === "hover") {
       if (!foucus) {
+        setLoadImg(true);
         SetAccImgPath(input.image);
+        setLoadImg(false);
       }
     }
   }
@@ -690,11 +697,15 @@ export default function Project() {
     // setEvaluation(true);
     if (wichfunction === "fout") {
       setFoucus(false);
+      setLoadImg(true);
       SetAccImgPath(input.image);
+      setLoadImg(false);
     }
 
     if (!foucus) {
+      setLoadImg(true);
       SetAccImgPath(input.image);
+      setLoadImg(false);
     }
   };
 
@@ -1684,8 +1695,8 @@ export default function Project() {
                                 placeholder="Quantity"
                                 margin="normal"
                                 name="Quantity"
-                                min={inputField?.item?.min_quantity}
-                                max={inputField?.item?.max_quantity}
+                                // min={`${inputField?.item?.min_quantity}`}
+                                // max={`${inputField?.item?.max_quantity}`}
                                 type="number"
                                 onChange={(event) =>
                                   handlchangquantity(
@@ -1701,6 +1712,7 @@ export default function Project() {
                                 value={inputField.quantity}
                                 InputProps={{
                                   endAdornment: <InputAdornment position="end">{inputField.uomAc?inputField.uomAc:'m'}</InputAdornment>,
+                                  inputProps: { min: inputField?.item?.min_quantity, max: inputField?.item?.max_quantity },
                                 }}
                                 InputLabelProps={{
                                   shrink: true,
@@ -1751,13 +1763,19 @@ export default function Project() {
                         </span>
                       </IconButton>
                     </div>
-
                     <div className="col-md-6">
-                      <img
-                        src={accImgPath? `${axios.defaults.baseURL}accessories/${accImgPath}`:"/Layouts/system layout with details.jpg"}
-                        className=" img-thumbnail rounded mx-auto d-block"
-                        alt="Responsive"
-                      />
+                    {loadImg ? (
+                      <>
+                        <span className="row justify-content-center">
+                          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={loadImg} />
+                        </span>
+                        
+                      </>
+                    ) : <img
+                    src={accImgPath? `${axios.defaults.baseURL}accessories/${accImgPath}`:"/Layouts/system layout with details.jpg"}
+                    className=" img-thumbnail rounded mx-auto d-block"
+                    alt="Responsive"
+                  />}
                     </div>
                   </div>
                 ) : (
