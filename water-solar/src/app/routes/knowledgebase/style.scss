@@ -1,0 +1,45 @@
+section {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+  .wrapperOut {
+    width: 100%;
+  }
+  .wrapperIr {
+    width: 50%;
+  }
+  .wrapperEn {
+    width: 50%;
+  }
+  .wrapper {
+    $border-color: #fff;
+    border: 2px solid $border-color;
+    border-left: 40px solid $border-color;
+    min-height: 260px;
+    position: relative;
+    padding: 15px;
+    padding-left: 0px;
+    color: rgba(black, 0.5);
+    font-size: small;
+    display: inline-block;
+    }
+    
+    h3 {
+        font-size: 1rem;
+        font-weight: 400;
+        // letter-spacing: 3px;
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        margin-left: -30px;
+       transform: rotate(270deg);
+       transform-origin: 0 0;
+    }
+    .wrapperEn h3, .wrapperOut h3 {
+        margin-bottom: 5rem;
+    }
+    .wrapperIr h3 {
+        margin-bottom: 3rem;
+    }
+   
