@@ -590,14 +590,9 @@ export default function Project() {
   };
 
   const handlchangquantity = (value, id) => {
-    // inputFields[index].quantity = value;
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        // if((value >= Number(i?.item?.min_quantity) && value <= Number(i?.item?.max_quantity))){
           i['quantity'] = value;
-        // }else{
-        //   i['quantity'] = Number(i?.item?.min_quantity);
-        // }
       }
       return i;
     })

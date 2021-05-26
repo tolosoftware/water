@@ -25,6 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { makeStyles } from '@material-ui/core/styles';
 import './print.css';
+import './style.scss';
 //backdrop
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -121,8 +122,8 @@ const ProjectSummary = ({ match }) => {
                                         <th class="report-header-cell">
                                             <div class="header-info">
                                                 <div className="row mb-3" style={{borderBottom: '1px solid', paddingTop: '20px'}}>
-                                                    <div className="col-md-12 mb-2">
-                                                        <img src="/images/System_logo1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', width: '200px', height: '80px' }} alt="Responsive" />
+                                                    <div className="col-md-12 mb-2" style={{paddingBottom: '10px'}}>
+                                                        <img src="/images/System_logo1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', height: '80px' }} alt="Responsive" />
                                                     
                                                         <div style={{float: 'right', display: 'inline-block'}}>
                                                         <span>
@@ -149,6 +150,7 @@ const ProjectSummary = ({ match }) => {
                                                     </div>
                                                 </div>
                                                 <div style={{ width: '20%', display: 'inline-block' }} >Project Name:</div><div style={{ display: 'inline-block' }}>{projectDetails?.name}</div>
+                                                <Divider className="mb-3 mt-3" />
                                             </div>
                                         </th>
                                     </tr>
@@ -163,12 +165,13 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
+                                    <span></span>
                                 </tfoot>
                                 <tbody class="report-content">
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
-                                                <div className="table-responsive-material mb-3">
+                                                <div className="table-responsive-material mb-3" >
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
                                                             <tr className={classes.headTr}>
@@ -225,185 +228,137 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    {/* <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                
-                                            </div>
-                                        </td>
-                                    </tr> */}
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                     
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row">
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10  col-xs-12">
-                                                        <h4 style={{ textAlign: 'center' }}>Daily Average output/month</h4>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span>Output [m³]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={energyWithOutPut?.monthlyHrOutput}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="MonthlyOutput" fill="#00AEEF" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10  col-xs-12">
-                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Output</h4>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span>Output [m³]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={energyWithOutPut?.hrOutputP}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="hrOutput" fill="#00AEEF" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
-                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Irradiation value in deferent months of year</h4>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span>Irradiation [kwh/m2]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={irradiation?.monthIrrs}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="value" fill="#FAA74B" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div>      
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
-                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
-                                                        <Divider className="mb-3 mt-3" />                                                       
-                                                        <span>Irradiation [kwh/m2]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={irradiation?.dailyIrrs}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="value" fill="#FAA74B" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div> 
-
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
-                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Energy value in deferent months of year</h4>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span>Energy [kwh]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={energyWithOutPut?.energyForEachMonth}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="energy" fill="#ED1C24" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div>
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12">
-                                                        <h4 style={{ textAlign: 'center', marginTop: '2rem' }}>Hourly Values</h4>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span>Energy [kwh]</span>
-                                                        <ResponsiveContainer width="100%" height={250}>
-                                                            <BarChart data={energyWithOutPut?.hrEnergy}
-                                                                margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
-                                                            >
-                                                                <XAxis dataKey="name" />
-                                                                <YAxis />
-                                                                <CartesianGrid strokeDasharray="3 3" />
-                                                                <Tooltip />
-                                                                <Legend />
-                                                                <Bar dataKey="hrEn" fill="#ED1C24" />
-                                                            </BarChart>
-                                                        </ResponsiveContainer>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
-                                        <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row">
-                                                    {/* <strong>System Characteristic</strong> */}
-                                                    {/* <Divider className="mb-3 mt-3" /> */}
-                                                    <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
-                                                        <div className="table-responsive-material">
-                                                            <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                <thead className="table-head-sm th-border-b">
-                                                                    <tr className={classes.headSolarS}>
-                                                                        <th>Solar specification:</th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr><td style={{ width: '60%' }}>Brand:</td><td>{solarBrand ? solarBrand?.name:""}</td></tr>
-                                                                    <tr><td>Model:</td><td>{solarList? solarList?.solar_list_with_cable?.model:''}</td></tr>
-                                                                    <tr><td>Rated Maximum power (Pmax):</td><td>270Wp</td></tr>
-                                                                    <tr><td>Voltage at Maximum power(Vmp):</td><td>31.3V</td></tr>
-                                                                    <tr><td>Current at Maximum power(Imp):</td><td>8.79A</td></tr>
-                                                                    <tr><td>Open Circuit Voltage(VOC):</td><td>38.4V</td></tr>
-                                                                    <tr><td>Short Circuit Current (Isc):</td><td>9.31A</td></tr>
-                                                                    <tr><td>Mazimum System Voltage:</td><td>1000V</td></tr>
-                                                                    <tr><td>Size (mm):</td><td>1648*995*35mm</td></tr>
-                                                                    <tr><td>Weight:</td><td>18kg</td></tr>
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 col-xs-12">
-                                                                <img src="/images/connector.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12  col-xs-12">
+                                                        <section className="mt-5">
+                                                            <div class="wrapper wrapperOut">
+                                                                <h3>Output [m³]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Daily Average output/month</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                <BarChart data={energyWithOutPut?.monthlyHrOutput}
+                                                                    margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                >
+                                                                    <XAxis dataKey="name" />
+                                                                    <YAxis />
+                                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                                    <Tooltip />
+                                                                    <Legend />
+                                                                    <Bar dataKey="MonthlyOutput" fill="#00AEEF" />
+                                                                </BarChart>
+                                                            </ResponsiveContainer>
+                                                                </div>
                                                             </div>
-                                                            <div className="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 col-xs-12" style={{ padding: '0px', paddingTop: '115px' }}>
-                                                                <img src="/images/Voltage.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                        </section>
+                                                        <section>
+                                                            <div class="wrapper wrapperOut">
+                                                                <h3>Output [m³]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Hourly Output</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                    <BarChart data={energyWithOutPut?.hrOutputP}
+                                                                        margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                    >
+                                                                        <XAxis dataKey="name" />
+                                                                        <YAxis />
+                                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                                        <Tooltip />
+                                                                        <Legend />
+                                                                        <Bar dataKey="hrOutput" fill="#00AEEF" />
+                                                                    </BarChart>
+                                                                </ResponsiveContainer>
+                                                                </div>
                                                             </div>
+                                                        </section>
+                                                        <section>
+                                                            <div class="wrapper wrapperIr">
+                                                                <h3>Irradiation [kwh/m2]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Irradiation value in deferent months of year</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                    <BarChart data={irradiation?.monthIrrs}
+                                                                        margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                    >
+                                                                        <XAxis dataKey="name" />
+                                                                        <YAxis />
+                                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                                        <Tooltip />
+                                                                        <Legend />
+                                                                        <Bar dataKey="value" fill="#FAA74B" />
+                                                                    </BarChart>
+                                                                </ResponsiveContainer>
+                                                                </div>
+                                                            </div>
+                                                            <div class="wrapper wrapperIr">
+                                                                <h3>Irradiation [kwh/m2]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Hourly Values</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                    <BarChart data={irradiation?.dailyIrrs}
+                                                                        margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                    >
+                                                                        <XAxis dataKey="name" />
+                                                                        <YAxis />
+                                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                                        <Tooltip />
+                                                                        <Legend />
+                                                                        <Bar dataKey="value" fill="#FAA74B" />
+                                                                    </BarChart>
+                                                                </ResponsiveContainer>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        <section>
+                                                            <div class="wrapper wrapperEn">
+                                                                <h3>Energy [kwh]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Energy value in deferent months of year</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                    <BarChart data={energyWithOutPut?.energyForEachMonth}
+                                                                        margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                    >
+                                                                        <XAxis dataKey="name" />
+                                                                        <YAxis />
+                                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                                        <Tooltip />
+                                                                        <Legend />
+                                                                        <Bar dataKey="energy" fill="#ED1C24" />
+                                                                    </BarChart>
+                                                                </ResponsiveContainer>
+                                                                </div>
+                                                            </div>
+                                                            <div class="wrapper wrapperEn">
+                                                                <h3>Energy [kwh]</h3>
+                                                                <div class="content">
+                                                                <h4 style={{ textAlign: 'center' }}>Hourly Values</h4>
+                                                                <ResponsiveContainer width="100%" height={200}>
+                                                                    <BarChart data={energyWithOutPut?.hrEnergy}
+                                                                        margin={{ top: 10, right: 0, left: -15, bottom: 0 }}
+                                                                    >
+                                                                        <XAxis dataKey="name" />
+                                                                        <YAxis />
+                                                                        <CartesianGrid strokeDasharray="3 3" />
+                                                                        <Tooltip />
+                                                                        <Legend />
+                                                                        <Bar dataKey="hrEn" fill="#ED1C24" />
+                                                                    </BarChart>
+                                                                </ResponsiveContainer>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                        
+                                                    </div>                                            
 
-                                                        </div>
-
-                                                    </div>
-                                                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
-                                                        <img src="/images/solar1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                    </div>
                                                 </div>
-
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row">
@@ -452,7 +407,58 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                    
+                                    <tr className="page" style={{}}>
+                                        <td class="report-content-cell">
+                                            <div className={`main`}>
+                                                <section> 
+                                                    <div className="row">
+                                                        <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
+                                                            <div className="table-responsive-material">
+                                                                <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                    <thead className="table-head-sm th-border-b">
+                                                                        <tr className={classes.headSolarS}>
+                                                                            <th>Solar specification:</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr><td style={{ width: '60%' }}>Brand:</td><td>{solarBrand ? solarBrand?.name:""}</td></tr>
+                                                                        <tr><td>Model:</td><td>{solarList? solarList?.solar_list_with_cable?.model:''}</td></tr>
+                                                                        <tr><td>Rated Maximum power (Pmax):</td><td>270Wp</td></tr>
+                                                                        <tr><td>Voltage at Maximum power(Vmp):</td><td>31.3V</td></tr>
+                                                                        <tr><td>Current at Maximum power(Imp):</td><td>8.79A</td></tr>
+                                                                        <tr><td>Open Circuit Voltage(VOC):</td><td>38.4V</td></tr>
+                                                                        <tr><td>Short Circuit Current (Isc):</td><td>9.31A</td></tr>
+                                                                        <tr><td>Mazimum System Voltage:</td><td>1000V</td></tr>
+                                                                        <tr><td>Size (mm):</td><td>1648*995*35mm</td></tr>
+                                                                        <tr><td>Weight:</td><td>18kg</td></tr>
+                                                                    </tbody>
+                                                                </Table>
+                                                            </div>
+                                                            
+
+                                                        </div>
+                                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
+                                                            <img src="/images/solar1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 col-xs-12">
+                                                                <img src="/images/connector.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                            </div>
+                                                            <div className="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 col-xs-12" style={{ padding: '0px', paddingTop: '115px' }}>
+                                                                <img src="/images/Voltage.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                     
+                                     
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row" style={{ marginTop: '20px' }}>
@@ -493,67 +499,64 @@ const ProjectSummary = ({ match }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                     
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                                 <div className="row" style={{ marginTop: '20px' }}>
                                                     {/* <strong>System Characteristic</strong> */}
                                                     {/* <Divider className="mb-3 mt-3" /> */}
-                                                    <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
-                                                        <div className="table-responsive-material">
-                                                            <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                <thead className="table-head-sm th-border-b">
-                                                                    <tr className={classes.headSolarS}>
-                                                                        <th><strong>Strucuter specification:</strong></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr><td style={{ width: '32%' }}>Brand:</td><td>No</td></tr>
-                                                                    <tr><td>Model:</td><td>{projectDetails? projectDetails?.solar_base: ''}</td></tr>
-                                                                    <tr><td>Capacity:</td><td>4/6/8/10/12 panels</td></tr>
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-
-
+                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
+                                                        <section>
+                                                            <div className="table-responsive-material">
+                                                                <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                    <thead className="table-head-sm th-border-b">
+                                                                        <tr className={classes.headSolarS}>
+                                                                            <th><strong>Strucuter specification:</strong></th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr><td style={{ width: '32%' }}>Brand:</td><td>No</td></tr>
+                                                                        <tr><td>Model:</td><td>{projectDetails? projectDetails?.solar_base: ''}</td></tr>
+                                                                        <tr><td>Capacity:</td><td>4/6/8/10/12 panels</td></tr>
+                                                                    </tbody>
+                                                                </Table>
+                                                            </div>
+                                                            <img src={(projectDetails?.solar_base === "Ground Structure")?"/images/structure.png":"/images/manual.jpg"} className="img-thumbnail" style={{ border: '0px solid #dee2e6'}} alt="Responsive" />
+                                                            <h4>Note: Image may be deferent with actual product as this is a graphic design.</h4>
+                                                        </section>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
-                                                    </div>
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                        <img src={(projectDetails?.solar_base === "Ground Structure")?"/images/structure.png":"/images/manual.jpg"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', width: '70%', float: 'right' }} alt="Responsive" />
-                                                    </div>
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{ paddingTop: '15px' }}>
-                                                        <strong>Note: Image may be deferent with actual product as this is a graphic design.</strong>
-                                                    </div>
-
                                                 </div>                              
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                    
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell ">
                                             <div className={`main`}>
-                                                <Divider className="mb-3 mt-3" />
-                                                <strong>Wiring Diagram</strong>
                                                 <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                        <img src={solarList? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`:"/images/wiring.png"} className="img-thumbnail " alt="Responsive" style={{ border: 'none', paddingBottom: '20px' }} />
+                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
+                                                        <section> 
+                                                            <Divider className="mb-3 mt-3" />
+                                                            <span><strong>Wiring Diagram</strong></span>
+                                                            <img src={solarList? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`:"/images/wiring.png"} className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
+                                                        </section>
                                                     </div>
                                                 </div>                          
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                    </tr>                                   
+                                     
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
-                                                <Divider className="mb-3 mt-3" />
-                                                <strong>System General layout</strong>
                                                 <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span><strong>System General layout</strong></span>
                                                         <img src="/Layouts/system layout with details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
-                                                    </div>
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingLeft: '70px' }}>
+
                                                         <div className="table-responsive-material">
                                                             <Table className="default-table table-unbordered table table-sm table-hover">
                                                                 <thead className="table-head-sm th-border-b">
@@ -563,57 +566,37 @@ const ProjectSummary = ({ match }) => {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr><td><h5>1- Solar panels</h5></td></tr>
-                                                                    <tr><td><h5>2- Pump controller</h5></td></tr>
-                                                                    <tr><td><h5>3- Submersible</h5></td></tr>
-                                                                    <tr><td><h5>4- well probe sensors</h5></td></tr>
-                                                                    <tr><td><h5>5- Pump electrical cable</h5></td></tr>
-                                                                    <tr><td><h5>6- Non return valve</h5></td></tr>
-                                                                    <tr><td><h5>7- Pressure Gauge</h5></td></tr>
-                                                                    <tr><td><h5>8- Water meter</h5></td></tr>
+                                                                    <tr><td style={{width: '50%'}}><h5>1- Solar panels</h5></td><td style={{width: '50%'}}><h5>9- Garden</h5></td></tr>
+                                                                    <tr><td><h5>2- Pump controller</h5></td><td><h5>10- Swimming pool</h5></td></tr>
+                                                                    <tr><td><h5>3- Submersible</h5></td><td><h5>11- Water reservoir</h5></td></tr>
+                                                                    <tr><td><h5>4- well probe sensors</h5></td><td><h5>12- Flaut switch</h5></td></tr>
+                                                                    <tr><td><h5>5- Pump electrical cable</h5></td><td><h5>13- Flaut switch Ele. cable</h5></td></tr>
+                                                                    <tr><td><h5>6- Non return valve</h5></td><td><h5>14- Residential Houses</h5></td></tr>
+                                                                    <tr><td><h5>7- Pressure Gauge</h5></td><td><h5>15- Toilet</h5></td></tr>
+                                                                    <tr><td><h5>8- Water meter</h5></td> <td></td></tr>
                                                                 </tbody>
                                                             </Table>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ paddingLeft: '70px' }}>
-                                                        <div className="table-responsive-material">
-                                                            <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                <thead className="table-head-sm th-border-b">
-                                                                    <tr className={classes.headSolarS}>
-                                                                        {/* <th><strong>Strucuter specification:</strong></th>
-                                                                        <th></th> */}
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr><td><h5>9- Garden</h5></td></tr>
-                                                                    <tr><td><h5>10- Swimming pool</h5></td></tr>
-                                                                    <tr><td><h5>11- Water reservoir</h5></td></tr>
-                                                                    <tr><td><h5>12- Flaut switch</h5></td></tr>
-                                                                    <tr><td><h5>13- Flaut switch Ele. cable</h5></td></tr>
-                                                                    <tr><td><h5>14- Residential Houses</h5></td></tr>
-                                                                    <tr><td><h5>15- Toilet</h5></td></tr>
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>  
-                                                    </div>
-
                                                 </div>                         
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr id="report-page-break" style={{breakAfter: 'page', pageBreakAfter: 'always'}}>
+                                     
+                                    <tr className="page" style={{}}>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
-                                                <Divider className="mb-3 mt-3" />
-                                                <strong>Sizing layout</strong>
                                                 <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" >
+                                                        <Divider className="mb-3 mt-3" />
+                                                        <span> <strong>Sizing layout</strong></span>
                                                         <img src="/Layouts/layout details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
                                                     </div>
                                                 </div>                        
                                             </div>
                                         </td>
                                     </tr>
+                                     
                                     <tr>
                                         <td class="report-content-cell">
                                             <div className={`main`}>

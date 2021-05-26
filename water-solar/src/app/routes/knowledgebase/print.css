@@ -1,4 +1,4 @@
-table.report-container{
+/* table.report-container{
   page-break-after: always;
 }
 #report-page-break {
@@ -12,20 +12,12 @@ tfoot.report-footer {
   display: table-footer-group;
 }
 BODY #report-page-break{
-  counter-reset: page;      /* Create a page counter scope */
+  counter-reset: page;  
 }
 tfoot.report-footer #page-number:after {
   content: " Page " counter(page, decimal) ". ";
-  counter-increment: page;  /* Add 1 to page */
+  counter-increment: page;  
 }
-/* #report-page-break {
-  page-break-before: always;
-} 
-tfoot.report-footer #page-number:after {
-  content: "Page " counter(page);
-  counter-increment: page;
-} */
-
 @media print  {
   body {
   	font-size: 13pt;
@@ -33,14 +25,77 @@ tfoot.report-footer #page-number:after {
   #report-page-break {
     page-break-after: always !important;
     break-after: page;
-  }
-  /* .main {
-    float: none !important;
-    margin: 0 2% 0 18% !important;
-    width: 80% !important;
-  } */
-
-  
+  }  
 }
 
+@media all {
+  .page-break {
+    display: none;
+  }
+}
 
+@media print {
+  html, body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 20mm;
+} */
+
+
+thead.report-header{
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-footer-group;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    height: 100%;
+  }
+  
+
+
+  /* ... the rest of the rules ... */
+}
+ 
+ tfoot.report-footer #page-number:after {
+    content: "Page " counter(page) " of " counter(pages);
+}
+thead.report-header{
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-footer-group;
+}
+.page {
+  margin: 0;
+  border: initial;
+  border-radius: initial;
+  width: initial;
+  min-height: initial;
+  box-shadow: initial;
+  background: initial; 
+  height: 100%;
+  page-break-after: always;
+}
