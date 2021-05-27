@@ -55,31 +55,35 @@ tfoot.report-footer #page-number:after {
   margin: 20mm;
 } */
 
-
+/* 
 thead.report-header{
   display: table-header-group;
 }
 tfoot.report-footer {
   display: table-footer-group;
-}
+} */
 
-@page {
+/* @page {
   size: A4;
   margin: 0;
-}
+} */
 @media print {
-  html, body {
+  /* html, body {
     width: 210mm;
     height: 297mm;
-    height: 100%;
-  }
+  } */
   
-
+  .wrapperPump3{
+    min-height: 450px;
+  }
+  /* .wrapperStr1 {
+    min-height: 900px;
+  } */
 
   /* ... the rest of the rules ... */
 }
  
- tfoot.report-footer #page-number:after {
+ /* tfoot.report-footer #page-number:after {
     content: "Page " counter(page) " of " counter(pages);
 }
 thead.report-header{
@@ -98,4 +102,4 @@ tfoot.report-footer {
   background: initial; 
   height: 100%;
   page-break-after: always;
-}
+} */
