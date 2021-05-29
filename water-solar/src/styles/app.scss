@@ -104,6 +104,25 @@ Version        : 1.0
     background-color: transparent !important;
 }
 
-.dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6, .dark-theme .h1, .dark-theme .h2, .dark-theme .h3, .dark-theme .h4, .dark-theme .h5, .dark-theme .h6 , .dark-theme td, .dark-theme th, .dark-theme div{
+.dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6, .dark-theme .h1, .dark-theme .h2, .dark-theme .h3,
+ .dark-theme .h4, .dark-theme .h5, .dark-theme .h6 , .dark-theme td, .dark-theme th,
+  .dark-theme div , .dark-theme tspan{
     color: #E0E0E0;
 }
+
+.dark-theme div.customcolorindarkmode{
+    background-color: #fff;
+}
+.dark-theme .customcolorindarkmode .table, .dark-theme .customcolorindarkmode td, .dark-theme .customcolorindarkmode th, .dark-theme .customcolorindarkmode h4, .dark-theme .customcolorindarkmode div, .dark-theme .customcolorindarkmode h5, .dark-theme .customcolorindarkmode h3{
+    color: #000;
+}
+.dark-theme .customcolorindarkmode .btn-group-vertical > .jr-btn{
+    background-color: #d8dbde;
+    color: #000;
+}
+// .dark-theme table.darkmodeColor, .dark-theme table.darkmodeColor div, .dark-theme table.darkmodeColor td,.dark-theme table.darkmodeColor tr,
+// .dark-theme table.darkmodeColor h1, .dark-theme table.darkmodeColor h2,.dark-theme table.darkmodeColor h3,
+// .dark-theme table.darkmodeColor h4,.dark-theme table.darkmodeColor h5,.dark-theme table.darkmodeColor h6,.dark-theme table.darkmodeColor strong,
+// .dark-theme table.darkmodeColor th,.dark-theme table.darkmodeColor span{
+//     color: #000 !important;
+// }

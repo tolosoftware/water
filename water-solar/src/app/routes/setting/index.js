@@ -1,15 +1,19 @@
 import React from 'react';
-// import ContainerHeader from "components/ContainerHeader/index";
-// import IntlMessages from "util/IntlMessages";
 import Uom from './Uom';
 import CableType from './CableType';
 import Post from './Post';
-// import AccessoriesType from './AccessoriesType';
-
-
+import UserProfile from './UserProfile';
+import CardBox from 'components/CardBox';
 const Setting = ({match}) => (
     <div className="app-wrapper">
-   {/* <ContainerHeader match={match} title={<IntlMessages id="setting"/>}/>       */}
+
+        <div className="row custom-row-card">
+            <CardBox >
+              <UserProfile/>
+            </CardBox>
+        </div>
+
+
         <div className="row">
 
             <div className="col-md-4">

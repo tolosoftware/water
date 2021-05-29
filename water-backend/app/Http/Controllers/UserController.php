@@ -19,6 +19,7 @@ use App\Models\Projects;
 use App\Models\Geolocation;
 use App\Models\UserBrandRole;
 Use \Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -221,7 +222,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        return User::all();
+        return User::with('geolocation')->get();
     }
 
     /**
@@ -272,7 +273,7 @@ class UserController extends Controller
             }else{
                 User::create([
                     'name' => $request['name'],
-                    'system' => 0,
+                    'system' => $request['type'],
                     'companyname' => $request['companyname'],
                     'email' => $request['email'],
                     'phone' => $request['phone'],
@@ -323,7 +324,47 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if(isset($request['userimage'])){
+            $photoname = 0;
+            $photoname = time().'.' . explode('/', explode(':', substr($request->userimage, 0, strpos($request->userimage, ';')))[1])[1];
+            \Image::make($request->userimage)->save(public_path('user/img/').$photoname);
+            $request->merge(['photo' => $photoname]);
+          
+            $data = [
+                'name' => $request['name'],
+                'phone' => $request['phone'],
+                'website' => $request['website'],
+                'userimage' => $photoname,
+            ];
+            $user = User::find($id);
+            $user->update($data);
+
+            $user = User::find($id);
+            return $user;
+
+        }else if(isset($request['userid'])){
+            $user = User::find($id);
+            if(Hash::check($request['password'], $user->password)){
+                // User::where('id', $id)->update(array('password' => Hash::make($request['password'])));
+                
+                User::where('id', $id)->update(array('password' => Hash::make($request['npassword'])));
+                $user = User::find($id);
+                return $user;
+            }else{
+                return "oops";
+            }
+
+        
+
+        }else{
+            $data = [
+                'name' => $request['name'],
+                'phone' => $request['phone'],
+                'website' => $request['website'],
+            ];
+            $user = User::find($id);
+            $user->update($data);
+        }
     }
 
     /**

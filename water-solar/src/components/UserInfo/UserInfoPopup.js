@@ -5,6 +5,13 @@ import IntlMessages from 'util/IntlMessages';
 import axios from 'axios';
 
 class UserInfoPopup extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      profile: false,
+    }
+  };
+
   render() {
     return (
       <div>
