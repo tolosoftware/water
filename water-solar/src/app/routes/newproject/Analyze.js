@@ -8,6 +8,9 @@ import { ReportProblem } from "@material-ui/icons";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
 import { UncontrolledAlert } from "reactstrap";
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 //form
 import axios from "axios";
@@ -364,26 +367,42 @@ export default function Analyze(props) {
                 {" "}
               </strong>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Made in {sugestedpump[0].pump_brand.country}</strong>
                   {getFlag(sugestedpump[0].pump_brand.country)}{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Brand {sugestedpump[0].pump_brand.name}</strong>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Model {sugestedpump[0].model}</strong>
+                </div>
+                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                    <FormControl fullWidth>
+                    <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${sugestedpump[0]?.data_sheet}`} target="_blank">
+                    <Button
+                        style={{marginTop: '16px', padding: '6px 6px'}}
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<CloudDownloadIcon />}
+                      >
+                        Data Sheet
+                      </Button>
+                    </a>
+                      
+                    </FormControl>
                 </div>
               </div>
 
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Power {sugestedpump[0].power}</strong>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Current {sugestedpump[0].ampeier} </strong>{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Cable {cable.name}</strong>{" "}
                 </div>
               </div>
@@ -408,26 +427,42 @@ export default function Analyze(props) {
                 {" "}
               </strong>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Made in {solarbrand.country}</strong>{" "}
                   {getFlag(solarbrand.country)}{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Brand {solarbrand.name}</strong>{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Model {solar.solar_list.model}</strong>{" "}
+                </div>
+                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                    <FormControl fullWidth>
+                    <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.solar_list?.data_sheet}`} target="_blank">
+                    <Button
+                        style={{marginTop: '16px', padding: '6px 6px'}}
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<CloudDownloadIcon />}
+                      >
+                        Data Sheet
+                      </Button>
+                    </a>
+                      
+                    </FormControl>
                 </div>
               </div>
 
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Power {solar.power}</strong>{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Structure {solar.base}</strong>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Quantity {solar.solar_quantity}</strong>{" "}
                 </div>
               </div>
@@ -443,26 +478,42 @@ export default function Analyze(props) {
                 {" "}
               </strong>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Made in {inverter?.invertor_brand?.country}</strong>{" "}
                   {getFlag(inverter?.invertor_brand?.country)}{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Brand {inverter?.invertor_brand?.name}</strong>{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Model {inverter?.model}</strong>{" "}
+                </div>
+                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                    <FormControl fullWidth>
+                    <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                    <Button
+                        style={{marginTop: '16px', padding: '6px 6px'}}
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<CloudDownloadIcon />}
+                      >
+                        Data Sheet
+                      </Button>
+                    </a>
+                      
+                    </FormControl>
                 </div>
               </div>
 
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Power {inverter?.power}</strong>{" "}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Current {inverter?.current}</strong>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <strong>Voltage {inverter?.voltage}</strong>{" "}
                 </div>
               </div>

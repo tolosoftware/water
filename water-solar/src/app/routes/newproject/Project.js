@@ -4,12 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import Alert from "@material-ui/lab/Alert";
 import { useForm } from "react-hook-form";
@@ -35,7 +36,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
 import {
   NotificationContainer,
   NotificationManager,
@@ -1718,7 +1718,7 @@ export default function Project() {
                         
                           <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                             <FormControl fullWidth>
-                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}>
+                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`} target="_blank">
                             <Button
                                 style={{marginTop: '16px', padding: '6px 6px'}}
                                 variant="contained"
