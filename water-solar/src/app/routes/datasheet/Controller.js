@@ -47,9 +47,11 @@ const Controller=() => {
               
               <td>
                 <div className="pointer text-primary">
-                <IconButton size="small" aria-label="delete"  color="secondary"  >
-                  <GetAppIcon />
-                </IconButton>
+                  <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${data.data_sheet}`} download>
+                    <IconButton size="small" aria-label="delete"  color="secondary"  >
+                      <GetAppIcon />
+                    </IconButton>
+                  </a>
                 </div>
               </td>
             </tr>

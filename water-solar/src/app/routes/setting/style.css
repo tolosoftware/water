@@ -2,3 +2,8 @@
     min-height: 380px !important;
     
 }
+
+.vartical-Devider{
+    border-left: 2px solid rgb(187, 197, 187) !important;
+    height: 500px i !important;
+}

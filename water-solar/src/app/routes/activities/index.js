@@ -3,9 +3,7 @@ import {NavLink} from 'react-router-dom';
 // import ContainerHeader from "components/ContainerHeader/index";
 // import IntlMessages from "util/IntlMessages";
 import {ProjectList} from './ProjectList';
-import SameDataComposedChart from './SameDataComposedChart';
 import SendMoney from '../dashboard/routes/Crypto/SendMoney';
-import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
 
 const activities=({match,props}) => {
@@ -14,14 +12,14 @@ const activities=({match,props}) => {
     <div className="app-wrapper">
       {/* <ContainerHeader match={match} title={<IntlMessages id="Activities" />} /> */}
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-9">
           <ProjectList />
         </div>
 
-        <div className="col-md-4 p-0">
+        <div className="col-md-3 p-0">
 
-          <div className="pl-3 pr-3">
-           <NavLink  to="/app/newproject">
+          <div>
+              <NavLink  to="/app/newproject">
                       <Widget styleName={`bg-gradient-primary darken-4 text-white mb-2`} >
                         <div className="d-flex flex-row justify-content-center mb-2">
                           <i className={`zmdi zmdi-plus-circle-o zmdi-hc-2x`} />

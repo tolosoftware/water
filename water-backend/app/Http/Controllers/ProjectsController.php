@@ -349,7 +349,11 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return Projects::with('geolocation')->get();
+        return Projects::with(['geolocation','user'])->get();
+    }
+
+    public function projectbyuser($id){
+        return Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();
     }
 
     /**

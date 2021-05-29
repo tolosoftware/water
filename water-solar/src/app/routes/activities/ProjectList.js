@@ -13,6 +13,9 @@ import { useHistory } from "react-router";
 //classes
 import Swal from 'sweetalert2';
 
+import Moment from 'react-moment';
+
+
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -29,7 +32,7 @@ export const ProjectList=(props) => {
   useEffect(() => {
       const getUserdata=async () => {
          setOpen(true);
-     axios.get('api/project')
+     axios.get('api/userproject/'+JSON.parse(localStorage.getItem("UserData")).id)
          .then(res => {
              setOpen(false);
              setProjects(res.data)
@@ -54,13 +57,47 @@ export const ProjectList=(props) => {
           
           <MaterialTable 
                 title="Project List"
-                columns={[
-                    // { title: 'No:', render(rowData)=>rowData.tableData.id },
-                    { title: 'Name', field: 'name' },
-                    { title: 'Country', field: 'country' },
-                    { title: 'City', field: 'geolocation.city'},
-                         
-                ]}
+                columns={
+                    JSON.parse(localStorage.getItem("UserData")).system == 1? (
+                        [
+                            { title: 'Name', field: 'name' },
+                            { title: 'City', field: 'geolocation.city'},
+                            { title: 'GPS',
+                                    render:  (projects) =>{
+                                        return `${projects.geolocation.latitude} / ${projects.geolocation.longtitude}`;
+                                    }
+                            },
+                            { title: 'User', field: 'user.name'},
+                            { title: 'Company', field: 'user.companyname'},
+                            { title: 'Date',  
+                                render:  (projects) =>{
+                                    return  <Moment format="YYYY/MM/DD">
+                                                {projects.created_at}
+                                            </Moment>;
+                                }
+                            },
+                            ]
+                    ):(
+                        [
+                            { title: 'Name', field: 'name' },
+                            { title: 'City', field: 'geolocation.city'},
+                            { title: 'GPS',
+                                    render:  (projects) =>{
+                                        return `${projects.geolocation.latitude} / ${projects.geolocation.longtitude}`;
+                                    }
+                            },
+                            
+                            { title: 'Date',  
+                                render:  (projects) =>{
+                                    return  <Moment format="YYYY/MM/DD">
+                                                {projects.created_at}
+                                            </Moment>;
+                                }
+                            },
+                            ]
+                    )
+            }
+
               data={projects}
                   actions={[
                     {

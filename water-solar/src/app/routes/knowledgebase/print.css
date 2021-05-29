@@ -39,4 +39,11 @@ tfoot.report-footer #page-number:after {
   
 }
 
+.customcolorindarkmode{
+  background-color: #fff;
+}
+.header-info button{
+  color: #000;
+}
+
 

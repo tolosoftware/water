@@ -47,9 +47,11 @@ const Acceessories=() => {
               
               <td>
                 <div className="pointer text-primary">
-                <IconButton size="small" aria-label="delete"  color="secondary"  >
-                  <GetAppIcon />
-                </IconButton>
+                  <a href={`${axios.defaults.baseURL}accessories/data_sheet/${data.data_sheet}`} download>
+                    <IconButton size="small" aria-label="delete"  color="secondary"  >
+                      <GetAppIcon />
+                    </IconButton>
+                  </a>
                 </div>
               </td>
             </tr>
