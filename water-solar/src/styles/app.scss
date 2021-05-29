@@ -104,11 +104,17 @@ Version        : 1.0
     background-color: transparent !important;
 }
 
-.dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6, .dark-theme .h1, .dark-theme .h2, .dark-theme .h3,
- .dark-theme .h4, .dark-theme .h5, .dark-theme .h6 , .dark-theme td, .dark-theme th,
-  .dark-theme div , .dark-theme tspan{
-    color: #E0E0E0;
+// .dark-theme h1, .dark-theme h2, .dark-theme h3, .dark-theme h4, .dark-theme h5, .dark-theme h6, .dark-theme .h1, .dark-theme .h2, .dark-theme .h3,
+//  .dark-theme .h4, .dark-theme .h5, .dark-theme .h6 , .dark-theme td, .dark-theme th,
+//   .dark-theme div , .dark-theme tspan{
+//     color: #E0E0E0;
+// }
+
+.dark-theme  td ,.dark-theme th {
+    color: #fff;
 }
+
+
 
 .dark-theme div.customcolorindarkmode{
     background-color: #fff;
