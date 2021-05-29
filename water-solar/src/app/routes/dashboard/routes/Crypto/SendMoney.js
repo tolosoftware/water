@@ -47,7 +47,7 @@ const SendMoney = ({ usersData }) => {
         </BarChart>
       </ResponsiveContainer>
       <Divider className="mb-3" />
-      <h3 className="pl-5">Design Project By this User (Current year)</h3>
+      <h3 className="pl-5">Design Project By {JSON.parse(localStorage.getItem("UserData")).name} </h3>
     
     </Widget>
   );

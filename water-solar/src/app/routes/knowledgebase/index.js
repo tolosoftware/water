@@ -110,13 +110,13 @@ const ProjectSummary = ({ match }) => {
 
                 <div className="row" >
 
-                    <div className="col-md-9" >
+                    <div className="col-md-9 " >
                     
                         <div ref={ref} >
                         {/* style={{width: 800,  background: 'blue'}} */}
-                        <Paper elevation={0} className="mb-3 p-4 project-summary" >
+                        <Paper elevation={0} className="mb-3 p-4 project-summary customcolorindarkmode"  style={{backgroundColor: '#fff'}}>
 
-                            <table class="report-container" style={{width: '100%'}}>
+                            <table className="report-container darkmodeColor" style={{width: '100%'}}>
                                 <thead class="report-header">
                                     <tr>
                                         <th class="report-header-cell">
@@ -140,7 +140,7 @@ const ProjectSummary = ({ match }) => {
                                                             </ButtonGroup>
                                                         </span>
                                                         <span>
-                                                            <ButtonGroup vertical={true}>
+                                                            <ButtonGroup vertical={true} className="header-info">
                                                                 <Button className={`jr-btn ${classes.btnJr}`} >info@awm.solar</Button>
                                                                 <Button className={`jr-btn ${classes.btnJr}`}>+93 790303132</Button>
                                                                 <Button className={`jr-btn ${classes.btnJr}`}>Kabul-Afghanistan</Button>
@@ -606,13 +606,9 @@ const ProjectSummary = ({ match }) => {
                                     </tr>
                                 </tbody>
                             </table>
-                
                         </Paper>
-
                         </div>
-
                     </div>
-
                     <div className="col-md-3">
                         <Paper elevation={0} className="mb-3 p-4">
                             <div className="row ">

@@ -7,6 +7,8 @@ import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
+import Moment from 'react-moment';
+import * as moment from 'moment';
 //classes
 import UserExpiration from '../dashboard/routes/Crypto/UserExpiration';
 import CustomizedDialogs from "./CustomizedDialogs";
@@ -97,20 +99,40 @@ export const UserList=() => {
         />  
       
      <div className="row">
-     <div className="col-md-8"> 
+     <div className="col-md-10"> 
         {visibility ? (
           <span className="row justify-content-center">
             <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
           </span>
         ) : (
           <MaterialTable 
-            title="Positioning Actions Column Preview"
+            title= "User List"
+            
             columns={[
                 { title: 'Name', field: 'name' },
                 { title: 'Compnay Name', field: 'companyname' },
+                { title: 'City', field: 'geolocation.city' },
                 { title: 'Email', field: 'email'},
                 {title: 'Phone', field: 'phone'},
-                {title: 'Status', field: 'status'},
+                { title: 'Reg Date',  
+                      render:  (projects) =>{
+                          return  <Moment format="YYYY/MM/DD">
+                                      {projects.created_at}
+                                  </Moment>;
+                      }
+                  },
+
+                  { title: 'Exp Date',  
+                  render:  (projects) =>{
+                    var y = projects.expiration * 30;
+                    var x = moment(projects.created_at, "DD-MM-YYYY").add(y, 'days');
+                    //alert(projects.created_at)
+                    //alert(x)
+                      return  <Moment format="YYYY/MM/DD">
+                                  {x}
+                              </Moment>;
+                  }
+              },
                     
             ]}
             data={userdata}
@@ -143,7 +165,7 @@ export const UserList=() => {
             
           
         </div>
-          <div className="col-md-4">
+          <div className="col-md-2">
             <div className="" onClick={()=> setOpen(true)}>  
              <Widget styleName={`bg-blue darken-4 text-white`}>
               <div className="d-flex flex-row justify-content-center">
@@ -155,9 +177,7 @@ export const UserList=() => {
               </Widget>
             </div>  
             
-            <CardBox styleName="" >
-              <UserExpiration/>
-            </CardBox>
+          
           </div>
         </div>  
     </>

@@ -122,7 +122,7 @@ class Menu extends Component {
             </li>
           ) : ''}
 
-          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+          {JSON.parse(localStorage.getItem('UserData')).system == 1 || JSON.parse(localStorage.getItem('UserData')).system == 2? (
             <li className="nav-item">
               
                 <NavLink className="prepend-icon" to="/app/usermangment">

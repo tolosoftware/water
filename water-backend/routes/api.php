@@ -18,12 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::group(['prefix' => 'auth', 'middleware' => 'cors'], function() {
-//     Route::post('/login', [AuthController::class, 'login']);
-
-
-// });
-    
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
@@ -71,6 +65,10 @@ Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
 Route::resource('post', PostController::class);
 
 
+Route::get('userproject/{id}',[ProjectsController::class,'projectbyuser']);
+
+
+
 
 
 // Start Route for System Management of Water Solar
@@ -85,6 +83,7 @@ Route::get('pv-module', [DatasheetController::class,'pvModule']);
 Route::get('pump', [DatasheetController::class,'pump']);
 Route::get('controller', [DatasheetController::class,'controller']);
 Route::get('accessoriesdownload', [DatasheetController::class,'accessoriesdownload']);
+Route::get('solar', [DatasheetController::class,'solar']);
 
 
 

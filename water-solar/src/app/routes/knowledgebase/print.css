@@ -63,25 +63,16 @@ tfoot.report-footer {
   display: table-footer-group;
 } */
 
-/* @page {
-  size: A4;
-  margin: 0;
-} */
-@media print {
-  /* html, body {
-    width: 210mm;
-    height: 297mm;
-  } */
-  
-  .wrapperPump3{
-    min-height: 450px;
-  }
-  /* .wrapperStr1 {
-    min-height: 900px;
-  } */
+.customcolorindarkmode{
+  background-color: #fff;
+}
+.header-info button{
+  color: #000;
+}
+
 
   /* ... the rest of the rules ... */
-}
+
  
  /* tfoot.report-footer #page-number:after {
     content: "Page " counter(page) " of " counter(pages);
