@@ -110,14 +110,14 @@ const ProjectSummary = ({ match }) => {
 
                 <div className="row" >
 
-                    <div className="col-md-9 " >
+                    <div className="col-md-9" >
                     
                         <div ref={ref} >
                         {/* style={{width: 800,  background: 'blue'}} */}
-                        <Paper elevation={0} className="mb-3 p-4 project-summary customcolorindarkmode"  style={{backgroundColor: '#fff'}}>
+                        <Paper elevation={0} className="mb-3 p-4 project-summary" >
 
-                            <table className="report-container darkmodeColor" style={{width: '100%'}}>
-                                <thead class="report-header">
+                            <table class="report-container" style={{width: '100%'}}>
+                                <thead className="report-header">
                                     <tr>
                                         <th class="report-header-cell">
                                             <div class="header-info">
@@ -140,7 +140,7 @@ const ProjectSummary = ({ match }) => {
                                                             </ButtonGroup>
                                                         </span>
                                                         <span>
-                                                            <ButtonGroup vertical={true} className="header-info">
+                                                            <ButtonGroup vertical={true}>
                                                                 <Button className={`jr-btn ${classes.btnJr}`} >info@awm.solar</Button>
                                                                 <Button className={`jr-btn ${classes.btnJr}`}>+93 790303132</Button>
                                                                 <Button className={`jr-btn ${classes.btnJr}`}>Kabul-Afghanistan</Button>
@@ -155,8 +155,8 @@ const ProjectSummary = ({ match }) => {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tfoot class="report-footer">
-                                    <tr>
+                                <tfoot className="report-footer">
+                                    <tr className="page">
                                         <td class="report-footer-cell">
                                             <div class="footer-info" style={{paddingBottom: '30px'}}>
                                                 <Divider className="mb-2 mt-2" />
@@ -170,8 +170,10 @@ const ProjectSummary = ({ match }) => {
                                 <tbody class="report-content">
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="table-responsive-material mb-3" >
+                                            <section> 
+                                                <div class="wrapper wrapperPro1"> 
+                                            
+                                                    <div className="table-responsive-material mb-5" >
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
                                                             <tr className={classes.headTr}>
@@ -190,7 +192,7 @@ const ProjectSummary = ({ match }) => {
                                                         </tbody>
                                                     </Table>
                                                 </div>
-                                                <div className="table-responsive-material mb-3">
+                                                    <div className="table-responsive-material mb-5">
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
                                                             <tr className={classes.headTr}>
@@ -208,8 +210,9 @@ const ProjectSummary = ({ match }) => {
                                                         </tbody>
                                                     </Table>
                                                 </div>
-                                            
-                                                <div className="table-responsive-material mb-3">
+                                                </div>
+                                                <div class="wrapper wrapperPro2"> 
+                                                    <div className="table-responsive-material mb-5">
                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                         <thead className="table-head-sm th-border-b">
                                                             <tr className={classes.headTr}>
@@ -224,15 +227,14 @@ const ProjectSummary = ({ match }) => {
                                                         </tbody>
                                                     </Table>
                                                 </div>
-                                            
-                                            </div>
+                                                </div>    
+                                            </section> 
                                         </td>
                                     </tr>
                                      
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row">
+                                            <div className="row">
                                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12  col-xs-12">
                                                         <section className="mt-5">
                                                             <div class="wrapper wrapperOut">
@@ -354,25 +356,23 @@ const ProjectSummary = ({ match }) => {
                                                     </div>                                            
 
                                                 </div>
-                                            </div>
                                         </td>
                                     </tr>
 
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row">
-                                                    <strong style={{ marginTop: '40px', paddingBottom: '5px', marginBottom: '7px', marginLeft: '10px', width: '100%', marginRight: '135px', borderBottom: '2px solid #ced4da' }}>Submersible pump specification:</strong>
-                                                    <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                <section>
+                                                    <div class="wrapper wrapperPump1"> 
                                                         <div className="row">
-                                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12" style={{ paddingRight: '0px' }}>
+                                                            <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
+                                                                <h4>Submersible pump specification:</h4>
                                                                 <div className="table-responsive-material ">
                                                                     <Table className="default-table table-unbordered table table-sm table-hover">
                                                                         <thead className="table-head-sm th-border-b">
-                                                                            {/* <tr className={classes.headSolarS}>
+                                                                            <tr className={classes.headSolarS}>
                                                                                 <th className={classes.headThP}></th>
                                                                                 <th className={classes.headThP}></th>
-                                                                            </tr> */}
+                                                                            </tr>
                                                                         </thead>
                                                                         <tbody>
                                                                             <tr><td>Brand:</td><td>{pupm? (pupm[0]?.pump_brand?.name) : ""}</td></tr>
@@ -388,60 +388,60 @@ const ProjectSummary = ({ match }) => {
                                                                         </tbody>
                                                                     </Table>
                                                                 </div>
+                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`:"/images/graph.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', marginTop: '15px', maxHeight: '320px' }} alt="Responsive" />
                                                             </div>
-                                                            <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12" style={{ padding: '0px', paddingTop: '35px' }}>
-                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`:"/images/graph.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                                                <img src="/images/dimentaion.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '150px', paddingTop: '30px' }} alt="Responsive" />
+                                                            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12"> 
+                                                                <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`:"/images/pump.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', paddingTop: '50px' }} alt="Responsive" />
                                                             </div>
                                                         </div>
-
+                                                    
                                                     </div>
-                                                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12">
-                                                        <img src={pupm? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`:"/images/pump.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '460px' }} alt="Responsive" />
+                                                </section>
+                                                <section>
+                                                    <div class="wrapper wrapperPump3"> 
+                                                        <img src={pupm[0]?.diameter_file? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/diameter/${pupm[0]?.diameter_file}`:"/images/dimentaion.png"}  className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', paddingTop: '30px' }} alt="Responsive" />
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </section>
                                         </td>
                                     </tr>
                                     
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
                                                 <section> 
-                                                    <div className="row">
-                                                        <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
-                                                            <div className="table-responsive-material">
-                                                                <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                    <thead className="table-head-sm th-border-b">
-                                                                        <tr className={classes.headSolarS}>
-                                                                            <th>Solar specification:</th>
-                                                                            <th></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr><td style={{ width: '60%' }}>Brand:</td><td>{solarBrand ? solarBrand?.name:""}</td></tr>
-                                                                        <tr><td>Model:</td><td>{solarList? solarList?.solar_list_with_cable?.model:''}</td></tr>
-                                                                        <tr><td>Rated Maximum power (Pmax):</td><td>270Wp</td></tr>
-                                                                        <tr><td>Voltage at Maximum power(Vmp):</td><td>31.3V</td></tr>
-                                                                        <tr><td>Current at Maximum power(Imp):</td><td>8.79A</td></tr>
-                                                                        <tr><td>Open Circuit Voltage(VOC):</td><td>38.4V</td></tr>
-                                                                        <tr><td>Short Circuit Current (Isc):</td><td>9.31A</td></tr>
-                                                                        <tr><td>Mazimum System Voltage:</td><td>1000V</td></tr>
-                                                                        <tr><td>Size (mm):</td><td>1648*995*35mm</td></tr>
-                                                                        <tr><td>Weight:</td><td>18kg</td></tr>
-                                                                    </tbody>
-                                                                </Table>
+                                                    <div class="wrapper wrapperSolar1"> 
+                                                        <div className="row">
+                                                            <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
+                                                                <div className="table-responsive-material">
+                                                                    <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                        <thead className="table-head-sm th-border-b">
+                                                                            <tr className={classes.headSolarS}>
+                                                                                <th>Solar specification:</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr><td style={{ width: '60%' }}>Brand:</td><td>{solarBrand ? solarBrand?.name:""}</td></tr>
+                                                                            <tr><td>Model:</td><td>{solarList? solarList?.solar_list_with_cable?.model:''}</td></tr>
+                                                                            <tr><td>Rated Maximum power (Pmax):</td><td>270Wp</td></tr>
+                                                                            <tr><td>Voltage at Maximum power(Vmp):</td><td>31.3V</td></tr>
+                                                                            <tr><td>Current at Maximum power(Imp):</td><td>8.79A</td></tr>
+                                                                            <tr><td>Open Circuit Voltage(VOC):</td><td>38.4V</td></tr>
+                                                                            <tr><td>Short Circuit Current (Isc):</td><td>9.31A</td></tr>
+                                                                            <tr><td>Mazimum System Voltage:</td><td>1000V</td></tr>
+                                                                            <tr><td>Size (mm):</td><td>1648*995*35mm</td></tr>
+                                                                            <tr><td>Weight:</td><td>18kg</td></tr>
+                                                                        </tbody>
+                                                                    </Table>
+                                                                </div>
                                                             </div>
-                                                            
-
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
+                                                                <img src="/images/solar1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight:'500px' }} alt="Responsive" />
+                                                            </div>
                                                         </div>
-                                                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
-                                                            <img src="/images/solar1.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section>
+                                                    <div class="wrapper wrapperSolar3"> 
                                                         <div className="row">
                                                             <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 col-xs-12">
                                                                 <img src="/images/connector.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
@@ -453,162 +453,167 @@ const ProjectSummary = ({ match }) => {
                                                         </div>
                                                     </div>
                                                 </section>
-                                            </div>
                                         </td>
                                     </tr>
                                      
                                      
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row" style={{ marginTop: '20px' }}>
-                                                    {/* <strong>System Characteristic</strong> */}
-                                                    {/* <Divider className="mb-3 mt-3" /> */}
-                                                    <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12" style={{height: 'fit-content'}}>
-                                                        <div className="table-responsive-material ">
-                                                            <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                <thead className="table-head-sm th-border-b">
-                                                                    <tr className={classes.headSolarS}>
-                                                                        <th><strong>Controller specification:</strong></th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr><td style={{ width: '32%' }}>Brand:</td><td>{inverter? inverter?.invertor_brand?.name: ''}</td></tr>
-                                                                    <tr><td>Model:</td><td>{inverter? inverter?.model: ''}</td></tr>
-                                                                    <tr><td>Power:</td><td>{inverter? inverter?.power: ''}Kw</td></tr>
-                                                                    <tr><td>Hors power:</td><td>5.5HP</td></tr>
-                                                                    <tr><td>Current:</td><td>{inverter? inverter?.current: ''}A</td></tr>
-                                                                    <tr><td>Voltage:</td><td>{inverter? inverter?.voltage: ''}V</td></tr>
-                                                                    <tr><td>Weight:</td><td>26kg</td></tr>
-                                                                    <tr><td>Made in:</td><td>{inverter? inverter?.invertor_brand?.country: ''}</td></tr>
-                                                                </tbody>
-                                                            </Table>
+                                                <section> 
+                                                    <div class="wrapper wrapperInv1">
+                                                        <div className="row">
+                                                            <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12" style={{height: 'fit-content'}}>
+                                                                <div className="table-responsive-material ">
+                                                                    <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                        <thead className="table-head-sm th-border-b">
+                                                                            <tr className={classes.headSolarS}>
+                                                                                <th><strong>Controller specification:</strong></th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr><td style={{ width: '32%' }}>Brand:</td><td>{inverter? inverter?.invertor_brand?.name: ''}</td></tr>
+                                                                            <tr><td>Model:</td><td>{inverter? inverter?.model: ''}</td></tr>
+                                                                            <tr><td>Power:</td><td>{inverter? inverter?.power: ''}Kw</td></tr>
+                                                                            <tr><td>Hors power:</td><td>5.5HP</td></tr>
+                                                                            <tr><td>Current:</td><td>{inverter? inverter?.current: ''}A</td></tr>
+                                                                            <tr><td>Voltage:</td><td>{inverter? inverter?.voltage: ''}V</td></tr>
+                                                                            <tr><td>Weight:</td><td>26kg</td></tr>
+                                                                            <tr><td>Made in:</td><td>{inverter? inverter?.invertor_brand?.country: ''}</td></tr>
+                                                                        </tbody>
+                                                                    </Table>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12" style={{ paddingLeft: '0px'}}>
+                                                                <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`:"/images/controller.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '350px' }} alt="Responsive" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12" style={{ paddingLeft: '0px', paddingTop: '50px' }}>
-                                                        <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`:"/images/controller.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
+                                                </section>
+                                                <section>
+                                                    <div class="wrapper wrapperInv3"> 
+                                                        <div className="row">
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                                                <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`:"/images/controllerDimention.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px', maxHeight: '800px' }} alt="Responsive" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{height: 'fit-content', marginTop: '-130px'}}>
-                                                        <img src="/images/controllerConfig.png" className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                    </div> */}
-                                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12" style={{ marginTop: '-215px' }}>
-                                                        <img src={inverter? `${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`:"/images/controllerDimention.png"} className="img-thumbnail" style={{ border: '0px solid #dee2e6', padding: '0px' }} alt="Responsive" />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                </section>
                                         </td>
                                     </tr>
                                      
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row" style={{ marginTop: '20px' }}>
-                                                    {/* <strong>System Characteristic</strong> */}
-                                                    {/* <Divider className="mb-3 mt-3" /> */}
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
-                                                        <section>
-                                                            <div className="table-responsive-material">
-                                                                <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                    <thead className="table-head-sm th-border-b">
-                                                                        <tr className={classes.headSolarS}>
-                                                                            <th><strong>Strucuter specification:</strong></th>
-                                                                            <th></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr><td style={{ width: '32%' }}>Brand:</td><td>No</td></tr>
-                                                                        <tr><td>Model:</td><td>{projectDetails? projectDetails?.solar_base: ''}</td></tr>
-                                                                        <tr><td>Capacity:</td><td>4/6/8/10/12 panels</td></tr>
-                                                                    </tbody>
-                                                                </Table>
+                                                {/* <section> 
+                                                    <div class="wrapper wrapperStr1"> */}
+                                                        <div className="row" >
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" >
+                                                                    <div className="table-responsive-material">
+                                                                        <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                            <thead className="table-head-sm th-border-b">
+                                                                                <tr className={classes.headSolarS}>
+                                                                                    <th><strong>Strucuter specification:</strong></th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr><td style={{ width: '32%' }}>Brand:</td><td>No</td></tr>
+                                                                                <tr><td>Model:</td><td>{projectDetails? projectDetails?.solar_base: ''}</td></tr>
+                                                                                <tr><td>Capacity:</td><td>4/6/8/10/12 panels</td></tr>
+                                                                            </tbody>
+                                                                        </Table>
+                                                                    </div>
+                                                                    <img src={(projectDetails?.solar_base === "Ground Structure")?"/images/structure.png":"/images/manual.jpg"} className="img-thumbnail" style={{ border: '0px solid #dee2e6'}} alt="Responsive" />
+                                                                    <h4>Note: Image may be deferent with actual product as this is a graphic design.</h4>
                                                             </div>
-                                                            <img src={(projectDetails?.solar_base === "Ground Structure")?"/images/structure.png":"/images/manual.jpg"} className="img-thumbnail" style={{ border: '0px solid #dee2e6'}} alt="Responsive" />
-                                                            <h4>Note: Image may be deferent with actual product as this is a graphic design.</h4>
-                                                        </section>
-                                                    </div>
-                                                </div>                              
-                                            </div>
+                                                        </div>                              
+                                                    {/* </div>                              
+                                                </section> */}
                                         </td>
                                     </tr>
                                     
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell ">
-                                            <div className={`main`}>
-                                                <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
-                                                        <section> 
-                                                            <Divider className="mb-3 mt-3" />
-                                                            <span><strong>Wiring Diagram</strong></span>
-                                                            <img src={solarList? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`:"/images/wiring.png"} className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
-                                                        </section>
-                                                    </div>
-                                                </div>                          
-                                            </div>
+                                                {/* <section> 
+                                                    <div class="wrapper wrapperWir1"> */}
+                                                        <div className="row">
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
+                                                                    <span><strong>Wiring Diagram</strong></span>
+                                                                    <img src={solarList? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`:"/images/wiring.png"} className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
+                                                            </div>
+                                                        </div>                          
+                                                    {/* </div>                          
+                                                </section> */}
                                         </td>
                                     </tr>                                   
                                      
                                     <tr className="page" style={{}}>
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" style={{pageBreakAfter: 'always'}}>
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span><strong>System General layout</strong></span>
-                                                        <img src="/Layouts/system layout with details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
+                                                {/* <section> 
+                                                    <div class="wrapper wrapperSGL1"> */}
+                                                        <div className="row">
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                                                <span><strong>System General layout</strong></span>
+                                                                <img src="/Layouts/system layout with details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
 
-                                                        <div className="table-responsive-material">
-                                                            <Table className="default-table table-unbordered table table-sm table-hover">
-                                                                <thead className="table-head-sm th-border-b">
-                                                                    <tr className={classes.headSolarS}>
-                                                                        {/* <th><strong>Strucuter specification:</strong></th>
-                                                                        <th></th> */}
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr><td style={{width: '50%'}}><h5>1- Solar panels</h5></td><td style={{width: '50%'}}><h5>9- Garden</h5></td></tr>
-                                                                    <tr><td><h5>2- Pump controller</h5></td><td><h5>10- Swimming pool</h5></td></tr>
-                                                                    <tr><td><h5>3- Submersible</h5></td><td><h5>11- Water reservoir</h5></td></tr>
-                                                                    <tr><td><h5>4- well probe sensors</h5></td><td><h5>12- Flaut switch</h5></td></tr>
-                                                                    <tr><td><h5>5- Pump electrical cable</h5></td><td><h5>13- Flaut switch Ele. cable</h5></td></tr>
-                                                                    <tr><td><h5>6- Non return valve</h5></td><td><h5>14- Residential Houses</h5></td></tr>
-                                                                    <tr><td><h5>7- Pressure Gauge</h5></td><td><h5>15- Toilet</h5></td></tr>
-                                                                    <tr><td><h5>8- Water meter</h5></td> <td></td></tr>
-                                                                </tbody>
-                                                            </Table>
-                                                        </div>
-                                                    </div>
-                                                </div>                         
-                                            </div>
+                                                                <div className="table-responsive-material">
+                                                                    <Table className="default-table table-unbordered table table-sm table-hover">
+                                                                        <thead className="table-head-sm th-border-b">
+                                                                            <tr className={classes.headSolarS}>
+                                                                                {/* <th><strong>Strucuter specification:</strong></th>
+                                                                                <th></th> */}
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr><td style={{width: '50%'}}><h5>1- Solar panels</h5></td><td style={{width: '50%'}}><h5>9- Garden</h5></td></tr>
+                                                                            <tr><td><h5>2- Pump controller</h5></td><td><h5>10- Swimming pool</h5></td></tr>
+                                                                            <tr><td><h5>3- Submersible</h5></td><td><h5>11- Water reservoir</h5></td></tr>
+                                                                            <tr><td><h5>4- well probe sensors</h5></td><td><h5>12- Flaut switch</h5></td></tr>
+                                                                            <tr><td><h5>5- Pump electrical cable</h5></td><td><h5>13- Flaut switch Ele. cable</h5></td></tr>
+                                                                            <tr><td><h5>6- Non return valve</h5></td><td><h5>14- Residential Houses</h5></td></tr>
+                                                                            <tr><td><h5>7- Pressure Gauge</h5></td><td><h5>15- Toilet</h5></td></tr>
+                                                                            <tr><td><h5>8- Water meter</h5></td> <td></td></tr>
+                                                                        </tbody>
+                                                                    </Table>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    {/* </div>                          
+                                                </section>                         */}
                                         </td>
                                     </tr>
                                      
-                                    <tr className="page" style={{}}>
+                                    <tr className="page">
                                         <td class="report-content-cell">
-                                            <div className={`main`}>
-                                                <div className="row">
-                                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" >
-                                                        <Divider className="mb-3 mt-3" />
-                                                        <span> <strong>Sizing layout</strong></span>
-                                                        <img src="/Layouts/layout details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
-                                                    </div>
-                                                </div>                        
-                                            </div>
+                                                {/* <section> 
+                                                    <div class="wrapper wrapperSiz1"> */}
+                                                        <div className="row">
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12" >
+                                                                <span> <strong>Sizing layout</strong></span>
+                                                                <img src="/Layouts/layout details1.jpg" className="img-thumbnail " alt="Responsive" style={{ border: 'none' }} />
+                                                            </div>
+                                                        </div> 
+                                                    {/* </div>                          
+                                                </section>                        */}
                                         </td>
                                     </tr>
-                                     
+{/*                                      
                                     <tr>
                                         <td class="report-content-cell">
                                             <div className={`main`}>
                                         
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </table>
+                
                         </Paper>
+
                         </div>
+
                     </div>
+
                     <div className="col-md-3">
                         <Paper elevation={0} className="mb-3 p-4">
                             <div className="row ">

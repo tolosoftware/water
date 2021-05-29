@@ -1,8 +1,9 @@
-table.report-container{
+/* table.report-container{
   page-break-after: always;
 }
-tr.report-page-break .report-content-cell {
-  page-break-before: always;
+#report-page-break {
+  page-break-after: always !important;
+  break-after: page;
 }
 thead.report-header{
   display: table-header-group;
@@ -10,34 +11,57 @@ thead.report-header{
 tfoot.report-footer {
   display: table-footer-group;
 }
-BODY tr.pageBreak{
-  counter-reset: page;      /* Create a page counter scope */
+BODY #report-page-break{
+  counter-reset: page;  
 }
 tfoot.report-footer #page-number:after {
   content: " Page " counter(page, decimal) ". ";
-  counter-increment: page;  /* Add 1 to page */
+  counter-increment: page;  
 }
-/* .pageBreak {
-  page-break-before: always;
-}
-tfoot.report-footer #page-number:after {
-  content: "Page " counter(page);
-  counter-increment: page;
-} */
-
 @media print  {
   body {
   	font-size: 13pt;
   }
-  
-  main {
-    float: none !important;
-    margin: 0 2% 0 18% !important;
-    width: 80% !important;
-  }
-
-  
+  #report-page-break {
+    page-break-after: always !important;
+    break-after: page;
+  }  
 }
+
+@media all {
+  .page-break {
+    display: none;
+  }
+}
+
+@media print {
+  html, body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+@media print {
+  .page-break {
+    margin-top: 1rem;
+    display: block;
+    page-break-before: auto;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 20mm;
+} */
+
+/* 
+thead.report-header{
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-footer-group;
+} */
 
 .customcolorindarkmode{
   background-color: #fff;
@@ -47,3 +71,26 @@ tfoot.report-footer #page-number:after {
 }
 
 
+  /* ... the rest of the rules ... */
+
+ 
+ /* tfoot.report-footer #page-number:after {
+    content: "Page " counter(page) " of " counter(pages);
+}
+thead.report-header{
+  display: table-header-group;
+}
+tfoot.report-footer {
+  display: table-footer-group;
+}
+.page {
+  margin: 0;
+  border: initial;
+  border-radius: initial;
+  width: initial;
+  min-height: initial;
+  box-shadow: initial;
+  background: initial; 
+  height: 100%;
+  page-break-after: always;
+} */

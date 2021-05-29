@@ -10,12 +10,15 @@ import Spinner from 'react-spinner-material';
 import Moment from 'react-moment';
 import * as moment from 'moment';
 //classes
-
+import UserExpiration from '../dashboard/routes/Crypto/UserExpiration';
 import CustomizedDialogs from "./CustomizedDialogs";
+import BrandManagement from "./BrandManagement";
 export const UserList=() => {
   const [visibility,setVisibility]= useState(false);
   const [open,setOpen]=React.useState(false);  
+  const [openB,setOpenB]=React.useState(false);  
   const [userdata,setUserdata]= useState([]);
+  const [userID,setUserID]= useState('');
   useEffect(() => {
     const getUserdata=async () => {
       setVisibility(true);
@@ -70,6 +73,11 @@ export const UserList=() => {
      
   };
   const [userDataOject, setUserDataObject]= useState([]);
+  const editBrand = (id) => {
+    setUserID(id);
+    setOpenB(true);
+    console.log('Manage brand ', id);
+  }
   const editUser = (data) => {
     setUserDataObject(data);
     setOpen(true);
@@ -83,6 +91,11 @@ export const UserList=() => {
           setOpen={setOpen}
           userDataOject={userDataOject}
           setUserDataObject={setUserDataObject}
+        />  
+        <BrandManagement
+          open={openB}
+          setOpen={setOpenB}
+          userId={userID}
         />  
       
      <div className="row">
@@ -126,17 +139,23 @@ export const UserList=() => {
             actions={[
               rowData => ({
                 disabled: (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
+                icon: 'manage_accounts',
+                tooltip: 'Manage Brand',
+                onClick: (event, rowData) =>  editBrand(rowData.id)
+              }),
+              rowData => ({
+                disabled: (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
                 icon: 'edit',
                 tooltip: 'Edit User',
                 onClick: (event, rowData) =>  editUser(rowData)
-                }),
-                rowData => ({ 
-                  disabled: (rowData['system']===1)? true : (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
-                  icon: 'delete',
-                  color:'primary',  
-                  tooltip: 'Delete User',
-                  onClick: (event, rowData) => deletUser(rowData.id),
-                })
+              }),
+              rowData => ({ 
+                disabled: (rowData['system']===1)? true : (JSON.parse(localStorage.getItem('UserData')).system===0? true : false),
+                icon: 'delete',
+                color:'primary',  
+                tooltip: 'Delete User',
+                onClick: (event, rowData) => deletUser(rowData.id),
+              })
             ]}
             options={{
                 actionsColumnIndex: -1

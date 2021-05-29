@@ -32,6 +32,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Projects::class, 'user_id');
     }
+    public function userBrandPRole()
+    {
+        return $this->hasMany(UserBrandRole::class, 'pump_id');
+    }
+    public function userBrandSRole()
+    {
+        return $this->hasMany(UserBrandRole::class, 'solar_id');
+    }
+    public function userBrandIRole()
+    {
+        return $this->hasMany(UserBrandRole::class, 'invertor_id');
+    }
     
     /**
      * The attributes that should be hidden for arrays.

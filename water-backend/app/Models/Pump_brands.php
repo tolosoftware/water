@@ -18,5 +18,9 @@ class Pump_brands extends Model
     {
         return $this->hasMany(Pump_list::class, 'pump_brand_id');
     }
+    public function userBrandRole()
+    {
+        return $this->hasMany(UserBrandRole::class, 'pump_id');
+    }
 
 }

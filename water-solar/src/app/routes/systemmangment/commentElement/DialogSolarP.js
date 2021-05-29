@@ -144,6 +144,8 @@ export default function DialogSolarP(props){
     let imageFile = '';
     const [dataSheet, setDataSheet] = useState({ oldImage: '', filePath: 'brand/solar/solar_list/data_sheet/', btnText: 'Data Sheet' });
     let dataSheetFile = '';
+    const [diameter, setDiameter] = useState({ oldImage: '', filePath: 'brand/solar/solar_list/diameter/', btnText: 'Diameter' });
+    let diameterFile = '';
   
   const classes = useStyles();
   const handleCloseS = () => {
@@ -161,6 +163,10 @@ export default function DialogSolarP(props){
     dataSheetFile = data;
     // console.log('dataSheetFile file', dataSheetFile);
   };
+  const eventhandlerDia = data => {
+    diameterFile = data;
+    // console.log('dataSheetFile file', dataSheetFile);
+  };
   const emptyForm = () =>{
     setSolarListObject([]);
     setSolarType("Mono");
@@ -168,6 +174,7 @@ export default function DialogSolarP(props){
     // setDescription("");
     setImage({ ...image, oldImage: ''});
     setDataSheet({ ...dataSheet, oldImage: ''});
+    setDiameter({ ...diameter, oldImage: '' });
   }
 
   useEffect(() => {
@@ -193,6 +200,7 @@ export default function DialogSolarP(props){
     // setDescription(solarListObject.discription);
     setImage({ ...image, oldImage: solarListObject.image?solarListObject.image:''});
     setDataSheet({ ...dataSheet, oldImage: solarListObject.data_sheet?solarListObject.data_sheet: ''});
+    setDiameter({ ...diameter, oldImage: solarListObject.diameter ? solarListObject.diameter : '' });
 
     if(props.solarListObject?.id){
       reset({
@@ -219,6 +227,7 @@ export default function DialogSolarP(props){
     data['cableType'] = cableType;
     data['imageFile'] = imageFile;
     data['dataSheetFile'] = dataSheetFile;
+    data['diameterFile'] = diameterFile;
     data['serial_no'] = uuidv4();
     axios.post('api/solarList', data)
     .then(res => {
@@ -240,6 +249,7 @@ export default function DialogSolarP(props){
     data['cableType'] = cableType;
     data['imageFile'] = imageFile;
     data['dataSheetFile'] = dataSheetFile;
+    data['diameterFile'] = diameterFile;
     data['serial_no'] = uuidv4();
 
     // console.log(data);
@@ -409,6 +419,9 @@ const getCabletype=async () => {
                             </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
                               <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
+                            </div>
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
+                              <CustomDropzone formData={diameter} onChange={eventhandlerDia.bind(this)} />
                             </div>
                         </div>
                    

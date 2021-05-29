@@ -208,14 +208,19 @@ class ProjectsController extends Controller
             $cable = Cable_type::where('id',$selectedpump[1]->cable_type_id)->get()->first();
         }
         $solar = [];
+        $inverter = [];
         $hrEnergy = [];
         $energy = [];
         $hrOutputP = [];
         $monthlyHrOutput = [];
         if($selectedpump[0]->power != null){
-            // $pumps = Solar_list::where('solar_brand_id', $request['solarvalue'])->with(['solar_config','solar_brand'])->get();
+            $inverter = InvertorList::where('invertor_brand_id',$request['invertorvalue'])->with(['inverter_config', 'invertor_brand'])
+            ->whereHas('inverter_config', function($query) use ($selectedpump){
+                return $query->where('power', $selectedpump[0]->power);
+            })
+            ->get()->first();
+
             $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])
-            // ->where('power', $request['solarSelectWatt'])->where('solar_brand_id', $request['solarvalue'])
             ->whereHas('solar_list', function($query) use ($request){
                 return $query->where('id', $request['solarSelectWatt'])
                 ->where('solar_brand_id', $request['solarvalue']);
@@ -234,7 +239,7 @@ class ProjectsController extends Controller
         }
 
          return response()->json([
-            'pupm'=> $selectedpump , 'solar'=>$solar, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput
+            'pupm'=> $selectedpump , 'solar'=>$solar, 'inverter'=>$inverter, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput
         ]);
     }
 
@@ -312,11 +317,23 @@ class ProjectsController extends Controller
       
     }
 
-    public function gitprojectdata(){
+    public function gitprojectdata($id){
         $geolocation = Geolocation::distinct()->count('country');
-        $pumpbrand = Pump_brands::all();
-        $solarbrand = Solar_brands::all();
-        $invertorbrand = InvertorBrand::all();
+        $pumpbrand = Pump_brands::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
+        $solarbrand = Solar_brands::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
+        $invertorbrand = InvertorBrand::with('userBrandRole')
+            ->whereHas('userBrandRole', function($query) use ($id){
+                return $query->where('user_id', $id)->where('checked', true);
+            })
+            ->get();
         $accessories = Accessories_list::with('uom')->get();
         $country = DB::table('geolocations')
             ->select('country')
@@ -482,7 +499,8 @@ class ProjectsController extends Controller
         if($solar['solarListWithCable']->solar_brand_id != null){
             $solarbrand = Solar_brands::where('id',$solar['solarListWithCable']->solar_brand_id)->get()->first();
         }
-
+        $projectDate= $project[0]->created_at->format('l\\, j\\,F\\,Y');
+        $project[0]['projectDate']= $projectDate;
         return response()->json([
             'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ]);

@@ -1,0 +1,106 @@
+section {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+  
+  .wrapper {
+    $border-color: #fff;
+    border: 2px solid $border-color;
+    border-left: 40px solid $border-color;
+    min-height: 260px;
+    position: relative;
+    padding: 15px;
+    padding-left: 0px;
+    color: rgba(black, 0.5);
+    font-size: small;
+    display: inline-block;
+    }
+    .wrapperOut {
+      width: 100%;
+    }
+    .wrapperIr {
+      width: 50%;
+    }
+    .wrapperEn {
+      width: 50%;
+    }
+    .wrapperPump1 {
+      // border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 600px;
+      max-height: 600px;
+    }
+    .wrapperPump2 {
+      // border-left: 0px solid #fff;
+      width: 20%;
+      min-height: 400px;
+      max-height: 400px;
+    }
+    .wrapperPump3{
+      // border-left: 0px solid #fff;
+      width: 100%;
+      max-height: 450px;
+      min-height: 450px;
+    }
+    .wrapperSolar1, .wrapperSolar3 {
+      // border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 500px;
+      max-height: 500px;
+    }
+    .wrapperInv1{
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 385px;
+      max-height: 385px;
+    }
+    .wrapperInv3 {
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 700px;
+      max-height: 700px;
+    }
+    .wrapperStr1 {
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 700px;
+    }
+    .wrapperWir1 {
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 700px;
+    }
+    .wrapperSGL1 {
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 800px;
+    }
+    .wrapperSiz1 {
+      border-left: 0px solid #fff;
+      width: 100%;
+      min-height: 900px;
+    }
+    .wrapperPro1,  .wrapperPro2{
+      border-left: 0px solid #fff;
+      width: 100%;
+      max-height: 500px;
+    }
+    .wrapper h3 {
+        font-size: 1rem;
+        font-weight: 400;
+        // letter-spacing: 3px;
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        margin-left: -30px;
+       transform: rotate(270deg);
+       transform-origin: 0 0;
+    }
+    .wrapperEn h3, .wrapperOut h3 {
+        margin-bottom: 5rem;
+    }
+    .wrapperIr h3 {
+        margin-bottom: 3rem;
+    }
+   

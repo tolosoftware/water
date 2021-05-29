@@ -17,6 +17,7 @@ use App\Models\Solar_list;
 use App\Models\InvertorList;
 use App\Models\Projects;
 use App\Models\Geolocation;
+use App\Models\UserBrandRole;
 Use \Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,66 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function getUserBrand($id){
+        $pumpBrand = Pump_brands::all();
+        foreach ($pumpBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('pump_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'pump_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
+
+        $solarBrand = Solar_brands::all();
+        foreach ($solarBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('solar_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'solar_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
+
+        $inverterBrand = InvertorBrand::all();
+        foreach ($inverterBrand as $key => $value) {
+            $userBrandRole = UserBrandRole::where('user_id', $id)->where('invertor_id', $value->id)->get();
+            if(empty($userBrandRole[0])){
+                $userBrandRole[0] = UserBrandRole::create([
+                    'checked' => 0,
+                    'user_id' => $id,
+                    'invertor_id'=> $value->id,
+                ]);
+            }
+            $value['user_brand_role'] = $userBrandRole;
+        }
+        $data = [
+            'pumpBrand' => $pumpBrand,
+            'solarBrand' => $solarBrand,
+            'inverterBrand' => $inverterBrand,
+        ];
+
+        return $data;
+    }
+    public function postUserBrand(Request $request){
+        foreach ($request['pumpBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('pump_id', $value['user_brand_role'][0]['pump_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        foreach ($request['solarBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('solar_id', $value['user_brand_role'][0]['solar_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        foreach ($request['inverterBrand'] as $key => $value) {
+            UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('invertor_id', $value['user_brand_role'][0]['invertor_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
+        }
+        // return $request;
+    }
+
     public function getexpiration($id){
         $user = User::find($id);
 
@@ -100,53 +161,39 @@ class UserController extends Controller
         $photoname = null;
         if($request['companyLogo']){
             $photoname = time().'1.' . explode('/', explode(':', substr($request->companyLogo, 0, strpos($request->companyLogo, ';')))[1])[1];
-            \Image::make($request->companyLogo)->save(public_path('temp/').$photoname);
+            \Image::make($request->companyLogo)->save(public_path('user/img/').$photoname);
             $request->merge(['photo' => $photoname]);
         }
-        $user = [
-            'name'=> $request['name'],
-            'companyname'=> $request['companyname'],
-            'logo'=> $photoname,
-            'email'=> $request['email'],
-            'phone'=> $request['phone'],
-            'website'=> $request['website'],
-        ];
+        User::create([
+            'name' => $request['name'],
+            'system' => 0,
+            'companyname' => $request['companyname'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'website' => $request['website'],
+            'userimage' => $photoname,
+            'geolocation_id' => $request['city'],
+        ]);
+        $user = [];
+        $date = Carbon::now();
         $user['name'] = $request['name'];
+        $user['date'] = $date->format('l\\, j\\,F\\,Y h:i:s A');
         $user['companyname'] = $request['companyname'];
         $user['phone'] = $request['phone'];
         $user['email'] = $request['email'];
         $user['logo'] = $photoname;
         $user['city'] = Geolocation::findOrFail($request['city'])->city;
         $user['website'] = $request['website'];
-        // $title = "newsletter subscriber";
-
-        // $content = "This is a new newsletter subscriber.";
-    
-        
-        // Mail::send('mail.sendMail', ['title' => $title, 'content' => $content], function ($message) use ($user)
-        // {
-    
-        //     $message->from($request['email'], 'Admin');
-    
-        //     $message->to('mail@tolosoft.co');
-    
-            
-        //     //Add a subject
-        //     $message->subject("Newsletter new subscriber");
-    
-        // });
     
         Mail::send('mail.sendMail', $user, function ($message) use ($user) {
             $message->from($user['email'], $user['companyname']);
-            $message->to('mail@tolosoft.co');
+            $message->to('mail@awm.solar');
             $message->subject('Sign Up Request');
             //Attach file
-            $message->attach(public_path('temp/').$user['logo']);
+            $message->attach(public_path('user/img/').$user['logo']);
         });
         return response()->json(['message' => 'Request completed']);
     }
-
- 
 
     public function userCity(){
         return Geolocation::all()->unique('city');
@@ -198,7 +245,6 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $photoname = 0;
             $id = $request['id'];
             if($request['userimage'] != 'oldImage'){

@@ -239,7 +239,7 @@ export default function CustomizedDialogs(props) {
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           User Registration Form
         </DialogTitle>
-        <form onSubmit={handleSubmit(onSubmit)}>      
+        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>      
          <DialogContent dividers>
           <div className="row"> 
              <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12">
@@ -256,11 +256,11 @@ export default function CustomizedDialogs(props) {
               </div>
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                 <TextField id="email" className="form-control" label="Email" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
+                 <TextField id="email" className="form-control" label="Email" autoComplete="off" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
                 </div>
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   {userDataOject?.id ? (
-                  <TextField name="new_password" className="form-control" label='New Password' size="small" type="password" variant="outlined" inputRef={register({minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
+                  <TextField name="new_password" className="form-control" autoComplete="off" label='New Password' size="small" type="password" variant="outlined" inputRef={register({minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
                   ):  (
                   <TextField name="password" className="form-control" label='Password' size="small" type="password" variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
                   )}
@@ -288,7 +288,7 @@ export default function CustomizedDialogs(props) {
               </div>
 
               <div className="row mb-5">
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
+                <div className="col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}  >City</InputLabel>
                     <Select  native
@@ -314,7 +314,7 @@ export default function CustomizedDialogs(props) {
                     {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
+                <div className="col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-age-native-simple" error={errors.expiration && true}  >Expiration</InputLabel>
                     <Select  native
@@ -339,13 +339,14 @@ export default function CustomizedDialogs(props) {
                     {errors.expiration && <FormHelperText error={errors.expiration && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
                     {/* <FormLabel component="legend" size="small">Status</FormLabel> */}
                   <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
-                      name="status" defaultValue={(userDataOject?.status)? userDataOject?.status : 'male'} >
-                    <FormControlLabel value="male"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
-                    <FormControlLabel value="female"  inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
+                      name="status" defaultValue={(userDataOject?.status)? userDataOject?.status : 'pending'} >
+                    <FormControlLabel value="pending"  inputRef={register} control={<Radio color="primary"/>} label="Pending"/>
+                    <FormControlLabel value="active"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
+                    <FormControlLabel value="inactive"  inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
                   </RadioGroup>
                  </FormControl>               
                 </div>    

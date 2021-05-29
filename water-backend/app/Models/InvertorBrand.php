@@ -22,4 +22,8 @@ class InvertorBrand extends Model
     {
         return $this->hasMany(InvertorList::class, 'invertor_brand_id')->with('inverter_config');
     }
+    public function userBrandRole()
+    {
+        return $this->hasMany(UserBrandRole::class, 'invertor_id');
+    }
 }

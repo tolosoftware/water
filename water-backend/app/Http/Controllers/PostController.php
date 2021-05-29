@@ -15,7 +15,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::first();
+        $post=Post::first();
+        $post['date']= $post->updated_at->format('l\\, j\\,F\\,Y h:i:s A');
+        return $post;
     }
 
     /**

@@ -25,6 +25,8 @@ Route::resource('user', UserController::class);
 Route::get('userproject/{id}',[UserController::class,'getUserProject']);
 Route::get('provenceUser',[UserController::class,'provenceUser']);
 Route::get('expir/{id}',[UserController::class,'getexpiration']);
+Route::get('userBrand/{id}',[UserController::class,'getUserBrand']);
+Route::post('postUserBrand',[UserController::class,'postUserBrand']);
 
 // Dashboard Route
 Route::get('adminDashboard',[UserController::class,'adminDashboard']);
@@ -53,7 +55,7 @@ Route::resource('invertorListSetting', ConfigInvertorController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
 //project 
-Route::get('gitprojectdata', [ProjectsController::class,'gitprojectdata']);
+Route::get('gitprojectdata/{id}', [ProjectsController::class,'gitprojectdata']);
 Route::resource('project', ProjectsController::class);
 Route::get('getSolarWatt/{id}',[ProjectsController::class,'getSolarWatt']);
 Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
