@@ -158,7 +158,7 @@ const deletAccessory=(id) => {
         <MaterialTable 
                 title="Dynamic list you can Edit and Delete the specific accessory"
                 columns={[
-                    { title: 'ID', field: 'id' },
+                    { title: 'ID', field: 'index', render: (item, index) => index+1 },
                     { title: 'Name', field: 'name' },
                     { title: 'Model', field: 'model' },
                     { title: 'Uom', field: 'uom_name' },
