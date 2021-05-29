@@ -534,3 +534,10 @@ padding: 0px 15px 10px;
     background-color: transparent;
     border: 2px dashed #3f51b5;
 }
+.system-section thead tr th{
+    background: white;
+    opacity: 1;
+    position: sticky;
+    top: 0;
+    z-index: 99999;
+}

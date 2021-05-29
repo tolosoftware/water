@@ -16,7 +16,11 @@ class AccessoriesListController extends Controller
      */
     public function index()
     {
-        return Accessories_list::all();
+        $accessoriesList = Accessories_list::all();
+        foreach ($accessoriesList as $key => $value) {
+            $value['index'] = $key+1;
+        }
+        return $accessoriesList;
     }
 
     /**

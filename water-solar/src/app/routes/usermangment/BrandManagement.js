@@ -13,7 +13,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+// import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Spinner from 'react-spinner-material';
 
@@ -83,7 +83,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function BrandManagement(props) {
-  const { register, handleSubmit, errors } = useForm(); // initialize the hook
+  const { handleSubmit } = useForm(); // initialize the hook
   const { open, setOpen, userId } = props;
   const [visibility,setVisibility]= useState(false);
   const [pumpBrand,setPumpBrand]= useState([]);
@@ -95,15 +95,8 @@ export default function BrandManagement(props) {
   };
   //drop down
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+   
+ 
   const handleChangeP = (id, value) => {
     const newPumpBrand = pumpBrand.map(i => {
       if(i.id === id){
@@ -131,8 +124,6 @@ export default function BrandManagement(props) {
     })
     setInverterBrand(newBrand);
   };
-
-  const { gilad, jason, antoine } = state;
 
   useEffect(() => {
     const getUserBrand=async (userId) => {
@@ -216,7 +207,7 @@ export default function BrandManagement(props) {
                           />
                         )}
                       </FormGroup>
-                      <FormHelperText>Be careful</FormHelperText>
+                      {/* <FormHelperText>Be careful</FormHelperText> */}
                     </FormControl>
                   </div>
                 </div>
@@ -234,7 +225,7 @@ export default function BrandManagement(props) {
                         )}
                        
                       </FormGroup>
-                      <FormHelperText>Be careful</FormHelperText>
+                      {/* <FormHelperText>Be careful</FormHelperText> */}
                     </FormControl>
                   </div>
                 </div>
@@ -252,7 +243,7 @@ export default function BrandManagement(props) {
                         )}
                         
                       </FormGroup>
-                      <FormHelperText>Be careful</FormHelperText>
+                      {/* <FormHelperText>Be careful</FormHelperText> */}
                     </FormControl>
                   </div>
                 </div>

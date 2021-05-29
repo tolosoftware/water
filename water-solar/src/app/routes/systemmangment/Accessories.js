@@ -82,6 +82,11 @@ function Accessories() {
   // get, delete and edit List list
 // Delete functions for geo location
 const [accessoriesList,setAccessoriesList]= useState([]);
+// const [accIndex,setAccIndex]= useState(1);
+// const countIndex = () => {
+//   setAccIndex(accIndex+1);
+//   return accIndex;
+// };
 useEffect(() => {
   getAccessories();
 },[])
@@ -158,7 +163,7 @@ const deletAccessory=(id) => {
         <MaterialTable 
                 title="Dynamic list you can Edit and Delete the specific accessory"
                 columns={[
-                    { title: 'ID', field: 'id'/*, render: (item, index) => index+1*/ },
+                    { title: 'ID', field: 'index'},
                     { title: 'Name', field: 'name' },
                     { title: 'Model', field: 'model' },
                     { title: 'Uom', field: 'uom_name' },
