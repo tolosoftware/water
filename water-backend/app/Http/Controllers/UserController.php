@@ -283,6 +283,7 @@ class UserController extends Controller
                     'website' => $request['website'],
                     'userimage' => $photoname,
                     'geolocation_id' => $request['city'],
+                    'belongto' => $request['belongto'],
                 ]);
             }
 

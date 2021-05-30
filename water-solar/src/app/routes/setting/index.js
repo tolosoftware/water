@@ -14,6 +14,7 @@ const Setting = ({match}) => (
         </div>
 
 
+        {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
         <div className="row seeting-table-style">
 
             <div className="col-md-4">
@@ -26,6 +27,7 @@ const Setting = ({match}) => (
               <Post />
             </div>
         </div>
+         ) : ''}
   </div>
 );
 

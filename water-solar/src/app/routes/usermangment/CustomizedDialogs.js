@@ -268,23 +268,14 @@ export default function CustomizedDialogs(props) {
               </div>
 
               <div className="row mb-5">
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register()} error={errors.website && true} helperText={errors.website && '*required'}/>
                 </div>
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="phone" defaultValue={userDataOject?.phone} className="form-control" label="Phone"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.phone && true} helperText={errors.phone && '*required'}/>
                 </div>
-                <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 pr-0">
-                   <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
-                   
-                  <RadioGroup size="small" className="d-flex flex-row" aria-label="type"
-                      name="type" defaultValue={(userDataOject?.system == 0 || userDataOject?.system==2 )? userDataOject?.system : 'admin'} >
-                    <FormControlLabel value="0"  inputRef={register} control={<Radio color="primary"/>} label="User"/>
-                    <FormControlLabel value="2"  inputRef={register} control={<Radio color="primary"/>} label="Moderator"/>
-                  </RadioGroup>
 
-                 </FormControl>               
-                </div>        
+                     
               </div>
 
               <div className="row mb-5">
@@ -351,6 +342,28 @@ export default function CustomizedDialogs(props) {
                  </FormControl>               
                 </div>    
               </div> 
+              <div className="row">
+
+                      
+              <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
+                <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
+                  <RadioGroup size="small" className="d-flex flex-row" aria-label="type"
+                      name="belongto" defaultValue={(userDataOject?.system == 0 || userDataOject?.system==2 )? userDataOject?.system : 'admin'} >
+                    <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana Solar"/>
+                    <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan Solar"/>
+                  </RadioGroup>
+                 </FormControl>               
+                </div>  
+
+              <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
+                  <RadioGroup size="small" className="d-flex flex-row " aria-label="type" 
+                      name="type" defaultValue={(userDataOject?.system == 0 || userDataOject?.system==2 )? userDataOject?.system : 'admin'}  >
+                    <FormControlLabel value="0"  inputRef={register} control={<Radio color="primary"/>} label="Normal User" />
+                    <FormControlLabel value="2"  inputRef={register} control={<Radio color="primary"/>} label="Moderator" />
+                  </RadioGroup>
+                </div>  
+
+              </div>
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">
              <section className="container">
@@ -368,9 +381,6 @@ export default function CustomizedDialogs(props) {
               </section>
             </div>
           </div>                 
-
-                 
-     
         </DialogContent>
         <DialogActions>
           <Button  type="submit" color="primary" variant="contained" className="pull-right">
