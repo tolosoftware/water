@@ -131,14 +131,14 @@ class Menu extends Component {
             </li>
            ) : ''}
         
-          {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+         
             
           <li className="nav-item">
           <NavLink className="prepend-icon" to="/app/setting">
             <span className="nav-text">Setting</span>
           </NavLink>
            </li>
-          ) : ''}
+         
 
 
         </ul>

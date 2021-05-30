@@ -153,7 +153,7 @@ class SidenavContent extends Component {
           ) : ''}
 
         
-       {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+{JSON.parse(localStorage.getItem('UserData')).system == 1 || JSON.parse(localStorage.getItem('UserData')).system == 2? (
             <li className="menu no-arrow">
             <NavLink to="/app/usermangment">
               <i className="zmdi zmdi-account-add zmdi-hc-fw"/>
@@ -162,15 +162,14 @@ class SidenavContent extends Component {
             </li>
           ) : ''}
 
-      {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
+   
              <li className="menu no-arrow">
              <NavLink to="/app/setting">
                <i className="zmdi zmdi-wrench zmdi-hc-fw"/>
                <span className="nav-text">Setting</span>
              </NavLink>
            </li>
-          ) : ''}
-
+          
         </ul>
       </CustomScrollbars>
     );
