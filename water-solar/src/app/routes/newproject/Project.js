@@ -622,7 +622,7 @@ export default function Project() {
     var id = JSON.parse(localStorage.getItem('UserData')).id;
     axios.get("api/gitprojectdata/"+id)
       .then((res) => {
-        // console.log(res.data)
+        console.log(res.data)
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setSolar(res.data.solarbrand);
@@ -676,14 +676,14 @@ export default function Project() {
     if (wichfunction === "focus") {
       setFoucus(true);
       setLoadImg(true);
-      SetAccImgPath(input.image);
+      SetAccImgPath(input?.image);
       setLoadImg(false);
     }
 
     if (wichfunction === "hover") {
       if (!foucus) {
         setLoadImg(true);
-        SetAccImgPath(input.image);
+        SetAccImgPath(input?.image);
         setLoadImg(false);
       }
     }
@@ -693,13 +693,13 @@ export default function Project() {
     if (wichfunction === "fout") {
       setFoucus(false);
       setLoadImg(true);
-      SetAccImgPath(input.image);
+      SetAccImgPath(input?.image);
       setLoadImg(false);
     }
 
     if (!foucus) {
       setLoadImg(true);
-      SetAccImgPath(input.image);
+      SetAccImgPath(input?.image);
       setLoadImg(false);
     }
   };

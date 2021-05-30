@@ -751,9 +751,7 @@ const handleChangeField = async ({ target: { name, value } }) => {
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenS(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
-        <span className="row justify-content-center">
-                  <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-                </span> 
+        
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
@@ -767,7 +765,23 @@ const handleChangeField = async ({ target: { name, value } }) => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            {visibility?
+                <tbody>
+                   <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <span className="">
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                      </span> 
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              :
+              <tbody>
             {solarLists.map((solarList, index) => {
               return <tr key={index}>
                 <td>{index+1}</td>
@@ -804,6 +818,7 @@ const handleChangeField = async ({ target: { name, value } }) => {
               </tr>
             })}
             </tbody>
+            }
           </Table>
         </div>
         <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenS(true)}>

@@ -211,6 +211,8 @@ const Invertor = () => {
   const [value, setValue] = React.useState(0);
   const [invertorBrands, setInvertorBrands] = useState([]);
   const [invertorLists, setInvertorLists] = useState([])
+  const [search, setSearch] = useState('');
+
   const [brand, setBrand] = React.useState("");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
@@ -764,12 +766,11 @@ const handleSubmit = (e) => {
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> List of Inverter</h4>
+          <TextField id="search" name='search' size="small" value={search} onChange={e => setSearch(e.target.value)} style={{marginLeft: 'auto'}} label="Search" variant="outlined" />
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>
-        <span className="row justify-content-center">
-          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-        </span>
+        
         <div className="table-responsive-material">
           <Table className="default-table table-unbordered table table-sm table-hover">
             <thead className="table-head-sm th-border-b">
@@ -785,8 +786,33 @@ const handleSubmit = (e) => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-            {invertorLists.map((invertor, index) => {
+            {visibility?
+                <tbody>
+                   <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <span className="row justify-content-center">
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
+                      </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    {/* <td></td> */}
+                    <td></td>
+                  </tr>
+                </tbody>
+              :
+              <tbody>
+            {invertorLists.filter((val)=>
+                  {if(search==''){
+                    return val
+                  }else if((val.model.includes(search) || val.voltage.includes(search) || val.current.includes(search) || val.power.includes(search))){
+                     return val 
+                  }}
+              ).map((invertor, index) => {
               return <tr key={index}>
                 <td>{index+1}</td>
                 <td>
@@ -823,6 +849,7 @@ const handleSubmit = (e) => {
               </tr>
             })}
             </tbody>
+            }
           </Table>
         </div>
         <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={()=>setOpenIn(true)}>
