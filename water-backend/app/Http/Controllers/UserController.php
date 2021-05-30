@@ -32,7 +32,7 @@ class UserController extends Controller
             $userBrandRole = UserBrandRole::where('user_id', $id)->where('pump_id', $value->id)->get();
             if(empty($userBrandRole[0])){
                 $userBrandRole[0] = UserBrandRole::create([
-                    'checked' => 0,
+                    'checked' => 'false',
                     'user_id' => $id,
                     'pump_id'=> $value->id,
                 ]);
@@ -45,7 +45,7 @@ class UserController extends Controller
             $userBrandRole = UserBrandRole::where('user_id', $id)->where('solar_id', $value->id)->get();
             if(empty($userBrandRole[0])){
                 $userBrandRole[0] = UserBrandRole::create([
-                    'checked' => 0,
+                    'checked' => 'false',
                     'user_id' => $id,
                     'solar_id'=> $value->id,
                 ]);
@@ -58,7 +58,7 @@ class UserController extends Controller
             $userBrandRole = UserBrandRole::where('user_id', $id)->where('invertor_id', $value->id)->get();
             if(empty($userBrandRole[0])){
                 $userBrandRole[0] = UserBrandRole::create([
-                    'checked' => 0,
+                    'checked' => 'false',
                     'user_id' => $id,
                     'invertor_id'=> $value->id,
                 ]);
@@ -198,11 +198,23 @@ class UserController extends Controller
     public function userCity(){
         return Geolocation::all()->unique('city');
     }
-    public function adminDashboard()
+    public function adminDashboard($id)
     {   
-        $pumpbrand = Pump_brands::all();
-        $solarbrand = Solar_brands::all();
-        $invertorBrand = InvertorBrand::all();
+        $pumpbrand = Pump_brands::with('userBrandRole')
+        ->whereHas('userBrandRole', function($query) use ($id){
+            return $query->where('user_id', $id)->where('checked', "true");
+        })
+        ->get();
+        $solarbrand = Solar_brands::with('userBrandRole')
+        ->whereHas('userBrandRole', function($query) use ($id){
+            return $query->where('user_id', $id)->where('checked', "true");
+        })
+        ->get();
+        $invertorBrand = InvertorBrand::with('userBrandRole')
+        ->whereHas('userBrandRole', function($query) use ($id){
+            return $query->where('user_id', $id)->where('checked', "true");
+        })
+        ->get();
         $pumpLists = Pump_list::all();
         $solarLists = Solar_list::all();
         $invertorLists = InvertorList::all();

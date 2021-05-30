@@ -321,17 +321,17 @@ class ProjectsController extends Controller
         $geolocation = Geolocation::distinct()->count('country');
         $pumpbrand = Pump_brands::with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', true);
+                return $query->where('user_id', $id)->where('checked', "true");
             })
             ->get();
         $solarbrand = Solar_brands::with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', true);
+                return $query->where('user_id', $id)->where('checked', "true");
             })
             ->get();
         $invertorbrand = InvertorBrand::with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', true);
+                return $query->where('user_id', $id)->where('checked', "true");
             })
             ->get();
         $accessories = Accessories_list::with('uom')->get();

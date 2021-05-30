@@ -50,3 +50,7 @@
 .coloringSecondary{
     background-color: #E91E63  !important;
 }
+.dash_brand .jr-card{
+    padding: 0 !important;
+    box-shadow: none !important;
+}
