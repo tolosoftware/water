@@ -541,3 +541,8 @@ padding: 0px 15px 10px;
     top: 0;
     z-index: 99999;
 }
+.wp-second-col .table-responsive-material {
+    max-height: 142px;
+    min-height: 142px;
+    overflow-y: auto;
+}
