@@ -216,17 +216,17 @@ const DialogActions = withStyles((theme) => ({
 function getFlag(countryname) {
   switch (countryname) {
     case "Afghanistan":
-      return <Flags.AF title="United States" className="customflag" />;
+      return <Flags.AF title="Afghanistan" className="customflag" />;
     case "Italy":
-      return <Flags.IT title="United States" className="customflag" />;
+      return <Flags.IT title="Italy" className="customflag" />;
     case "China":
-      return <Flags.CH title="United States" className="customflag" />;
+      return <Flags.CH title="China" className="customflag" />;
     case "Iran":
-      return <Flags.IR title="United States" className="customflag" />;
-    case "Germany":
-      return <Flags.DE title="United States" className="customflag" />;
+      return <Flags.IR title="Iran" className="customflag" />;
     case "Turkey":
-      return <Flags.TR title="United States" className="customflag" />;
+      return <Flags.TR title="Turkey" className="customflag" />;
+    case "Germany":
+      return <Flags.DE title="Germany" className="customflag" />;
     default:
       return "";
   }

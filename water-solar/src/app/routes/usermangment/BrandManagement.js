@@ -98,27 +98,30 @@ export default function BrandManagement(props) {
    
  
   const handleChangeP = (id, value) => {
+    console.log('pumpBrand', value);
     const newPumpBrand = pumpBrand.map(i => {
       if(i.id === id){
-        i['user_brand_role'][0]['checked'] = value
+        i['user_brand_role'][0]['checked'] = value? "true":"false"
       }
       return i;
     })
     setPumpBrand(newPumpBrand);
   };
   const handleChangeS = (id, value) => {
+    console.log('solarBrand', value);
     const newBrand = solarBrand.map(i => {
       if(i.id === id){
-        i['user_brand_role'][0]['checked'] = value
+        i['user_brand_role'][0]['checked'] = value? "true":"false"
       }
       return i;
     })
     setSolarBrand(newBrand);
   };
   const handleChangeI = (id, value) => {
+    console.log('inverterBrand', value);
     const newBrand = inverterBrand.map(i => {
       if(i.id === id){
-        i['user_brand_role'][0]['checked'] = value
+        i['user_brand_role'][0]['checked'] = value? "true":"false"
       }
       return i;
     })
@@ -202,7 +205,7 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {pumpBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeP(brand?.id, event.target.checked)} name={brand?.name}  />}
+                            control={<Checkbox checked={(brand?.user_brand_role[0]?.checked=="true")? true:false} onChange={event => handleChangeP(brand?.id, event.target.checked)} name={brand?.name}  />}
                             label={brand?.name}
                           />
                         )}
@@ -219,7 +222,7 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {solarBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeS(brand?.id, event.target.checked)} name={brand?.name} />}
+                            control={<Checkbox checked={(brand?.user_brand_role[0]?.checked=="true")? true:false} onChange={event => handleChangeS(brand?.id, event.target.checked)} name={brand?.name} />}
                             label={brand?.name}
                           />
                         )}
@@ -237,7 +240,7 @@ export default function BrandManagement(props) {
                       <FormGroup>
                         {inverterBrand?.map((brand, index) => 
                           <FormControlLabel key={index}
-                            control={<Checkbox checked={brand?.user_brand_role[0]?.checked? brand?.user_brand_role[0]?.checked:false} onChange={event => handleChangeI(brand?.id, event.target.checked)} name={brand?.name} />}
+                            control={<Checkbox checked={(brand?.user_brand_role[0]?.checked=="true")? true:false} onChange={event => handleChangeI(brand?.id, event.target.checked)} name={brand?.name} />}
                             label={brand?.name}
                           />
                         )}

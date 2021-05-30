@@ -15,7 +15,7 @@ class CreateUserBrandRolesTable extends Migration
     {
         Schema::create('user_brand_roles', function (Blueprint $table) {
             $table->id();
-            $table->boolean('checked')->default(false);
+            $table->enum('checked',['false', 'true'])->default('false');
             $table->unsignedBigInteger('pump_id')->nullable();
             $table->foreign('pump_id')->references('id')->on('pump_brands')->onDelete('cascade');
             $table->unsignedBigInteger('solar_id')->nullable();

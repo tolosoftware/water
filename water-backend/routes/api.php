@@ -29,7 +29,7 @@ Route::get('userBrand/{id}',[UserController::class,'getUserBrand']);
 Route::post('postUserBrand',[UserController::class,'postUserBrand']);
 
 // Dashboard Route
-Route::get('adminDashboard',[UserController::class,'adminDashboard']);
+Route::get('adminDashboard/{id}',[UserController::class,'adminDashboard']);
 Route::get('userCity',[UserController::class,'userCity']);
 
 // Registration Request from Users
