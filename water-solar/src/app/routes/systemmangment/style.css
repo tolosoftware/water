@@ -534,3 +534,15 @@ padding: 0px 15px 10px;
     background-color: transparent;
     border: 2px dashed #3f51b5;
 }
+.system-section thead tr th{
+    background: white;
+    opacity: 1;
+    position: sticky;
+    top: 0;
+    z-index: 99999;
+}
+.wp-second-col .table-responsive-material {
+    max-height: 142px;
+    min-height: 142px;
+    overflow-y: auto;
+}

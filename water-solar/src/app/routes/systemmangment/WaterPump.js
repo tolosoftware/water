@@ -221,6 +221,8 @@ const WaterPump = () => {
   const [value, setValue] = React.useState(0);
   const [waterPumpBrands, setWaterPumpBrands] = useState([]);
   const [waterPumpLists, setWaterPumpLists] = useState([]);
+  const [search, setSearch] = useState('');
+  
   const [{
     formData,
     error,
@@ -775,12 +777,11 @@ const WaterPump = () => {
         <Widget>
           <div className="d-flex flex-row mb-3">
             <h4 className="mb-0"> List of Water Pumps</h4>
+            <TextField id="search" name='search' size="small" value={search} onChange={e => setSearch(e.target.value)} style={{marginLeft: 'auto'}} label="Search" variant="outlined" />
             <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={() => setOpenD(true)}>
               <i className="zmdi zmdi-plus-circle-o mr-1" />Register New Device</span>
           </div>
-          <span className="row justify-content-center">
-            <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
-          </span>
+          
           <div className="table-responsive-material">
             <Table className="default-table table-unbordered table table-sm table-hover">
               <thead className="table-head-sm th-border-b">
@@ -795,8 +796,33 @@ const WaterPump = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+              {visibility?
+                <tbody>
+                   <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <span className="row justify-content-center" style={{widht: '100%', margin: 'auto'}}>
+                        <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} style={{margin: 'auto'}}/>
+                      </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    {/* <td></td> */}
+                    <td></td>
+                  </tr>
+                </tbody>
+              :
+              
               <tbody>
-                {waterPumpLists.map((waterList, index) => {
+                {waterPumpLists.filter((val)=>
+                  {if(search==''){
+                    return val
+                  }else if((val.model.includes(search) || val.outlet.includes(search) || val.ampeier.includes(search) || val.diameter.includes(search) || val.power.includes(search))){
+                     return val 
+                  }}
+                ).map((waterList, index) => {
                   return <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
@@ -832,6 +858,8 @@ const WaterPump = () => {
                   </tr>
                 })}
               </tbody>
+                
+              }
             </Table>
           </div>
           <span className="text-primary mt-2 pointer d-block d-sm-none" onClick={() => setOpenD(true)}>
