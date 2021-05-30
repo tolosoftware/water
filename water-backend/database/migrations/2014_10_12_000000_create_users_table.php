@@ -16,12 +16,13 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-             $table->string('compnayname');
+            $table->string('compnayname');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone');
             $table->string('website');
             $table->enum('status', ['pending', 'active', 'inactive']);
+            $table->enum('belongto', ['Rana Solar', 'Drokhshan Solar'])->default('Rana Solar');
             $table->integer('expiration');
             $table->string('userimage');
             $table->unsignedBigInteger('geolocation_id');
