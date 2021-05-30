@@ -9,8 +9,15 @@ import Swal from 'sweetalert2';
 import Spinner from 'react-spinner-material';
 import Moment from 'react-moment';
 import * as moment from 'moment';
+import Button from "@material-ui/core/Button";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
+import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+
+import BlockIcon from '@material-ui/icons/Block';
 //classes
 import UserExpiration from '../dashboard/routes/Crypto/UserExpiration';
+
 import CustomizedDialogs from "./CustomizedDialogs";
 import BrandManagement from "./BrandManagement";
 export const UserList=() => {
@@ -107,7 +114,6 @@ export const UserList=() => {
         ) : (
           <MaterialTable 
             title= "User List"
-            
             columns={[
                 { title: 'Name', field: 'name' },
                 { title: 'Compnay Name', field: 'companyname' },
@@ -126,13 +132,37 @@ export const UserList=() => {
                   render:  (projects) =>{
                     var y = projects.expiration * 30;
                     var x = moment(projects.created_at, "DD-MM-YYYY").add(y, 'days');
-                    //alert(projects.created_at)
-                    //alert(x)
                       return  <Moment format="YYYY/MM/DD">
                                   {x}
                               </Moment>;
                   }
               },
+
+              { title: 'Status',  
+              render:  (projects) =>{
+                return projects.status == "active"?(
+                    <span  title = 'Active'>
+                            <CheckCircleOutlineIcon 
+                              color='primary'  
+                            />
+                         </span> 
+                ):(
+                  projects.status == "inactive"?(
+                    <span  title = 'Inactive'>
+                            <BlockIcon 
+                              color='secondary'  
+                            />
+                         </span> 
+                  ):(
+                    <span  title = 'Pinding'>
+                      <ReportProblemIcon 
+                        color='secondary'  
+                          />
+                    </span>
+                  )
+                )
+              }
+            }
                     
             ]}
             data={userdata}

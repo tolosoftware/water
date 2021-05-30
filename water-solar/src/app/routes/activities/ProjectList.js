@@ -32,7 +32,7 @@ export const ProjectList=(props) => {
   useEffect(() => {
       const getUserdata=async () => {
          setOpen(true);
-     axios.get('api/userproject/'+JSON.parse(localStorage.getItem("UserData")).id)
+     axios.get('api/userprojecttt/'+JSON.parse(localStorage.getItem("UserData")).id)
          .then(res => {
              setOpen(false);
              setProjects(res.data)
