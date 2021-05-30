@@ -14,7 +14,7 @@ const Setting = ({match}) => (
         </div>
 
 
-        <div className="row">
+        <div className="row seeting-table-style">
 
             <div className="col-md-4">
               <Uom  />

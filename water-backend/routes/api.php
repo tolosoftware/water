@@ -65,7 +65,7 @@ Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
 Route::resource('post', PostController::class);
 
 
-Route::get('userproject/{id}',[ProjectsController::class,'projectbyuser']);
+Route::get('userprojecttt/{id}',[ProjectsController::class,'projectbyuser']);
 
 
 
