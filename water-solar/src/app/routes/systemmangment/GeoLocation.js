@@ -605,7 +605,7 @@ const GeoLocation = () => {
               </DialogTitle>
               <DialogContent dividers>
                 <div className="row">
-                  <div className="col-xl-8 col-gl-8 col-md-8 col-sm-12 col-12 cellPadding">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 cellPadding">
                     <Autocomplete
                       name="country"
                       id="country-select-demo"
@@ -651,7 +651,7 @@ const GeoLocation = () => {
                       )}
                     />
                   </div>
-                  <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 cellPadding">
                     <TextField
                       id="outlined-basic"
                       value={district}
@@ -659,6 +659,7 @@ const GeoLocation = () => {
                       label="City"
                       name="city"
                       variant="outlined"
+                      fullWidth={true}
                       error={
                         touched && touched.city && error && error.city
                           ? true
@@ -678,11 +679,11 @@ const GeoLocation = () => {
                   </div>
                   {/* </div>
           <div className="row"> */}
-                  <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 cellPadding">
                     <TextField
                       type="number"
                       id="outlined-basic"
-                      size="small"
+                      fullWidth={true}
                       value={latitude}
                       onChange={(e) => handleChange(e)}
                       label="Latitude"
@@ -705,11 +706,11 @@ const GeoLocation = () => {
                 </i>
               )} */}
                   </div>
-                  <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12 cellPadding">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 cellPadding">
                     <TextField
                       type="number"
                       id="outlined-basic"
-                      size="small"
+                      fullWidth={true}
                       value={longtitude}
                       onChange={(e) => handleChange(e)}
                       label="Longtitude"

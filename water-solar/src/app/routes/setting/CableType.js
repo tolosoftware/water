@@ -116,16 +116,17 @@ const [visibility,setVisibility]= useState(false);
             addvisibility?
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-             <div className="col-md-9 col-sm-9 col-lg-9 col-xs-12">
+             <div className="col-md-12 mb-2">
               <TextField id="outlined-basic" label="Cable type" variant="outlined"
                 placeholder="Cable type"
                 name="name"
                 size="small"
                 fullWidth
                 inputRef={register} />
-            
-            </div>
-            <div className="col-md-3 col-sm-3 col-lg-3 col-xs-12">
+               </div>
+        </div>
+
+            <div className="col-md-3 col-sm-3 col-lg-3 col-xs-12 pl-0">
               <Button color="primary"   variant="contained" size="medium" type="submit">
               <span className="material-icons">
                       add_circle_outline
@@ -133,8 +134,7 @@ const [visibility,setVisibility]= useState(false);
                 </Button>
               
             </div>
-            </div>
-              </form>
+          </form>
             :null  
          }     
         </div>

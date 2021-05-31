@@ -575,7 +575,7 @@ const handleChangeField = async ({ target: { name, value } }) => {
                 <TabPanel value={value} index={0} dir={theme.direction} className="waterPumpPanel">
                   
                 <div className="row wp-brand">
-                  <div className="col-xl-6 col-lg-6 col-md-12 col-12">
+                  <div className="col-xl-6 col-lg-6 col-md-12 col-12 mb-3">
                     <TextField id="outlined-basic" value={brand} onChange={e => handleChangeField(e)} name='brand'
                     error={(touched && touched.brand) && (error && error.brand) ? true : false}
                     helperText={(touched && touched.brand) && (error && error.brand) ? '*required' : ''} 
