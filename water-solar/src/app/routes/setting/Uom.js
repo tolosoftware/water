@@ -106,7 +106,7 @@ const Uom=() => {
             addvisibility?  
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-12 mb-2">
                 <TextField id="outlined-basic" label="Uom Name" variant="outlined"
                   placeholder="Uom Name"
                   name="name"
@@ -114,7 +114,7 @@ const Uom=() => {
                   fullWidth
                   inputRef={register} />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-12 mb-2 ">
                 <TextField id="outlined-basic" label="Acronym" variant="outlined"
                   placeholder="Acronym"
                   name="acronym"
@@ -122,16 +122,15 @@ const Uom=() => {
                   fullWidth
                   inputRef={register} />
               </div>
-
-              <div className="col-md-3">
+              
+            </div>
+            <div className="col-md-3 pl-0">
                 <Button color="primary"   variant="contained" size="medium" type="submit">
                   <span className="material-icons">
                     add_circle_outline
                   </span>
                 </Button>
               </div>
-
-            </div>
           </form>
           :null  
          }         

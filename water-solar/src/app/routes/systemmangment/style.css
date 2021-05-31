@@ -155,9 +155,12 @@
     background-color: #4356c3;
     color: #ffffff;
  }
- .react-swipeable-view-container > div:first-child, .react-swipeable-view-container > div:last-child{
+ /* .react-swipeable-view-container > div:first-child, .react-swipeable-view-container > div:last-child{
     width: 549px !important;
     overflow: inherit !important;
+ } */
+ .react-swipeable-view-container>div{
+    overflow: inherit;
  }
 .sunnyIcon, .lDrinkIcon{
     height: 2em !important;
