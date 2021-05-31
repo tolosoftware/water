@@ -11,7 +11,7 @@ import Moment from 'react-moment';
 import * as moment from 'moment';
 import Button from "@material-ui/core/Button";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 
 import BlockIcon from '@material-ui/icons/Block';
@@ -104,9 +104,15 @@ export const UserList=() => {
           setOpen={setOpenB}
           userId={userID}
         />  
-      
+          
+    
+
+        <Button color="primary" onClick={()=> setOpen(true)} >
+        <AddCircleOutlineIcon className="mr-2"/>
+        Add New User</Button>
+
      <div className="row">
-     <div className="col-md-10"> 
+     <div className="col-md-12"> 
         {visibility ? (
           <span className="row justify-content-center">
             <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={visibility} />
@@ -195,20 +201,7 @@ export const UserList=() => {
             
           
         </div>
-          <div className="col-md-2">
-            <div className="" onClick={()=> setOpen(true)}>  
-             <Widget styleName={`bg-blue darken-4 text-white`}>
-              <div className="d-flex flex-row justify-content-center">
-                <i className={`zmdi zmdi-plus-circle-o zmdi-hc-2x`}/>
-              </div>
-              <div className="text-center">
-                <h3 className="jr-font-weight-medium mb-3">Add New User</h3>
-              </div>
-              </Widget>
-            </div>  
-            
-          
-          </div>
+         
         </div>  
     </>
   )

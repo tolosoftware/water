@@ -155,9 +155,12 @@
     background-color: #4356c3;
     color: #ffffff;
  }
- .react-swipeable-view-container > div:first-child, .react-swipeable-view-container > div:last-child{
+ /* .react-swipeable-view-container > div:first-child, .react-swipeable-view-container > div:last-child{
     width: 549px !important;
     overflow: inherit !important;
+ } */
+ .react-swipeable-view-container>div{
+    overflow: inherit;
  }
 .sunnyIcon, .lDrinkIcon{
     height: 2em !important;
@@ -539,7 +542,7 @@ padding: 0px 15px 10px;
     opacity: 1;
     position: sticky;
     top: 0;
-    z-index: 99999;
+    z-index: 5;
 }
 .wp-second-col .table-responsive-material {
     max-height: 142px;
