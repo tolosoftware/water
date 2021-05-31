@@ -571,22 +571,25 @@ export default function Project() {
     { id: uuidv4(), item: "", quantity: "", uomAc:"" },
   ]);
   //start dynomic form
-  const handlseelctitem = (event, value, id) => {
+  const handlseelctitem = (event, value, id, index) => {
     // console.log('value of item ', value);
+    
+      if(inputFields.id===id && inputFields[index]['item']){
+        console.log("val s", inputFields[index]['item']);
+        setAccessories([...accessories, inputFields[index]['item']]);
+      }
+
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
+        
         i['item'] = value;
         i['uomAc'] = value? value.uom?.acronym :'m';
-        // console.log("i['item']", i['item']);
       }
       return i;
     })
-
-    // inputFields[id].item = value.id;
-    // inputFields[id].uomAc = value.uom.acronym;
     setInputFields(newInputFields);
-    // console.log("value of accessories inputFields", inputFields);
-    // console.log("value of inputFields[id].uomAc", inputFields[id].uomAc);
+    setAccessories(accessories.filter((itemV) => value.id !== itemV.id));
+   
   };
 
   const handlchangquantity = (value, id) => {
@@ -608,6 +611,7 @@ export default function Project() {
 
   const handleRemoveFields = () => {
     const values = [...inputFields];
+    setAccessories([...accessories, values[values.length - 1]['item']]);
     values.splice(values.length - 1, 1);
     setInputFields(values);
   };
@@ -1637,7 +1641,7 @@ export default function Project() {
                                 id="country-select-demo3"
                                 defaultValue={inputField.item}
                                 onChange={(event, newValue) =>
-                                  handlseelctitem(event, newValue, inputField.id)
+                                  handlseelctitem(event, newValue, inputField.id, index)
                                 }
                                 onMouseOver={() =>
                                   accessoryMouseOver(inputField.item, "hover")
