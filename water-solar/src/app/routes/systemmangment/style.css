@@ -539,7 +539,7 @@ padding: 0px 15px 10px;
     opacity: 1;
     position: sticky;
     top: 0;
-    z-index: 99999;
+    z-index: 5;
 }
 .wp-second-col .table-responsive-material {
     max-height: 142px;
