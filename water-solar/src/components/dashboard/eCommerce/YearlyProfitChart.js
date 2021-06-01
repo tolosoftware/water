@@ -16,8 +16,7 @@ class YearlyProfitChart extends Component {
       hoverBorderColor,
       hoverBorderWidth,
       rotation,
-      chartType,
-      myData,
+      chartType
     } = this.props;
 
     const data = (canvas) => {
@@ -58,12 +57,11 @@ class YearlyProfitChart extends Component {
 
       return {
         labels: [
-          'Used Days',
-          'Remining Days',
+          'red',
+          'sky',
         ],
-        
         datasets: [{
-          data: myData,
+          data: [100, 300],
           backgroundColor: backgroundColor,
           borderColor: borderColor,
           hoverBorderColor: hoverBorderColor,

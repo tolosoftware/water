@@ -10,21 +10,14 @@ import { NotificationManager } from "react-notifications";
 import CardBox from "components/CardBox";
 import SendMoney from "./SendMoney";
 import UserExpiration from "./UserExpiration";
-import PumpList from "./PumpList";
-import SolarList from "./SolarList";
-import InvertorList from "./InvertorList";
 import TestimonialCarousel from "./testimonial/index";
 import Slider from "react-slick";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import Card from "@material-ui/core/Card";
 //country flag
 import Flags from "country-flag-icons/react/3x2";
 import Divider from "@material-ui/core/Divider";
-
 import Firstrow from "./Firstrow";
 import Secondrow from "./Secondrow";
 import ProvenceUsers from "./ProvenceUsers";
-
 import "./dashstyle.css";
 
 function getFlag(countryname) {
@@ -108,27 +101,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Crypto = ({ match }) => {
   const [openbackdrop, setOpenbackdrop] = useState(false);
-  const [isHide, setIsHide] = useState(false);
-  const [isHide1, setIsHide1] = useState(false);
-  const [isHide2, setIsHide2] = useState(false);
   const [pump, setPump] = useState([]);
   const [solar, setSolar] = useState([]);
   const [invertorBrand, setInvertorBrand] = useState([]);
   const [users, setUsers] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [proOfThMonth, setProOfThMonth] = useState(0);
-  const [pumpLists, setPumpLists] = useState([]);
-  const [solarLists, setSolarLists] = useState([]);
-  const [invertorLists, setInvertorLists] = useState([]);
-  const projectChart = {
-    title: "PROJECTS",
-    prize: projects.length,
-    icon: "stats",
-    bgColor: "indigo",
-    styleName: "up",
-    desc: "This month",
-    percent: proOfThMonth,
-  };
+
   const classes = useStyles();
   useEffect(() => {
     getDashboardData();
@@ -137,7 +114,7 @@ const Crypto = ({ match }) => {
 
   const options = {
     dots: true,
-    infinite: true,
+    infinite: false,
     arrows: false,
     speed: 500,
     slidesToShow: 2,
@@ -178,15 +155,7 @@ const Crypto = ({ match }) => {
       },
     ],
   };
-  const handleToggle = (type) => {
-    if (type === "proBtn") {
-      setIsHide(!isHide);
-    } else if (type === "userBtn") {
-      setIsHide1(!isHide1);
-    } else if (type === "downBtn") {
-      setIsHide2(!isHide2);
-    }
-  };
+
   const getDashboardData = async () => {
     setOpenbackdrop(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
@@ -198,12 +167,6 @@ const Crypto = ({ match }) => {
         setPump(res.data.pumpbrand);
         setInvertorBrand(res.data.invertorBrand);
         setUsers(res.data.users);
-        setPumpLists(res.data.pumpLists);
-        setSolarLists(res.data.solarLists);
-        setInvertorLists(res.data.invertorLists);
-        setProjects(res.data.projects);
-        setProOfThMonth(res.data.proOfThMonth);
-        //  console.log('solar and pumpbrand', res);
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -226,7 +189,6 @@ const Crypto = ({ match }) => {
 
   return (
     <div className="dashboard animated slideInUpTiny animation-duration-3">
-      {/* <ContainerHeader match={match} title={<IntlMessages id="sidebar.dashboard.dashbord"/>}/> */}
       <Backdrop className={classes.backdrop} open={openbackdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -257,34 +219,30 @@ const Crypto = ({ match }) => {
       >
         <div className="row">
           <div className="col-md-4">
-            {/* <div className="row">
-              <CardBox styleName="col-lg-12 dash_brand" cardStyle="text-center p-0"> */}
-                <Slider className="slick-app-frame" {...options}>
-                {pump.map((data, index) => {
-                  return (
-                    <div class="slick-slide-item">
-                      <div className="brand-logo">
-                        <div className="brand-logo-inner">
-                          <img
-                            src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}
-                            alt="Clients"
-                          />
-                        </div>
+            <Slider className="slick-app-frame" {...options}>
+              {pump.map((data, index) => {
+                return (
+                  <div class="slick-slide-item">
+                    <div className="brand-logo">
+                      <div className="brand-logo-inner">
+                        <img
+                          src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}
+                          alt="Clients"
+                        />
                       </div>
-                      <span>
-                        {" "}
-                        {data.country} {getFlag(data.country)}{" "}
-                      </span>
                     </div>
-                  );
-                })}
-              </Slider>
-              {/* </CardBox>
-            </div> */}
+                    <span>
+                      {" "}
+                      {data.country} {getFlag(data.country)}{" "}
+                    </span>
+                  </div>
+                );
+              })}
+            </Slider>
+
             <Divider className="mb-3 mt-1" />
             <h3 className="mt-3">Pump Brands</h3>
           </div>
-
           <div className="col-md-4">
             <Slider className="slick-app-frame" {...options}>
               {solar.map((data, index) => {
@@ -311,7 +269,7 @@ const Crypto = ({ match }) => {
           </div>
           <div className="col-md-4">
             <Slider className="slick-app-frame" {...options}>
-              {solar.map((data, index) => {
+              {invertorBrand.map((data, index) => {
                 return (
                   <div class="slick-slide-item">
                     <div className="brand-logo">
@@ -346,16 +304,11 @@ const Crypto = ({ match }) => {
           cardStyle="text-center"
           heading
         >
-          {/* <div><strong>All Completed Project</strong></div> */}
           <TestimonialCarousel testimonials={testimonials} />
         </CardBox>
       </div>
 
       <div className="row">
-        {/* <CardBox styleName="col-xl-6 col-lg-6 col-md-6 col-6 ">
-        <p>test</p>
-        </CardBox> */}
-
         <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12">
           <>
             <h2>
