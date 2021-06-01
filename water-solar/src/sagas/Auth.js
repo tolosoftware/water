@@ -156,8 +156,7 @@ function* signOut() {
   try {
     const signOutUser = yield call(signOutRequest);
     if (signOutUser === undefined) {
-      localStorage.removeItem('token');
-      //localStorage.removeItem('UserData');
+      localStorage.removeItem('user_id');
       yield put(userSignOutSuccess(signOutUser));
     } else {
       yield put(showAuthMessage(signOutUser.message));
@@ -192,7 +191,6 @@ export function* signInUser() {
 }
 
 export function* signOutUser() {
-  console.log('ok ta inja');
   yield takeEvery(SIGNOUT_USER, signOut);
 }
 
