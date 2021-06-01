@@ -9,8 +9,8 @@ import Edit from '@material-ui/icons/Edit';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {FormControl,RadioGroup,FormControlLabel,Radio} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-// import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // start import for taps 
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
@@ -20,7 +20,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-// import Popover from '@material-ui/core/Popover';
 import './style.css';
 import {useDropzone} from "react-dropzone";
 import DialogInvertor from './commentElement/DialogInvertor'
@@ -176,8 +175,6 @@ const img = {
 const initialState = {
   formData: {
     brand: '',
-    country: '',
-    // description: '',
   },
   error: {},
   touched: {},
@@ -199,8 +196,6 @@ function reducer(state, action) {
 }
 const schema = type.object().shape({
   brand: type.string().required("Required"),
-  country: type.string().required("Required"),
-  // description: type.string().required("Required"),
 });
 // end validation code
 
@@ -214,9 +209,9 @@ const Invertor = () => {
   const [search, setSearch] = useState('');
 
   const [brand, setBrand] = React.useState("");
+  const [status, setStatus] = React.useState("enable");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
-  // const [description, setDescription] = React.useState("");
   const [invertorBrandID, setInvertorBrandID] = useState('0'); 
   const [invertorBrOldImage, setInvertorBrOldImage] = useState("");
   const [{
@@ -237,9 +232,9 @@ const Invertor = () => {
   };
   const emptyForm = () =>{
     setBrand('');
+    setStatus("enable");
     setCountry(Country[0]);
     setInputValue(Country[0]);
-    // setDescription('');
     setInvertorBrandID('0');
     setInvertorBrOldImage("");
     setFiles([]);
@@ -256,52 +251,35 @@ const Invertor = () => {
   const editInvertorBrand = (invertorDataObject) => {
     setValue(0);
     setBrand(invertorDataObject.name);
+    setStatus(invertorDataObject.status);
     setCountry(invertorDataObject.country);
-    // setDescription(invertorDataObject.discription);
     setInvertorBrandID(invertorDataObject.id);
     setInvertorBrOldImage(invertorDataObject.image);
-    // console.log("invertorDataObject : ", invertorDataObject)
     handleAllField(true)
   }
    
   const handleAllField = async(valid) =>{
-    let f1 = 'brand', f2 = 'country'/*, f3 = 'description'*/;
+    let f1 = 'brand';
     const schemaErrors = await runValidation(schema, {
-      ...formData, [f1]: brand, [f2]: country/*, [f3]: description*/
+      ...formData, [f1]: brand,
     });
     dispatch({
       type: setState,
       payload: {
         error: schemaErrors,
-        formData: { ...formData, [f1]: brand, [f2]: country/*, [f3]: description */},
-        touched: { ...touched, [f1]: false, [f2]: false/*, [f3]: false */},
+        formData: { ...formData, [f1]: brand,},
+        touched: { ...touched, [f1]: false,},
         isValid: valid
       }
     });
   }
     const handleCountry = async (event, value) => {
       setCountry(value);
-      let name = 'country';
-      const schemaErrors = await runValidation(schema, {
-        ...formData, [name]: value
-      });
-      dispatch({
-        type: setState,
-        payload: {
-          error: schemaErrors,
-          formData: { ...formData, [name]: value },
-          touched: { ...touched, [name]: true },
-          isValid: checkValidation(schemaErrors)
-        }
-      });
     };
     const handleChangeField = async ({ target: { name, value } }) => {
       if(name==='brand'){
         setBrand(value)
       }
-      // else if(name==='description'){
-      //   setDescription(value)
-      // }
       
       const schemaErrors = await runValidation(schema, {
         ...formData, [name]: value
@@ -324,10 +302,7 @@ const Invertor = () => {
     getInvertorLists();
   },[openIn])
   const handleClose = () => {
-    setBrand("");
-    // setDescription("");
-    setInvertorBrandID('0');
-    setInvertorBrOldImage("");
+    emptyForm();
     handleAllField(false);
     setOpen(false);
   };
@@ -370,7 +345,6 @@ useEffect(() => () => {
 // start delete function Water Device list
 const deleteInvertorList = (id) =>{
   setVisibility(true);
-  // console.log("it is id of that water pump brand: ", id);
   Swal.fire({
     title: 'Are you sure?',
     text: "You won't be able to revert this!",
@@ -384,7 +358,6 @@ const deleteInvertorList = (id) =>{
       axios.delete('api/invertorList/'+id)
         .then(res => {
           setVisibility(false);
-              // setInvertorLists(res.data)
               setInvertorLists(invertorLists.filter((value) => value.id !==id));
             NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
             id="notification.titleHere" />);
@@ -410,13 +383,11 @@ const onButtonClick = (listId, invertorModel) => {
    
   setInvertorListId(listId);
   setInvertorListModel(invertorModel);
-  // console.log("list id: ", listId);
   setOpenSID(true);
 }
 // End code of Invertor Panal list setting 
 const [invertorListObject, setInvertorListObject] =React.useState([]);
 const editInvertorList = (invertorListObject) =>{
-  //  console.log(solarListObject);
   setInvertorListObject(invertorListObject);
   setOpenIn(true)
 }
@@ -424,11 +395,8 @@ const editInvertorList = (invertorListObject) =>{
 // start get WaterPump panal list
 
 const getInvertorLists = async() =>{
-  // setVisibility(true);
   axios.get('api/invertorList')
   .then(res => {  
-    // setVisibility(false);
-      // console.log(res);
       setInvertorLists(res.data);
     }
 ).catch(err => {
@@ -477,7 +445,6 @@ const getInvertors = async() =>{
   axios.get('api/invertorbrand')
   .then(res => {  
       setVisibility(false)
-      // console.log(res);
       setInvertorBrands(res.data);
     }
 ).catch(err => {
@@ -491,9 +458,8 @@ const handleSubmit = (e) => {
   e.preventDefault();
   setVisibility(true);
   let data = {
-    invertorBrandID, country, brand/*, description*/
+    invertorBrandID, country, status, brand,
   }
-  // console.log(data);
   if(data.invertorBrandID===undefined){
     data.invertorBrandID = 0;
   }
@@ -507,7 +473,6 @@ const handleSubmit = (e) => {
       axios.post('api/invertorbrand', data)
         .then(res => {
           setVisibility(false);
-          // console.log(res);
               getInvertors();
               getInvertorLists();
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
@@ -542,17 +507,6 @@ const handleSubmit = (e) => {
 }
 // end form sumbit
 
-  // start popove code
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const handlePopoverOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handlePopoverClose = () => {
-  //   setAnchorEl(null);
-  // };
-  // const open1 = Boolean(anchorEl);
-  // end popover code
-   
   return (
   <div className="row">
     <div className="col-xl-4 col-lg-4 col-md-12 col-12">
@@ -565,7 +519,6 @@ const handleSubmit = (e) => {
       />
         <Widget styleName={`text-white invertorBackGrad`}>
           <div className="d-flex flex-row justify-content-center mb-3">
-            {/* <i className={`zmdi zmdi-view-web zmdi-hc-4x`}/> */}
             <FlashAutoIcon className="lDrinkIcon"/>
           </div>
           <div className="text-center">
@@ -574,7 +527,7 @@ const handleSubmit = (e) => {
             <Button size="large" className="bg-warning text-white mt-3 text-capitalize" onClick={handleClickOpen}>Manage</Button>
           </div>
         </Widget>
-          <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+          <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} maxWidth="sm" fullWidth="sm">
             
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <DialogTitle id="customized-dialog-title" className='customizedDialog1' onClose={handleClose}>
@@ -617,21 +570,21 @@ const handleSubmit = (e) => {
                       id="controllable-states-demo"
                       options={Country}
                       style={{ width: 300 }}
-                      renderInput={(params) => <TextField {...params} label="Country" name='country'
-                      error={(touched && touched.country) && (error && error.country) ? true : false}
-                      helperText={(touched && touched.country) && (error && error.country) ? '*required' : ''} variant="outlined" />}
+                      renderInput={(params) => <TextField {...params} label="Country" name='country' variant="outlined" />}
                     /> 
                   </div>
                 </div>
-                {/* <div className="row paddingTopForm">
-                  <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <TextareaAutosize value={description} onChange={e => handleChangeField(e)} name='description' id='description' aria-label="minimum height" rowsMin={3} className={`minWidth form-control ${(touched && touched.description) && (error && error.description) ? 'error' : ''}`}  placeholder="Short Description" />
-                    <span className={(touched && touched.description) && (error && error.description) ? 'displayBlock errorText' : 'displayNone'}>*required</span>
-                  </div>
-                </div> */}
                 <div className="row paddingTopForm">
-                  
-                  <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 mb-3">
+                      <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
+                      <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
+                          name="status" defaultValue={status} onChange={e=>setStatus(e.target.value)}>
+                        <FormControlLabel value="disable" control={<Radio color="primary"/>} label="Disable"/>
+                        <FormControlLabel value="enable" control={<Radio color="primary"/>} label="Enable"/>
+                      </RadioGroup>
+                    </FormControl>
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 accessory_file waterPumFile">
                       <div className="dropzone-card">
                         <div className="dropzone">
                             <div {...getRootProps({className: 'dropzone-file-btn'})}>
@@ -666,6 +619,7 @@ const handleSubmit = (e) => {
                               <th>Brand</th>
                               <th>Coutry</th>
                               <th>logo</th>
+                              <th>Status</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -675,51 +629,16 @@ const handleSubmit = (e) => {
                               <td>{index+1}</td>
                               <td>
                               {data.name}
-                                {/* <div className="d-flex align-items-center">
-                                  <div className="user-detail">
-                                    
-                                    <h5 className="user-name">
-                                    <Typography
-                                      aria-owns={open1 ? 'mouse-over-popover' : undefined}
-                                      aria-haspopup="true"
-                                      onMouseEnter={handlePopoverOpen}
-                                      onMouseLeave={handlePopoverClose}
-                                    >
-                                      {data.name}
-                                    </Typography>
-                                    </h5>
-                                    <Popover
-                                      id="mouse-over-popover"
-                                      className={classes.popover}
-                                      classes={{
-                                        paper: classes.paper,
-                                      }}
-                                      open={open1}
-                                      anchorEl={anchorEl}
-                                      anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                      }}
-                                      transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
-                                      }}
-                                      onClose={handlePopoverClose}
-                                      disableRestoreFocus
-                                    >
-                                      <Typography>{data.discription}</Typography>
-                                    </Popover>
-                                  </div>
-                                </div> */}
                               </td>
                               
                               <td>{data.country}</td>
                               
                               <td>
-                              <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center">
                                   <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />
                                 </div>
                               </td>
+                              <td>{data.status==='enable'?'Enable':'Disable'}</td>
                               <td>
                                 <div className="pointer text-primary">
                                   <IconButton size="small" aria-label="delete"  color="secondary" onClick={() => deleteInvertorBrand(data.id)} >
@@ -766,7 +685,7 @@ const handleSubmit = (e) => {
       <Widget>
         <div className="d-flex flex-row mb-3">
           <h4 className="mb-0"> List of Inverter</h4>
-          <TextField id="search" name='search' size="small" value={search} onChange={e => setSearch(e.target.value)} style={{marginLeft: 'auto'}} label="Search" variant="outlined" />
+          <TextField id="search-inverter" name='search' size="small" value={search} onChange={e => setSearch(e.target.value)} style={{marginLeft: 'auto'}} label="Search" variant="outlined" />
           <span className="text-primary ml-auto pointer d-none d-sm-inline-flex align-items-sm-center" onClick={()=>setOpenIn(true)}>
             <i className="zmdi zmdi-plus-circle-o mr-1"/>Register New Device</span>
         </div>

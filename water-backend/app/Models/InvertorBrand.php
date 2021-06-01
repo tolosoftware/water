@@ -11,7 +11,7 @@ class InvertorBrand extends Model
     protected $table = 'invertor_brands';
     protected $primaryKey = 'id';
       protected $fillable = [
-       'name', 'country','discription','image'
+       'name', 'status', 'country','discription','image'
     ];
 
     public function invertorlist()

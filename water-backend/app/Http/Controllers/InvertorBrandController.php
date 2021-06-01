@@ -53,6 +53,7 @@ class InvertorBrandController extends Controller
                 // return "inside if: ".$id;
                 $invertorBrand = InvertorBrand::findOrFail($id);
                 $invertorBrand->name =  $request['brand'];
+                $invertorBrand->status = $request['status'];
                 $invertorBrand->country = $request['country'];
                 $invertorBrand->discription = 'null';
                 if($request->image != 'oldImage'){
@@ -64,6 +65,7 @@ class InvertorBrandController extends Controller
                 // return "inside else:".$id;
                 InvertorBrand::create([
                     'name' => $request['brand'], 
+                    'status' => $request['status'],
                     'country' => $request['country'], 
                     'discription' => 'null', 
                     'image' => $photoname, 

@@ -51,6 +51,7 @@ class SolarBrandsController extends Controller
             if ($id!=='0') {
                 $solar_brands = Solar_brands::findOrFail($id);
                 $solar_brands->name =  $request['brand'];
+                $solar_brands->status = $request['status'];
                 $solar_brands->country = $request['country'];
                 $solar_brands->discription = 'null';
                 if($request->image != 'oldImage'){
@@ -61,6 +62,7 @@ class SolarBrandsController extends Controller
             }else{
                 Solar_brands::create([
                     'name' => $request['brand'], 
+                    'status' => $request['status'], 
                     'country' => $request['country'], 
                     'discription' => 'null', 
                     'image' => $photoname, 

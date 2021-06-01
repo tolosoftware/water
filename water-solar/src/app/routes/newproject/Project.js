@@ -546,6 +546,7 @@ export default function Project() {
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
+  const [accessoriesCop, setAccessoriesCop] = useState([]);
   const [dbcity, setDbcity] = useState([]);
   //pump and solar
   const [solarstate, setSolarstate] = useState("");
@@ -571,25 +572,36 @@ export default function Project() {
     { id: uuidv4(), item: "", quantity: "", uomAc:"" },
   ]);
   //start dynomic form
+
+  const addAccessory = (item)=>{
+    if(item !==""){
+    console.log("inside addAccessory before input changes", item);
+    
+    setAccessories([...accessories, item]);
+    console.log("accessories", accessories);
+
+    // setAccessories([...accessories, item]);
+   } 
+
+  }
   const handlseelctitem = (event, value, id, index) => {
     // console.log('value of item ', value);
-    
-      if(inputFields.id===id && inputFields[index]['item']){
-        console.log("val s", inputFields[index]['item']);
-        setAccessories([...accessories, inputFields[index]['item']]);
-      }
-
+    //   if(inputFields[index]['item'] !==""){
+    //     console.log("inside if before ", inputFields[index].item);
+    //     setAccessoriesCop()
+    //     addAccessory(inputFields[index].item);
+    //   }
+    // console.log("before setInputFields ", inputFields[index]['item']);
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
-        
         i['item'] = value;
         i['uomAc'] = value? value.uom?.acronym :'m';
       }
       return i;
     })
     setInputFields(newInputFields);
+    console.log("after setInputFields ", newInputFields);
     setAccessories(accessories.filter((itemV) => value.id !== itemV.id));
-   
   };
 
   const handlchangquantity = (value, id) => {
@@ -633,6 +645,7 @@ export default function Project() {
         setPump(res.data.pumpbrand);
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
+        setAccessoriesCop(res.data.accessories);
         setOpen(true);
       })
       .catch((err) => {
@@ -1640,8 +1653,11 @@ export default function Project() {
                               <Autocomplete size="small"
                                 id="country-select-demo3"
                                 defaultValue={inputField.item}
-                                onChange={(event, newValue) =>
-                                  handlseelctitem(event, newValue, inputField.id, index)
+                                onChange={(event, newValue) =>{
+                                  setAccessories([...accessories, inputField.item]);
+                                  handlseelctitem(event, newValue, inputField.id, index);
+
+                                }
                                 }
                                 onMouseOver={() =>
                                   accessoryMouseOver(inputField.item, "hover")

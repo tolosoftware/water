@@ -319,17 +319,17 @@ class ProjectsController extends Controller
 
     public function gitprojectdata($id){
         $geolocation = Geolocation::distinct()->count('country');
-        $pumpbrand = Pump_brands::with('userBrandRole')
+        $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
                 return $query->where('user_id', $id)->where('checked', "true");
             })
             ->get();
-        $solarbrand = Solar_brands::with('userBrandRole')
+        $solarbrand = Solar_brands::where('status', 'enable')->with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
                 return $query->where('user_id', $id)->where('checked', "true");
             })
             ->get();
-        $invertorbrand = InvertorBrand::with('userBrandRole')
+        $invertorbrand = InvertorBrand::where('status', 'enable')->with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
                 return $query->where('user_id', $id)->where('checked', "true");
             })

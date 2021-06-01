@@ -151,6 +151,12 @@
  .waterPumpPanel .MuiFormControl-root, .fullWidthInput{
     width: 100%;
  }
+ .waterPumpPanel .row{
+    margin: 0px;
+ }
+ .waterPumpPanel .wp-brand{
+     padding-top: 10px;
+ }
  .waterPumpPanel .MuiButton-textPrimary:hover{
     background-color: #4356c3;
     color: #ffffff;
