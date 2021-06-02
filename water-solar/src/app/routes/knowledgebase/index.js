@@ -1127,7 +1127,7 @@ const ProjectSummary = ({ match }) => {
                       </td>
                     </tr>
 
-                    <tr className="page" style={{}}>
+                    <tr >
                       <td class="report-content-cell">
                         <div className={`main`}>
                           <div className="row">
@@ -1223,7 +1223,7 @@ const ProjectSummary = ({ match }) => {
                       </td>
                     </tr>
 
-                    <tr className="page" style={{}}>
+                    <tr>
                       <td class="report-content-cell">
                         <div className={`main`}>
                           <div className="row">
@@ -1245,11 +1245,11 @@ const ProjectSummary = ({ match }) => {
                       </td>
                     </tr>
 
-                    <tr>
+                    {/* <tr>
                       <td class="report-content-cell">
                         <div className={`main`}></div>
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </Paper>

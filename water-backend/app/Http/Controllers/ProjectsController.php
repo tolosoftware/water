@@ -318,7 +318,7 @@ class ProjectsController extends Controller
     }
 
     public function gitprojectdata($id){
-        $geolocation = Geolocation::distinct()->count('country');
+        
         $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
             ->whereHas('userBrandRole', function($query) use ($id){
                 return $query->where('user_id', $id)->where('checked', "true");
@@ -339,9 +339,9 @@ class ProjectsController extends Controller
             ->select('country')
             ->groupBy('country')
             ->get();
-
+        $city = $this->getcity('Afghanistan');
         return response()->json([
-            'geolocation'=> $geolocation , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
+            'city'=> $city , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
         ]);
     }
 
