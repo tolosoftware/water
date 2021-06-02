@@ -11,7 +11,7 @@ class Solar_brands extends Model
     protected $table = 'solar_brands';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'country','discription','image'
+        'name', 'status', 'country','discription','image'
     ];
     public function solar_lists()
     {

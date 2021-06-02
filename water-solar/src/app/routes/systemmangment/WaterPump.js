@@ -9,6 +9,7 @@ import Edit from "@material-ui/icons/Edit";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import {FormControl,RadioGroup,FormControlLabel,Radio} from '@material-ui/core';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 // import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // start import for taps
@@ -182,8 +183,6 @@ const img = {
 const initialState = {
   formData: {
     brand: "",
-    country: "",
-    // description: '',
   },
   error: {},
   touched: {},
@@ -205,8 +204,6 @@ function reducer(state, action) {
 }
 const schema = type.object().shape({
   brand: type.string().required("Required"),
-  country: type.string().required("Required"),
-  // description: type.string().required("Required"),
 });
 
 // end validation code
@@ -216,6 +213,7 @@ const WaterPump = () => {
   const theme = useTheme();
   const [visibility, setVisibility] = useState(false);
   const [brand, setBrand] = React.useState("");
+  const [status, setStatus] = React.useState("enable");
   const [country, setCountry] = React.useState(Country[0]);
   const [inputValue, setInputValue] = React.useState(Country[0]);
   // const [description, setDescription] = React.useState("");
@@ -286,7 +284,6 @@ const WaterPump = () => {
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
       files.forEach((file) => URL.revokeObjectURL(file.preview));
-      // handleImage();
     },
     [files]
   );
@@ -299,7 +296,6 @@ const WaterPump = () => {
   const onButtonClick = (listId, pumpModel) => {
     setPumpListId(listId);
     setPumpListModel(pumpModel);
-    // console.log("list id: ", listId);
     setOpenWSD(true);
   };
   // End code of water pumps list setting
@@ -320,7 +316,6 @@ const WaterPump = () => {
         axios
           .delete("api/pumpList/" + id)
           .then((res) => {
-            // setSolarLists(res.data)
             setWaterPumpLists(
               waterPumpLists.filter((value) => value.id !== id)
             );
@@ -341,12 +336,10 @@ const WaterPump = () => {
   };
   // End delete Water Device lists
   // start get WaterPump panal list
-
   const getWaterPumpLists = async () => {
     axios
       .get("api/pumpList")
       .then((res) => {
-        // console.log(res);
         setWaterPumpLists(res.data);
       })
       .catch((err) => {
@@ -360,24 +353,19 @@ const WaterPump = () => {
   // end get solar pabal list
 
   const editWaterBrand = (dataValue) => {
-    // console.log(dataValue);
     setBrand(dataValue.name);
+    setStatus(dataValue.status);
     setCountry(dataValue.country);
-    // setDescription(dataValue.discription);
     setWaterBrandID(dataValue.id);
     setWaterBrOldImage(dataValue.image);
     setValue(0);
     handleAllField(true);
-    // setBrand(); setD1escription();
   };
   const handleAllField = async (valid) => {
-    let f1 = "brand",
-      f2 = "country";
-    // let f3 = 'description';
+    let f1 = "brand";
     const schemaErrors = await runValidation(schema, {
       ...formData,
       [f1]: brand,
-      [f2]: country /* , [f3]: description*/,
     });
     dispatch({
       type: setState,
@@ -386,25 +374,23 @@ const WaterPump = () => {
         formData: {
           ...formData,
           [f1]: brand,
-          [f2]: country /*, [f3]: description*/,
         },
-        touched: { ...touched, [f1]: false, [f2]: false /*, [f3]: false*/ },
+        touched: { ...touched, [f1]: false, },
         isValid: valid,
       },
     });
   };
   const emptyForm = () => {
     setBrand("");
+    setStatus("enable");
     setCountry(Country[0]);
     setInputValue(Country[0]);
-    // setDescription('');
     setWaterBrandID("0");
     setWaterBrOldImage("");
     setFiles([]);
   };
   const deleteWaterPumpBrand = (id) => {
     setVisibility(true);
-    // console.log("it is id of that water pump brand: ", id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -419,7 +405,6 @@ const WaterPump = () => {
           .delete("api/pumpbrand/" + id)
           .then((res) => {
             setVisibility(false);
-            // setWaterPumpBrands(res.data)
             setWaterPumpBrands(
               waterPumpBrands.filter((value) => value.id !== id)
             );
@@ -445,7 +430,6 @@ const WaterPump = () => {
       .get("api/pumpbrand")
       .then((res) => {
         setVisibility(false);
-        // console.log(res);
         setWaterPumpBrands(res.data);
       })
       .catch((err) => {
@@ -458,27 +442,11 @@ const WaterPump = () => {
   };
   const handleCountry = async (event, value) => {
     setCountry(value);
-    let name = "country";
-    const schemaErrors = await runValidation(schema, {
-      ...formData,
-      [name]: value,
-    });
-    dispatch({
-      type: setState,
-      payload: {
-        error: schemaErrors,
-        formData: { ...formData, [name]: value },
-        touched: { ...touched, [name]: true },
-        isValid: checkValidation(schemaErrors),
-      },
-    });
   };
   const handleChangeField = async ({ target: { name, value } }) => {
     if (name === "brand") {
       setBrand(value);
     }
-  
-
     const schemaErrors = await runValidation(schema, {
       ...formData,
       [name]: value,
@@ -500,7 +468,8 @@ const WaterPump = () => {
     let data = {
       waterBrandID,
       country,
-      brand /*, description*/,
+      status,
+      brand,
     };
     if (data.waterBrandID === undefined) {
       data.waterBrandID = 0;
@@ -620,7 +589,7 @@ const WaterPump = () => {
                     dir={theme.direction}
                     className="waterPumpPanel"
                   >
-                    <div className="row ">
+                    <div className="row wp-brand">
                       <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 mb-3">
                         <TextField
                           id="outlined-basic"
@@ -662,20 +631,6 @@ const WaterPump = () => {
                               {...params}
                               label="Country"
                               name="country"
-                              error={
-                                touched &&
-                                touched.country &&
-                                error && error.country
-                                  ? true
-                                  : false
-                              }
-                              helperText={
-                                touched &&
-                                touched.country &&
-                                error && error.country
-                                  ? "*required"
-                                  : ""
-                              }
                               variant="outlined"
                             />
                           )}
@@ -684,7 +639,16 @@ const WaterPump = () => {
                     </div>
 
                     <div className="row paddingTopForm">
-                      <div className="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 accessory_file waterPumFile">
+                      <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 mb-3">
+                        <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
+                        <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
+                            name="status" defaultValue={status} onChange={e=>setStatus(e.target.value)}>
+                          <FormControlLabel value="disable" control={<Radio color="primary"/>} label="Disable"/>
+                          <FormControlLabel value="enable" control={<Radio color="primary"/>} label="Enable"/>
+                        </RadioGroup>
+                      </FormControl>
+                      </div>
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 accessory_file waterPumFile">
                         <div className="dropzone-card">
                           <div className="dropzone">
                             <div
@@ -746,6 +710,7 @@ const WaterPump = () => {
                                 <th>Brand</th>
                                 <th>Coutry</th>
                                 <th>logo</th>
+                                <th>Status</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -767,6 +732,7 @@ const WaterPump = () => {
                                         />
                                       </div>
                                     </td>
+                                    <td>{data.status==='enable'?'Enable':'Disable'}</td>
                                     <td>
                                       <div className="pointer text-primary">
                                         <IconButton

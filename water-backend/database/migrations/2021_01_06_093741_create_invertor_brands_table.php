@@ -16,6 +16,7 @@ class CreateInvertorBrandsTable extends Migration
         Schema::create('invertor_brands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status', ['enable', 'disable'])->default('enable');
             $table->string('country');
             $table->string('discription');
             $table->string('image');

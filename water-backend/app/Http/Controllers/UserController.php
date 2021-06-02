@@ -200,17 +200,17 @@ class UserController extends Controller
     }
     public function adminDashboard($id)
     {   
-        $pumpbrand = Pump_brands::with('userBrandRole')
+        $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
         ->whereHas('userBrandRole', function($query) use ($id){
             return $query->where('user_id', $id)->where('checked', "true");
         })
         ->get();
-        $solarbrand = Solar_brands::with('userBrandRole')
+        $solarbrand = Solar_brands::where('status', 'enable')->with('userBrandRole')
         ->whereHas('userBrandRole', function($query) use ($id){
             return $query->where('user_id', $id)->where('checked', "true");
         })
         ->get();
-        $invertorBrand = InvertorBrand::with('userBrandRole')
+        $invertorBrand = InvertorBrand::where('status', 'enable')->with('userBrandRole')
         ->whereHas('userBrandRole', function($query) use ($id){
             return $query->where('user_id', $id)->where('checked', "true");
         })

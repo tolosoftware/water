@@ -16,6 +16,7 @@ class CreatePumpBrandsTable extends Migration
         Schema::create('pump_brands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status', ['enable', 'disable'])->default('enable');
             $table->string('country');
             $table->string('discription');
             $table->string('image');

@@ -50,6 +50,7 @@ class PumpBrandsController extends Controller
             if ($id!=='0') {
                 $pump_brands = Pump_brands::findOrFail($id);
                 $pump_brands->name =  $request['brand'];
+                $pump_brands->status = $request['status'];
                 $pump_brands->country = $request['country'];
                 $pump_brands->discription = 'null';
                 if($request->image != 'oldImage'){
@@ -60,6 +61,7 @@ class PumpBrandsController extends Controller
             }else{
                 Pump_brands::create([
                     'name' => $request['brand'], 
+                    'status' => $request['status'], 
                     'country' => $request['country'], 
                     'discription' => "null", 
                     'image' => $photoname, 
