@@ -6,7 +6,7 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Tooltip from "@material-ui/core/Tooltip";
+import Popover from '@material-ui/core/Popover';
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import FormControl from "@material-ui/core/FormControl";
@@ -72,32 +72,9 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
-const useStylesBootstrap = makeStyles((theme) => ({
-  arrow: {
-    color: "#f4f4f7",
-  },
-  tooltip: {
-    // width: '153px',
-    textAlign: "justify",
-    backgroundColor: "#f4f4f7",
-    color: "#000",
-    fontFamily: "Roboto",
-  },
-}));
 
-function BootstrapTooltip(props) {
-  const classes = useStylesBootstrap();
 
-  return (
-    <Tooltip
-      arrow
-      enterDelay={2000}
-      leaveDelay={50}
-      classes={classes}
-      {...props}
-    />
-  );
-}
+
 
 //slider
 const options = {
@@ -163,8 +140,10 @@ const useStyles = makeStyles((theme) => ({
   },
   popover: {
     pointerEvents: "none",
+    textAlign: "justify",
   },
   paper: {
+    maxWidth: '480px',
     padding: theme.spacing(1),
   },
 }));
@@ -338,7 +317,7 @@ function getStepsBrand() {
 
 // end code of brand stepper
 export default function Project() {
-  const {register, handleSubmit, errors }=useForm();
+  const {handleSubmit }=useForm();
   const [{ formData, error, touched, isValid }, dispatch] = React.useReducer(
     reducer,
     initialState
@@ -485,11 +464,25 @@ export default function Project() {
     setActiveStep(0);
   };
   //end stepper
+  const textData = [
+    'Write the name of the Projects which you want to do the calculation for that.',
+    'Vertical height from the dynamic water level to the highest point of delivery', 
+    'Enter the length of the electrical cable between the solar panels and pump controller/inverter',
+    'The electrical cable between controller/inverter and submersible pump',
+    'Pipe line from the submersible pump outlet to the delivery point. Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box.',
+    'Enter your hourly water requirement in average method.',
+    'Select your solar panels mounting type. Note: Manual is more efficient than fix/ground mounting structures.',
+
+  ];
   // start code for mouse poppur
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [textContent, setTextContent] = useState('');
 
-  const handlePopoverOpen = (event) => {
+  const handlePopoverOpen = (event, text) => {
+    setTextContent(text);
+    console.log('current target', event.currentTarget);
     setAnchorEl(event.currentTarget);
+
   };
 
   const handlePopoverClose = () => {
@@ -497,7 +490,9 @@ export default function Project() {
   };
 
   const openEl = Boolean(anchorEl);
+  
   // end mouse poppur
+
   //database data
   const [location, setLocation] = useState([]);
   const [solar, setSolar] = useState([]);
@@ -506,7 +501,6 @@ export default function Project() {
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
-  const [accessoriesCop, setAccessoriesCop] = useState([]);
   const [dbcity, setDbcity] = useState([]);
   //pump and solar
   const [solarstate, setSolarstate] = useState("");
@@ -519,6 +513,11 @@ export default function Project() {
 
   //start form value
   const [projectname, setProjectname] = React.useState("");
+  const [filled, setFilled] = useState(false);
+  const handNexTrue = () =>{
+    setFilled(true);
+    console.log('project data error in project page ', filled);
+  };
   const [bas, setBas] = React.useState("Manual Tracker");
   const [country, setCountry] = React.useState({});
   const [city, setCity] = React.useState([]);
@@ -541,7 +540,6 @@ export default function Project() {
 
     // setAccessories([...accessories, item]);
    } 
-
   }
   const handlseelctitem = (event, value, id, index) => {
     const newInputFields = inputFields.map(i => {
@@ -594,11 +592,11 @@ export default function Project() {
         console.log(res.data);
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
+        setDbcity(res.data.city);
         setSolar(res.data.solarbrand);
         setPump(res.data.pumpbrand);
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
-        setAccessoriesCop(res.data.accessories);
         setOpen(true);
       })
       .catch((err) => {
@@ -1297,9 +1295,30 @@ export default function Project() {
                       </Dialog>
                       {/* end dialog */}
                       <Divider className="mb-3 mt-3" />
-
+                      <Popover
+                          anchorReference="anchorPosition"
+                          anchorPosition={{ top: 990, left: 1440 }}
+                          id="mouse-over-popover"
+                          className={classes.popover}
+                          classes={{
+                            paper: classes.paper,
+                          }}
+                          open={openEl}
+                          anchorEl={anchorEl}
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                          }}
+                          onClose={handlePopoverClose}
+                          // disableRestoreFocus
+                        >
+                        <Typography>{textContent}</Typography>
+                      </Popover>
                       <div className="col-md-12 p-0">
-                        <BootstrapTooltip title="write the name of the Projects which you want to do the calculation for that.">
                           <TextField
                             className="form-control"
                             id="outlined-basic"
@@ -1322,15 +1341,13 @@ export default function Project() {
                                 ? true
                                 : false
                             }
-                            // helperText={(touched && touched.projectname) && (error && error.projectname) ? '' : ''}
-                            aria-owns={
-                              openEl ? "mouse-over-popover" : undefined
-                            }
-                            aria-haspopup="true"
-                            onMouseEnter={handlePopoverOpen}
+                            disabled={false}
+                            aria-owns={open ? 'mouse-over-popover' : undefined}
+                            aria-haspopup="false"
+                            onMouseEnter={e=>handlePopoverOpen(e, textData[0])}
                             onMouseLeave={handlePopoverClose}
                           />
-                        </BootstrapTooltip>
+                          
                       </div>
 
                       <div className="row">
@@ -1347,10 +1364,10 @@ export default function Project() {
                             style={{ width: 300 }}
                             options={location}
                             inputValue={`Afghanistan`}
-                            onInputChange={(event) => {
-                              handgleCountry(event, "Afghanistan");
-                              getcitylist("Afghanistan");
-                            }}
+                            // onInputChange={(event) => {
+                            //   handgleCountry(event, "Afghanistan");
+                            //   getcitylist("Afghanistan");
+                            // }}
                             classes={{
                               option: classes.option,
                             }}
@@ -1377,7 +1394,7 @@ export default function Project() {
 
                                 inputProps={{
                                   ...params.inputProps,
-                                  autoComplete: "new-password",
+                                  // autoComplete: "new-password",
                                 }}
                               />
                             )}
@@ -1424,7 +1441,7 @@ export default function Project() {
                                 }}
                                 inputProps={{
                                   ...params.inputProps,
-                                  autoComplete: "new-password",
+                                  // autoComplete: "new-password",
                                 }}
                               />
                             )}
@@ -1435,7 +1452,6 @@ export default function Project() {
                       <Divider className="mb-3 mt-3" />
                       <div className="row">
                         <div className="col-md-6">
-                          <BootstrapTooltip title="Vertical height from the dynamic water level to the highest point of delivery">
                             <TextField
                               id="outlined-basic-1_head"
                               className="form-control"
@@ -1470,14 +1486,14 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("head", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onMouseLeave={() => {handlePopoverClose()}}
                               onFocus={() => dirtlossMouseOver("head", "focus")}
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
                             />
-                          </BootstrapTooltip>
                         </div>
                         <div className="col-md-6">
-                          <BootstrapTooltip title="Enter the length of the electrical cable between the solar panels and pump controller/inverter">
                             <TextField
                               id="outlined-basic-2_solar"
                               label="Solar Cable"
@@ -1505,18 +1521,18 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("solarCable", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onMouseLeave={() => { handlePopoverClose();}}
                               onFocus={() =>
                                 dirtlossMouseOver("solarCable", "focus")
                               }
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
                             />
-                          </BootstrapTooltip>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-6">
-                          <BootstrapTooltip title="The electrical cable between controller/inverter and submersible pump">
                             <TextField
                               fullWidth={true}
                               id="outlined-basic-2"
@@ -1544,19 +1560,17 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("motor", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onMouseLeave={() => {handlePopoverClose();}}
                               onFocus={() =>
                                 dirtlossMouseOver("motor", "focus")
                               }
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
+                              // onBlur={() => dirtlossMouseLeave("fout")}
                             />
-                          </BootstrapTooltip>
                         </div>
                         <div className="col-md-6">
-                          <BootstrapTooltip
-                            title="Pipe line from the submersible pump outlet to the delivery point.
-                        Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box."
-                          >
                             <TextField
                               fullWidth={true}
                               id="outlined-basic-4"
@@ -1579,22 +1593,23 @@ export default function Project() {
                               }}
                               value={piplenght}
                               onChange={(event) =>
-                                setPiplenght(event.target.value)
+                                {setPiplenght(event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
                               }
                               onMouseOver={() =>
                                 dirtlossMouseOver("pip", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onMouseLeave={() => {handlePopoverClose();}}
                               onFocus={() => dirtlossMouseOver("pip", "focus")}
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
+                              // onBlur={() => dirtlossMouseLeave("fout")}
                             />
-                          </BootstrapTooltip>
                         </div>
                       </div>
 
                       <div className="row">
                         <div className="col-md-6">
-                          <BootstrapTooltip title="Enter your hourly water requirement in average method.">
                             <TextField
                               fullWidth={true}
                               id="outlined-basic-5"
@@ -1622,13 +1637,14 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("waterDeman", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onMouseLeave={() => {handlePopoverClose();}}
                               onFocus={() =>
                                 dirtlossMouseOver("waterDeman", "focus")
                               }
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
                             />
-                          </BootstrapTooltip>
                         </div>
                         <div className="col-md-6">
                           <TextField
@@ -1649,36 +1665,34 @@ export default function Project() {
                                   %
                                 </InputAdornment>
                               ),
+                              inputProps: {
+                                min: 0,
+                                max: 10,
+                              },
                             }}
                             InputLabelProps={{
                               shrink: true,
                             }}
-                            value={piplenght >= 500 ? 10 : dirtloss}
+                            value={dirtloss}
                             onChange={(event) =>
-                              setDirtloss(
-                                event.target.value >= 0 &&
-                                  event.target.value <= 10
-                                  ? event.target.value
-                                  : 5
-                              )
+                              setDirtloss(event.target.value)
                             }
                             onMouseOver={() =>
                               dirtlossMouseOver("dirt", "hover")
                             }
                             onMouseLeave={() => dirtlossMouseLeave("xy")}
                             onFocus={() => dirtlossMouseOver("dirt", "focus")}
-                            onBlur={() => dirtlossMouseLeave("fout")}
+                            // onBlur={() => dirtlossMouseLeave("fout")}
                           />
                         </div>
                       </div>
 
                       <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap mt-3 project_bas_field">
-                        <BootstrapTooltip title="Select your solar panels mounting type. Note: Manual is more efficient than fix/ground mounting structures.">
-                          <div
-                            className="btn-group"
-                            role="group"
-                            aria-label="Basic radio toggle button group"
-                          >
+                          <div className="btn-group" role="group" aria-label="Basic radio toggle button group" 
+                            aria-owns={open ? 'mouse-over-popover' : undefined}
+                            aria-haspopup="true"
+                            onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                            onMouseLeave={handlePopoverClose}>
                             <input
                               type="radio"
                               className="form-control"
@@ -1692,9 +1706,8 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("MT", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
                               onFocus={() => dirtlossMouseOver("MT", "focus")}
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              
                             />
                             <label
                               class="btn btn-outline-primary"
@@ -1715,9 +1728,8 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("GS", "hover")
                               }
-                              onMouseLeave={() => dirtlossMouseLeave("xy")}
                               onFocus={() => dirtlossMouseOver("GS", "focus")}
-                              onBlur={() => dirtlossMouseLeave("fout")}
+                              
                             />
                             <label
                               class="btn btn-outline-primary"
@@ -1726,7 +1738,6 @@ export default function Project() {
                               Ground Structure
                             </label>
                           </div>
-                        </BootstrapTooltip>
                       </div>
 
                       <Divider className="mb-3 mt-3" />
@@ -1751,6 +1762,9 @@ export default function Project() {
                               evaluationdata={evaluationdata}
                               citylocation={citylocation}
                               projectname={projectname}
+                              filled={filled}
+                              setFilled={setFilled}
+                              handNexTrue={handNexTrue.bind(this)}
                             />
                           </div>
                         </>
@@ -1838,15 +1852,10 @@ export default function Project() {
                                 placeholder="Quantity"
                                 margin="normal"
                                 name="Quantity"
-                                // min={`${inputField?.item?.min_quantity}`}
-                                // max={`${inputField?.item?.max_quantity}`}
                                 type="number"
                                 onChange={(event) =>
                                   handlchangquantity(
-                                    // ((event.target.value >= inputField?.item?.min_quantity &&
-                                    // event.target.value <= inputField?.item?.max_quantity)?
                                     event.target.value,
-                                    // : inputField?.item?.min_quantity)
                                     inputField.id
                                   )
                                 }
@@ -2052,6 +2061,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
+                      
                     >
                       Next
                     </Button>
@@ -2064,6 +2074,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
+                      disabled={filled?false:true}
                     >
                       Next
                     </Button>

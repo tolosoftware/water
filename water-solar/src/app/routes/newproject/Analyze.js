@@ -99,10 +99,7 @@ export default function Analyze(props) {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-  // const {evaluationdata,setEvaluationdata}=props.evaluationdata;
-  // const [citylocation,setCitylocation]=props.citylocation;
-
+ 
   useEffect(() => {
     if (props.evaluationdata) {
       docalculculation();
@@ -111,6 +108,12 @@ export default function Analyze(props) {
       getIrredation();
     }
   }, [props.evaluationdata, props.citylocation]);
+
+  useEffect(() => {
+    if (props.evaluationdata) {
+    }
+     
+  }, []);
 
   const [openbackdrop, setOpenbackdrop] = React.useState(false);
   const [sugestedpump, setSugestedpump] = React.useState([]);
@@ -123,7 +126,14 @@ export default function Analyze(props) {
   const [hrOutputP, setHrOutputP] = useState([]);
   const [monthlyHrOutput, setMonthlyHrOutput] = useState([]);
   const [dataError, setDataError] = useState(false);
-  const [filled, setFilled] = useState(false);
+  // useEffect(() => {
+  //   if (dataError) {
+  //     console.log('project data error in analyze ', dataError);
+  //     props.handNexTrue();
+  //   }
+     
+  // }, [dataError]);
+  const {filled, setFilled} = props;
 
   const docalculculation = () => {
     setOpenbackdrop(true);
@@ -151,7 +161,6 @@ export default function Analyze(props) {
       })
       .catch((err) => {
         setOpenbackdrop(false);
-        setDataError(true);
         NotificationManager.error(
           <IntlMessages id="notification.errorMessage" />,
           <IntlMessages id="notification.titleHere" />

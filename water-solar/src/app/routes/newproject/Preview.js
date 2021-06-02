@@ -68,14 +68,11 @@ export default function Preview(props) {
             </Button> */}
           </Toolbar>
         </AppBar>
-        <List>
+        <List className='preview-section'>
           <ListItem button>
             <SummaryProject match={match} />
           </ListItem>
           <Divider />
-          <ListItem button>
-            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-          </ListItem>
         </List>
       </Dialog>
     </div>
