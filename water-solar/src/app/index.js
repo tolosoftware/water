@@ -5,32 +5,13 @@ import Header from 'components/Header/index';
 import Sidebar from 'containers/SideNav/index';
 import Footer from 'components/Footer';
 import Dashboard from './routes/dashboard';
-import Widgets from './routes/widgets'
-import Metrics from './routes/metrics'
-import Components from './routes/components';
-import Icons from './routes/icons/index';
-import Form from './routes/form';
-import Editors from './routes/editors';
-import Pickers from './routes/pickers';
-import Extensions from './routes/extensions';
-import Table from './routes/table';
-import Chart from './routes/charts';
-import Map from './routes/map';
-import Calendar from './routes/calendar';
-import TimeLine from './routes/timeLine';
-import CustomViews from './routes/customViews';
-import ExtraElements from './routes/extraElements'
-
-import AppModule from './routes/appModule'
 import ExtraPages from './routes/extraPages';
-import Tour from '../components/Tour/index';
 //custom component
 import Setting from './routes/setting';
 import Systemmangment from './routes/systemmangment';
 import Knowledgebase from './routes/knowledgebase';
 import Activities from './routes/activities';
 import Newproject from './routes/newproject';
-import Sizing from './routes/sizing';
 import Usermangment from './routes/usermangment';
 import Datasheet from './routes/datasheet';
 //end custom component
@@ -41,11 +22,10 @@ import {
   FIXED_DRAWER,
   HORIZONTAL_NAVIGATION,
 } from 'constants/ActionTypes';
-import ColorOption from 'containers/Customizer/ColorOption';
 import {isIOS, isMobile} from 'react-device-detect';
 import asyncComponent from '../util/asyncComponent';
 import TopNav from 'components/TopNav';
-import SocialApps from "./routes/socialApps";
+
 
 class App extends React.Component {
   
@@ -64,13 +44,8 @@ class App extends React.Component {
     else if (document.body.classList.contains('ios-mobile-view-height')) {
       document.body.classList.remove('ios-mobile-view-height')
     }
-
-   
-
     return (
       <div className={`app-container ${drawerStyle}`}>
-        <Tour/>
-
         <Sidebar/>
         <div className="app-main-container">
           <div
@@ -92,48 +67,10 @@ class App extends React.Component {
                 <Route path={`${match.url}/project-summary/:id`} component={Knowledgebase} />
                 <Route path={`${match.url}/activities`} component={Activities} />
                 <Route path={`${match.url}/newproject`} component={Newproject} />
-                <Route path={`${match.url}/sizing`} component={Sizing} />
                 <Route path={`${match.url}/usermangment`} component={Usermangment} />
                 <Route path={`${match.url}/datasheet`} component={Datasheet} />
-                
                 {/* end custom route component  */}
-              
                 <Route path={`${match.url}/dashboard`} component={Dashboard}/>
-                <Route path={`${match.url}/social-apps`} component={SocialApps}/>
-                <Route path={`${match.url}/components`} component={Components}/>
-                <Route path={`${match.url}/icons`} component={Icons}/>
-                <Route path={`${match.url}/form`} component={Form}/>
-                <Route path={`${match.url}/editor`} component={Editors}/>
-                <Route path={`${match.url}/pickers`} component={Pickers}/>
-                <Route path={`${match.url}/extensions`} component={Extensions}/>
-                <Route path={`${match.url}/table`} component={Table}/>
-                <Route path={`${match.url}/chart`} component={Chart}/>
-                <Route path={`${match.url}/map`} component={Map}/>
-                <Route path={`${match.url}/calendar`} component={Calendar}/>
-                <Route path={`${match.url}/time-line`} component={TimeLine}/>
-                <Route path={`${match.url}/custom-views`} component={CustomViews}/>
-
-                <Route path={`${match.url}/widgets`} component={Widgets}/>
-                <Route path={`${match.url}/metrics`} component={Metrics}/>
-                <Route path={`${match.url}/extra-elements`} component={ExtraElements}/>
-            
-                <Route path={`${match.url}/app-module`} component={AppModule}/>
-                <Route path={`${match.url}/to-do`}
-                       component={asyncComponent(() => import('./routes/todo/basic/index'))}/>
-                <Route path={`${match.url}/to-do-redux`}
-                       component={asyncComponent(() => import('./routes/todo/redux/index'))}/>
-                <Route path={`${match.url}/mail`}
-                       component={asyncComponent(() => import('./routes/mail/basic/index'))}/>
-                <Route path={`${match.url}/mail-redux`}
-                       component={asyncComponent(() => import('./routes/mail/redux/index'))}/>
-                <Route path={`${match.url}/chat`}
-                       component={asyncComponent(() => import('./routes/chatPanel/basic/index'))}/>
-                <Route path={`${match.url}/chat-redux`}
-                       component={asyncComponent(() => import('./routes/chatPanel/redux/index'))}/>
-                <Route path={`${match.url}/contact`}
-                       component={asyncComponent(() => import('./routes/contact/basic/index'))}/>
-                <Route path={`${match.url}/contact-redux`}
-                       component={asyncComponent(() => import('./routes/contact/redux/index'))}/>
                 <Route path={`${match.url}/extra-pages`} component={ExtraPages}/>
                 <Route component={asyncComponent(() => import('app/routes/extraPages/routes/404'))}/>
               </Switch>

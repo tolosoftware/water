@@ -1,5 +1,5 @@
 import React,  { useState, useEffect } from "react";
-import {NotificationContainer,NotificationManager} from 'react-notifications';
+import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import Divider from "@material-ui/core/Divider";
 

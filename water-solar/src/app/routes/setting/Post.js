@@ -1,18 +1,10 @@
 import React,{useEffect,useState} from 'react';
-import {Table} from 'reactstrap';
 import Widget from "components/Widget/index";
-
 import {Button} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-
 import axios from 'axios';
-import {useForm} from 'react-hook-form';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
-import Swal from 'sweetalert2';
 import IntlMessages from 'util/IntlMessages';
-import Spinner from 'react-spinner-material';
+import {useForm} from 'react-hook-form';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import './style.css'
 
