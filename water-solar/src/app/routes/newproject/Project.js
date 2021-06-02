@@ -11,12 +11,11 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Alert from "@material-ui/lab/Alert";
-import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from 'uuid';
-import { useHistory } from "react-router";
-import Spinner from 'react-spinner-material';
+import { v4 as uuidv4 } from "uuid";
+import Spinner from "react-spinner-material";
+import {useForm} from 'react-hook-form';
 
 //css
 import "./custome.css";
@@ -30,9 +29,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Flags from "country-flag-icons/react/3x2";
 //form import
 import axios from "axios";
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -53,17 +52,12 @@ import CloseIcon from "@material-ui/icons/Close";
 //analize project
 import Analyze from "./Analyze";
 import Preview from "./Preview";
-
-// Start code for brand stepper selection
-// import Stepper from "@material-ui/core/Stepper";
-// import Step from "@material-ui/core/Step";
-// import StepLabel from "@material-ui/core/StepLabel";
-import PropTypes from 'prop-types';
-import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import FlashAutoIcon from '@material-ui/icons/FlashAuto';
+import PropTypes from "prop-types";
+import LocalDrinkIcon from "@material-ui/icons/LocalDrink";
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import FlashAutoIcon from "@material-ui/icons/FlashAuto";
 import StepConnector from "@material-ui/core/StepConnector";
-import clsx from 'clsx';
+import clsx from "clsx";
 // end code of brand stepper selection
 
 const styles = (theme) => ({
@@ -259,30 +253,28 @@ const schema = type.object().shape({
   // country: type.object().required("Required"),
   projectname: type.string().required("Required"),
 });
-
 //end validation
-
 // start code of brand stepper
 const ColorlibConnector = withStyles({
   alternativeLabel: {
     top: 22,
   },
   active: {
-    '& $line': {
+    "& $line": {
       backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
     },
   },
   completed: {
-    '& $line': {
+    "& $line": {
       backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
     },
   },
   line: {
     height: 3,
     border: 0,
-    backgroundColor: '#eaeaf0',
+    backgroundColor: "#eaeaf0",
     borderRadius: 1,
   },
 })(StepConnector);
@@ -310,59 +302,43 @@ function ColorlibStepIcon(props) {
 }
 
 ColorlibStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   */
   active: PropTypes.bool,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   */
   completed: PropTypes.bool,
-  /**
-   * The label displayed in the step icon.
-   */
   icon: PropTypes.node,
 };
 const useColorlibStepIconStyles = makeStyles({
   root: {
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     zIndex: 1,
-    color: '#fff',
+    color: "#fff",
     width: 50,
     height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    borderRadius: "50%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   active: {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   },
   completed: {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
   },
 });
 function getStepsBrand() {
-  return ['Select Water Pump Brand', 'Select Solar Brand', 'Select Inverter Brand'];
+  return [
+    "Select Water Pump Brand",
+    "Select Solar Brand",
+    "Select Inverter Brand",
+  ];
 }
-// function getStepContent(step) {
-//   switch (step) {
-//     case 0:
-//       return 'Select campaign settings...';
-//     case 1:
-//       return 'What is an ad group anyways?';
-//     case 2:
-//       return 'This is the bit I really care about!';
-//     default:
-//       return 'Unknown step';
-//   }
-// }
+
 // end code of brand stepper
 export default function Project() {
-  const history = useHistory();
+  const {register, handleSubmit, errors }=useForm();
   const [{ formData, error, touched, isValid }, dispatch] = React.useReducer(
     reducer,
     initialState
@@ -390,19 +366,6 @@ export default function Project() {
 
   const handgleCountry = async (event, value) => {
     setCountry(value);
-    // let name = "country";
-    // const schemaErrors = await runValidation(schema, {
-    //   ...formData, [name]: value
-    // });
-    // dispatch({
-    //   type: setState,
-    //   payload: {
-    //     error: schemaErrors,
-    //     formData: { ...formData, [name]: value },
-    //     touched: { ...touched, [name]: true },
-    //     isValid: checkValidation(schemaErrors)
-    //   }
-    // });
   };
 
   const handcahngeCity = async (event, value) => {
@@ -437,8 +400,6 @@ export default function Project() {
     setActiveStepBrand(0);
   };
   // end brand stepper State code
-
-  //solar and pump
   // const [solarbrandname, setSolarbrandname] = useState();
   const solarbrand = (id, name, index) => {
     setSolarstate(index);
@@ -466,11 +427,10 @@ export default function Project() {
       return "brand-logo";
     }
   }
-  const getSolarWatts = (id)=>{
-    axios.get("api/getSolarWatt/"+id)
+  const getSolarWatts = (id) => {
+    axios
+      .get("api/getSolarWatt/" + id)
       .then((res) => {
-        // console.log('result', res.data);
-        // console.log('length', res.data.length);
         setSolarWatt(res.data);
         setSolarSelectWatt(res.data[0].id);
       })
@@ -542,7 +502,7 @@ export default function Project() {
   const [location, setLocation] = useState([]);
   const [solar, setSolar] = useState([]);
   const [solarWatts, setSolarWatt] = useState([]);
-  const [solarSelectWatt, setSolarSelectWatt] = useState('');
+  const [solarSelectWatt, setSolarSelectWatt] = useState("");
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
@@ -569,10 +529,9 @@ export default function Project() {
   const [dirtloss, setDirtloss] = React.useState(5);
   const [discharge, setDischarge] = React.useState("");
   const [inputFields, setInputFields] = useState([
-    { id: uuidv4(), item: "", quantity: "", uomAc:"" },
+    { id: uuidv4(), item: "", quantity: "", uomAc: "" },
   ]);
   //start dynomic form
-
   const addAccessory = (item)=>{
     if(item !==""){
     console.log("inside addAccessory before input changes", item);
@@ -585,45 +544,38 @@ export default function Project() {
 
   }
   const handlseelctitem = (event, value, id, index) => {
-    // console.log('value of item ', value);
-    //   if(inputFields[index]['item'] !==""){
-    //     console.log("inside if before ", inputFields[index].item);
-    //     setAccessoriesCop()
-    //     addAccessory(inputFields[index].item);
-    //   }
-    // console.log("before setInputFields ", inputFields[index]['item']);
-    const newInputFields = inputFields.map(i => {
-      if(id === i.id) {
-        i['item'] = value;
-        i['uomAc'] = value? value.uom?.acronym :'m';
+    const newInputFields = inputFields.map((i) => {
+      if (id === i.id) {
+        i["item"] = value;
+        i["uomAc"] = value ? value.uom?.acronym : "m";
       }
       return i;
-    })
+    });
     setInputFields(newInputFields);
     console.log("after setInputFields ", newInputFields);
     setAccessories(accessories.filter((itemV) => value.id !== itemV.id));
   };
 
   const handlchangquantity = (value, id) => {
-    const newInputFields = inputFields.map(i => {
-      if(id === i.id) {
-          i['quantity'] = value;
+    const newInputFields = inputFields.map((i) => {
+      if (id === i.id) {
+        i["quantity"] = value;
       }
       return i;
-    })
+    });
     setInputFields(newInputFields);
   };
 
   const handleAddFields = () => {
     setInputFields([
       ...inputFields,
-      { id: uuidv4(), item: "", uomid: "", quantity: "", uomAc:"" },
+      { id: uuidv4(), item: "", uomid: "", quantity: "", uomAc: "" },
     ]);
   };
 
   const handleRemoveFields = () => {
     const values = [...inputFields];
-    setAccessories([...accessories, values[values.length - 1]['item']]);
+    setAccessories([...accessories, values[values.length - 1]["item"]]);
     values.splice(values.length - 1, 1);
     setInputFields(values);
   };
@@ -635,10 +587,11 @@ export default function Project() {
   const getProjectdata = async () => {
     setOpenbackdrop(true);
     handleResetBrand();
-    var id = JSON.parse(localStorage.getItem('UserData')).id;
-    axios.get("api/gitprojectdata/"+id)
+    var id = JSON.parse(localStorage.getItem("UserData")).id;
+    axios
+      .get("api/gitprojectdata/" + id)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setSolar(res.data.solarbrand);
@@ -685,7 +638,7 @@ export default function Project() {
     "img-thumbnail rounded mx-auto d-block"
   );
   const [foucus, setFoucus] = useState(false);
-  const [loadImg,setLoadImg]= useState(false);
+  const [loadImg, setLoadImg] = useState(false);
   const [accImgPath, SetAccImgPath] = useState();
   const accessoryMouseOver = (input, wichfunction) => {
     // console.log('input value', input);
@@ -704,7 +657,7 @@ export default function Project() {
         setLoadImg(false);
       }
     }
-  }
+  };
   const accessoryMouseLeave = (input, wichfunction) => {
     // setEvaluation(true);
     if (wichfunction === "fout") {
@@ -850,10 +803,9 @@ export default function Project() {
     }
   };
 
-  const [projectID, setProjectID]= useState(0);
+  const [projectID, setProjectID] = useState(0);
   const [evaluation, setEvaluation] = useState(false);
   const [submited, setSubmited] = useState(false);
-  const { register, handleSubmit } = useForm(); // initialize the hook
   const onSubmit = (data) => {
     setOpenbackdrop(true);
 
@@ -874,7 +826,7 @@ export default function Project() {
       solarSelectWatt,
       invertorvalue,
     };
-    alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
+    alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
     axios
       .post("api/project", alldata)
@@ -883,10 +835,10 @@ export default function Project() {
         // setProjectID(res.data);
         // handleNext();
         setSubmited(true);
-          NotificationManager.success(
-            <IntlMessages id="notification.successMessage" />,
-            <IntlMessages id="notification.titleHere" />
-          );
+        NotificationManager.success(
+          <IntlMessages id="notification.successMessage" />,
+          <IntlMessages id="notification.titleHere" />
+        );
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -899,9 +851,8 @@ export default function Project() {
 
   const [evaluationdata, setEvaluationdata] = React.useState("");
   const evaluationfunction = () => {
-    let dynamicHead = Number(daynomichead) + Math.ceil(
-      Number((dirtloss * piplenght) / 100)
-    );
+    let dynamicHead =
+      Number(daynomichead) + Math.ceil(Number((dirtloss * piplenght) / 100));
 
     let evalData = {
       projectname,
@@ -926,37 +877,46 @@ export default function Project() {
 
   const [openPre, setOpenPre] = useState(false);
   const [previewData, setPreviewData] = useState({});
-  const handlePreview = ()=> {
+  const handlePreview = () => {
     setOpenbackdrop(true);
     let alldata = {
-      projectname,  country, city,
-      daynomichead, solarCable, motorcable, piplenght,
-      discharge, dirtloss, bas, inputFields,
-      pumpvalue, solarvalue, solarSelectWatt, invertorvalue,
+      projectname,
+      country,
+      city,
+      daynomichead,
+      solarCable,
+      motorcable,
+      piplenght,
+      discharge,
+      dirtloss,
+      bas,
+      inputFields,
+      pumpvalue,
+      solarvalue,
+      solarSelectWatt,
+      invertorvalue,
     };
-    alldata['user_id'] = JSON.parse(localStorage.getItem('UserData')).id;
+    alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
     axios
       .post("api/project", alldata)
       .then((res) => {
         setOpenbackdrop(false);
         setProjectID(res.data);
-        const dataM = {params: {id: res.data},};
+        const dataM = { params: { id: res.data } };
         setPreviewData(dataM);
       })
       .catch((err) => {
         setOpenbackdrop(false);
-        
       });
   };
   useEffect(() => {
     // console.log('preview data', previewData);
-    if(previewData && projectID){
-      if(projectID !== 0){
+    if (previewData && projectID) {
+      if (projectID !== 0) {
         setOpenPre(true);
       }
     }
-    
   }, [previewData, projectID]);
   return (
     <>
@@ -1010,112 +970,267 @@ export default function Project() {
                         </DialogTitle>
                         <DialogContent dividers>
                           <div className={classes.root}>
-                            <Stepper style={{ paddingLeft: '0px', paddingRight: '0px' }} alternativeLabel activeStep={activeStepBrand} connector={<ColorlibConnector />}>
+                            <Stepper
+                              style={{
+                                paddingLeft: "0px",
+                                paddingRight: "0px",
+                              }}
+                              alternativeLabel
+                              activeStep={activeStepBrand}
+                              connector={<ColorlibConnector />}
+                            >
                               {stepsBrand.map((label, index) => (
                                 <Step key={`${label}${index}`}>
-                                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                                  <StepLabel
+                                    StepIconComponent={ColorlibStepIcon}
+                                  >
+                                    {label}
+                                  </StepLabel>
                                 </Step>
                               ))}
                             </Stepper>
 
                             <div>
                               {activeStepBrand === stepsBrand.length ? (
-                                <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                                  <Sliderr className="slick-app-frame " {...options}>
+                                <CardBox
+                                  styleName="col-lg-12 customeCard"
+                                  cardStyle="text-center"
+                                >
+                                  <Sliderr
+                                    className="slick-app-frame "
+                                    {...options}
+                                  >
                                     {invertor.map((data, index) => {
-                                      return <span key={index} onClick={() => invertorbrand(data.id, data.name, index)}>
-                                        <div class="slick-slide-item">
-                                          <div className={toggelactivestyleinvertor(index)}>
-                                            <div>
-                                              <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                      return (
+                                        <span
+                                          key={index}
+                                          onClick={() =>
+                                            invertorbrand(
+                                              data.id,
+                                              data.name,
+                                              index
+                                            )
+                                          }
+                                        >
+                                          <div class="slick-slide-item">
+                                            <div
+                                              className={toggelactivestyleinvertor(
+                                                index
+                                              )}
+                                            >
+                                              <div>
+                                                <img
+                                                  src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}
+                                                  className="img-thumbnail rounded mx-auto d-block imagebrandhieght"
+                                                  alt="Responsive"
+                                                />
+                                              </div>
+                                              <span>
+                                                {" "}
+                                                {data.country}{" "}
+                                                {getFlag(data.country)}{" "}
+                                              </span>
                                             </div>
-                                            <span> {data.country} {getFlag(data.country)}  </span>
                                           </div>
-                                        </div>
-                                      </span>
+                                        </span>
+                                      );
                                     })}
                                   </Sliderr>
                                 </CardBox>
                               ) : (
                                 <div>
                                   <Typography className={classes.instructions}>
-                                    {activeStepBrand === 0 ?
-                                      <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                                        <Sliderr className="slick-app-frame " {...options}>
+                                    {activeStepBrand === 0 ? (
+                                      <CardBox
+                                        styleName="col-lg-12 customeCard"
+                                        cardStyle="text-center"
+                                      >
+                                        <Sliderr
+                                          className="slick-app-frame "
+                                          {...options}
+                                        >
                                           {pump.map((data, index) => {
-                                            return <span key={index} onClick={() => pumpbrand(data.id, data.name, index)}>
-                                              <div class="slick-slide-item">
-                                                <div className={toggelactivestylepump(index)}>
-                                                  <div>
-                                                    <img src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                            return (
+                                              <span
+                                                key={index}
+                                                onClick={() =>
+                                                  pumpbrand(
+                                                    data.id,
+                                                    data.name,
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                <div class="slick-slide-item">
+                                                  <div
+                                                    className={toggelactivestylepump(
+                                                      index
+                                                    )}
+                                                  >
+                                                    <div>
+                                                      <img
+                                                        src={`${axios.defaults.baseURL}brand/pumpbrand/${data.image}`}
+                                                        className="img-thumbnail rounded mx-auto d-block imagebrandhieght"
+                                                        alt="Responsive"
+                                                      />
+                                                    </div>
+                                                    <span>
+                                                      {" "}
+                                                      {data.country}{" "}
+                                                      {getFlag(data.country)}{" "}
+                                                    </span>
                                                   </div>
-                                                  <span> {data.country} {getFlag(data.country)}  </span>
                                                 </div>
-                                              </div>
-                                            </span>
+                                              </span>
+                                            );
                                           })}
                                         </Sliderr>
                                       </CardBox>
-                                      : activeStepBrand === 1 ?
-                                        <div className="row">
-                                          <CardBox styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard" cardStyle="text-center">
-                                            <Sliderr className="slick-app-frame" {...options}>
-                                              {solar.map((data, index) => {
-                                                return <span key={index} onClick={() => {solarbrand(data.id, data.name, index); getSolarWatts(data.id);}} >
-                                                  <div className="slick-slide-item solar">
-                                                    <div className={toggelactivestyle(index, data.id)}>
-                                                      <div>
-                                                        <img src={`${axios.defaults.baseURL}brand/solar/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght" alt="Responsive" />
-                                                      </div>
-                                                      <span> {data.country} {getFlag(data.country)}  </span>
-                                                    </div>
-                                                  </div>
-                                                </span>
-                                              })}
-                                            </Sliderr>
-                                          </CardBox>
-                                          {solarWatts ?
-                                            <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
-                                              <FormControl variant="outlined" size="small" className='form-control'>
-                                                <InputLabel id="demo-simple-select-outlined-label" error={solarWatts.length === 0 && true} >Solar Watt</InputLabel>
-                                                <Select name='solarwatt'
-                                                  labelId="demo-simple-select-outlined-label"
-                                                  id="demo-simple-select-outlined-solarwatt"
-                                                  value={solarSelectWatt}
-                                                  onChange={(e) => setSolarSelectWatt(e.target.value)}
-                                                  label="Solar Watt"
-                                                  error={solarWatts.length === 0 && true}
+                                    ) : activeStepBrand === 1 ? (
+                                      <div className="row">
+                                        <CardBox
+                                          styleName="col-xl-9 col-lg-9 col-md-9 col-12 customeCard"
+                                          cardStyle="text-center"
+                                        >
+                                          <Sliderr
+                                            className="slick-app-frame"
+                                            {...options}
+                                          >
+                                            {solar.map((data, index) => {
+                                              return (
+                                                <span
+                                                  key={index}
+                                                  onClick={() => {
+                                                    solarbrand(
+                                                      data.id,
+                                                      data.name,
+                                                      index
+                                                    );
+                                                    getSolarWatts(data.id);
+                                                  }}
                                                 >
-                                                  <MenuItem value="">
-                                                    <em></em>
-                                                  </MenuItem>
-                                                  {solarWatts?.map(watt =>
-                                                    <MenuItem value={watt.id}>{watt.power}W</MenuItem>
-                                                  )}
-                                                </Select>
-                                              </FormControl>
-                                            </div>
-                                            : ''}
-                                        </div>
-                                        : activeStepBrand === 2 ?
-                                          <CardBox styleName="col-lg-12 customeCard" cardStyle="text-center">
-                                            <Sliderr className="slick-app-frame " {...options}>
-                                              {invertor.map((data, index) => {
-                                                return <span key={index} onClick={() => invertorbrand(data.id, data.name, index)}>
-                                                  <div class="slick-slide-item">
-                                                    <div className={toggelactivestyleinvertor(index)}>
+                                                  <div className="slick-slide-item solar">
+                                                    <div
+                                                      className={toggelactivestyle(
+                                                        index,
+                                                        data.id
+                                                      )}
+                                                    >
                                                       <div>
-                                                        <img src={`${axios.defaults.baseURL}brand/invertor/${data.image}`} className="img-thumbnail rounded mx-auto d-block imagebrandhieght" alt="Responsive" />
+                                                        <img
+                                                          src={`${axios.defaults.baseURL}brand/solar/${data.image}`}
+                                                          className="img-thumbnail rounded mx-auto d-block imagebrandhieght img_solar_brand_hieght"
+                                                          alt="Responsive"
+                                                        />
                                                       </div>
-                                                      <span> {data.country} {getFlag(data.country)}  </span>
+                                                      <span>
+                                                        {" "}
+                                                        {data.country}{" "}
+                                                        {getFlag(data.country)}{" "}
+                                                      </span>
                                                     </div>
                                                   </div>
                                                 </span>
-                                              })}
-                                            </Sliderr>
-                                          </CardBox>
-                                          : ''
-                                    }
+                                              );
+                                            })}
+                                          </Sliderr>
+                                        </CardBox>
+                                        {solarWatts ? (
+                                          <div className="col-xl-3 col-lg-3 col-md-3 col-12 insideFormBPCable">
+                                            <FormControl
+                                              variant="outlined"
+                                              size="small"
+                                              className="form-control"
+                                            >
+                                              <InputLabel
+                                                id="demo-simple-select-outlined-label"
+                                                error={
+                                                  solarWatts.length === 0 &&
+                                                  true
+                                                }
+                                              >
+                                                Solar Watt
+                                              </InputLabel>
+                                              <Select
+                                                name="solarwatt"
+                                                labelId="demo-simple-select-outlined-label"
+                                                id="demo-simple-select-outlined-solarwatt"
+                                                value={solarSelectWatt}
+                                                onChange={(e) =>
+                                                  setSolarSelectWatt(
+                                                    e.target.value
+                                                  )
+                                                }
+                                                label="Solar Watt"
+                                                error={
+                                                  solarWatts.length === 0 &&
+                                                  true
+                                                }
+                                              >
+                                                <MenuItem value="">
+                                                  <em></em>
+                                                </MenuItem>
+                                                {solarWatts?.map((watt) => (
+                                                  <MenuItem value={watt.id}>
+                                                    {watt.power}W
+                                                  </MenuItem>
+                                                ))}
+                                              </Select>
+                                            </FormControl>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
+                                    ) : activeStepBrand === 2 ? (
+                                      <CardBox
+                                        styleName="col-lg-12 customeCard"
+                                        cardStyle="text-center"
+                                      >
+                                        <Sliderr
+                                          className="slick-app-frame "
+                                          {...options}
+                                        >
+                                          {invertor.map((data, index) => {
+                                            return (
+                                              <span
+                                                key={index}
+                                                onClick={() =>
+                                                  invertorbrand(
+                                                    data.id,
+                                                    data.name,
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                <div class="slick-slide-item">
+                                                  <div
+                                                    className={toggelactivestyleinvertor(
+                                                      index
+                                                    )}
+                                                  >
+                                                    <div>
+                                                      <img
+                                                        src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}
+                                                        className="img-thumbnail rounded mx-auto d-block imagebrandhieght"
+                                                        alt="Responsive"
+                                                      />
+                                                    </div>
+                                                    <span>
+                                                      {" "}
+                                                      {data.country}{" "}
+                                                      {getFlag(data.country)}{" "}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </span>
+                                            );
+                                          })}
+                                        </Sliderr>
+                                      </CardBox>
+                                    ) : (
+                                      ""
+                                    )}
                                   </Typography>
                                 </div>
                               )}
@@ -1126,21 +1241,32 @@ export default function Project() {
                           <div>
                             {activeStepBrand === stepsBrand.length ? (
                               <div>
-                                <Button onClick={handleResetBrand} className={classes.button}>
+                                <Button
+                                  onClick={handleResetBrand}
+                                  className={classes.button}
+                                >
                                   Reset
                                 </Button>
                               </div>
                             ) : (
                               <div>
                                 <div>
-                                  <Button disabled={activeStepBrand === 0} onClick={handleBackBrand} className={classes.button}>
+                                  <Button
+                                    disabled={activeStepBrand === 0}
+                                    onClick={handleBackBrand}
+                                    className={classes.button}
+                                  >
                                     Back
                                   </Button>
 
                                   <Button
                                     variant="contained"
                                     color="primary"
-                                    disabled={activeStepBrand === stepsBrand.length - 1 ? true : false}
+                                    disabled={
+                                      activeStepBrand === stepsBrand.length - 1
+                                        ? true
+                                        : false
+                                    }
                                     onClick={handleNextBrand}
                                     className={classes.button}
                                   >
@@ -1151,16 +1277,22 @@ export default function Project() {
                               </div>
                             )}
                           </div>
-                          {activeStepBrand === stepsBrand.length - 1 ?
+                          {activeStepBrand === stepsBrand.length - 1 ? (
                             <Button
                               onClick={handleClose}
                               color="primary"
                               variant="contained"
-                              disabled={activeStepBrand === stepsBrand.length - 1 ? false : true}
+                              disabled={
+                                activeStepBrand === stepsBrand.length - 1
+                                  ? false
+                                  : true
+                              }
                             >
                               Done
-                          </Button> : ''}
-
+                            </Button>
+                          ) : (
+                            ""
+                          )}
                         </DialogActions>
                       </Dialog>
                       {/* end dialog */}
@@ -1184,8 +1316,9 @@ export default function Project() {
                             }}
                             error={
                               touched &&
-                                touched.projectname &&
-                                error && error.projectname
+                              touched.projectname &&
+                              error &&
+                              error.projectname
                                 ? true
                                 : false
                             }
@@ -1306,13 +1439,14 @@ export default function Project() {
                             <TextField
                               id="outlined-basic-1_head"
                               className="form-control"
-                              label={`Head ${piplenght && dirtloss
-                                ? "+ " +
-                                Math.ceil(
-                                  Number((dirtloss * piplenght) / 100)
-                                )
-                                : ""
-                                }`}
+                              label={`Head ${
+                                piplenght && dirtloss
+                                  ? "+ " +
+                                    Math.ceil(
+                                      Number((dirtloss * piplenght) / 100)
+                                    )
+                                  : ""
+                              }`}
                               variant="outlined"
                               placeholder="Head !"
                               margin="normal"
@@ -1489,7 +1623,9 @@ export default function Project() {
                                 dirtlossMouseOver("waterDeman", "hover")
                               }
                               onMouseLeave={() => dirtlossMouseLeave("xy")}
-                              onFocus={() => dirtlossMouseOver("waterDeman", "focus")}
+                              onFocus={() =>
+                                dirtlossMouseOver("waterDeman", "focus")
+                              }
                               onBlur={() => dirtlossMouseLeave("fout")}
                             />
                           </BootstrapTooltip>
@@ -1610,18 +1746,7 @@ export default function Project() {
                     <div className="col-md-8 rSPrSection">
                       {evaluation === true ? (
                         <>
-                          {/* <div className="row ">
-                            <div className="col-md-12">
-                              <h2>Project Name : {projectname} </h2>{" "}
-                            </div>
-                          </div> */}
-                          {/* <div className="row ">
-                            <div className="col-md-4"><strong>Country Name:</strong> {country ? country.country : ""}</div>
-                            <div className="col-md-4"><strong>City Name:</strong> {city.city}</div>
-                             <div className="col-md-4"><strong>Location:</strong> {projectname} </div>
-                          </div> */}
-                          {/* <Divider className="m-4"/> */}
-                          <div >
+                          <div>
                             <Analyze
                               evaluationdata={evaluationdata}
                               citylocation={citylocation}
@@ -1650,21 +1775,26 @@ export default function Project() {
                         <div className="row">
                           <div className="col-md-6">
                             <FormControl fullWidth>
-                              <Autocomplete size="small"
+                              <Autocomplete
+                                size="small"
                                 id="country-select-demo3"
                                 defaultValue={inputField.item}
                                 onChange={(event, newValue) =>{
                                   setAccessories([...accessories, inputField.item]);
-                                  handlseelctitem(event, newValue, inputField.id, index);
-
-                                }
+                                  handlseelctitem(event, newValue, inputField.id, index);}
                                 }
                                 onMouseOver={() =>
                                   accessoryMouseOver(inputField.item, "hover")
                                 }
-                                onMouseLeave={() => accessoryMouseLeave(inputField.item, "xy")}
-                                onFocus={() => accessoryMouseOver(inputField.item, "focus")}
-                                onBlur={() => accessoryMouseLeave(inputField.item, "fout")}
+                                onMouseLeave={() =>
+                                  accessoryMouseLeave(inputField.item, "xy")
+                                }
+                                onFocus={() =>
+                                  accessoryMouseOver(inputField.item, "focus")
+                                }
+                                onBlur={() =>
+                                  accessoryMouseLeave(inputField.item, "fout")
+                                }
                                 style={{ width: 300 }}
                                 options={accessories}
                                 classes={{
@@ -1675,9 +1805,7 @@ export default function Project() {
                                   option ? option.name : ""
                                 }
                                 renderOption={(option) => (
-                                  <React.Fragment>
-                                    {option.name }
-                                  </React.Fragment>
+                                  <React.Fragment>{option.name}</React.Fragment>
                                 )}
                                 renderInput={(params) => (
                                   <TextField
@@ -1715,19 +1843,26 @@ export default function Project() {
                                 type="number"
                                 onChange={(event) =>
                                   handlchangquantity(
-
                                     // ((event.target.value >= inputField?.item?.min_quantity &&
-                                    // event.target.value <= inputField?.item?.max_quantity)? 
-                                    event.target.value
+                                    // event.target.value <= inputField?.item?.max_quantity)?
+                                    event.target.value,
                                     // : inputField?.item?.min_quantity)
-                                    , inputField.id
-                                    )
-
+                                    inputField.id
+                                  )
                                 }
                                 value={inputField.quantity}
                                 InputProps={{
-                                  endAdornment: <InputAdornment position="end">{inputField.uomAc?inputField.uomAc:'m'}</InputAdornment>,
-                                  inputProps: { min: inputField?.item?.min_quantity, max: inputField?.item?.max_quantity },
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      {inputField.uomAc
+                                        ? inputField.uomAc
+                                        : "m"}
+                                    </InputAdornment>
+                                  ),
+                                  inputProps: {
+                                    min: inputField?.item?.min_quantity,
+                                    max: inputField?.item?.max_quantity,
+                                  },
                                 }}
                                 InputLabelProps={{
                                   shrink: true,
@@ -1735,24 +1870,34 @@ export default function Project() {
                               />
                             </FormControl>
                           </div>
-                        
-                          <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+
+                          <div
+                            className="col-md-3"
+                            style={{
+                              paddingRight: "10px",
+                              paddingLeft: "10px",
+                            }}
+                          >
                             <FormControl fullWidth>
-                            <a href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`} target="_blank">
-                            <Button
-                                style={{marginTop: '16px', padding: '6px 6px'}}
-                                variant="contained"
-                                color="default"
-                                className={classes.button}
-                                startIcon={<CloudDownloadIcon />}
+                              <a
+                                href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}
+                                target="_blank"
                               >
-                                Data Sheet
-                              </Button>
-                            </a>
-                              
+                                <Button
+                                  style={{
+                                    marginTop: "16px",
+                                    padding: "6px 6px",
+                                  }}
+                                  variant="contained"
+                                  color="default"
+                                  className={classes.button}
+                                  startIcon={<CloudDownloadIcon />}
+                                >
+                                  Data Sheet
+                                </Button>
+                              </a>
                             </FormControl>
                           </div>
-                        
                         </div>
                       ))}
 
@@ -1779,18 +1924,28 @@ export default function Project() {
                       </IconButton>
                     </div>
                     <div className="col-md-6">
-                    {loadImg ? (
-                      <>
-                        <span className="row justify-content-center">
-                          <Spinner radius={60} color={"#3f51b5"} stroke={3} visible={loadImg} />
-                        </span>
-                        
-                      </>
-                    ) : <img
-                    src={accImgPath? `${axios.defaults.baseURL}accessories/${accImgPath}`:"/Layouts/system layout with details.jpg"}
-                    className=" img-thumbnail rounded mx-auto d-block"
-                    alt="Responsive"
-                  />}
+                      {loadImg ? (
+                        <>
+                          <span className="row justify-content-center">
+                            <Spinner
+                              radius={60}
+                              color={"#3f51b5"}
+                              stroke={3}
+                              visible={loadImg}
+                            />
+                          </span>
+                        </>
+                      ) : (
+                        <img
+                          src={
+                            accImgPath
+                              ? `${axios.defaults.baseURL}accessories/${accImgPath}`
+                              : "/Layouts/system layout with details.jpg"
+                          }
+                          className=" img-thumbnail rounded mx-auto d-block"
+                          alt="Responsive"
+                        />
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -1799,48 +1954,80 @@ export default function Project() {
 
                 {activeStep === 2 ? (
                   <div className="row">
-                    <div className="col-md-3">
-                      
-                    </div>
+                    <div className="col-md-3"></div>
                     <div className="col-md-12">
                       <div className="row justify-content-center ">
-                      
-                        {submited? 
+                        {submited ? (
                           <Alert severity="success" color="info">
                             <h1 color="success">
                               Congratulations Project Successfully Inserted !
                             </h1>
                           </Alert>
-                        :""}
-                        {(projectname && country &&
-                              city && daynomichead && solarCable&& motorcable &&
-                              piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
-                              solarvalue && solarSelectWatt && invertorvalue)? <p className="mt-3 p-4">
-                              Your Project Is Ready To Save it!,  You can preview your Project before submit it.
-                            </p> : ''}
-
-                        {/* <p className="mt-3 p-4">
-                          Your Project Is Ready To Save it!,  You can preview your Project before submit it.
-                        </p> */}
-                        
+                        ) : (
+                          ""
+                        )}
+                        {projectname &&
+                        country &&
+                        city &&
+                        daynomichead &&
+                        solarCable &&
+                        motorcable &&
+                        piplenght &&
+                        discharge &&
+                        dirtloss &&
+                        bas &&
+                        inputFields &&
+                        pumpvalue &&
+                        solarvalue &&
+                        solarSelectWatt &&
+                        invertorvalue ? (
+                          <p className="mt-3 p-4">
+                            Your Project Is Ready To Save it!, You can preview
+                            your Project before submit it.
+                          </p>
+                        ) : (
+                          ""
+                        )}
                       </div>
 
                       <div className="row justify-content-center ">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            className="p-3"
-                            size="large"
-                            disabled = {(projectname && country &&
-                              city && daynomichead && solarCable&& motorcable &&
-                              piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
-                              solarvalue && solarSelectWatt && invertorvalue)? false : true}
-                            onClick={e=>handlePreview()}
-                            // history.push('/app/project-summary/'+projectID)
-                          >
-                            View project summary
-                          </Button>
-                        <Preview open={openPre} setOpen={setOpenPre} match={previewData} setPreviewData={setPreviewData} projectID={projectID} setProjectID={setProjectID}/> 
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className="p-3"
+                          size="large"
+                          disabled={
+                            projectname &&
+                            country &&
+                            city &&
+                            daynomichead &&
+                            solarCable &&
+                            motorcable &&
+                            piplenght &&
+                            discharge &&
+                            dirtloss &&
+                            bas &&
+                            inputFields &&
+                            pumpvalue &&
+                            solarvalue &&
+                            solarSelectWatt &&
+                            invertorvalue
+                              ? false
+                              : true
+                          }
+                          onClick={(e) => handlePreview()}
+                          // history.push('/app/project-summary/'+projectID)
+                        >
+                          View project summary
+                        </Button>
+                        <Preview
+                          open={openPre}
+                          setOpen={setOpenPre}
+                          match={previewData}
+                          setPreviewData={setPreviewData}
+                          projectID={projectID}
+                          setProjectID={setProjectID}
+                        />
                       </div>
                     </div>
                   </div>
@@ -1852,7 +2039,7 @@ export default function Project() {
                   <Button
                     variant="contained"
                     color="secondary"
-                    type='button'
+                    type="button"
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.backButton}
@@ -1861,24 +2048,56 @@ export default function Project() {
                   </Button>
 
                   {activeStep === steps.length - 2 ? (
-                    <Button variant="contained" color="primary" onClick={handleNext}>
-                    Next
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
                     </Button>
                   ) : (
                     ""
                   )}
 
                   {activeStep === steps.length - 3 ? (
-                    <Button  variant="contained" color="primary" onClick={handleNext}>Next</Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
                   ) : (
                     ""
                   )}
 
                   {activeStep === steps.length - 1 ? (
-                    <Button variant="contained" color="primary" type="submit" disabled = {(projectname && country &&
-                      city && daynomichead && solarCable&& motorcable &&
-                      piplenght && discharge && dirtloss && bas && inputFields && pumpvalue &&
-                      solarvalue && solarSelectWatt && invertorvalue)? false : true}>Submit</Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      disabled={
+                        projectname &&
+                        country &&
+                        city &&
+                        daynomichead &&
+                        solarCable &&
+                        motorcable &&
+                        piplenght &&
+                        discharge &&
+                        dirtloss &&
+                        bas &&
+                        inputFields &&
+                        pumpvalue &&
+                        solarvalue &&
+                        solarSelectWatt &&
+                        invertorvalue
+                          ? false
+                          : true
+                      }
+                    >
+                      Submit
+                    </Button>
                   ) : (
                     ""
                   )}

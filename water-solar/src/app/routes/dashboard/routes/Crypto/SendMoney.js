@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "reactstrap";
 import Widget from "components/Widget/index";
-import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
 import Divider from "@material-ui/core/Divider";
 import "./dashstyle.css";

@@ -16,18 +16,14 @@ import {
   HORIZONTAL_NAVIGATION,
   INSIDE_THE_HEADER
 } from 'constants/ActionTypes';
-import SearchBox from 'components/SearchBox';
-
 import './style.css'
-
-
 import Switch from '@material-ui/core/Switch';
 import {switchLanguage, toggleCollapsedNav} from 'actions/Setting';
 import IntlMessages from 'util/IntlMessages';
 
 import Menu from 'components/TopNav/Menu';
 import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
-import {changeDirection, setDarkTheme, setThemeColor} from 'actions/index';
+import {setDarkTheme, setThemeColor} from 'actions/index';
 
 class Header extends React.Component {
 
@@ -47,11 +43,7 @@ class Header extends React.Component {
       langSwitcher: !this.state.langSwitcher, anchorEl: event.currentTarget
     })
   };
-  onSearchBoxSelect = () => {
-    this.setState({
-      searchBox: !this.state.searchBox
-    })
-  };
+ 
   onAppsSelect = () => {
     this.setState({
       apps: !this.state.apps
@@ -68,7 +60,6 @@ class Header extends React.Component {
       userInfo: false,
       mailNotification: false,
       appNotification: false,
-      searchBox: false,
       apps: false
     });
   };
@@ -127,7 +118,6 @@ class Header extends React.Component {
     super();
     this.state = {
       anchorEl: undefined,
-      searchBox: false,
       searchText: '',
       mailNotification: false,
       userInfo: false,
@@ -154,7 +144,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const {themeColor, darkTheme, isDirectionRTL} = this.props;
+    const {darkTheme} = this.props;
     const {drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
 
@@ -179,11 +169,6 @@ class Header extends React.Component {
             <img src={require("assets/images/System_logo.png")} alt="Jambo" title="Jambo"/>
             {/* <h1 className="logcolor">Clean Water</h1> */}
           </Link>
-
-
-          <SearchBox styleName="d-none d-lg-block" placeholder=""
-                     onChange={this.updateSearchText.bind(this)}
-                     value={this.state.searchText}/>
           {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
           <Menu/>}
 
