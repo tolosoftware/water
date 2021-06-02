@@ -532,7 +532,6 @@ export default function Project() {
     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
   ]);
   //start dynomic form
-
   const addAccessory = (item)=>{
     if(item !==""){
     console.log("inside addAccessory before input changes", item);
@@ -545,13 +544,6 @@ export default function Project() {
 
   }
   const handlseelctitem = (event, value, id, index) => {
-    // console.log('value of item ', value);
-    //   if(inputFields[index]['item'] !==""){
-    //     console.log("inside if before ", inputFields[index].item);
-    //     setAccessoriesCop()
-    //     addAccessory(inputFields[index].item);
-    //   }
-    // console.log("before setInputFields ", inputFields[index]['item']);
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
         i['item'] = value;
@@ -1789,8 +1781,7 @@ export default function Project() {
                                 defaultValue={inputField.item}
                                 onChange={(event, newValue) =>{
                                   setAccessories([...accessories, inputField.item]);
-                                  handlseelctitem(event, newValue, inputField.id, index);
-                                }
+                                  handlseelctitem(event, newValue, inputField.id, index);}
                                 }
                                 onMouseOver={() =>
                                   accessoryMouseOver(inputField.item, "hover")
