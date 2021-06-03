@@ -111,9 +111,9 @@ class AccessoriesListController extends Controller
      * @param  \App\Models\Accessories_list  $accessories_list
      * @return \Illuminate\Http\Response
      */
-    public function show(Accessories_list $accessories_list)
+    public function show($id)
     {
-        //
+        return Accessories_list::findOrFail($id);
     }
 
     /**

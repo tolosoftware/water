@@ -10,7 +10,7 @@ class Projects extends Model
     use HasFactory;
 
        protected $fillable = [
-       'country', 'city_id','name','discription','dirt_loss', 'solar_cable', 'solar_base', 'solar_watt', 'pip_length',
+       'country', 'city_id','name','discription','dirt_loss', 'solar_cable', 'solar_base', 'solar_watt','latitude', 'longtitude', 'pip_length',
         'motor_cable','daynomic_head','daily_output','solar_brand_id','pump_brand_id','invertor_brand_id', 'user_id'
        ];
 

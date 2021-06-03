@@ -248,10 +248,20 @@ const ProjectSummary = ({ match }) => {
                                   <td style={{ width: "20%" }}>Location:</td>
                                   <td>
                                     {projectDetails
-                                      ? `${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}, Long: ${projectDetails?.geolocation?.longtitude}° Lat: ${projectDetails?.geolocation?.latitude}°`
+                                      ? `${projectDetails?.geolocation?.country}, ${projectDetails?.geolocation?.city}(${projectDetails?.geolocation?.latitude}°, ${projectDetails?.geolocation?.longtitude}°)`
                                       : ""}
                                   </td>
                                 </tr>
+                                {(projectDetails.latitude && projectDetails.longtitude)
+                                      ? 
+                                    <tr>
+                                      <td>GPS:</td>
+                                      <td>
+                                        {`${projectDetails.latitude}°, ${projectDetails.longtitude}°`}
+                                      </td>
+                                    </tr>
+                                : ""}
+                                
                                 <tr>
                                   <td>Designer:</td>
                                   <td>
@@ -1080,7 +1090,7 @@ const ProjectSummary = ({ match }) => {
                                     projectDetails?.solar_base ===
                                     "Ground Structure"
                                       ? "/images/structure.png"
-                                      : "/images/manual.jpg"
+                                      : "/images/ground.jpg"
                                   }
                                   className="img-thumbnail"
                                   style={{ border: "0px solid #dee2e6" }}

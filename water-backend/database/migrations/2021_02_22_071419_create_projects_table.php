@@ -27,7 +27,9 @@ class CreateProjectsTable extends Migration
             $table->enum('solar_base', ['Manual Tracker', 'Ground Structure']);
             $table->string('daily_output');
             $table->string('dirt_loss');
-            $table->string('solar_watt');
+            $table->string('solar_watt')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longtitude')->nullable();
             $table->unsignedBigInteger('solar_brand_id');
             $table->foreign('solar_brand_id')->references('id')->on('solar_brands');
             $table->unsignedBigInteger('pump_brand_id');

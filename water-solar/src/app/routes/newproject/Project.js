@@ -480,7 +480,6 @@ export default function Project() {
 
   const handlePopoverOpen = (event, text) => {
     setTextContent(text);
-    console.log('current target', event.currentTarget);
     setAnchorEl(event.currentTarget);
 
   };
@@ -516,11 +515,14 @@ export default function Project() {
   const [filled, setFilled] = useState(false);
   const handNexTrue = () =>{
     setFilled(true);
-    console.log('project data error in project page ', filled);
+    // console.log('project data error in project page ', filled);
   };
   const [bas, setBas] = React.useState("Manual Tracker");
   const [country, setCountry] = React.useState({});
   const [city, setCity] = React.useState([]);
+  const [gps, setGps] = useState(
+    { lati: '', long: ''}
+  );
   const [daynomichead, setDaynomichead] = useState();
   const [motorcable, setMotorcable] = React.useState("");
   const [solarCable, setSolarCable] = React.useState();
@@ -530,18 +532,21 @@ export default function Project() {
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
   ]);
-  //start dynomic form
-  const addAccessory = (item)=>{
-    if(item !==""){
-    console.log("inside addAccessory before input changes", item);
-    
-    setAccessories([...accessories, item]);
-    console.log("accessories", accessories);
+  const [itemChange, setItemChange] = useState(
+    { item: '', flag: false}
+  );
+  useEffect(()=>{
+    if(itemChange.flag){
+      setAccessories([...accessories, itemChange.item]);
+      setItemChange({flag: false, item: ''})
+    }
+  },[itemChange.flag]);
 
-    // setAccessories([...accessories, item]);
-   } 
-  }
   const handlseelctitem = (event, value, id, index) => {
+    
+    if(inputFields[index].item){
+      setItemChange({flag: true, item: inputFields[index].item})
+    }
     const newInputFields = inputFields.map(i => {
       if(id === i.id) {
         i['item'] = value;
@@ -550,8 +555,7 @@ export default function Project() {
       return i;
     });
     setInputFields(newInputFields);
-    console.log("after setInputFields ", newInputFields);
-    setAccessories(accessories.filter((itemV) => value.id !== itemV.id));
+    setAccessories(accessories.filter((itemV) => value?.id !== itemV.id));
   };
 
   const handlchangquantity = (value, id) => {
@@ -589,7 +593,7 @@ export default function Project() {
     axios
       .get("api/gitprojectdata/" + id)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setDbcity(res.data.city);
@@ -638,36 +642,38 @@ export default function Project() {
   const [foucus, setFoucus] = useState(false);
   const [loadImg, setLoadImg] = useState(false);
   const [accImgPath, SetAccImgPath] = useState();
-  const accessoryMouseOver = (input, wichfunction) => {
-    // console.log('input value', input);
+  const accessoryMouseOver = (image, wichfunction) => {
+    // console.log('input value', image);
     // setEvaluation(false);
     if (wichfunction === "focus") {
       setFoucus(true);
       setLoadImg(true);
-      SetAccImgPath(input?.image);
+      SetAccImgPath(image);
       setLoadImg(false);
     }
 
     if (wichfunction === "hover") {
       if (!foucus) {
+        // console.log('input value', image);
         setLoadImg(true);
-        SetAccImgPath(input?.image);
+        SetAccImgPath(image);
         setLoadImg(false);
       }
     }
+   
   };
-  const accessoryMouseLeave = (input, wichfunction) => {
+  const accessoryMouseLeave = (wichfunction) => {
     // setEvaluation(true);
     if (wichfunction === "fout") {
       setFoucus(false);
       setLoadImg(true);
-      SetAccImgPath(input?.image);
+      SetAccImgPath();
       setLoadImg(false);
     }
 
     if (!foucus) {
       setLoadImg(true);
-      SetAccImgPath(input?.image);
+      SetAccImgPath();
       setLoadImg(false);
     }
   };
@@ -822,7 +828,7 @@ export default function Project() {
       pumpvalue,
       solarvalue,
       solarSelectWatt,
-      invertorvalue,
+      invertorvalue, gps
     };
     alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
@@ -877,22 +883,9 @@ export default function Project() {
   const [previewData, setPreviewData] = useState({});
   const handlePreview = () => {
     setOpenbackdrop(true);
-    let alldata = {
-      projectname,
-      country,
-      city,
-      daynomichead,
-      solarCable,
-      motorcable,
-      piplenght,
-      discharge,
-      dirtloss,
-      bas,
-      inputFields,
-      pumpvalue,
-      solarvalue,
-      solarSelectWatt,
-      invertorvalue,
+    let alldata = {projectname,country,city,daynomichead,solarCable,
+      motorcable,piplenght,discharge,dirtloss,bas,inputFields,pumpvalue,solarvalue,
+      solarSelectWatt,invertorvalue,gps,
     };
     alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
@@ -1314,7 +1307,8 @@ export default function Project() {
                             horizontal: 'left',
                           }}
                           onClose={handlePopoverClose}
-                          // disableRestoreFocus
+                          disableAutoFocus={true}
+                          disableEnforceFocus={true}
                         >
                         <Typography>{textContent}</Typography>
                       </Popover>
@@ -1341,7 +1335,6 @@ export default function Project() {
                                 ? true
                                 : false
                             }
-                            disabled={false}
                             aria-owns={open ? 'mouse-over-popover' : undefined}
                             aria-haspopup="false"
                             onMouseEnter={e=>handlePopoverOpen(e, textData[0])}
@@ -1448,298 +1441,334 @@ export default function Project() {
                           />
                         </div>
                       </div>
-
-                      <Divider className="mb-3 mt-3" />
                       <div className="row">
-                        <div className="col-md-6">
-                            <TextField
-                              id="outlined-basic-1_head"
-                              className="form-control"
-                              label={`Head ${
-                                piplenght && dirtloss
-                                  ? "+ " +
-                                    Math.ceil(
-                                      Number((dirtloss * piplenght) / 100)
-                                    )
-                                  : ""
-                              }`}
-                              variant="outlined"
-                              placeholder="Head !"
-                              margin="normal"
-                              name="head"
-                              type="number"
-                              size="small"
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    m
-                                  </InputAdornment>
-                                ),
-                              }}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              value={daynomichead}
-                              onChange={(event) =>
-                                setDaynomichead(event.target.value)
-                              }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("head", "hover")
-                              }
-                              onMouseLeave={() => {handlePopoverClose()}}
-                              onFocus={() => dirtlossMouseOver("head", "focus")}
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <TextField
-                              id="outlined-basic-2_solar"
-                              label="Solar Cable"
-                              fullWidth={true}
-                              variant="outlined"
-                              placeholder="Solar cable!"
-                              margin="normal"
-                              name="solar_cable"
-                              type="number"
-                              size="small"
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    m
-                                  </InputAdornment>
-                                ),
-                              }}
-                              value={solarCable}
-                              onChange={(event) =>
-                                setSolarCable(event.target.value)
-                              }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("solarCable", "hover")
-                              }
-                              onMouseLeave={() => { handlePopoverClose();}}
-                              onFocus={() =>
-                                dirtlossMouseOver("solarCable", "focus")
-                              }
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
-                            />
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6">
-                            <TextField
-                              fullWidth={true}
-                              id="outlined-basic-2"
-                              label="Motor Cable"
-                              variant="outlined"
-                              placeholder="Motor cable!"
-                              margin="normal"
-                              name="motor_cable"
-                              type="number"
-                              size="small"
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    m
-                                  </InputAdornment>
-                                ),
-                              }}
-                              value={motorcable}
-                              onChange={(event) =>
-                                setMotorcable(event.target.value)
-                              }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("motor", "hover")
-                              }
-                              onMouseLeave={() => {handlePopoverClose();}}
-                              onFocus={() =>
-                                dirtlossMouseOver("motor", "focus")
-                              }
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
-                              // onBlur={() => dirtlossMouseLeave("fout")}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                            <TextField
-                              fullWidth={true}
-                              id="outlined-basic-4"
-                              label="Pipe-lenght"
-                              variant="outlined"
-                              placeholder="Pipe lenght!"
-                              margin="normal"
-                              name="motor_cable"
-                              type="number"
-                              size="small"
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    m
-                                  </InputAdornment>
-                                ),
-                              }}
-                              value={piplenght}
-                              onChange={(event) =>
-                                {setPiplenght(event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
-                              }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("pip", "hover")
-                              }
-                              onMouseLeave={() => {handlePopoverClose();}}
-                              onFocus={() => dirtlossMouseOver("pip", "focus")}
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
-                              // onBlur={() => dirtlossMouseLeave("fout")}
-                            />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-md-6">
-                            <TextField
-                              fullWidth={true}
-                              id="outlined-basic-5"
-                              label="Water Demand"
-                              variant="outlined"
-                              placeholder="Water Demand"
-                              margin="normal"
-                              name="discharge"
-                              size="small"
-                              type="number"
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    m³/h
-                                  </InputAdornment>
-                                ),
-                              }}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              value={discharge}
-                              onChange={(event) =>
-                                setDischarge(event.target.value)
-                              }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("waterDeman", "hover")
-                              }
-                              onMouseLeave={() => {handlePopoverClose();}}
-                              onFocus={() =>
-                                dirtlossMouseOver("waterDeman", "focus")
-                              }
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
-                            />
-                        </div>
-                        <div className="col-md-6">
-                          <TextField
-                            fullWidth={true}
-                            id="outlined-basic-11"
-                            label="Pipe Friction losses"
-                            variant="outlined"
-                            size="small"
-                            placeholder="Pipe Friction losses!"
-                            margin="normal"
-                            name="dist_loss"
-                            type="number"
-                            min="0"
-                            max="10"
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  %
-                                </InputAdornment>
-                              ),
-                              inputProps: {
-                                min: 0,
-                                max: 10,
-                              },
-                            }}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            value={dirtloss}
-                            onChange={(event) =>
-                              setDirtloss(event.target.value)
-                            }
-                            onMouseOver={() =>
-                              dirtlossMouseOver("dirt", "hover")
-                            }
-                            onMouseLeave={() => dirtlossMouseLeave("xy")}
-                            onFocus={() => dirtlossMouseOver("dirt", "focus")}
-                            // onBlur={() => dirtlossMouseLeave("fout")}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap mt-3 project_bas_field">
-                          <div className="btn-group" role="group" aria-label="Basic radio toggle button group" 
-                            aria-owns={open ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="true"
-                            onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
-                            onMouseLeave={handlePopoverClose}>
-                            <input
-                              type="radio"
-                              className="form-control"
-                              class="btn-check"
-                              name={"btnradio1"}
-                              id={"btnradio1"}
-                              autocomplete="off"
-                              checked={bas === "Manual Tracker"}
-                              value="Manual Tracker"
-                              onChange={(event) => setBas(event.target.value)}
-                              onMouseOver={() =>
-                                dirtlossMouseOver("MT", "hover")
-                              }
-                              onFocus={() => dirtlossMouseOver("MT", "focus")}
-                              
-                            />
-                            <label
-                              class="btn btn-outline-primary"
-                              for={"btnradio1"}
-                            >
-                              Manual Tracker
-                            </label>
-                            <input
-                              className="form-control"
-                              type="radio"
-                              class="btn-check"
-                              name={"btnradio2"}
-                              id={"btnradio2"}
-                              autocomplete="off"
-                              checked={bas === "Ground Structure"}
-                              value="Ground Structure"
-                              onChange={(event) => setBas(event.target.value)}
-                              onMouseOver={() =>
-                                dirtlossMouseOver("GS", "hover")
-                              }
-                              onFocus={() => dirtlossMouseOver("GS", "focus")}
-                              
-                            />
-                            <label
-                              class="btn btn-outline-primary"
-                              for={"btnradio2"}
-                            >
-                              Ground Structure
-                            </label>
+                          <div className="col-md-6">
+                              <TextField
+                                id="outlined-basic-1_lati" className="form-control"
+                                label='Latitude'
+                                variant="outlined" placeholder="Latitude" margin="normal" name="latitude"
+                                type="number" size="small" 
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      °
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                InputLabelProps={{ shrink: true, }}
+                                value={gps.lati}
+                                onChange={(event) => setGps({...gps, lati: event.target.value})}
+                              />
                           </div>
-                      </div>
+                          <div className="col-md-6">
+                            <TextField
+                                id="outlined-basic-1_long" className="form-control"
+                                label='Longtitude'
+                                variant="outlined" placeholder="Longtitude" margin="normal" name="longtitude"
+                                type="number" size="small" 
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      °
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                InputLabelProps={{ shrink: true, }}
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                value={gps.long}
+                                onChange={(event) => setGps({...gps, long: event.target.value})}
+                            />
+                          </div>
+                        </div>
+                      <Divider className="mb-3 mt-3" />
+                      <div onMouseLeave={()=>dirtlossMouseLeave("fout")}>
+                        <div className="row">
+                          <div className="col-md-6">
+                              <TextField
+                                id="outlined-basic-1_head" className="form-control"
+                                label={`Head ${
+                                  piplenght && dirtloss
+                                    ? "+ " +
+                                      Math.ceil(
+                                        Number((dirtloss * piplenght) / 100)
+                                      )
+                                    : ""
+                                }`}
+                                variant="outlined" placeholder="Head !" margin="normal" name="head"
+                                type="number" size="small" 
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      m
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                InputLabelProps={{ shrink: true, }}
+                                value={daynomichead}
+                                onChange={(event) => setDaynomichead(event.target.value) }
+                                onMouseOver={() => dirtlossMouseOver("head", "hover")}
+                                onMouseLeave={() => {handlePopoverClose()}}
+                                onFocus={() => dirtlossMouseOver("head", "focus")}
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
+                              />
+                          </div>
+                          <div className="col-md-6">
+                              <TextField
+                                id="outlined-basic-2_solar"
+                                label="Solar Cable"
+                                fullWidth={true}
+                                variant="outlined"
+                                placeholder="Solar cable!"
+                                margin="normal"
+                                name="solar_cable"
+                                type="number"
+                                size="small"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      m
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                value={solarCable}
+                                onChange={(event) =>
+                                  setSolarCable(event.target.value)
+                                }
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("solarCable", "hover")
+                                }
+                                onMouseLeave={() => { handlePopoverClose();}}
+                                onFocus={() =>
+                                  dirtlossMouseOver("solarCable", "focus")
+                                }
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
+                              />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                              <TextField
+                                fullWidth={true}
+                                id="outlined-basic-2"
+                                label="Motor Cable"
+                                variant="outlined"
+                                placeholder="Motor cable!"
+                                margin="normal"
+                                name="motor_cable"
+                                type="number"
+                                size="small"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      m
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                value={motorcable}
+                                onChange={(event) =>
+                                  setMotorcable(event.target.value)
+                                }
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("motor", "hover")
+                                }
+                                onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={() =>
+                                  dirtlossMouseOver("motor", "focus")
+                                }
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
+                                // onBlur={() => dirtlossMouseLeave("fout")}
+                              />
+                          </div>
+                          <div className="col-md-6">
+                              <TextField
+                                fullWidth={true}
+                                id="outlined-basic-4"
+                                label="Pipe-lenght"
+                                variant="outlined"
+                                placeholder="Pipe lenght!"
+                                margin="normal"
+                                name="motor_cable"
+                                type="number"
+                                size="small"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      m
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                value={piplenght}
+                                onChange={(event) =>
+                                  {setPiplenght(event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
+                                }
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("pip", "hover")
+                                }
+                                onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={() => dirtlossMouseOver("pip", "focus")}
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
+                                // onBlur={() => dirtlossMouseLeave("fout")}
+                              />
+                          </div>
+                        </div>
 
+                        <div className="row">
+                          <div className="col-md-6">
+                              <TextField
+                                fullWidth={true}
+                                id="outlined-basic-5"
+                                label="Water Demand"
+                                variant="outlined"
+                                placeholder="Water Demand"
+                                margin="normal"
+                                name="discharge"
+                                size="small"
+                                type="number"
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      m³/h
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                value={discharge}
+                                onChange={(event) =>
+                                  setDischarge(event.target.value)
+                                }
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("waterDeman", "hover")
+                                }
+                                onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={() =>
+                                  dirtlossMouseOver("waterDeman", "focus")
+                                }
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
+                              />
+                          </div>
+                          <div className="col-md-6">
+                            <TextField
+                              fullWidth={true}
+                              id="outlined-basic-11"
+                              label="Pipe Friction losses"
+                              variant="outlined"
+                              size="small"
+                              placeholder="Pipe Friction losses!"
+                              margin="normal"
+                              name="dist_loss"
+                              type="number"
+                              min="0"
+                              max="10"
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    %
+                                  </InputAdornment>
+                                ),
+                                inputProps: {
+                                  min: 0,
+                                  max: 10,
+                                },
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={dirtloss}
+                              onChange={(event) =>
+                                setDirtloss(event.target.value)
+                              }
+                              onMouseOver={() =>
+                                dirtlossMouseOver("dirt", "hover")
+                              }
+                              // onMouseLeave={() => dirtlossMouseLeave("xy")}
+                              onFocus={() => dirtlossMouseOver("dirt", "focus")}
+                              // onBlur={() => dirtlossMouseLeave("fout")}
+                            />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap project_bas_field">
+                            <div className="btn-group" role="group" aria-label="Basic radio toggle button group" 
+                              >
+                              <input
+                                type="radio"
+                                className="form-control"
+                                class="btn-check"
+                                name={"btnradio1"}
+                                id={"btnradio1"}
+                                autocomplete="off"
+                                checked={bas === "Manual Tracker"}
+                                value="Manual Tracker"
+                                onChange={(event) => setBas(event.target.value)}
+                                onFocus={() => dirtlossMouseOver("MT", "focus")}
+                              />
+                              <label
+                                class="btn btn-outline-primary"
+                                for={"btnradio1"}
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("MT", "hover")
+                                }
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                                onMouseLeave={handlePopoverClose}
+                              >
+                                Manual Tracker
+                              </label>
+                              <input
+                                className="form-control"
+                                type="radio"
+                                class="btn-check"
+                                name={"btnradio2"}
+                                id={"btnradio2"}
+                                autocomplete="off"
+                                checked={bas === "Ground Structure"}
+                                value="Ground Structure"
+                                onChange={(event) => setBas(event.target.value)}
+                                onFocus={() => dirtlossMouseOver("GS", "focus")}
+                                
+                              />
+                              <label
+                                class="btn btn-outline-primary"
+                                for={"btnradio2"}
+                                onMouseOver={() =>
+                                  dirtlossMouseOver("GS", "hover")
+                                }
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true"
+                                onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                                onMouseLeave={handlePopoverClose}
+                              >
+                                Ground Structure
+                              </label>
+                            </div>
+                        </div>
+                        </div>
+                      </div>
                       <Divider className="mb-3 mt-3" />
 
                       <Button
@@ -1784,6 +1813,7 @@ export default function Project() {
                 {activeStep === 1 ? (
                   <div className="row">
                     <div className="col-md-6">
+                    <div onMouseLeave={() =>accessoryMouseLeave("fout")}>
                       <h3>Project Accessories</h3>
                       {inputFields.map((inputField, index) => (
                         <div className="row">
@@ -1794,21 +1824,16 @@ export default function Project() {
                                 id="country-select-demo3"
                                 defaultValue={inputField.item}
                                 onChange={(event, newValue) =>{
-                                  setAccessories([...accessories, inputField.item]);
                                   handlseelctitem(event, newValue, inputField.id, index);}
                                 }
                                 onMouseOver={() =>
-                                  accessoryMouseOver(inputField.item, "hover")
+                                  accessoryMouseOver(inputField.item?.image, "hover")
                                 }
-                                onMouseLeave={() =>
-                                  accessoryMouseLeave(inputField.item, "xy")
-                                }
+                               
                                 onFocus={() =>
-                                  accessoryMouseOver(inputField.item, "focus")
+                                  accessoryMouseOver(inputField.item?.image, "focus")
                                 }
-                                onBlur={() =>
-                                  accessoryMouseLeave(inputField.item, "fout")
-                                }
+                                
                                 style={{ width: 300 }}
                                 options={accessories}
                                 classes={{
@@ -1931,7 +1956,9 @@ export default function Project() {
                           remove_circle_outline{" "}
                         </span>
                       </IconButton>
+                      </div>
                     </div>
+                    
                     <div className="col-md-6">
                       {loadImg ? (
                         <>
@@ -1973,71 +2000,80 @@ export default function Project() {
                             </h1>
                           </Alert>
                         ) : (
-                          ""
+                        <>
+                          
+                          {projectname &&
+                          country &&
+                          city &&
+                          daynomichead &&
+                          solarCable &&
+                          motorcable &&
+                          piplenght &&
+                          discharge &&
+                          dirtloss &&
+                          bas &&
+                          inputFields &&
+                          pumpvalue &&
+                          solarvalue &&
+                          solarSelectWatt &&
+                          invertorvalue ? (
+                            <div className="col-md-12">
+                              <p className="mt-3 p-4" style={{textAlign:'center'}}>
+                                Your Project Is Ready To Save it!, You can preview
+                                your Project before submit it.
+                              </p>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        
+                          
+                          <div className="row justify-content-center ">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className="p-3"
+                              size="large"
+                              disabled={
+                                projectname &&
+                                country &&
+                                city &&
+                                daynomichead &&
+                                solarCable &&
+                                motorcable &&
+                                piplenght &&
+                                discharge &&
+                                dirtloss &&
+                                bas &&
+                                inputFields &&
+                                pumpvalue &&
+                                solarvalue &&
+                                solarSelectWatt &&
+                                invertorvalue
+                                  ? false
+                                  : true
+                              }
+                              onClick={(e) => handlePreview()}
+                            >
+                              View project summary
+                            </Button>
+                            <Preview
+                              open={openPre}
+                              setOpen={setOpenPre}
+                              match={previewData}
+                              setPreviewData={setPreviewData}
+                              projectID={projectID}
+                              setProjectID={setProjectID}
+                            />
+                          </div>
+                        </>
                         )}
-                        {projectname &&
-                        country &&
-                        city &&
-                        daynomichead &&
-                        solarCable &&
-                        motorcable &&
-                        piplenght &&
-                        discharge &&
-                        dirtloss &&
-                        bas &&
-                        inputFields &&
-                        pumpvalue &&
-                        solarvalue &&
-                        solarSelectWatt &&
-                        invertorvalue ? (
-                          <p className="mt-3 p-4">
-                            Your Project Is Ready To Save it!, You can preview
-                            your Project before submit it.
-                          </p>
-                        ) : (
-                          ""
-                        )}
+                        
+                        
                       </div>
 
-                      <div className="row justify-content-center ">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className="p-3"
-                          size="large"
-                          disabled={
-                            projectname &&
-                            country &&
-                            city &&
-                            daynomichead &&
-                            solarCable &&
-                            motorcable &&
-                            piplenght &&
-                            discharge &&
-                            dirtloss &&
-                            bas &&
-                            inputFields &&
-                            pumpvalue &&
-                            solarvalue &&
-                            solarSelectWatt &&
-                            invertorvalue
-                              ? false
-                              : true
-                          }
-                          onClick={(e) => handlePreview()}
-                          // history.push('/app/project-summary/'+projectID)
-                        >
-                          View project summary
-                        </Button>
-                        <Preview
-                          open={openPre}
-                          setOpen={setOpenPre}
-                          match={previewData}
-                          setPreviewData={setPreviewData}
-                          projectID={projectID}
-                          setProjectID={setProjectID}
-                        />
-                      </div>
+                      
+                      
                     </div>
                   </div>
                 ) : (
@@ -2074,7 +2110,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
-                      disabled={filled?false:true}
+                      // disabled={filled?false:true}
                     >
                       Next
                     </Button>

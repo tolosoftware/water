@@ -109,12 +109,6 @@ export default function Analyze(props) {
     }
   }, [props.evaluationdata, props.citylocation]);
 
-  useEffect(() => {
-    if (props.evaluationdata) {
-    }
-     
-  }, []);
-
   const [openbackdrop, setOpenbackdrop] = React.useState(false);
   const [sugestedpump, setSugestedpump] = React.useState([]);
   const [cable, setCable] = React.useState([]);
@@ -126,16 +120,10 @@ export default function Analyze(props) {
   const [hrOutputP, setHrOutputP] = useState([]);
   const [monthlyHrOutput, setMonthlyHrOutput] = useState([]);
   const [dataError, setDataError] = useState(false);
-  // useEffect(() => {
-  //   if (dataError) {
-  //     console.log('project data error in analyze ', dataError);
-  //     props.handNexTrue();
-  //   }
-     
-  // }, [dataError]);
+  
   const {filled, setFilled} = props;
 
-  const docalculculation = () => {
+  const docalculculation = async() => {
     setOpenbackdrop(true);
     // console.log("props evaluationdata: ", props.evaluationdata);
     axios
@@ -161,6 +149,7 @@ export default function Analyze(props) {
       })
       .catch((err) => {
         setOpenbackdrop(false);
+        setDataError(true);
         NotificationManager.error(
           <IntlMessages id="notification.errorMessage" />,
           <IntlMessages id="notification.titleHere" />
@@ -171,7 +160,7 @@ export default function Analyze(props) {
   const [irdformont, setIrdformont] = useState([]);
 
   const [avgmonth, setAvgmonth] = useState("");
-  const getIrredation = () => {
+  const getIrredation = async() => {
     setOpenbackdrop(true);
     axios
       .get("api/getIrredation/" + props.citylocation)
