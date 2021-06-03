@@ -13,14 +13,15 @@ use App\Models\Solar_list;
 use App\Models\Config_solar;
 use App\Models\Cable_type;
 use App\Models\InvertorList;
-
-
-
 use App\Models\Irradiation;
 use App\Models\Uom;
+use App\Models\User;
 use App\Models\Accessories_list;
 use Illuminate\Http\Request;
 use DB;
+
+
+
 class ProjectsController extends Controller
 {
     public function getEnergy($city_id, $solar_power, $avaDischarge, $dirtloss){
@@ -370,7 +371,15 @@ class ProjectsController extends Controller
     }
 
     public function projectbyuser($id){
-        return Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+        $user = User::findOrFail($id);
+        if($user){
+            if($user->system === 1){
+                return Projects::with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+            }else{
+                return Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();    
+            }
+        }
+        
     }
 
     /**
@@ -405,6 +414,8 @@ class ProjectsController extends Controller
             'dirt_loss' => $request['dirtloss'],
             'solar_base' => $request['bas'],
             'solar_watt' => $request['solarSelectWatt'],
+            'latitude' => $request['gps']['lati'],
+            'longtitude' => $request['gps']['long'],
             'pip_length' => $request['piplenght'],
             'discription' => $request['discription'],
             'pump_brand_id' => $request['pumpvalue'],

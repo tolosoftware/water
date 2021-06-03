@@ -26,7 +26,9 @@
     background: rgb(221,221,221);
     background: linear-gradient(158deg, rgba(221,221,221,1) 0%, rgba(64,64,64,1) 100%);
 } */
-
+.row>.project_bas_field{
+    padding: 1rem !important;
+}
 .custompargraph{
     padding-left: 150px;
     padding-right: 150px;
