@@ -295,12 +295,15 @@ const Crypto = ({ match }) => {
       </CardBox>
 
       <div className="row">
-        <CardBox styleName="col-lg-5">
-          <UserExpiration />
-        </CardBox>
+        {JSON.parse(localStorage.getItem("UserData")).system!==1?
+          <CardBox styleName="col-lg-5">
+            <UserExpiration />
+          </CardBox>
+        :''}
+        
 
         <CardBox
-          styleName="col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide sliderstylepadding"
+          styleName={`${JSON.parse(localStorage.getItem("UserData")).system!==1?'col-xl-7 col-lg-7 dashboard-slide': 'col-xl-12 col-lg-12 admin-dashboard-slide'} col-md-12 col-12  sliderstylepadding`}
           cardStyle="text-center"
           heading
         >
