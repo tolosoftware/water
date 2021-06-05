@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Table} from 'reactstrap';
+import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -26,39 +26,27 @@ const Acceessories=() => {
 
   return (
     <>
-      <div className="table-responsive-material row table-height">
-        <Table className="default-table table-unbordered table table-sm table-hover ">
-          <thead className="table-head-sm th-border-b">
-          <tr>
-            <th>Id</th>
-            <th>Pruduct</th>
-            <th>Model</th>
-            <th>UOM Name</th>
-            <th>Download</th>
-          </tr>
-          </thead>
-          <tbody>
-          {accessories.map((data, index) => {
-            return <tr key={index}>
-              <td>{index+1}</td>
-              <td>{data.name}</td>
-              <td>{data.model}</td>
-              <td>{data.uom_name}</td>
-              
-              <td>
-                <div className="pointer text-primary">
-                  <a href={`${axios.defaults.baseURL}accessories/data_sheet/${data.data_sheet}`} download>
-                    <IconButton size="small" aria-label="delete"  color="secondary"  >
-                      <GetAppIcon />
-                    </IconButton>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          })}
-          </tbody>
-        </Table>
-      </div>
+      <MaterialTable 
+                title="Accessories Datasheet"
+                columns={
+                  [
+                    
+                      { title: 'Pruduct', field: 'name' },
+                      { title: 'Model', field: 'model'},
+                      { title: 'UOM Name', field: 'uom_name'},
+                      { title: 'Download',  
+                      render:  (accessories) =>{
+                        return   <a href={`${axios.defaults.baseURL}accessories/data_sheet/${accessories.data_sheet}`} download>
+                          <IconButton size="small" aria-label="delete"  color="secondary">
+                            <GetAppIcon />
+                          </IconButton>
+                      </a>
+                      }},
+                    ]
+                 }
+
+              data={accessories}
+          />
     </>  
 
   );

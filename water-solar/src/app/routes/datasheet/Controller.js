@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Table} from 'reactstrap';
+import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -26,39 +26,26 @@ const Controller=() => {
 
   return (
     <>
-      <div className="table-responsive-material row table-height">
-        <Table className="default-table table-unbordered table table-sm table-hover ">
-          <thead className="table-head-sm th-border-b">
-          <tr>
-            <th>Id</th>
-            <th>Pruduct</th>
-            <th>Model</th>
-            <th>Power</th>
-            <th>Download</th>
-          </tr>
-          </thead>
-          <tbody>
-          {controller.map((data, index) => {
-            return <tr key={index}>
-              <td>{index+1}</td>
-              <td>{data.invertor_brand.name}</td>
-              <td>{data.model}</td>
-              <td>{data.power}</td>
-              
-              <td>
-                <div className="pointer text-primary">
-                  <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${data.data_sheet}`} download>
-                    <IconButton size="small" aria-label="delete"  color="secondary"  >
-                      <GetAppIcon />
-                    </IconButton>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          })}
-          </tbody>
-        </Table>
-      </div>
+       <MaterialTable 
+                title="Controller"
+                columns={
+                  [
+                      { title: 'Pruduct', field: 'invertor_brand.name' },
+                      { title: 'Model', field: 'model'},
+                      { title: 'Power', field: 'power'},
+                      { title: 'Download',  
+                      render:  (controller) =>{
+                        return   <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${controller.data_sheet}`} download>
+                          <IconButton size="small" aria-label="delete"  color="secondary">
+                            <GetAppIcon />
+                          </IconButton>
+                      </a>
+                      }},
+                    ]
+                 }
+
+              data={controller}
+          />
     </>  
 
   );
