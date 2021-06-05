@@ -45,7 +45,7 @@ const SendMoney = ({ usersData }) => {
         </BarChart>
       </ResponsiveContainer>
       <Divider className="mb-3" />
-      <h3 className="pl-5">Design Project By {JSON.parse(localStorage.getItem("UserData")).name} </h3>
+      <h3 className="pl-5">{`Designed Project By ${JSON.parse(localStorage.getItem("UserData")).system == 1? 'all Users':JSON.parse(localStorage.getItem("UserData")).name}`}</h3>
     
     </Widget>
   );
