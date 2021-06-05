@@ -275,7 +275,7 @@ const Crypto = ({ match }) => {
                     <div className="brand-logo">
                       <div className="brand-logo-inner">
                         <img
-                          src={`${axios.defaults.baseURL}brand/solar/${data.image}`}
+                          src={`${axios.defaults.baseURL}brand/invertor/${data.image}`}
                           alt="Clients"
                         />
                       </div>
@@ -303,20 +303,18 @@ const Crypto = ({ match }) => {
         
 
         <CardBox
-          styleName={`${JSON.parse(localStorage.getItem("UserData")).system!==1?'col-xl-7 col-lg-7 dashboard-slide': 'col-xl-12 col-lg-12 admin-dashboard-slide'} col-md-12 col-12  sliderstylepadding`}
+          styleName={`col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide  sliderstylepadding`}
           cardStyle="text-center"
           heading
         >
           <TestimonialCarousel testimonials={testimonials} />
         </CardBox>
-      </div>
 
-      <div className="row">
-        <CardBox styleName="col-xl-12 col-lg-12 col-md-12 col-12">
+        <CardBox styleName={`${JSON.parse(localStorage.getItem("UserData")).system!==1?'col-xl-12 col-lg-12 col-md-12 col-12':'col-xl-5 col-lg-5 col-md-12 col-12'}`}>
           <>
             <h2>
               <span>Todays Post</span>
-              <span style={{ float: "right" }}>{post?.date}</span>
+              <span style={{ float: "right", fontSize:'16px'}}>{post?.date}</span>
             </h2>
             <Divider className="mb-3 mt-1" />
             <h3 className="mb-2">
@@ -325,6 +323,10 @@ const Crypto = ({ match }) => {
             <h4>{post?.discription}</h4>
           </>
         </CardBox>
+      </div>
+
+      <div className="row">
+        
       </div>
     </div>
   );

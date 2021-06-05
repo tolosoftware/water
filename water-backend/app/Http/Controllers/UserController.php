@@ -124,12 +124,22 @@ class UserController extends Controller
         $eachmonth = array();
         $currenTmonth = Carbon::now()->month;
         $currenTyear = Carbon::now()->year;
-      
-        for($i=1 ; $i<=12; $i++){
-            $permonth = Projects::where('user_id',$id)->whereYear('created_at',$currenTyear)
-            ->whereMonth('created_at', '=', $i)->get();
-            $countEachmonth = $permonth->count();
-            array_push($eachmonth,$countEachmonth);
+
+        $user = User::findOrFail($id);
+        if($user->system === 1){
+            for($i=1 ; $i<=12; $i++){
+                $permonth = Projects::whereYear('created_at',$currenTyear)
+                ->whereMonth('created_at', '=', $i)->get();
+                $countEachmonth = $permonth->count();
+                array_push($eachmonth,$countEachmonth);
+            }
+        }else{
+            for($i=1 ; $i<=12; $i++){
+                $permonth = Projects::where('user_id',$id)->whereYear('created_at',$currenTyear)
+                ->whereMonth('created_at', '=', $i)->get();
+                $countEachmonth = $permonth->count();
+                array_push($eachmonth,$countEachmonth);
+            }
         }
 
         $monthlyHrOutput =  [
@@ -149,7 +159,7 @@ class UserController extends Controller
 
         return $monthlyHrOutput;
     }
-
+   
     /**
      * Display a listing of the resource.
      *
@@ -198,6 +208,7 @@ class UserController extends Controller
     public function userCity(){
         return Geolocation::all()->unique('city');
     }
+    
     public function adminDashboard($id)
     {   
         $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
