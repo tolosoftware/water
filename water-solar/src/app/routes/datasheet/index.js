@@ -145,38 +145,38 @@ const Datasheet = () => {
    
 
     {module== true?(
-          <div className="row custom-row-card pl-3 pr-3">
-          <CardBox >
-          <Module/>
-          </CardBox>
+          <div className="row">
+              <div className="col-md-12 pl-3 pr-3">
+              <Module/>
+              </div>
           </div>
     ):''}
 
       {pump== true?(
-          <div className="row custom-row-card pl-3 pr-3">
-          <CardBox >
-             <Pump/>
-          </CardBox>
+          <div className="row">
+              <div className="col-md-12 pl-3 pr-3">
+                 <Pump/>
+              </div>
           </div>
     ):''}
 
   
 
      {controller== true?(
-         <div className="row custom-row-card pl-3 pr-3">
-         <CardBox >
-            <Controller/>
-         </CardBox>
-         </div>
+          <div className="row">
+            <div className="col-md-12 pl-3 pr-3">
+               <Controller/>
+            </div>
+          </div>
     ):''}
    
 
     {accessories== true?(
-         <div className="row custom-row-card pl-3 pr-3">
-         <CardBox >
-            <Acceessories/>
-         </CardBox>
-         </div>
+          <div className="row">
+              <div className="col-md-12 pl-3 pr-3">
+                 <Acceessories/>
+              </div>
+          </div>
     ):''}
 
   {structure== true?(
