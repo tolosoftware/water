@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Table} from 'reactstrap';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
+import MaterialTable from 'material-table';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import {NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
@@ -26,39 +27,29 @@ const Module=() => {
 
   return (
     <>
-      <div className="table-responsive-material row table-height">
-        <Table className="default-table table-unbordered table table-sm table-hover ">
-          <thead className="table-head-sm th-border-b">
-          <tr>
-            <th>Id</th>
-            <th>Pruduct</th>
-            <th>Model</th>
-            <th>Power</th>
-            <th>Download</th>
-          </tr>
-          </thead>
-          <tbody>
-          {solar.map((data, index) => {
-            return <tr key={index}>
-              <td>{index+1}</td>
-              <td>{data.solar_brand.name}</td>
-              <td>{data.model}</td>
-              <td>{data.power}</td>
-              
-              <td>
-                <div className="pointer text-primary">
-                  <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${data.data_sheet}`} download>
-                    <IconButton size="small" aria-label="delete"  color="secondary"  >
-                      <GetAppIcon />
-                    </IconButton>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          })}
-          </tbody>
-        </Table>
-      </div>
+      <MaterialTable 
+                title="Solar Brand"
+                columns={
+            
+                  [
+                      { title: 'Pruduct', field: 'solar_brand.name' },
+                      { title: 'Model', field: 'model'},
+                      { title: 'Power', field: 'power'},
+                      { title: 'Download',  
+                          render:  (solar) =>{
+                              return   <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.data_sheet}`} download>
+                                        <IconButton size="small" aria-label="delete"  color="secondary">
+                                          <GetAppIcon />
+                                        </IconButton>
+                                      </a>
+                            
+                          }
+                      },
+                    ]
+                 }
+
+              data={solar}
+          />
     </>  
 
   );
