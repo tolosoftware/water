@@ -54,19 +54,32 @@ class SignIn extends React.Component {
       .post("api/login", data)
       .then((res) => {
         this.setState({ open: false });
-        NotificationManager.success(
-          <IntlMessages id="notification.successMessage" />,
-          <IntlMessages id="notification.titleHere" />
-        );
 
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("UserData", JSON.stringify(res.data.user));
-
-        if (res.data.user.system == 1) {
-          this.props.history.push("app/dashboard/crypto");
-        } else {
-          this.props.history.push("app/dashboard/crypto");
+        if(res.data.message == "success"){
+          NotificationManager.success(
+            <IntlMessages id="notification.successMessage" />,
+            <IntlMessages id="notification.titleHere" />
+          );
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("UserData", JSON.stringify(res.data.user));
+  
+          if (res.data.user.system == 1) {
+            this.props.history.push("app/dashboard/crypto");
+          } else {
+            this.props.history.push("app/dashboard/crypto");
+          }
+        }else if(res.data.message == "inactive"){
+          NotificationManager.error(
+            <IntlMessages id="User is Not Active !" />,
+            <IntlMessages id="notification.titleHere" />
+          );
+        }else{
+          NotificationManager.error(
+            <IntlMessages id="User Expired !" />,
+            <IntlMessages id="notification.titleHere" />
+          );
         }
+       
       })
       .catch((err) => {
         this.setState({ open: false });
