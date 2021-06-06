@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }));
-const Crypto = ({ match }) => {
+const Home = ({ match }) => {
   const [openbackdrop, setOpenbackdrop] = useState(false);
   const [pump, setPump] = useState([]);
   const [solar, setSolar] = useState([]);
@@ -332,4 +332,4 @@ const Crypto = ({ match }) => {
   );
 };
 
-export default Crypto;
+export default Home;
