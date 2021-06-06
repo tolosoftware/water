@@ -253,15 +253,15 @@ const ProjectSummary = ({ match }) => {
                                   </td>
                                 </tr>
                                 {(projectDetails.latitude && projectDetails.longtitude)
-                                      ? 
-                                    <tr>
-                                      <td>GPS:</td>
-                                      <td>
-                                        {`${projectDetails.latitude}°, ${projectDetails.longtitude}°`}
-                                      </td>
-                                    </tr>
-                                : ""}
-                                
+                                  ?
+                                  <tr>
+                                    <td>GPS:</td>
+                                    <td>
+                                      {`${projectDetails.latitude}°, ${projectDetails.longtitude}°`}
+                                    </td>
+                                  </tr>
+                                  : ""}
+
                                 <tr>
                                   <td>Designer:</td>
                                   <td>
@@ -297,7 +297,7 @@ const ProjectSummary = ({ match }) => {
                                       Number(
                                         (projectDetails?.dirt_loss *
                                           projectDetails?.pip_length) /
-                                          100
+                                        100
                                       )
                                     )}
                                     m (
@@ -326,18 +326,18 @@ const ProjectSummary = ({ match }) => {
                                   <td style={{ width: "60%" }}>
                                     {solarBrand
                                       ? solarBrand?.name +
-                                        " " +
-                                        solarList?.solar_list_with_cable
-                                          ?.power +
-                                        "W " +
-                                        solarList?.solar_list_with_cable?.type +
-                                        " crystalline " +
-                                        solarList?.solar_list_with_cable
-                                          ?.voltage +
-                                        "V " +
-                                        solarList?.solar_list_with_cable
-                                          ?.current +
-                                        "A"
+                                      " " +
+                                      solarList?.solar_list_with_cable
+                                        ?.power +
+                                      "W " +
+                                      solarList?.solar_list_with_cable?.type +
+                                      " crystalline " +
+                                      solarList?.solar_list_with_cable
+                                        ?.voltage +
+                                      "V " +
+                                      solarList?.solar_list_with_cable
+                                        ?.current +
+                                      "A"
                                       : ""}
                                   </td>
                                   <td style={{ width: "10%" }}>png</td>
@@ -350,13 +350,13 @@ const ProjectSummary = ({ match }) => {
                                   <td>
                                     {pupm
                                       ? pupm[0]?.pump_brand?.name +
-                                        " " +
-                                        pupm[0]?.hp +
-                                        "HP " +
-                                        pupm[0]?.power +
-                                        "Kw " +
-                                        pupm[0]?.voltage +
-                                        "V"
+                                      " " +
+                                      pupm[0]?.hp +
+                                      "HP " +
+                                      pupm[0]?.power +
+                                      "Kw " +
+                                      pupm[0]?.voltage +
+                                      "V"
                                       : ""}
                                   </td>
                                   <td>pc</td>
@@ -367,11 +367,11 @@ const ProjectSummary = ({ match }) => {
                                   <td>
                                     {inverter
                                       ? inverter?.invertor_brand?.name +
-                                        " " +
-                                        inverter?.power +
-                                        "kw " +
-                                        inverter?.voltage +
-                                        "V"
+                                      " " +
+                                      inverter?.power +
+                                      "kw " +
+                                      inverter?.voltage +
+                                      "V"
                                       : ""}
                                   </td>
                                   <td>pc</td>
@@ -400,7 +400,7 @@ const ProjectSummary = ({ match }) => {
                                   <td>
                                     {solarList
                                       ? solarList?.solar_list_with_cable?.cable
-                                          ?.name
+                                        ?.name
                                       : ""}
                                   </td>
                                   <td>m</td>
@@ -484,7 +484,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={245}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.monthlyHrOutput}
@@ -518,7 +518,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={245}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrOutputP}
@@ -553,7 +553,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={240}
                                     >
                                       <BarChart
                                         data={irradiation?.monthIrrs}
@@ -582,7 +582,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={240}
                                     >
                                       <BarChart
                                         data={irradiation?.dailyIrrs}
@@ -613,7 +613,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={240}
                                     >
                                       <BarChart
                                         data={
@@ -644,7 +644,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={240}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrEnergy}
@@ -845,7 +845,7 @@ const ProjectSummary = ({ match }) => {
                                         <td>
                                           {solarList
                                             ? solarList?.solar_list_with_cable
-                                                ?.model
+                                              ?.model
                                             : ""}
                                         </td>
                                       </tr>
@@ -1088,7 +1088,7 @@ const ProjectSummary = ({ match }) => {
                                 <img
                                   src={
                                     projectDetails?.solar_base ===
-                                    "Ground Structure"
+                                      "Ground Structure"
                                       ? "/images/structure.png"
                                       : "/images/ground.jpg"
                                   }
@@ -1145,7 +1145,7 @@ const ProjectSummary = ({ match }) => {
                               className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
                               style={{ pageBreakAfter: "always" }}
                             >
-                              <Divider className="mb-3 mt-3" />
+                              {/* <Divider className="mb-3 mt-3" /> */}
                               <span>
                                 <strong>System General layout</strong>
                               </span>
@@ -1254,12 +1254,6 @@ const ProjectSummary = ({ match }) => {
                         </div>
                       </td>
                     </tr>
-
-                    {/* <tr>
-                      <td class="report-content-cell">
-                        <div className={`main`}></div>
-                      </td>
-                    </tr> */}
                   </tbody>
                 </table>
               </Paper>
