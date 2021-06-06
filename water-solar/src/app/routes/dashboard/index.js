@@ -5,8 +5,8 @@ import asyncComponent from '../../../util/asyncComponent';
 const Dashboard = ({match}) => (
   <div className="app-wrapper">
     <Switch>
-      <Redirect exact from={`${match.url}/`} to={`${match.url}/crypto`}/>
-      <Route path={`${match.url}/crypto`} component={asyncComponent(() => import('./routes/Crypto'))}/>
+      <Redirect exact from={`${match.url}/`} to={`${match.url}/home`}/>
+      <Route path={`${match.url}/home`} component={asyncComponent(() => import('./routes/Home'))}/>
       <Route component={asyncComponent(() => import('app/routes/extraPages/routes/404'))}/>
     </Switch>
   </div>

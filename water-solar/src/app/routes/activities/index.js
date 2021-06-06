@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 // import ContainerHeader from "components/ContainerHeader/index";
 // import IntlMessages from "util/IntlMessages";
 import {ProjectList} from './ProjectList';
-import SendMoney from '../dashboard/routes/Crypto/SendMoney';
+import SendMoney from '../dashboard/routes/Home/SendMoney';
 import Widget from "components/Widget/index";
 
 const activities=({match,props}) => {

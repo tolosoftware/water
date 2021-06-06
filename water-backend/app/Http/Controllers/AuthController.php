@@ -4,25 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+Use \Carbon\Carbon;
 class AuthController extends Controller
 {
     public function login(Request $request){
         // return $request;
         try{
 
-     
-        if(Auth::attempt($request->only('email', 'password'))){
-            /**@var User $user */
-            $user = Auth::user();
-            $token = $user->createToken('app')->accessToken;
-            return response([
-                'message' => 'success',
-                'token' => $token,
-                'user' => $user
-            ]);
-        }
+            if(Auth::attempt(['email'=>$request['email'], 'password'=>$request['password']])){
+                /**@var User $user */
+                $user = Auth::user();
 
+                $start = $user->created_at;
+                $startDate = $user->created_at;
+                $expiration = $user->expiration * 30;
+                $expirDate = $start->addDays($expiration);
+                $remaning =  $expirDate->diffInDays(Carbon::now());
+
+                if($remaning>1 && $user->status =="active"){
+                    $token = $user->createToken('app')->accessToken;
+                    return response([
+                        'message' => 'success',
+                        'token' => $token,
+                        'user' => $user
+                    ]);
+                }else if($user->status !="active"){
+                    return response([
+                        'message' => 'inactive',
+                    ]);
+                } else{
+                    return response([
+                        'message' => 'expired',
+                    ]);
+                }
+            }
+     
         return response([
             'message'=>'Invalid Username / Password'
         ],  401);

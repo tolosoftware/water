@@ -107,7 +107,7 @@ class SidenavContent extends Component {
             Menus
           </li>
           <li className="menu no-arrow">
-            <NavLink to="/app/dashboard/crypto">
+            <NavLink to="/app/dashboard/home">
               <i className="zmdi zmdi-view-dashboard zmdi-hc-fw"/>
               <span className="nav-text">Dashboard</span>
             </NavLink>

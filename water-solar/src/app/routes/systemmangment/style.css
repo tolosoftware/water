@@ -56,6 +56,10 @@
     height: 260px;
     margin-bottom: 0 !important;
 }
+.admin-dashboard-slide .slick-slider img {
+    height: 500px;
+    margin-bottom: 0 !important;
+}
 .dashboard-slide .jr-card{
     padding: 20px;
     padding-bottom: 9px;

@@ -55,13 +55,13 @@ tfoot.report-footer #page-number:after {
   margin: 20mm;
 } */
 
-/* 
+
 thead.report-header{
   display: table-header-group;
 }
 tfoot.report-footer {
   display: table-footer-group;
-} */
+}
 
 .customcolorindarkmode{
   background-color: #fff;
