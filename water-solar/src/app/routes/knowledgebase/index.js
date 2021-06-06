@@ -70,7 +70,13 @@ const ProjectSummary = ({ match }) => {
   const [solarList, setSolarList] = useState([]);
   const [inverter, setInverter] = useState([]);
   const [cable, setCable] = useState([]);
+  const [visibleSect,setVisibleSect]= useState({
+    structure: false, wiring: false, layout: false, sizing: false,
+  });
 
+  const handleVisibleSect = (e)=>{
+    setVisibleSect({...visibleSect, [e.target.name]: e.target.checked});
+  };
   const classes = useStyles();
   useEffect(() => {
     if (match.params?.id !== 0) {
@@ -1038,217 +1044,220 @@ const ProjectSummary = ({ match }) => {
                         </div>
                       </td>
                     </tr>
-
-                    <tr className="page" style={{}}>
-                      <td class="report-content-cell">
-                        <div className={`main`}>
-                          <div className="row" style={{ marginTop: "20px" }}>
-                            <div
-                              className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                              style={{ pageBreakAfter: "always" }}
-                            >
-                              <section>
-                                <div className="table-responsive-material">
-                                  <Table className="default-table table-unbordered table table-sm table-hover">
-                                    <thead className="table-head-sm th-border-b">
-                                      <tr className={classes.headSolarS}>
-                                        <th>
-                                          <strong>
-                                            Strucuter specification:
-                                          </strong>
-                                        </th>
-                                        <th></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td style={{ width: "32%" }}>Brand:</td>
-                                        <td>No</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Model:</td>
-                                        <td>
-                                          {projectDetails
-                                            ? projectDetails?.solar_base
-                                            : ""}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Capacity:</td>
-                                        <td>4/6/8/10/12 panels</td>
-                                      </tr>
-                                    </tbody>
-                                  </Table>
-                                </div>
-                                <img
-                                  src={
-                                    projectDetails?.solar_base ===
-                                    "Ground Structure"
-                                      ? "/images/structure.png"
-                                      : "/images/ground.jpg"
-                                  }
-                                  className="img-thumbnail"
-                                  style={{ border: "0px solid #dee2e6" }}
-                                  alt="Responsive"
-                                />
-                                <h4>
-                                  Note: Image may be deferent with actual
-                                  product as this is a graphic design.
-                                </h4>
-                              </section>
+                    {visibleSect.structure?'':
+                      <tr className="page" style={{}}>
+                        <td class="report-content-cell">
+                          <div className={`main`}>
+                            <div className="row" style={{ marginTop: "20px" }}>
+                              <div
+                                className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
+                                style={{ pageBreakAfter: "always" }}
+                              >
+                                <section>
+                                  <div className="table-responsive-material">
+                                    <Table className="default-table table-unbordered table table-sm table-hover">
+                                      <thead className="table-head-sm th-border-b">
+                                        <tr className={classes.headSolarS}>
+                                          <th>
+                                            <strong>
+                                              Strucuter specification:
+                                            </strong>
+                                          </th>
+                                          <th></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td style={{ width: "32%" }}>Brand:</td>
+                                          <td>No</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Model:</td>
+                                          <td>
+                                            {projectDetails
+                                              ? projectDetails?.solar_base
+                                              : ""}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>Capacity:</td>
+                                          <td>4/6/8/10/12 panels</td>
+                                        </tr>
+                                      </tbody>
+                                    </Table>
+                                  </div>
+                                  <img
+                                    src={
+                                      projectDetails?.solar_base ===
+                                      "Ground Structure"
+                                        ? "/images/structure.png"
+                                        : "/images/ground.jpg"
+                                    }
+                                    className="img-thumbnail"
+                                    style={{ border: "0px solid #dee2e6" }}
+                                    alt="Responsive"
+                                  />
+                                  <h4>
+                                    Note: Image may be deferent with actual
+                                    product as this is a graphic design.
+                                  </h4>
+                                </section>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr className="page" style={{}}>
-                      <td class="report-content-cell ">
-                        <div className={`main`}>
-                          <div className="row">
-                            <div
-                              className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                              style={{ pageBreakAfter: "always" }}
-                            >
-                              <section>
+                        </td>
+                      </tr>
+                    }
+                    {visibleSect.wiring?'':
+                      <tr className="page" style={{}}>
+                        <td class="report-content-cell ">
+                          <div className={`main`}>
+                            <div className="row">
+                              <div
+                                className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
+                                style={{ pageBreakAfter: "always" }}
+                              >
+                                <section>
+                                  <Divider className="mb-3 mt-3" />
+                                  <h6>
+                                    <strong>Wiring Diagram</strong>
+                                  </h6>
+                                  <img
+                                    src={
+                                      solarList
+                                        ? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`
+                                        : "/images/wiring.png"
+                                    }
+                                    className="img-thumbnail "
+                                    alt="Responsive"
+                                    style={{ border: "none" }}
+                                  />
+                                </section>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                    {visibleSect.layout?'':
+                      <tr >
+                        <td class="report-content-cell">
+                          <div className={`main`}>
+                            <div className="row">
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
+                                style={{ pageBreakAfter: "always" }}
+                              >
                                 <Divider className="mb-3 mt-3" />
                                 <span>
-                                  <strong>Wiring Diagram</strong>
+                                  <strong>System General layout</strong>
                                 </span>
                                 <img
-                                  src={
-                                    solarList
-                                      ? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`
-                                      : "/images/wiring.png"
-                                  }
+                                  src="/Layouts/system layout with details1.jpg"
                                   className="img-thumbnail "
                                   alt="Responsive"
                                   style={{ border: "none" }}
                                 />
-                              </section>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
 
-                    <tr >
-                      <td class="report-content-cell">
-                        <div className={`main`}>
-                          <div className="row">
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                              style={{ pageBreakAfter: "always" }}
-                            >
-                              <Divider className="mb-3 mt-3" />
-                              <span>
-                                <strong>System General layout</strong>
-                              </span>
-                              <img
-                                src="/Layouts/system layout with details1.jpg"
-                                className="img-thumbnail "
-                                alt="Responsive"
-                                style={{ border: "none" }}
-                              />
-
-                              <div className="table-responsive-material">
-                                <Table className="default-table table-unbordered table table-sm table-hover">
-                                  <thead className="table-head-sm th-border-b">
-                                    <tr className={classes.headSolarS}></tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td style={{ width: "50%" }}>
-                                        <h5>1- Solar panels</h5>
-                                      </td>
-                                      <td style={{ width: "50%" }}>
-                                        <h5>9- Garden</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>2- Pump controller</h5>
-                                      </td>
-                                      <td>
-                                        <h5>10- Swimming pool</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>3- Submersible</h5>
-                                      </td>
-                                      <td>
-                                        <h5>11- Water reservoir</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>4- well probe sensors</h5>
-                                      </td>
-                                      <td>
-                                        <h5>12- Flaut switch</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>5- Pump electrical cable</h5>
-                                      </td>
-                                      <td>
-                                        <h5>13- Flaut switch Ele. cable</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>6- Non return valve</h5>
-                                      </td>
-                                      <td>
-                                        <h5>14- Residential Houses</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>7- Pressure Gauge</h5>
-                                      </td>
-                                      <td>
-                                        <h5>15- Toilet</h5>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        <h5>8- Water meter</h5>
-                                      </td>{" "}
-                                      <td></td>
-                                    </tr>
-                                  </tbody>
-                                </Table>
+                                <div className="table-responsive-material">
+                                  <Table className="default-table table-unbordered table table-sm table-hover">
+                                    <thead className="table-head-sm th-border-b">
+                                      <tr className={classes.headSolarS}></tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td style={{ width: "50%" }}>
+                                          <h5>1- Solar panels</h5>
+                                        </td>
+                                        <td style={{ width: "50%" }}>
+                                          <h5>9- Garden</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>2- Pump controller</h5>
+                                        </td>
+                                        <td>
+                                          <h5>10- Swimming pool</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>3- Submersible</h5>
+                                        </td>
+                                        <td>
+                                          <h5>11- Water reservoir</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>4- well probe sensors</h5>
+                                        </td>
+                                        <td>
+                                          <h5>12- Flaut switch</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>5- Pump electrical cable</h5>
+                                        </td>
+                                        <td>
+                                          <h5>13- Flaut switch Ele. cable</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>6- Non return valve</h5>
+                                        </td>
+                                        <td>
+                                          <h5>14- Residential Houses</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>7- Pressure Gauge</h5>
+                                        </td>
+                                        <td>
+                                          <h5>15- Toilet</h5>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <h5>8- Water meter</h5>
+                                        </td>{" "}
+                                        <td></td>
+                                      </tr>
+                                    </tbody>
+                                  </Table>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td class="report-content-cell">
-                        <div className={`main`}>
-                          <div className="row">
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                              <Divider className="mb-3 mt-3" />
-                              <span>
-                                {" "}
-                                <strong>Sizing layout</strong>
-                              </span>
-                              <img
-                                src="/Layouts/layout details1.jpg"
-                                className="img-thumbnail "
-                                alt="Responsive"
-                                style={{ border: "none" }}
-                              />
+                        </td>
+                      </tr>
+                    }
+                    {visibleSect.sizing?'':
+                      <tr>
+                        <td class="report-content-cell">
+                          <div className={`main`}>
+                            <div className="row">
+                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                <Divider className="mb-3 mt-3" />
+                                <span>
+                                  {" "}
+                                  <strong>Sizing layout</strong>
+                                </span>
+                                <img
+                                  src="/Layouts/layout details1.jpg"
+                                  className="img-thumbnail "
+                                  alt="Responsive"
+                                  style={{ border: "none" }}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-
+                        </td>
+                      </tr>
+                    }
                     <tr>
                       <td class="report-content-cell">
                         <div className={`main`}></div>
@@ -1300,26 +1309,33 @@ const ProjectSummary = ({ match }) => {
                 </div>
               </div>
               <Divider className="mb-3 mt-3" />
-              <FormControlLabel
-                control={<Checkbox name="checkedC" />}
-                label="Uncontrolled"
-              />
-              <FormControlLabel
-                control={<Checkbox name="checkedD" />}
-                label="Disabled"
-              />
-              <FormControlLabel
-                control={<Checkbox checked name="checkedE" />}
-                label="Disabled"
-              />
-              <FormControlLabel
-                control={<Checkbox name="checkedD" />}
-                label="Disabled"
-              />
-              <FormControlLabel
-                control={<Checkbox checked name="checkedE" />}
-                label="Disabled"
-              />
+              <div className="row ">
+                <div className="col-md-12 d-flex justify-content-center">
+                  <FormControlLabel
+                    control={<Checkbox checked={visibleSect.structure} onChange={handleVisibleSect}  name="structure" />}
+                    label="Structure Specification"
+                  />
+                </div>
+                <div className="col-md-12 d-flex justify-content-center">
+                  <FormControlLabel
+                    control={<Checkbox checked={visibleSect.wiring} onChange={handleVisibleSect} name="wiring" />}
+                    label="Wiring Diagram"
+                  />
+                </div>
+                <div className="col-md-12 d-flex justify-content-center">
+                  <FormControlLabel
+                    control={<Checkbox checked={visibleSect.layout} onChange={handleVisibleSect} name="layout" />}
+                    label="System Layout"
+                  />
+                </div>
+                <div className="col-md-12 d-flex justify-content-center">
+                  <FormControlLabel
+                    control={<Checkbox checked={visibleSect.sizing} onChange={handleVisibleSect} name="sizing" />}
+                    label="Sizing Layout"
+                  />
+                </div>
+              </div>
+
             </Paper>
           </div>
         </div>

@@ -88,7 +88,7 @@ class Menu extends Component {
         <ul className="navbar-nav navbar-nav-mega">
 
           <li className="nav-item">
-             <NavLink className="prepend-icon" to="/app/dashboard/crypto">
+             <NavLink className="prepend-icon" to="/app/dashboard/home">
                 <span className="nav-text"><IntlMessages id="sidebar.dashboard" /></span>
               </NavLink>
           </li>

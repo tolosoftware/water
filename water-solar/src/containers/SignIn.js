@@ -64,9 +64,9 @@ class SignIn extends React.Component {
           localStorage.setItem("UserData", JSON.stringify(res.data.user));
   
           if (res.data.user.system == 1) {
-            this.props.history.push("app/dashboard/crypto");
+            this.props.history.push("app/dashboard/home");
           } else {
-            this.props.history.push("app/dashboard/crypto");
+            this.props.history.push("app/dashboard/home");
           }
         }else if(res.data.message == "inactive"){
           NotificationManager.error(

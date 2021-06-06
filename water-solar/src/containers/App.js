@@ -167,9 +167,9 @@ const RestrictedRoute = ({component: Component, authUser, ...rest}) =>
       } else if(initURL===''||initURL==='/'||initURL==='/signin') {
        const user=JSON.parse(localStorage.getItem('UserData'));
         if(user.system===1) {
-           return ( <Redirect to={'/app/dashboard/crypto'}/> );
+           return ( <Redirect to={'/app/dashboard/home'}/> );
         } else {
-           return ( <Redirect to={'/app/dashboard/crypto'}/> );
+           return ( <Redirect to={'/app/dashboard/home'}/> );
         }
        
       } else {
