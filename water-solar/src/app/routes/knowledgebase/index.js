@@ -230,7 +230,7 @@ const ProjectSummary = ({ match }) => {
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
                         <div className={`main`}>
-                          <div className="table-responsive-material mb-3">
+                          <div className="table-responsive-material mb-5">
                             <Table className="default-table table-unbordered table table-sm table-hover">
                               <thead className="table-head-sm th-border-b">
                                 <tr className={classes.headTr}>
@@ -310,7 +310,7 @@ const ProjectSummary = ({ match }) => {
                               </tbody>
                             </Table>
                           </div>
-                          <div className="table-responsive-material mb-3">
+                          <div className="table-responsive-material mb-5">
                             <Table className="default-table table-unbordered table table-sm table-hover">
                               <thead className="table-head-sm th-border-b">
                                 <tr className={classes.headTr}>
@@ -424,7 +424,7 @@ const ProjectSummary = ({ match }) => {
                             </Table>
                           </div>
 
-                          <div className="table-responsive-material mb-3">
+                          <div className="table-responsive-material mb-5">
                             <Table className="default-table table-unbordered table table-sm table-hover">
                               <thead className="table-head-sm th-border-b">
                                 <tr className={classes.headTr}>
@@ -474,7 +474,7 @@ const ProjectSummary = ({ match }) => {
                       <td class="report-content-cell">
                         <div className={`main`}>
                           <div className="row">
-                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12  col-xs-12">
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
                               <section className="mt-5">
                                 <div class="wrapper wrapperOut">
                                   <h3>Output [m³]</h3>
@@ -484,7 +484,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={225}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.monthlyHrOutput}
@@ -518,7 +518,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={225}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrOutputP}
@@ -553,7 +553,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={220}
                                     >
                                       <BarChart
                                         data={irradiation?.monthIrrs}
@@ -582,7 +582,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={220}
                                     >
                                       <BarChart
                                         data={irradiation?.dailyIrrs}
@@ -613,7 +613,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={220}
                                     >
                                       <BarChart
                                         data={
@@ -644,7 +644,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={200}
+                                      height={220}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrEnergy}
@@ -908,12 +908,7 @@ const ProjectSummary = ({ match }) => {
                                     alt="Responsive"
                                   />
                                 </div>
-                                <div
-                                  className="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 col-xs-12"
-                                  style={{
-                                    padding: "0px",
-                                    paddingTop: "115px",
-                                  }}
+                                <div className="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 col-xs-12" style={{padding: "0px", paddingTop: "115px",}}
                                 >
                                   <img
                                     src="/images/Voltage.png"
@@ -1141,8 +1136,7 @@ const ProjectSummary = ({ match }) => {
                       <td class="report-content-cell">
                         <div className={`main`}>
                           <div className="row">
-                            <div
-                              className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
                               style={{ pageBreakAfter: "always" }}
                             >
                               <Divider className="mb-3 mt-3" />
@@ -1255,11 +1249,11 @@ const ProjectSummary = ({ match }) => {
                       </td>
                     </tr>
 
-                    {/* <tr>
+                    <tr>
                       <td class="report-content-cell">
                         <div className={`main`}></div>
                       </td>
-                    </tr> */}
+                    </tr>
                   </tbody>
                 </table>
               </Paper>
