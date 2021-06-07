@@ -295,7 +295,7 @@ const Home = ({ match }) => {
       </CardBox>
 
       <div className="row">
-        {JSON.parse(localStorage.getItem("UserData")).system!==1?
+        {JSON.parse(localStorage.getItem("UserData")).system!=1?
           <CardBox styleName="col-lg-5">
             <UserExpiration />
           </CardBox>
@@ -310,7 +310,7 @@ const Home = ({ match }) => {
           <TestimonialCarousel testimonials={testimonials} />
         </CardBox>
 
-        <CardBox styleName={`${JSON.parse(localStorage.getItem("UserData")).system!==1?'col-xl-12 col-lg-12 col-md-12 col-12':'col-xl-5 col-lg-5 col-md-12 col-12'}`}>
+        <CardBox styleName={`${JSON.parse(localStorage.getItem("UserData")).system!=1?'col-xl-12 col-lg-12 col-md-12 col-12':'col-xl-5 col-lg-5 col-md-12 col-12'}`}>
           <>
             <h2>
               <span>Todays Post</span>

@@ -23,6 +23,11 @@ const styles = (theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
+  loginBrackGroundImg:{
+    backgroundImage: "url('/images/login-backround.jpg')",
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  },
 });
 
 class SignIn extends React.Component {
@@ -93,12 +98,12 @@ class SignIn extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <>
+      <div className={`app-main ${classes.loginBrackGroundImg}`}>
         <CustomSignUp key="customSignup" open={this.state.signFlag} onChangeD={this.handleClose.bind(this)}/>
         <Backdrop className={classes.backdrop} open={this.state.open}>
           <CircularProgress color="inherit" />
         </Backdrop>
-        <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
+        <div className={`app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3`} >
           <div className="app-login-main-content" style={{ height: 'auto' }}>
             <div className="app-logo-content d-flex justify-content-center d-flex align-items-center">
               <div className="slick-slide-item login-brand-image" style={{width: 'auto'}}>
@@ -154,7 +159,7 @@ class SignIn extends React.Component {
           </div>
         </div>
         <NotificationContainer />
-      </>
+      </div>
     );
   }
 }

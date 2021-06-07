@@ -366,14 +366,14 @@ export default function Analyze(props) {
               </strong>
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Made in {sugestedpump[0].pump_brand.country}</strong>
+                  <strong>Made in {sugestedpump[0].pump_brand.country} </strong>
                   {getFlag(sugestedpump[0].pump_brand.country)}{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Brand {sugestedpump[0].pump_brand.name}</strong>
+                  <strong>Brand: {sugestedpump[0].pump_brand.name}</strong>
                 </div>
                 <div className="col-md-3">
-                  <strong>Model {sugestedpump[0].model}</strong>
+                  <strong>Model: {sugestedpump[0].model}</strong>
                 </div>
                 <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                     <FormControl fullWidth>
@@ -395,13 +395,13 @@ export default function Analyze(props) {
 
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Power {sugestedpump[0].power}</strong>
+                  <strong>Power: {sugestedpump[0].power}</strong>
                 </div>
                 <div className="col-md-3">
-                  <strong>Current {sugestedpump[0].ampeier} </strong>{" "}
+                  <strong>Current: {sugestedpump[0].ampeier} </strong>{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Cable {cable.name}</strong>{" "}
+                  <strong>Cable: {cable.name}</strong>{" "}
                 </div>
               </div>
             </>
@@ -426,14 +426,14 @@ export default function Analyze(props) {
               </strong>
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Made in {solarbrand.country}</strong>{" "}
+                  <strong>Made in {solarbrand.country} </strong>{" "}
                   {getFlag(solarbrand.country)}{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Brand {solarbrand.name}</strong>{" "}
+                  <strong>Brand: {solarbrand.name}</strong>{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Model {solar.solar_list.model}</strong>{" "}
+                  <strong>Model: {solar.solar_list.model}</strong>{" "}
                 </div>
                 <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                     <FormControl fullWidth>
@@ -455,13 +455,13 @@ export default function Analyze(props) {
 
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Power {solar.power}</strong>{" "}
+                  <strong>Power: {solar.power}</strong>{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Structure {solar.base}</strong>
+                  <strong>Structure: {solar.base}</strong>
                 </div>
                 <div className="col-md-3">
-                  <strong>Quantity {solar.solar_quantity}</strong>{" "}
+                  <strong>Quantity: {solar.solar_quantity}</strong>{" "}
                 </div>
               </div>
             </>
@@ -477,14 +477,14 @@ export default function Analyze(props) {
               </strong>
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Made in {inverter?.invertor_brand?.country}</strong>{" "}
+                  <strong>Made in {inverter?.invertor_brand?.country} </strong>{" "}
                   {getFlag(inverter?.invertor_brand?.country)}{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Brand {inverter?.invertor_brand?.name}</strong>{" "}
+                  <strong>Brand: {inverter?.invertor_brand?.name}</strong>{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Model {inverter?.model}</strong>{" "}
+                  <strong>Model: {inverter?.model}</strong>{" "}
                 </div>
                 <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                     <FormControl fullWidth>
@@ -506,13 +506,13 @@ export default function Analyze(props) {
 
               <div className="row">
                 <div className="col-md-3">
-                  <strong>Power {inverter?.power}</strong>{" "}
+                  <strong>Power: {inverter?.power}</strong>{" "}
                 </div>
                 <div className="col-md-3">
-                  <strong>Current {inverter?.current}</strong>
+                  <strong>Current: {inverter?.current}</strong>
                 </div>
                 <div className="col-md-3">
-                  <strong>Voltage {inverter?.voltage}</strong>{" "}
+                  <strong>Voltage: {inverter?.voltage}</strong>{" "}
                 </div>
               </div>
             </>

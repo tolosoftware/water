@@ -7,6 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Popover from '@material-ui/core/Popover';
+import Tooltip from '@material-ui/core/Tooltip';
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import FormControl from "@material-ui/core/FormControl";
@@ -315,6 +316,21 @@ function getStepsBrand() {
   ];
 }
 
+const useStylesBootstrap = makeStyles((theme) => ({
+  arrow: {
+    color: theme.palette.common.black,
+  },
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
+
+function BootstrapTooltip(props) {
+  const classes = useStylesBootstrap();
+
+  return <Tooltip arrow classes={classes} {...props} />;
+}
+
 // end code of brand stepper
 export default function Project() {
   const {handleSubmit }=useForm();
@@ -503,11 +519,11 @@ export default function Project() {
   const [dbcity, setDbcity] = useState([]);
   //pump and solar
   const [solarstate, setSolarstate] = useState("");
-  const [solarvalue, setSolarvalue] = useState("");
+  const [solarvalue, setSolarvalue] = useState();
   const [pumpstate, setPumpstate] = useState("");
-  const [pumpvalue, setPumpvalue] = useState("");
+  const [pumpvalue, setPumpvalue] = useState();
   const [invertorstate, setInvertorstate] = useState("");
-  const [invertorvalue, setInvertorvalue] = useState("");
+  const [invertorvalue, setInvertorvalue] = useState();
   //end pump and solar
 
   //start form value
@@ -558,10 +574,10 @@ export default function Project() {
     setAccessories(accessories.filter((itemV) => value?.id !== itemV.id));
   };
 
-  const handlchangquantity = (value, id) => {
+  const handlchangquantity = (value, id, item) => {
     const newInputFields = inputFields.map((i) => {
       if (id === i.id) {
-        i["quantity"] = value;
+        i["quantity"] = (Number(value) >= Number(item?.min_quantity) && Number(value) <= Number(item?.max_quantity))?value:'';
       }
       return i;
     });
@@ -1254,9 +1270,9 @@ export default function Project() {
                                     variant="contained"
                                     color="primary"
                                     disabled={
-                                      activeStepBrand === stepsBrand.length - 1
-                                        ? true
-                                        : false
+                                      (activeStepBrand === stepsBrand.length - 1)
+                                        ?true
+                                        :pumpvalue && activeStepBrand === 0?false:solarvalue?false:true
                                     }
                                     onClick={handleNextBrand}
                                     className={classes.button}
@@ -1275,7 +1291,7 @@ export default function Project() {
                               variant="contained"
                               disabled={
                                 activeStepBrand === stepsBrand.length - 1
-                                  ? false
+                                  ? invertorvalue?false:true
                                   : true
                               }
                             >
@@ -1699,7 +1715,7 @@ export default function Project() {
                               }}
                               value={dirtloss}
                               onChange={(event) =>
-                                setDirtloss(event.target.value)
+                                setDirtloss(Number(event.target.value)>=0 && Number(event.target.value)<=10?event.target.value:5)
                               }
                               onMouseOver={() =>
                                 dirtlossMouseOver("dirt", "hover")
@@ -1710,8 +1726,8 @@ export default function Project() {
                             />
                           </div>
                         </div>
-                        <div className="row">
-                          <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap project_bas_field">
+                        <div className="row justify-content-center">
+                          <div className="col-md-12 insideFormPaddingWPS inputAdornmentWrap project_bas_field" style={{textAlign: 'center'}}>
                             <div className="btn-group" role="group" aria-label="Basic radio toggle button group" 
                               >
                               <input
@@ -1812,12 +1828,12 @@ export default function Project() {
 
                 {activeStep === 1 ? (
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-5">
                     <div onMouseLeave={() =>accessoryMouseLeave("fout")}>
                       <h3>Project Accessories</h3>
                       {inputFields.map((inputField, index) => (
                         <div className="row">
-                          <div className="col-md-6">
+                          <div className="col-md-7">
                             <FormControl fullWidth>
                               <Autocomplete
                                 size="small"
@@ -1860,7 +1876,6 @@ export default function Project() {
                                     }}
                                     inputProps={{
                                       ...params.inputProps,
-                                      autoComplete: "new-password", // disable autocomplete and autofill
                                     }}
                                   />
                                 )}
@@ -1881,7 +1896,7 @@ export default function Project() {
                                 onChange={(event) =>
                                   handlchangquantity(
                                     event.target.value,
-                                    inputField.id
+                                    inputField.id, inputField.item
                                   )
                                 }
                                 value={inputField.quantity}
@@ -1906,36 +1921,41 @@ export default function Project() {
                           </div>
 
                           <div
-                            className="col-md-3"
+                            className="col-md-2"
                             style={{
                               paddingRight: "10px",
                               paddingLeft: "10px",
                             }}
                           >
-                            <FormControl fullWidth>
-                              <a
-                                href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}
-                                target="_blank"
-                              >
-                                <Button
-                                  style={{
-                                    marginTop: "16px",
-                                    padding: "6px 6px",
-                                  }}
-                                  variant="contained"
-                                  color="default"
-                                  className={classes.button}
-                                  startIcon={<CloudDownloadIcon />}
-                                >
-                                  Data Sheet
-                                </Button>
-                              </a>
+                            <FormControl fullWidth style={{marginTop: '20px'}}>
+                              {inputField?.item?.data_sheet?
+                                <BootstrapTooltip title="Download Data Sheet">
+                                  <a
+                                    href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}
+                                    target="_blank"
+                                  >
+                                    
+                                    <Button
+                                      style={{
+                                        padding: "6px 6px",
+                                      }}
+                                      variant="contained"
+                                      color="default"
+                                      className={classes.button}
+                                      startIcon={<CloudDownloadIcon />}
+                                    >
+                                    </Button>
+                                  </a>
+                                </BootstrapTooltip>
+                              :''}
+                              
                             </FormControl>
                           </div>
                         </div>
                       ))}
 
                       <IconButton
+                        disabled={inputFields[inputFields.length-1]?.quantity?false:true}
                         color="primary"
                         aria-label="upload picture"
                         component="span"
@@ -1959,7 +1979,7 @@ export default function Project() {
                       </div>
                     </div>
                     
-                    <div className="col-md-6">
+                    <div className="col-md-7">
                       {loadImg ? (
                         <>
                           <span className="row justify-content-center">

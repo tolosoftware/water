@@ -373,7 +373,7 @@ class ProjectsController extends Controller
     public function projectbyuser($id){
         $user = User::findOrFail($id);
         if($user){
-            if($user->system === 1){
+            if((int)$user->system === 1){
                 return Projects::with(['geolocation','user'])->orderBy('id', 'DESC')->get();
             }else{
                 return Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();    

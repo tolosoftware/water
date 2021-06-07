@@ -32,14 +32,19 @@ const Pump=() => {
                   [
                       { title: 'Pruduct', field: 'pump_brand.name' },
                       { title: 'Model', field: 'model'},
-                      { title: 'Ampeier', field: 'ampeier'},
+                      { title: 'Current', field: 'ampeier'},
                       { title: 'Download',  
                       render:  (pump) =>{
-                        return   <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pump.data_sheet}`} download>
-                          <IconButton size="small" aria-label="delete"  color="secondary">
+                        return  pump.data_sheet?
+                        <a href={pump.data_sheet==0?'#':`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pump.data_sheet}`} download>
+                          <IconButton size="small" aria-label="download"  color="secondary">
                             <GetAppIcon />
                           </IconButton>
                       </a>
+                      :
+                      <IconButton size="small" aria-label="download"  color="secondary" disabled={true}>
+                        <GetAppIcon />
+                      </IconButton>
                       }},
                     ]
                  }

@@ -101,3 +101,8 @@
     background-color: #2236f2;
     border-radius: 5%;
 }
+@media (max-width: 430px){
+    .project_bas_field .btn {
+        padding: 0.68rem !important;
+    }
+}

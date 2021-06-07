@@ -35,11 +35,16 @@ const Controller=() => {
                       { title: 'Power', field: 'power'},
                       { title: 'Download',  
                       render:  (controller) =>{
-                        return   <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${controller.data_sheet}`} download>
-                          <IconButton size="small" aria-label="delete"  color="secondary">
+                        return   controller.data_sheet?
+                        <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${controller.data_sheet}`} download>
+                          <IconButton size="small" aria-label="download"  color="secondary">
                             <GetAppIcon />
                           </IconButton>
-                      </a>
+                        </a>
+                      :
+                      <IconButton size="small" aria-label="download"  color="secondary" disabled={true}>
+                        <GetAppIcon />
+                      </IconButton>
                       }},
                     ]
                  }

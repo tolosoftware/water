@@ -37,11 +37,16 @@ const Module=() => {
                       { title: 'Power', field: 'power'},
                       { title: 'Download',  
                           render:  (solar) =>{
-                              return   <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.data_sheet}`} download>
-                                        <IconButton size="small" aria-label="delete"  color="secondary">
-                                          <GetAppIcon />
-                                        </IconButton>
-                                      </a>
+                              return solar.data_sheet?
+                                  <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.data_sheet}`} download>
+                                    <IconButton size="small" aria-label="download"  color="secondary">
+                                      <GetAppIcon />
+                                    </IconButton>
+                                  </a>
+                                  :
+                                  <IconButton size="small" aria-label="download"  color="secondary">
+                                    <GetAppIcon />
+                                  </IconButton>
                             
                           }
                       },

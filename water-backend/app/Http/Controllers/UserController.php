@@ -283,7 +283,10 @@ class UserController extends Controller
                 $user->phone = $request['phone'];
                 $user->expiration =$request['expiration'];
                 $user->status = $request['status'];
-                $user->system = $request['type'];
+                if($request['type']){
+                    $user->system = $request['type'];
+                }
+                $user->belongto = $request['belongto'];
                 $user->website = $request['website'];
                 $user->geolocation_id = $request['city'];
                 if(!empty($request['new_password'])){

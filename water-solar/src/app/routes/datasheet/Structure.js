@@ -16,7 +16,7 @@ const Structure=() => {
           <th>Id</th>
             <th>Pruduct</th>
             <th>Model</th>
-            <th>Ampeier</th>
+            <th>Current</th>
             <th>Download</th>
           </tr>
           </thead>
@@ -30,7 +30,7 @@ const Structure=() => {
               
               <td>
                 <div className="pointer text-primary">
-                <IconButton size="small" aria-label="delete"  color="secondary"  >
+                <IconButton size="small" aria-label="download"  color="secondary"  >
                   <GetAppIcon />
                 </IconButton>
                 </div>
