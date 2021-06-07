@@ -305,7 +305,8 @@ export default function CustomizedDialogs(props) {
                     {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
-                <div className="col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12">
+                {userDataOject?.system == 1? '':
+                  <div className={`${userDataOject?.system == 1? 'col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12':"col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12"}`}>
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-age-native-simple" error={errors.expiration && true}  >Expiration</InputLabel>
                     <Select  native
@@ -316,7 +317,7 @@ export default function CustomizedDialogs(props) {
                       value={state.age}
                       onChange={handleChange}
                       label="expiration"
-
+                      
                       inputProps={{
                         name: 'expiration',
                         id: 'outlined-expiration-native-simple',
@@ -330,14 +331,15 @@ export default function CustomizedDialogs(props) {
                     {errors.expiration && <FormHelperText error={errors.expiration && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
+                }
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
                     {/* <FormLabel component="legend" size="small">Status</FormLabel> */}
                   <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
                       name="status" defaultValue={(userDataOject?.status)? userDataOject?.status : 'pending'} >
-                    <FormControlLabel value="pending"  inputRef={register} control={<Radio color="primary"/>} label="Pending"/>
+                    <FormControlLabel value="pending" disabled={userDataOject?.system == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Pending"/>
                     <FormControlLabel value="active"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
-                    <FormControlLabel value="inactive"  inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
+                    <FormControlLabel value="inactive" disabled={userDataOject?.system == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
                   </RadioGroup>
                  </FormControl>               
                 </div>    
@@ -347,14 +349,15 @@ export default function CustomizedDialogs(props) {
                       
               <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
                 <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
-                  <RadioGroup size="small" className="d-flex flex-row" aria-label="type"
+                  <RadioGroup size="small" className="d-flex flex-row" aria-label="belongto"
                       name="belongto" defaultValue={userDataOject?.belongto} >
-                    <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana Solar"/>
-                    <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan Solar"/>
+                    <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana"/>
+                    <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan"/>
+                    <FormControlLabel value="None"  inputRef={register} control={<Radio color="primary"/>} label="None"/>
                   </RadioGroup>
                  </FormControl>               
               </div>  
-              {userDataOject?.system !== 1? 
+              {userDataOject?.system != 1? 
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
                   <RadioGroup size="small" className="d-flex flex-row " aria-label="type" 
                       name="type" defaultValue={userDataOject?.system == 0 ? '0': '2'}>

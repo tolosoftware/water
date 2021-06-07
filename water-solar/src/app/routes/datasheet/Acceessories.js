@@ -36,11 +36,16 @@ const Acceessories=() => {
                       { title: 'UOM Name', field: 'uom_name'},
                       { title: 'Download',  
                       render:  (accessories) =>{
-                        return   <a href={`${axios.defaults.baseURL}accessories/data_sheet/${accessories.data_sheet}`} download>
-                          <IconButton size="small" aria-label="delete"  color="secondary">
+                        return   accessories.data_sheet?
+                          <a href={`${axios.defaults.baseURL}accessories/data_sheet/${accessories.data_sheet}`} download>
+                            <IconButton size="small" aria-label="download"  color="secondary">
+                              <GetAppIcon />
+                            </IconButton>
+                          </a>
+                          :
+                          <IconButton size="small" aria-label="download"  color="secondary" disabled={true}>
                             <GetAppIcon />
                           </IconButton>
-                      </a>
                       }},
                     ]
                  }

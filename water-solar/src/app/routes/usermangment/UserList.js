@@ -164,7 +164,7 @@ export const UserList = () => {
               actions={[
                 (rowData) => ({
                   disabled:
-                    JSON.parse(localStorage.getItem("UserData")).system === 0
+                    JSON.parse(localStorage.getItem("UserData")).system == 0
                       ? true
                       : false,
                   icon: "manage_accounts",
@@ -173,7 +173,7 @@ export const UserList = () => {
                 }),
                 (rowData) => ({
                   disabled:
-                    JSON.parse(localStorage.getItem("UserData")).system === 0
+                    JSON.parse(localStorage.getItem("UserData")).system == 0
                       ? true
                       : false,
                   icon: "edit",
@@ -182,9 +182,9 @@ export const UserList = () => {
                 }),
                 (rowData) => ({
                   disabled:
-                    rowData["system"] === 1
+                    rowData["system"] == 1
                       ? true
-                      : JSON.parse(localStorage.getItem("UserData")).system ===
+                      : JSON.parse(localStorage.getItem("UserData")).system ==
                         0
                       ? true
                       : false,

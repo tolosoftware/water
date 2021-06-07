@@ -21,22 +21,32 @@ class AuthController extends Controller
                 $expirDate = $start->addDays($expiration);
                 $remaning =  $expirDate->diffInDays(Carbon::now());
 
-                if($remaning>1 && $user->status =="active"){
+                if($user->system===1){
                     $token = $user->createToken('app')->accessToken;
                     return response([
                         'message' => 'success',
                         'token' => $token,
                         'user' => $user
                     ]);
-                }else if($user->status !="active"){
-                    return response([
-                        'message' => 'inactive',
-                    ]);
-                } else{
-                    return response([
-                        'message' => 'expired',
-                    ]);
+                }else{
+                    if($remaning>1 && $user->status ==="active"){
+                        $token = $user->createToken('app')->accessToken;
+                        return response([
+                            'message' => 'success',
+                            'token' => $token,
+                            'user' => $user
+                        ]);
+                    }else if($user->status !="active"){
+                        return response([
+                            'message' => 'inactive',
+                        ]);
+                    } else{
+                        return response([
+                            'message' => 'expired',
+                        ]);
+                    }
                 }
+                
             }
      
         return response([
