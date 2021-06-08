@@ -6,13 +6,14 @@ import UserProfile from './UserProfile';
 import CardBox from 'components/CardBox';
 const Setting = ({match}) => (
     <div className="app-wrapper">
-
-        <div className="row custom-row-card">
-            <CardBox >
-              <UserProfile/>
-            </CardBox>
-        </div>
-
+        {JSON.parse(localStorage.getItem('UserData')).system == 0 ?
+          <div className="row custom-row-card">
+              <CardBox >
+                <UserProfile/>
+              </CardBox>
+          </div>
+          :''
+        }
 
         {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
         <div className="row seeting-table-style">

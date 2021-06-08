@@ -1325,6 +1325,7 @@ export default function Project() {
                           onClose={handlePopoverClose}
                           disableAutoFocus={true}
                           disableEnforceFocus={true}
+                          disableFocus={true}
                         >
                         <Typography>{textContent}</Typography>
                       </Popover>
@@ -1352,9 +1353,11 @@ export default function Project() {
                                 : false
                             }
                             aria-owns={open ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="false"
-                            onMouseEnter={e=>handlePopoverOpen(e, textData[0])}
-                            onMouseLeave={handlePopoverClose}
+                            aria-haspopup="true"
+                            onMouseOver={e=>handlePopoverOpen(e, textData[0])}
+                            // onMouseLeave={handlePopoverClose}
+                            // onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
+                            // onBlur={handlePopoverClose}
                           />
                           
                       </div>
@@ -1525,12 +1528,13 @@ export default function Project() {
                                 InputLabelProps={{ shrink: true, }}
                                 value={daynomichead}
                                 onChange={(event) => setDaynomichead(event.target.value) }
-                                onMouseOver={() => dirtlossMouseOver("head", "hover")}
-                                onMouseLeave={() => {handlePopoverClose()}}
-                                onFocus={() => dirtlossMouseOver("head", "focus")}
+                                onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handlePopoverOpen(e, textData[1])}}
+                                // onMouseLeave={() => {handlePopoverClose()}}
+                                onFocus={(e) => {dirtlossMouseOver("head", "focus");}}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
+                                // onBlur={handlePopoverClose}
                               />
                           </div>
                           <div className="col-md-6">
@@ -1558,16 +1562,18 @@ export default function Project() {
                                 onChange={(event) =>
                                   setSolarCable(event.target.value)
                                 }
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("solarCable", "hover")
+                                onMouseOver={(e) =>
+                                  {handlePopoverOpen(e, textData[2]);
+                                  dirtlossMouseOver("solarCable", "hover");}
                                 }
-                                onMouseLeave={() => { handlePopoverClose();}}
-                                onFocus={() =>
-                                  dirtlossMouseOver("solarCable", "focus")
+                                // onMouseLeave={() => { handlePopoverClose();}}
+                                onFocus={(e) =>
+                                  {dirtlossMouseOver("solarCable", "focus"); }
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
+                                // onBlur={handlePopoverClose}
                               />
                           </div>
                         </div>
@@ -1597,17 +1603,17 @@ export default function Project() {
                                 onChange={(event) =>
                                   setMotorcable(event.target.value)
                                 }
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("motor", "hover")
+                                onMouseOver={(e) =>
+                                  {dirtlossMouseOver("motor", "hover"); handlePopoverOpen(e, textData[3]);}
                                 }
-                                onMouseLeave={() => {handlePopoverClose();}}
-                                onFocus={() =>
-                                  dirtlossMouseOver("motor", "focus")
+                                // onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={(e) =>
+                                  {dirtlossMouseOver("motor", "focus");}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
-                                // onBlur={() => dirtlossMouseLeave("fout")}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
+                                // onBlur={handlePopoverClose}
                               />
                           </div>
                           <div className="col-md-6">
@@ -1635,15 +1641,15 @@ export default function Project() {
                                 onChange={(event) =>
                                   {setPiplenght(event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
                                 }
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("pip", "hover")
+                                onMouseOver={(e) =>
+                                  {dirtlossMouseOver("pip", "hover"); handlePopoverOpen(e, textData[4]);}
                                 }
-                                onMouseLeave={() => {handlePopoverClose();}}
-                                onFocus={() => dirtlossMouseOver("pip", "focus")}
+                                // onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={(e) => {dirtlossMouseOver("pip", "focus");}}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
-                                // onBlur={() => dirtlossMouseLeave("fout")}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
+                                // onBlur={handlePopoverClose}
                               />
                           </div>
                         </div>
@@ -1674,16 +1680,17 @@ export default function Project() {
                                 onChange={(event) =>
                                   setDischarge(event.target.value)
                                 }
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("waterDeman", "hover")
+                                onMouseOver={(e) =>
+                                  {dirtlossMouseOver("waterDeman", "hover"); handlePopoverOpen(e, textData[5]);}
                                 }
-                                onMouseLeave={() => {handlePopoverClose();}}
-                                onFocus={() =>
-                                  dirtlossMouseOver("waterDeman", "focus")
+                                // onMouseLeave={() => {handlePopoverClose();}}
+                                onFocus={(e) =>
+                                  {dirtlossMouseOver("waterDeman", "focus");}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
+                                // onBlur={handlePopoverClose}
                               />
                           </div>
                           <div className="col-md-6">
@@ -1720,6 +1727,8 @@ export default function Project() {
                               onMouseOver={() =>
                                 dirtlossMouseOver("dirt", "hover")
                               }
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
                               // onMouseLeave={() => dirtlossMouseLeave("xy")}
                               onFocus={() => dirtlossMouseOver("dirt", "focus")}
                               // onBlur={() => dirtlossMouseLeave("fout")}
@@ -1740,18 +1749,19 @@ export default function Project() {
                                 checked={bas === "Manual Tracker"}
                                 value="Manual Tracker"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={() => dirtlossMouseOver("MT", "focus")}
+                                onFocus={(e) => {dirtlossMouseOver("MT", "focus");}}
+                                // onBlur={handlePopoverClose}
                               />
                               <label
                                 class="btn btn-outline-primary"
                                 for={"btnradio1"}
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("MT", "hover")
+                                onMouseOver={(e) =>
+                                  {dirtlossMouseOver("MT", "hover"); handlePopoverOpen(e, textData[6]);}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
-                                onMouseLeave={handlePopoverClose}
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                                // onMouseLeave={handlePopoverClose}
                               >
                                 Manual Tracker
                               </label>
@@ -1765,18 +1775,18 @@ export default function Project() {
                                 checked={bas === "Ground Structure"}
                                 value="Ground Structure"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={() => dirtlossMouseOver("GS", "focus")}
-                                
+                                onFocus={(e) => {dirtlossMouseOver("GS", "focus");}}
+                                // onBlur={handlePopoverClose}
                               />
                               <label
                                 class="btn btn-outline-primary"
                                 for={"btnradio2"}
-                                onMouseOver={() =>
-                                  dirtlossMouseOver("GS", "hover")
+                                onMouseOver={(e) =>
+                                  {dirtlossMouseOver("GS", "hover"); handlePopoverOpen(e, textData[6]);}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
-                                onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                                // onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
                                 onMouseLeave={handlePopoverClose}
                               >
                                 Ground Structure
@@ -2011,7 +2021,7 @@ export default function Project() {
                 {activeStep === 2 ? (
                   <div className="row">
                     <div className="col-md-3"></div>
-                    <div className="col-md-12">
+                    <div className="col-md-12 mb-5">
                       <div className="row justify-content-center ">
                         {submited ? (
                           <Alert severity="success" color="info">
@@ -2130,7 +2140,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
-                      // disabled={filled?false:true}
+                      disabled={filled?false:true}
                     >
                       Next
                     </Button>

@@ -35,7 +35,7 @@ const Uom=() => {
           }
       )
   };
-  const {register,handleSubmit}=useForm(); // initialize the hook
+  const {register, errors, handleSubmit}=useForm(); // initialize the hook
   const onSubmit=(data) => {
       axios.post('api/uom', data)
         .then(res => {
@@ -112,7 +112,8 @@ const Uom=() => {
                   name="name"
                   size="small"
                   fullWidth
-                  inputRef={register} />
+                  error={errors.name && true} helperText={errors.name && '*required'}
+                  inputRef={register({required: true})} />
               </div>
               <div className="col-md-12 mb-2 ">
                 <TextField id="outlined-basic" label="Acronym" variant="outlined"
@@ -120,7 +121,8 @@ const Uom=() => {
                   name="acronym"
                   size="small"
                   fullWidth
-                  inputRef={register} />
+                  error={errors.acronym && true} helperText={errors.acronym && '*required'}
+                  inputRef={register({required: true})}/>
               </div>
               
             </div>

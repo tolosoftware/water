@@ -11,7 +11,7 @@ class AuthController extends Controller
         // return $request;
         try{
 
-            if(Auth::attempt(['email'=>$request['email'], 'password'=>$request['password']])){
+            if(Auth::attempt(['username'=>$request['username'], 'password'=>$request['password']])){
                 /**@var User $user */
                 $user = Auth::user();
 

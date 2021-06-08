@@ -180,26 +180,44 @@ export default function CustomSignUp(props) {
         // console.log('data in post form', data);
             var companyLogo = '';
             let file = files[0];
-            let reader = new FileReader();
-            reader.onloadend = (file) => {
-                companyLogo = reader.result;
-                data['companyLogo'] = companyLogo;
+            if(file){
+                let reader = new FileReader();
+                reader.onloadend = (file) => {
+                    companyLogo = reader.result;
+                    data['companyLogo'] = companyLogo;
+                    axios.post("api/signupRequest", data)
+                        .then((res) => {
+                            NotificationManager.success(
+                            <IntlMessages id="notification.successMessageSignIp" />,
+                            <IntlMessages id="notification.titleHereSingUp" />
+                            );
+                            handleClose();
+                        })
+                        .catch((err) => {
+                            NotificationManager.error(
+                            <IntlMessages id="notification.errorMessageSingUp" />,
+                            <IntlMessages id="notification.titleHereSingUp" />
+                            );
+                        });
+                }
+                reader.readAsDataURL(file);
+            }else{
                 axios.post("api/signupRequest", data)
-                    .then((res) => {
-                        NotificationManager.success(
-                        <IntlMessages id="notification.successMessageSignIp" />,
-                        <IntlMessages id="notification.titleHereSingUp" />
-                        );
-                        handleClose();
-                    })
-                    .catch((err) => {
-                        NotificationManager.error(
-                        <IntlMessages id="notification.errorMessageSingUp" />,
-                        <IntlMessages id="notification.titleHereSingUp" />
-                        );
-                    });
+                .then((res) => {
+                    NotificationManager.success(
+                    <IntlMessages id="notification.successMessageSignIp" />,
+                    <IntlMessages id="notification.titleHereSingUp" />
+                    );
+                    handleClose();
+                })
+                .catch((err) => {
+                    NotificationManager.error(
+                    <IntlMessages id="notification.errorMessageSingUp" />,
+                    <IntlMessages id="notification.titleHereSingUp" />
+                    );
+                });
             }
-            reader.readAsDataURL(file);
+            
         
     };
 
@@ -225,15 +243,7 @@ export default function CustomSignUp(props) {
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                                        <TextField id="email" className={`form-control ${errors.email && 'mb-2'}`} label="Email" name="email" size="small" type="email" variant="outlined" inputRef={register({ required: true })} error={errors.email && true} helperText={errors.email && '*required'} />
-                                    </div>
-                                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                                        <TextField name="phone" className={`form-control ${errors.phone && 'mb-2'}`} label="Phone" size="small" variant="outlined" inputRef={register({ required: true })} error={errors.phone && true} helperText={errors.phone && '*required'} />
-                                    </div>
-                                </div>
-                                <div className="row mb-4">
-                                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                                        <TextField name="website" className={`form-control`} label="Website" size="small" variant="outlined" inputRef={register()}/>
+                                        <TextField id="username" className={`form-control ${errors.username && 'mb-2'}`} label="Username" name="username" size="small" placeholder='example@example.com' type="email" variant="outlined" inputRef={register({ required: true })} error={errors.username && true} helperText={errors.username && '*required'} />
                                     </div>
                                     <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                                         <FormControl variant="outlined" className={`form-control ${errors.city && 'mb-2'}`} size="small">
@@ -260,6 +270,20 @@ export default function CustomSignUp(props) {
                                             {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
                                         </FormControl>
                                     </div>
+                                </div>
+                                <div className="row mb-4">
+                                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                                        <TextField id="email" className={`form-control ${errors.email && 'mb-2'}`} label="Email" name="email" size="small" type="email" placeholder='Enter your company email' variant="outlined" inputRef={register({ required: true })} error={errors.email && true} helperText={errors.email && '*required'} />
+                                    </div>
+                                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                                        <TextField name="phone" className={`form-control ${errors.phone && 'mb-2'}`} label="Phone" size="small" variant="outlined" inputRef={register({ required: true })} error={errors.phone && true} helperText={errors.phone && '*required'} />
+                                    </div>
+                                </div>
+                                <div className="row mb-4">
+                                    <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                                        <TextField name="website" className={`form-control`} label="Website" size="small" variant="outlined" inputRef={register()}/>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">

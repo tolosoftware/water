@@ -50,7 +50,7 @@ class SignIn extends React.Component {
   handlSubmit = (e) => {
     e.preventDefault();
     const data = {
-      email: this.userName,
+      username: this.userName,
       password: this.password,
     };
 
@@ -127,7 +127,7 @@ class SignIn extends React.Component {
                   <form onSubmit={this.handlSubmit}>
                     <fieldset>
                       <TextField
-                        label="Email"
+                        label="Username"
                         fullWidth
                         onChange={(e) => (this.userName = e.target.value)}
                         margin="normal"

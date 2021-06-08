@@ -178,6 +178,7 @@ class UserController extends Controller
             'name' => $request['name'],
             'system' => 0,
             'companyname' => $request['companyname'],
+            'username' => $request['username'],
             'email' => $request['email'],
             'phone' => $request['phone'],
             'website' => $request['website'],
@@ -191,6 +192,7 @@ class UserController extends Controller
         $user['companyname'] = $request['companyname'];
         $user['phone'] = $request['phone'];
         $user['email'] = $request['email'];
+        $user['username'] = $request['username'];
         $user['logo'] = $photoname;
         $user['city'] = Geolocation::findOrFail($request['city'])->city;
         $user['website'] = $request['website'];
@@ -200,7 +202,9 @@ class UserController extends Controller
             $message->to('mail@awm.solar');
             $message->subject('Sign Up Request');
             //Attach file
-            $message->attach(public_path('user/img/').$user['logo']);
+            if($user['logo']){
+                $message->attach(public_path('user/img/').$user['logo']);
+            }
         });
         return response()->json(['message' => 'Request completed']);
     }
@@ -279,6 +283,7 @@ class UserController extends Controller
                 $user = User::findOrFail($id);
                 $user->name = $request['name'];
                 $user->companyname = $request['companyname'];
+                $user->username = $request['username'];
                 $user->email = $request['email'];
                 $user->phone = $request['phone'];
                 $user->expiration =$request['expiration'];
@@ -304,6 +309,7 @@ class UserController extends Controller
                     'companyname' => $request['companyname'],
                     'email' => $request['email'],
                     'phone' => $request['phone'],
+                    'username' => $request['username'],
                     'password' => Hash::make($request['password']),
                     'expiration' =>$request['expiration'],
                     'status' => $request['status'],
@@ -353,18 +359,24 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         if(isset($request['userimage'])){
-            $photoname = 0;
+            $photoname = null;
             $photoname = time().'.' . explode('/', explode(':', substr($request->userimage, 0, strpos($request->userimage, ';')))[1])[1];
             \Image::make($request->userimage)->save(public_path('user/img/').$photoname);
             $request->merge(['photo' => $photoname]);
           
             $data = [
-                'name' => $request['name'],
-                'phone' => $request['phone'],
-                'website' => $request['website'],
+                // 'name' => $request['name'],
+                // 'phone' => $request['phone'],
+                // 'website' => $request['website'],
                 'userimage' => $photoname,
             ];
             $user = User::find($id);
+            if($photoname){
+                if($user->userimage){
+                    File::delete('user/img/'.$user->userimage); 
+                }
+            }
+            
             $user->update($data);
 
             $user = User::find($id);
@@ -385,13 +397,13 @@ class UserController extends Controller
         
 
         }else{
-            $data = [
-                'name' => $request['name'],
-                'phone' => $request['phone'],
-                'website' => $request['website'],
-            ];
-            $user = User::find($id);
-            $user->update($data);
+            // $data = [
+            //     'name' => $request['name'],
+            //     'phone' => $request['phone'],
+            //     'website' => $request['website'],
+            // ];
+            // $user = User::find($id);
+            // $user->update($data);
         }
     }
 
@@ -405,6 +417,7 @@ class UserController extends Controller
     {
        
         $user = User::findOrFail($id);
+        File::delete('user/img/'.$user->userimage);
         $user->delete();
         return ['message' => 'User Deleted'];
     }
