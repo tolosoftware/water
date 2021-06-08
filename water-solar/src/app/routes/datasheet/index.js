@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import CardBox from 'components/CardBox';
 import Widget from "components/Widget/index";
 import './download.css';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+// import ListAltIcon from '@material-ui/icons/ListAlt';
+import LocalDrinkIcon from "@material-ui/icons/LocalDrink";
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import FlashAutoIcon from '@material-ui/icons/FlashAuto';
+import ViewComfyIcon from '@material-ui/icons/ViewComfy';
+import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 
 import Module from './Module';
 import Pump from './Pump';
@@ -88,7 +93,7 @@ const Datasheet = () => {
         <div className="col-md-2" onClick={() => selectedTabe(1)}>
           <Widget styleName={toggelactivestyleinvertor(1)} >
               <div className="d-flex flex-row justify-content-center">
-                <ListAltIcon fontSize="large"/>
+                <WbSunnyIcon className="sunnyIcon"/>
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">PV Module</h4>
@@ -99,7 +104,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(2)}>
           <Widget styleName={toggelactivestyleinvertor(2)} >
               <div className="d-flex flex-row justify-content-center">
-                <ListAltIcon fontSize="large"/>
+              <LocalDrinkIcon className="lDrinkIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Water Pump</h4>
@@ -110,7 +115,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(3)}>
           <Widget styleName={toggelactivestyleinvertor(3)}  >
               <div className="d-flex flex-row justify-content-center">
-                <ListAltIcon fontSize="large"/>
+                <FlashAutoIcon className="lDrinkIcon"/>
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Controller</h4>
@@ -121,7 +126,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(4)}>
           <Widget styleName={toggelactivestyleinvertor(4)}  >
               <div className="d-flex flex-row justify-content-center">
-                <ListAltIcon fontSize="large"/>
+                <ViewComfyIcon fontSize="large"/>
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
@@ -132,7 +137,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(5)}>
           <Widget styleName={toggelactivestyleinvertor(5)}  >
               <div className="d-flex flex-row justify-content-center">
-                <ListAltIcon fontSize="large"/>
+                <SettingsInputComponentIcon fontSize="large"/>
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Accessories</h4>

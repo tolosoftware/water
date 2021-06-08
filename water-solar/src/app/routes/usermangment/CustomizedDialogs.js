@@ -177,7 +177,9 @@ export default function CustomizedDialogs(props) {
   }, [files]);
 
   useEffect(() => {
-    getCity();    
+    if(props.open){
+      getCity();    
+    }
   },[props.open]);
   const getCity=async () => {
     axios.get('api/userCity')
@@ -256,7 +258,7 @@ export default function CustomizedDialogs(props) {
               </div>
              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                 <TextField id="email" className="form-control" label="Email" autoComplete="off" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
+                 <TextField id="username" className="form-control" label="Username" autoComplete="off" name="username" defaultValue={userDataOject?.username} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.username && true} helperText={errors.username && '*required'}/>   
                 </div>
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   {userDataOject?.id ? (
@@ -269,8 +271,9 @@ export default function CustomizedDialogs(props) {
 
               <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                   <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register()} error={errors.website && true} helperText={errors.website && '*required'}/>
+                 <TextField id="email" className="form-control" label="Email" autoComplete="off" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
                 </div>
+                
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <TextField name="phone" defaultValue={userDataOject?.phone} className="form-control" label="Phone"  size="small" variant="outlined" inputRef={register({required: true})} error={errors.phone && true} helperText={errors.phone && '*required'}/>
                 </div>
@@ -279,6 +282,9 @@ export default function CustomizedDialogs(props) {
               </div>
 
               <div className="row mb-5">
+                <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
+                  <TextField name="website" defaultValue={userDataOject?.website} className="form-control" label="Website"  size="small" variant="outlined" inputRef={register()} error={errors.website && true} helperText={errors.website && '*required'}/>
+                </div>
                 <div className="col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}  >City</InputLabel>
@@ -332,6 +338,9 @@ export default function CustomizedDialogs(props) {
                   </FormControl>
                 </div> 
                 }
+                  
+              </div> 
+              <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                    <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
                     {/* <FormLabel component="legend" size="small">Status</FormLabel> */}
@@ -342,32 +351,29 @@ export default function CustomizedDialogs(props) {
                     <FormControlLabel value="inactive" disabled={userDataOject?.system == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
                   </RadioGroup>
                  </FormControl>               
-                </div>    
-              </div> 
-              <div className="row">
-
+                </div>  
                       
-              <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
-                <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
-                  <RadioGroup size="small" className="d-flex flex-row" aria-label="belongto"
-                      name="belongto" defaultValue={userDataOject?.belongto} >
-                    <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana"/>
-                    <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan"/>
-                    <FormControlLabel value="None"  inputRef={register} control={<Radio color="primary"/>} label="None"/>
-                  </RadioGroup>
-                 </FormControl>               
-              </div>  
-              {userDataOject?.system != 1? 
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
-                  <RadioGroup size="small" className="d-flex flex-row " aria-label="type" 
-                      name="type" defaultValue={userDataOject?.system == 0 ? '0': '2'}>
-                    <FormControlLabel value="0"  inputRef={register} control={<Radio color="primary"/>} label="Normal User" />
-                    <FormControlLabel value="2"  inputRef={register} control={<Radio color="primary"/>} label="Moderator" />
-                  </RadioGroup>
-                </div>
-              :""}
-                
-
+                  <FormControl component="fieldset" variant="outlined" className="form-control"  size="small">
+                    <RadioGroup size="small" className="d-flex flex-row" aria-label="belongto"
+                        name="belongto" defaultValue={userDataOject?.belongto} >
+                      <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana"/>
+                      <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan"/>
+                      <FormControlLabel value="None"  inputRef={register} control={<Radio color="primary"/>} label="None"/>
+                    </RadioGroup>
+                  </FormControl>               
+                </div>  
+              </div>
+              <div className="row">
+              {userDataOject?.system != 1? 
+                  <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
+                    <RadioGroup size="small" className="d-flex flex-row " aria-label="type" 
+                        name="type" defaultValue={userDataOject?.system == 0 ? '0': '2'}>
+                      <FormControlLabel value="0"  inputRef={register} control={<Radio color="primary"/>} label="Normal User" />
+                      <FormControlLabel value="2"  inputRef={register} control={<Radio color="primary"/>} label="Moderator" />
+                    </RadioGroup>
+                  </div>
+                :""}
               </div>
             </div>
             <div className="col-xl-4 col-gl-4 col-md-4 col-sm-12 col-12">

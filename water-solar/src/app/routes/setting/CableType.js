@@ -42,7 +42,7 @@ const [visibility,setVisibility]= useState(false);
       )
   };
 
-  const {register,handleSubmit}=useForm(); // initialize the hook
+  const {register, errors, handleSubmit}=useForm(); // initialize the hook
   const onSubmit=(data) => {
       axios.post('api/cabletype', data)
         .then(res => {
@@ -122,7 +122,8 @@ const [visibility,setVisibility]= useState(false);
                 name="name"
                 size="small"
                 fullWidth
-                inputRef={register} />
+                error={errors.name && true} helperText={errors.name && '*required'}
+                inputRef={register({required: true})} />
                </div>
         </div>
 
