@@ -1,9 +1,19 @@
 .tableheight{
-    min-height: 380px !important;
-    
+    min-height: 425px !important
 }
 
 .vartical-Devider{
     border-left: 2px solid rgb(187, 197, 187) !important;
     height: 500px i !important;
+}
+.seeting-table-style .table-responsive-material{
+    min-height: 310px;
+    max-height: 310px;
+}
+.seeting-table-style .table-responsive-material thead tr th{
+    background: white;
+    opacity: 1;
+    position: sticky;
+    top: 0;
+    z-index: 5;
 }

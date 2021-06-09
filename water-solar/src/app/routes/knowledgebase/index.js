@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import IntlMessages from "util/IntlMessages";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
@@ -34,6 +40,9 @@ import "./style.scss";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 const ref = React.createRef();
+
+
+
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -57,6 +66,17 @@ const useStyles = makeStyles((theme) => ({
   secondRow: {
     textAlign: "right !important",
   },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+  root: {
+    width: '100%',
+  },
+  secondBtn: {
+    marginLeft: 'auto',
+  },
+
 }));
 
 const ProjectSummary = ({ match }) => {
@@ -73,7 +93,11 @@ const ProjectSummary = ({ match }) => {
   const [visibleSect,setVisibleSect]= useState({
     structure: false, wiring: false, layout: false, sizing: false,
   });
+  const [expanded, setExpanded] = React.useState(false);
 
+  const handleChangeExp = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
   const handleVisibleSect = (e)=>{
     setVisibleSect({...visibleSect, [e.target.name]: e.target.checked});
   };
@@ -1271,7 +1295,11 @@ const ProjectSummary = ({ match }) => {
           <div className="col-md-3">
             <Paper elevation={0} className="mb-3 p-4">
               <div className="row ">
+                <div className="col-md-12 d-flex justify-content-center p-1">
+                  <h5>Project Summary</h5>
+                </div>
                 <div className="col-md-6 d-flex justify-content-center p-1">
+                  
                   <Pdf
                     targetRef={ref}
                     filename="Project summary.pdf" /*options={options}*/
@@ -1290,6 +1318,7 @@ const ProjectSummary = ({ match }) => {
                     )}
                   </Pdf>
                 </div>
+                
 
                 <div className="col-md-6 d-flex justify-content-center p-1">
                   <ReactToPrint
@@ -1309,6 +1338,121 @@ const ProjectSummary = ({ match }) => {
                 </div>
               </div>
               <Divider className="mb-3 mt-3" />
+              <div className="row ">
+                <div className="col-md-12 d-flex justify-content-center">
+                  <Accordion className={classes.root} expanded={expanded === 'panel1'} onChange={handleChangeExp('panel1')} >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography className={classes.heading}>Pump Data Sheet</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                      <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} target="_blank">
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<CloudDownloadIcon />}
+                          className="float-right ps-btn"
+                        >
+                        </Button>
+                        </a>
+                      </Typography>
+
+                      <Typography className={classes.secondBtn}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<PrintIcon />}
+                          className="float-right ps-btn"
+                          >
+                        </Button>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+                
+                <div className="col-md-12 d-flex justify-content-center">
+                  <Accordion className={classes.root} expanded={expanded === 'panel2'} onChange={handleChangeExp('panel2')}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel2a-content"
+                      id="panel2a-header"
+                    >
+                      <Typography className={classes.heading}>Solar Data Sheet</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`} target="_blank">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<CloudDownloadIcon />}
+                            className="float-right ps-btn"
+                          >
+                            {/* Download */}
+                          </Button>
+                        </a>
+                      </Typography>
+
+                      <Typography className={classes.secondBtn}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<PrintIcon />}
+                          className="float-right ps-btn"
+                          >
+                          
+                          {/* Print */}
+                        </Button>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+                
+                <div className="col-md-12 d-flex justify-content-center">
+                  <Accordion className={classes.root} expanded={expanded === 'panel3'} onChange={handleChangeExp('panel3')} >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel3a-content"
+                      id="panel3a-header"
+                    >
+                      <Typography className={classes.heading}>Controller Data Sheet</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                      <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<CloudDownloadIcon />}
+                            className="float-right ps-btn"
+                          >
+                          </Button>
+                        </a>
+                      </Typography>
+
+                      <Typography className={classes.secondBtn}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<PrintIcon />}
+                          className="float-right ps-btn"
+                          >
+                          
+                          {/* Print */}
+                        </Button>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+                
+              </div>
+              <Divider className="mb-3 mt-3" />
+
+
               <div className="row ">
                 <div className="col-md-12 d-flex justify-content-center">
                   <FormControlLabel

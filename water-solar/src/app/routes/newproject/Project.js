@@ -1329,138 +1329,139 @@ export default function Project() {
                         >
                         <Typography>{textContent}</Typography>
                       </Popover>
-                      <div className="col-md-12 p-0">
-                          <TextField
-                            className="form-control"
-                            id="outlined-basic"
-                            label="Poject Name"
-                            variant="outlined"
-                            placeholder="Project name!"
-                            margin="normal"
-                            size="small"
-                            name="projectname"
-                            value={projectname}
-                            onChange={(event) => handlchangfild(event)}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            error={
-                              touched &&
-                              touched.projectname &&
-                              error &&
-                              error.projectname
-                                ? true
-                                : false
-                            }
-                            aria-owns={open ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="true"
-                            onMouseOver={e=>handlePopoverOpen(e, textData[0])}
-                            // onMouseLeave={handlePopoverClose}
-                            // onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
-                            // onBlur={handlePopoverClose}
-                          />
-                          
-                      </div>
-
-                      <div className="row">
-                        <div className="col-md-6">
-                          <Autocomplete
-                            size="small"
-                            id="country-select-demo"
-                            onChange={(event, newValue) => {
-                              handgleCountry(event, newValue);
-                              getcitylist(
-                                newValue ? newValue.country : "Afghanistan"
-                              );
-                            }}
-                            style={{ width: 300 }}
-                            options={location}
-                            inputValue={`Afghanistan`}
-                            // onInputChange={(event) => {
-                            //   handgleCountry(event, "Afghanistan");
-                            //   getcitylist("Afghanistan");
-                            // }}
-                            classes={{
-                              option: classes.option,
-                            }}
-                            autoHighlight
-                            getOptionLabel={(option) =>
-                              option ? option.country : "Afghanistan"
-                            }
-                            renderOption={(option) => (
-                              <React.Fragment>{option.country}</React.Fragment>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                size="small"
-                                {...params}
-                                label="Select Country"
-                                variant="outlined"
-                                placeholder="pick the country !"
-                                margin="normal"
-                                name="country"
-                                InputLabelProps={{
-                                  shrink: true,
-                                }}
-                                //  error={(touched && touched.country) && (error && error.country) ? true : false}
-
-                                inputProps={{
-                                  ...params.inputProps,
-                                  // autoComplete: "new-password",
-                                }}
-                              />
-                            )}
-                          />
+                      <div onMouseOver={()=>dirtlossMouseLeave("fout")}>
+                        <div className="col-md-12 p-0">
+                            <TextField
+                              className="form-control"
+                              id="outlined-basic"
+                              label="Poject Name"
+                              variant="outlined"
+                              placeholder="Project name!"
+                              margin="normal"
+                              size="small"
+                              name="projectname"
+                              value={projectname}
+                              onChange={(event) => handlchangfild(event)}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              error={
+                                touched &&
+                                touched.projectname &&
+                                error &&
+                                error.projectname
+                                  ? true
+                                  : false
+                              }
+                              aria-owns={open ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseOver={e=>handlePopoverOpen(e, textData[0])}
+                              // onMouseLeave={handlePopoverClose}
+                              // onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
+                              // onBlur={handlePopoverClose}
+                            />
+                            
                         </div>
 
-                        <div className="col-md-6">
-                          <Autocomplete
-                            size="small"
-                            id="country-select-demo2"
-                            onChange={(event, newValue) => {
-                              handcahngeCity(event, newValue);
-                              getIrredation(newValue);
-                            }}
-                            style={{ width: 300 }}
-                            options={dbcity}
-                            classes={{
-                              option: classes.option,
-                            }}
-                            defaultValue={city}
-                            error={
-                              touched && touched.city && error && error.city
-                                ? true
-                                : false
-                            }
-                            autoHighlight
-                            getOptionLabel={(option) =>
-                              option ? option.city : ""
-                            }
-                            renderOption={(option) => (
-                              <React.Fragment>{option.city}</React.Fragment>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                size="small"
-                                {...params}
-                                label="Select the City"
-                                variant="outlined"
-                                placeholder="pick the City !"
-                                margin="normal"
-                                name="city"
-                                InputLabelProps={{
-                                  shrink: true,
-                                }}
-                                inputProps={{
-                                  ...params.inputProps,
-                                  // autoComplete: "new-password",
-                                }}
-                              />
-                            )}
-                          />
+                        <div className="row">
+                          <div className="col-md-6">
+                            <Autocomplete
+                              size="small"
+                              id="country-select-demo"
+                              onChange={(event, newValue) => {
+                                handgleCountry(event, newValue);
+                                getcitylist(
+                                  newValue ? newValue.country : "Afghanistan"
+                                );
+                              }}
+                              style={{ width: 300 }}
+                              options={location}
+                              inputValue={`Afghanistan`}
+                              // onInputChange={(event) => {
+                              //   handgleCountry(event, "Afghanistan");
+                              //   getcitylist("Afghanistan");
+                              // }}
+                              classes={{
+                                option: classes.option,
+                              }}
+                              autoHighlight
+                              getOptionLabel={(option) =>
+                                option ? option.country : "Afghanistan"
+                              }
+                              renderOption={(option) => (
+                                <React.Fragment>{option.country}</React.Fragment>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  size="small"
+                                  {...params}
+                                  label="Select Country"
+                                  variant="outlined"
+                                  placeholder="pick the country !"
+                                  margin="normal"
+                                  name="country"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  //  error={(touched && touched.country) && (error && error.country) ? true : false}
+
+                                  inputProps={{
+                                    ...params.inputProps,
+                                    // autoComplete: "new-password",
+                                  }}
+                                />
+                              )}
+                            />
+                          </div>
+
+                          <div className="col-md-6">
+                            <Autocomplete
+                              size="small"
+                              id="country-select-demo2"
+                              onChange={(event, newValue) => {
+                                handcahngeCity(event, newValue);
+                                getIrredation(newValue);
+                              }}
+                              style={{ width: 300 }}
+                              options={dbcity}
+                              classes={{
+                                option: classes.option,
+                              }}
+                              defaultValue={city}
+                              error={
+                                touched && touched.city && error && error.city
+                                  ? true
+                                  : false
+                              }
+                              autoHighlight
+                              getOptionLabel={(option) =>
+                                option ? option.city : ""
+                              }
+                              renderOption={(option) => (
+                                <React.Fragment>{option.city}</React.Fragment>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  size="small"
+                                  {...params}
+                                  label="Select the City"
+                                  variant="outlined"
+                                  placeholder="pick the City !"
+                                  margin="normal"
+                                  name="city"
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  inputProps={{
+                                    ...params.inputProps,
+                                    // autoComplete: "new-password",
+                                  }}
+                                />
+                              )}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="row">
+                        <div className="row">
                           <div className="col-md-6">
                               <TextField
                                 id="outlined-basic-1_lati" className="form-control"
@@ -1502,8 +1503,9 @@ export default function Project() {
                             />
                           </div>
                         </div>
+                      </div>
                       <Divider className="mb-3 mt-3" />
-                      <div onMouseLeave={()=>dirtlossMouseLeave("fout")}>
+                      {/* <div onMouseLeave={()=>dirtlossMouseLeave("fout")}> */}
                         <div className="row">
                           <div className="col-md-6">
                               <TextField
@@ -1794,7 +1796,7 @@ export default function Project() {
                             </div>
                         </div>
                         </div>
-                      </div>
+                      {/* </div> */}
                       <Divider className="mb-3 mt-3" />
 
                       <Button
