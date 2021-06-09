@@ -55,27 +55,29 @@ export default function Aboutawm(props) {
         About AWM (AMO WATER MANAGEMENT)
         </DialogTitle>
         <DialogContent dividers>
-          <h5>Version: 1.1</h5>
-          <Typography gutterBottom>
+          <h4 className='mb-1'>Version: 1.1</h4>
+          <p>
           AWM is a non-profit online software which developed for planning and calculation of solar water pumping systems. Developing of this online software begin on 2019 and the user start its using on July 2021. 
-          </Typography>
-          <h5>Vision:</h5>
-          <Typography gutterBottom>
+          </p>
+          <h4 className='mb-1'>Vision:</h4>
+          <p>
           AWM team always tried to simplified and speed up the planning and designing of a solar water pumping system in all location of Afghanistan. 
-          </Typography>
-          <h5>Mission: </h5>
-          <Typography gutterBottom>
+          </p>
+          <h4 className='mb-1'>Mission: </h4>
+          <p>
           We want to institutionalize of this online software among the people in the next few years for accurately calculation the solar water pumping systems.
-          </Typography>
-          <h5>Copy right:</h5>
-          <Typography gutterBottom>
+          </p>
+          <h4 className='mb-1'>Copy right:</h4>
+          <p>
           All privileges of this online software are registered in commercial and judicial organization of the Government of Afghanistan, and any copying and misuse of it will be illegal and violators will be dealt with severely.
-          </Typography>
+          </p>
           <br/>
-          <Typography gutterBottom>
+          <Typography className='mb-2'>
           For more information please contact:
-          <p><a href="mail:info@awm.solar">info@awm.solar</a></p>
-          <p><a href="tel:+93790303132">+93790303132</a></p>
+          <p>
+            <a href="mail:info@awm.solar">info@awm.solar</a> <br/>
+            <a href="tel:+93790303132">+93790303132</a>
+          </p>
           </Typography>
           
         </DialogContent>

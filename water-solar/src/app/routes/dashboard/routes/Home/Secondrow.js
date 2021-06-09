@@ -46,7 +46,7 @@ const Secondrow = () => {
                     </BarChart>
                     </ResponsiveContainer>
                     <Divider className="mb-3 mt-1" />
-                    <h3 className="pl-5">Kabul Irradiation</h3>
+                    <h3 style={{textAlign:'center',}}>Kabul Irradiation</h3>
             </div>
 
             <div className="col-md-3">
@@ -63,7 +63,7 @@ const Secondrow = () => {
                     </BarChart>
                     </ResponsiveContainer>
                     <Divider className="mb-3 mt-1" />
-                    <h3 className="pl-5">Herat Irradiation</h3>
+                    <h3 style={{textAlign:'center',}}>Herat Irradiation</h3>
             </div>
       
             <div className="col-md-3">
@@ -80,7 +80,7 @@ const Secondrow = () => {
                     </BarChart>
                     </ResponsiveContainer>
                     <Divider className="mb-3 mt-1" />
-                    <h3 className="pl-5">Balkh Irradiation</h3>
+                    <h3 style={{textAlign:'center',}}>Balkh Irradiation</h3>
             </div>
       
 
@@ -99,7 +99,7 @@ const Secondrow = () => {
                     </ResponsiveContainer>
 
                     <Divider className="mb-3 mt-1" />
-                    <h3 className="pl-5">Kandahar Irradiation</h3>
+                    <h3 style={{textAlign:'center',}}>Kandahar Irradiation</h3>
             </div>
       
       
