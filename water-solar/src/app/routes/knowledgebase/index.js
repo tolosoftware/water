@@ -704,118 +704,111 @@ const ProjectSummary = ({ match }) => {
 
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
-                        <div className={`main`}>
-                          <div className="row">
-                            <strong
-                              style={{
-                                marginTop: "40px",
-                                paddingBottom: "5px",
-                                marginBottom: "7px",
-                                marginLeft: "10px",
-                                width: "100%",
-                                marginRight: "135px",
-                                borderBottom: "2px solid #ced4da",
-                              }}
-                            >
-                              Submersible pump specification:
-                            </strong>
-                            <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 col-xs-12">
-                              <div className="row">
-                                <div
-                                  className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12"
-                                  style={{ paddingRight: "0px" }}
-                                >
-                                  <div className="table-responsive-material ">
-                                    <Table className="default-table table-unbordered table table-sm table-hover">
-                                      <thead className="table-head-sm th-border-b"></thead>
-                                      <tbody>
-                                        <tr>
-                                          <td>Brand:</td>
-                                          <td>
-                                            {pupm
-                                              ? pupm[0]?.pump_brand?.name
-                                              : ""}
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Model:</td>
-                                          <td>{pupm ? pupm[0]?.model : ""}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Power:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.power : ""}Kw
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Hors power:</td>
-                                          <td>{pupm ? pupm[0]?.hp : ""}HP</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Current:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.ampeier : ""}A
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Voltage:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.voltage : ""}V
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Outlet:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.outlet : ""}inch
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Diameter:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.diameter : ""}inch
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Weight:</td>
-                                          <td>
-                                            {pupm ? pupm[0]?.weight : ""}kg
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Made in:</td>
-                                          <td>
-                                            {pupm
-                                              ? pupm[0]?.pump_brand?.country
-                                              : ""}
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </Table>
-                                  </div>
+                        <table style={{width:'100%'}}  className="inside-table-pump" >
+                          <caption>Submersible pump specification:</caption>
+                            <tr>
+                              <td style={{width: '30%'}}>
+                                <div className="table-responsive-material ">
+                                  <Table className="default-table table-unbordered table table-sm table-hover">
+                                    <thead className="table-head-sm th-border-b"></thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>Brand:</td>
+                                        <td>
+                                          {pupm
+                                            ? pupm[0]?.pump_brand?.name
+                                            : ""}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Model:</td>
+                                        <td>{pupm ? pupm[0]?.model : ""}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Power:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.power : ""}Kw
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Hors power:</td>
+                                        <td>{pupm ? pupm[0]?.hp : ""}HP</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Current:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.ampeier : ""}A
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Voltage:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.voltage : ""}V
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Outlet:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.outlet : ""}inch
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Diameter:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.diameter : ""}inch
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Weight:</td>
+                                        <td>
+                                          {pupm ? pupm[0]?.weight : ""}kg
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Made in:</td>
+                                        <td>
+                                          {pupm
+                                            ? pupm[0]?.pump_brand?.country
+                                            : ""}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </Table>
                                 </div>
-                                <div
-                                  className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12"
-                                  style={{ padding: "0px", paddingTop: "35px" }}
-                                >
+                              </td>
+                              <td style={{width: '60%'}}>
+                                {pupm[0]?.graph?
+                                    <img
+                                      src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`}
+                                      className="img-thumbnail"
+                                      style={{
+                                        border: "0px solid #dee2e6",
+                                        padding: "0px",
+                                      }}
+                                      alt="Responsive"
+                                    />
+                                  :''}
+                              </td>
+                              <td>
+                                {pupm[0]?.image?
                                   <img
-                                    src={
-                                      pupm
-                                        ? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`
-                                        : "/images/graph.png"
-                                    }
+                                    src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`}
                                     className="img-thumbnail"
                                     style={{
                                       border: "0px solid #dee2e6",
                                       padding: "0px",
+                                      maxHeight: "460px", 
                                     }}
                                     alt="Responsive"
                                   />
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
+                                :''}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan="3">
+                                {pupm[0]?.diameter_file?
                                   <img
-                                    src="/images/dimentaion.png"
+                                    src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/diameter/${pupm[0]?.diameter_file}`}
                                     className="img-thumbnail"
                                     style={{
                                       border: "0px solid #dee2e6",
@@ -825,99 +818,106 @@ const ProjectSummary = ({ match }) => {
                                     }}
                                     alt="Responsive"
                                   />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 col-xs-12">
-                              <img
-                                src={
-                                  pupm
-                                    ? `${axios.defaults.baseURL}brand/pumpbrand/pump_list/${pupm[0]?.image}`
-                                    : "/images/pump.png"
-                                }
-                                className="img-thumbnail"
-                                style={{
-                                  border: "0px solid #dee2e6",
-                                  padding: "0px",
-                                  maxHeight: "460px",
-                                }}
-                                alt="Responsive"
-                              />
-                            </div>
-                          </div>
-                        </div>
+                                :''}
+                              </td>
+                            </tr>
+                          </table>
                       </td>
                     </tr>
 
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
-                        <div className={`main`}>
-                          <section>
-                            <div className="row">
-                              <div className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12">
-                                <div className="table-responsive-material">
-                                  <Table className="default-table table-unbordered table table-sm table-hover">
-                                    <thead className="table-head-sm th-border-b">
-                                      <tr className={classes.headSolarS}>
-                                        <th>Solar specification:</th>
-                                        <th></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td style={{ width: "60%" }}>Brand:</td>
-                                        <td>
-                                          {solarBrand ? solarBrand?.name : ""}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Model:</td>
-                                        <td>
-                                          {solarList
-                                            ? solarList?.solar_list_with_cable
-                                              ?.model
-                                            : ""}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Rated Maximum power (Pmax):</td>
-                                        <td>270Wp</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Voltage at Maximum power(Vmp):</td>
-                                        <td>31.3V</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Current at Maximum power(Imp):</td>
-                                        <td>8.79A</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Open Circuit Voltage(VOC):</td>
-                                        <td>38.4V</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Short Circuit Current (Isc):</td>
-                                        <td>9.31A</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Mazimum System Voltage:</td>
-                                        <td>1000V</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Size (mm):</td>
-                                        <td>1648*995*35mm</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Weight:</td>
-                                        <td>18kg</td>
-                                      </tr>
-                                    </tbody>
-                                  </Table>
-                                </div>
+                        <table style={{width:'100%'}}  className="inside-table-pump" >
+                          <caption>Solar specification:</caption>
+                          <tr>
+                            <td style={{width: '60%'}}>
+                              <div className="table-responsive-material">
+                                <Table className="default-table table-unbordered table table-sm table-hover">
+                                 
+                                  <tbody>
+                                    <tr>
+                                      <td style={{ width: "60%" }}>Brand:</td>
+                                      <td>
+                                        {solarBrand ? solarBrand?.name : ""}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Model:</td>
+                                      <td>
+                                        {solarList
+                                          ? solarList?.solar_list_with_cable
+                                            ?.model
+                                          : ""}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Rated Maximum power (Pmax):</td>
+                                      <td>270Wp</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Voltage at Maximum power(Vmp):</td>
+                                      <td>31.3V</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Current at Maximum power(Imp):</td>
+                                      <td>8.79A</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Open Circuit Voltage(VOC):</td>
+                                      <td>38.4V</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Short Circuit Current (Isc):</td>
+                                      <td>9.31A</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Mazimum System Voltage:</td>
+                                      <td>1000V</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Size (mm):</td>
+                                      <td>1648*995*35mm</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Weight:</td>
+                                      <td>18kg</td>
+                                    </tr>
+                                    <tr>
+                                      <td colSpan="2">
+                                        <img
+                                          src="/images/Voltage.png"
+                                          className="img-thumbnail"
+                                          style={{
+                                            border: "0px solid #dee2e6",
+                                            padding: "0px",
+                                          }}
+                                          alt="Responsive"
+                                        />
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </Table>
                               </div>
-                              <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12">
+                            </td>
+                            <td >
+                              {solarList?.solar_list_with_cable?.image?
                                 <img
-                                  src="/images/solar1.png"
+                                  src={`${axios.defaults.baseURL}brand/solar/solar_list/${solarList?.solar_list_with_cable?.image}`}
+                                  className="img-thumbnail"
+                                  style={{
+                                    border: "0px solid #dee2e6",
+                                    padding: "0px", float: 'right',
+                                  }}
+                                  alt="Responsive"
+                                />
+                              :''}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan='2'>
+                              {solarList?.solar_list_with_cable?.diameter?
+                                <img
+                                  src={`${axios.defaults.baseURL}brand/solar/solar_list/diameter/${solarList?.solar_list_with_cable?.diameter}`}
                                   className="img-thumbnail"
                                   style={{
                                     border: "0px solid #dee2e6",
@@ -925,49 +925,24 @@ const ProjectSummary = ({ match }) => {
                                   }}
                                   alt="Responsive"
                                 />
-                              </div>
-                              <div className="row">
-                                <div className="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5 col-xs-12">
-                                  <img
-                                    src="/images/connector.png"
-                                    className="img-thumbnail"
-                                    style={{
-                                      border: "0px solid #dee2e6",
-                                      padding: "0px",
-                                    }}
-                                    alt="Responsive"
-                                  />
-                                </div>
-                                <div className="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 col-xs-12" style={{padding: "0px", paddingTop: "115px",}}
-                                >
-                                  <img
-                                    src="/images/Voltage.png"
-                                    className="img-thumbnail"
-                                    style={{
-                                      border: "0px solid #dee2e6",
-                                      padding: "0px",
-                                    }}
-                                    alt="Responsive"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </section>
-                        </div>
+                              :''}
+                            </td>
+                          </tr>
+                        
+                        </table>
+                      
                       </td>
                     </tr>
 
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
-                        <div className={`main`}>
-                          <div className="row" style={{ marginTop: "20px" }}>
-                            <div
-                              className="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 col-xs-12"
-                              style={{ height: "fit-content" }}
-                            >
+                        <table style={{width:'100%'}}  className="inside-table-pump" >
+                          <caption>Controller specification:</caption>
+                          <tr>
+                            <td style={{width: '70%'}}>
                               <div className="table-responsive-material ">
                                 <Table className="default-table table-unbordered table table-sm table-hover">
-                                  <thead className="table-head-sm th-border-b">
+                                  {/* <thead className="table-head-sm th-border-b">
                                     <tr className={classes.headSolarS}>
                                       <th>
                                         <strong>
@@ -976,7 +951,7 @@ const ProjectSummary = ({ match }) => {
                                       </th>
                                       <th></th>
                                     </tr>
-                                  </thead>
+                                  </thead> */}
                                   <tbody>
                                     <tr>
                                       <td style={{ width: "32%" }}>Brand:</td>
@@ -1027,266 +1002,211 @@ const ProjectSummary = ({ match }) => {
                                   </tbody>
                                 </Table>
                               </div>
-                            </div>
-                            <div
-                              className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 col-xs-12"
-                              style={{ paddingLeft: "0px", paddingTop: "50px" }}
-                            >
-                              <img
-                                src={
-                                  inverter
-                                    ? `${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`
-                                    : "/images/controller.png"
-                                }
+                            </td>
+                            <td >
+                              {inverter?.image?
+                                <img
+                                  src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`}
+                                  className="img-thumbnail"
+                                  style={{
+                                    border: "0px solid #dee2e6",
+                                    padding: "0px",
+                                  }}
+                                  alt="Responsive"
+                                />
+                              :''}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan='2' style={{textAlign: 'center'}}>
+                            {inverter?.diameter?  <img
+                                src={`${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`}
                                 className="img-thumbnail"
                                 style={{
                                   border: "0px solid #dee2e6",
-                                  padding: "0px",
+                                  padding: "0px", width: '80%'
                                 }}
                                 alt="Responsive"
                               />
-                            </div>
-                            <div
-                              className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 col-xs-12"
-                              style={{ marginTop: "-215px" }}
-                            >
-                              <img
-                                src={
-                                  inverter
-                                    ? `${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`
-                                    : "/images/controllerDimention.png"
-                                }
-                                className="img-thumbnail"
-                                style={{
-                                  border: "0px solid #dee2e6",
-                                  padding: "0px",
-                                }}
-                                alt="Responsive"
-                              />
-                            </div>
-                          </div>
-                        </div>
+                            :''}
+                            </td>
+                          </tr>
+                        </table>
+                      
                       </td>
                     </tr>
                     {visibleSect.structure?'':
                       <tr className="page" style={{}}>
                         <td class="report-content-cell">
-                          <div className={`main`}>
-                            <div className="row" style={{ marginTop: "20px" }}>
-                              <div
-                                className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                                style={{ pageBreakAfter: "always" }}
-                              >
-                                <section>
-                                  <div className="table-responsive-material">
-                                    <Table className="default-table table-unbordered table table-sm table-hover">
-                                      <thead className="table-head-sm th-border-b">
-                                        <tr className={classes.headSolarS}>
-                                          <th>
-                                            <strong>
-                                              Strucuter specification:
-                                            </strong>
-                                          </th>
-                                          <th></th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <td style={{ width: "32%" }}>Brand:</td>
-                                          <td>No</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Model:</td>
-                                          <td>
-                                            {projectDetails
-                                              ? projectDetails?.solar_base
-                                              : ""}
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Capacity:</td>
-                                          <td>4/6/8/10/12 panels</td>
-                                        </tr>
-                                      </tbody>
-                                    </Table>
-                                  </div>
-                                  <img
-                                    src={
-                                      projectDetails?.solar_base ===
-                                      "Ground Structure"
-                                        ? "/images/structure.png"
-                                        : "/images/ground.jpg"
-                                    }
-                                    className="img-thumbnail"
-                                    style={{ border: "0px solid #dee2e6" }}
-                                    alt="Responsive"
-                                  />
-                                  <h4>
-                                    Note: Image may be deferent with actual
-                                    product as this is a graphic design.
-                                  </h4>
-                                </section>
-                              </div>
-                            </div>
-                          </div>
+                          <table style={{width:'100%'}}  className="inside-table-pump" >
+                            <caption>Strucuter specification:</caption>
+                            <tr>
+                              <td style={{width: '40%'}}>
+                                Brand:
+                              </td>
+                              <td>
+                                No
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style={{width: '40%'}}>
+                                Model:
+                              </td>
+                              <td>
+                                {projectDetails?projectDetails?.solar_base: ""}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Capacity:</td>
+                              <td>4/6/8/10/12 panels</td>
+                            </tr>
+                            <tr>
+                              <td colSpan='2' style={{textAlign: 'center'}}>
+                                <img src={
+                                        projectDetails?.solar_base ===
+                                        "Ground Structure"
+                                          ? "/images/structure.png"
+                                          : "/images/ground.jpg"
+                                      }
+                                      className="img-thumbnail"
+                                      style={{ border: "0px solid #dee2e6" }}
+                                      alt="Responsive"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan='2'>
+                                <h4>Note: Image may be deferent with actual product as this is a graphic design.</h4>     
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     }
                     {visibleSect.wiring?'':
                       <tr className="page" style={{}}>
                         <td class="report-content-cell ">
-                          <div className={`main`}>
-                            <div className="row">
-                              <div
-                                className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                                style={{ pageBreakAfter: "always" }}
-                              >
-                                <section>
-                                  <Divider className="mb-3 mt-3" />
-                                  <h6>
-                                    <strong>Wiring Diagram</strong>
-                                  </h6>
+                          <table style={{width:'100%'}}  className="inside-table-pump" >
+                            <caption>Wiring Diagram</caption>
+                            <tr>
+                              <td style={{textAlign:'center'}}>
+                                {solarList?.image?
                                   <img
-                                    src={
-                                      solarList
-                                        ? `${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`
-                                        : "/images/wiring.png"
-                                    }
+                                    src={`${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`}
                                     className="img-thumbnail "
                                     alt="Responsive"
                                     style={{ border: "none" }}
                                   />
-                                </section>
-                              </div>
-                            </div>
-                          </div>
+                                :''}
+                              </td>
+                              
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     }
                     {visibleSect.layout?'':
                       <tr >
                         <td class="report-content-cell">
-                          <div className={`main`}>
-                            <div className="row">
-                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12"
-                                style={{ pageBreakAfter: "always" }}
-                              >
-                                <Divider className="mb-3 mt-3" />
-                                <span>
-                                  <strong>System General layout</strong>
-                                </span>
+                          <table style={{width:'100%'}}  className="inside-table-pump" >
+                            <caption>System General layout</caption>
+                            <tr >
+                              <td colSpan='2'>
                                 <img
                                   src="/Layouts/system layout with details1.jpg"
                                   className="img-thumbnail "
                                   alt="Responsive"
                                   style={{ border: "none" }}
                                 />
-
-                                <div className="table-responsive-material">
-                                  <Table className="default-table table-unbordered table table-sm table-hover">
-                                    <thead className="table-head-sm th-border-b">
-                                      <tr className={classes.headSolarS}></tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td style={{ width: "50%" }}>
-                                          <h5>1- Solar panels</h5>
-                                        </td>
-                                        <td style={{ width: "50%" }}>
-                                          <h5>9- Garden</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>2- Pump controller</h5>
-                                        </td>
-                                        <td>
-                                          <h5>10- Swimming pool</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>3- Submersible</h5>
-                                        </td>
-                                        <td>
-                                          <h5>11- Water reservoir</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>4- well probe sensors</h5>
-                                        </td>
-                                        <td>
-                                          <h5>12- Flaut switch</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>5- Pump electrical cable</h5>
-                                        </td>
-                                        <td>
-                                          <h5>13- Flaut switch Ele. cable</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>6- Non return valve</h5>
-                                        </td>
-                                        <td>
-                                          <h5>14- Residential Houses</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>7- Pressure Gauge</h5>
-                                        </td>
-                                        <td>
-                                          <h5>15- Toilet</h5>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>
-                                          <h5>8- Water meter</h5>
-                                        </td>{" "}
-                                        <td></td>
-                                      </tr>
-                                    </tbody>
-                                  </Table>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                              </td>
+                              
+                            </tr>
+                            <tr>
+                              <td style={{ width: "50%" }}>
+                                <h5>1- Solar panels</h5>
+                              </td>
+                              <td style={{ width: "50%" }}>
+                                <h5>9- Garden</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>2- Pump controller</h5>
+                              </td>
+                              <td>
+                                <h5>10- Swimming pool</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>3- Submersible</h5>
+                              </td>
+                              <td>
+                                <h5>11- Water reservoir</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>4- well probe sensors</h5>
+                              </td>
+                              <td>
+                                <h5>12- Flaut switch</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>5- Pump electrical cable</h5>
+                              </td>
+                              <td>
+                                <h5>13- Flaut switch Ele. cable</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>6- Non return valve</h5>
+                              </td>
+                              <td>
+                                <h5>14- Residential Houses</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>7- Pressure Gauge</h5>
+                              </td>
+                              <td>
+                                <h5>15- Toilet</h5>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <h5>8- Water meter</h5>
+                              </td>{" "}
+                              <td></td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     }
                     {visibleSect.sizing?'':
                       <tr>
                         <td class="report-content-cell">
-                          <div className={`main`}>
-                            <div className="row">
-                              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12">
-                                <Divider className="mb-3 mt-3" />
-                                <span>
-                                  {" "}
-                                  <strong>Sizing layout</strong>
-                                </span>
+                          <table style={{width:'100%'}}  className="inside-table-pump" >
+                            <caption>Sizing layout</caption>
+                            <tr>
+                              <td>
                                 <img
                                   src="/Layouts/layout details1.jpg"
                                   className="img-thumbnail "
                                   alt="Responsive"
                                   style={{ border: "none" }}
                                 />
-                              </div>
-                            </div>
-                          </div>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     }
-                    <tr>
-                      <td class="report-content-cell">
-                        <div className={`main`}></div>
-                      </td>
-                    </tr>
+                   
                   </tbody>
                 </table>
               </Paper>
@@ -1350,8 +1270,8 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                      <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} target="_blank">
-                        <Button
+                      <a disabled={pupm[0]?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} target="_blank">
+                        <Button disabled={pupm[0]?.data_sheet?false:true} 
                           variant="contained"
                           color="primary"
                           startIcon={<CloudDownloadIcon />}
@@ -1362,7 +1282,7 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button
+                        <Button disabled={pupm[0]?.data_sheet?false:true} 
                           variant="contained"
                           color="primary"
                           startIcon={<PrintIcon />}
@@ -1385,8 +1305,8 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                        <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`} target="_blank">
-                          <Button
+                        <a disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}  href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`} target="_blank">
+                          <Button disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}
                             variant="contained"
                             color="primary"
                             startIcon={<CloudDownloadIcon />}
@@ -1398,7 +1318,7 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button
+                        <Button disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}
                           variant="contained"
                           color="primary"
                           startIcon={<PrintIcon />}
@@ -1423,8 +1343,8 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                      <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
-                          <Button
+                      <a disabled={inverter?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                          <Button disabled={inverter?.data_sheet?false:true}
                             variant="contained"
                             color="primary"
                             startIcon={<CloudDownloadIcon />}
@@ -1435,7 +1355,7 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button
+                        <Button disabled={inverter?.data_sheet?false:true}
                           variant="contained"
                           color="primary"
                           startIcon={<PrintIcon />}

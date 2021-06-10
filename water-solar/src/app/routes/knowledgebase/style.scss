@@ -112,4 +112,13 @@ section {
    .ps-btn .MuiButton-startIcon {
     margin-left: -4px;
     margin-right: 0px;
+  }
+table.inside-table-pump caption{
+  caption-side: top;
+  border-bottom: 1px solid;
+  margin-bottom: 15px;
 }
+table.inside-table-pump tr>td{
+  vertical-align: top;
+}
+
