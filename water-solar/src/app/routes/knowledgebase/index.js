@@ -780,7 +780,7 @@ const ProjectSummary = ({ match }) => {
                                 {pupm[0]?.graph?
                                     <img
                                       src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/graph/${pupm[0]?.graph}`}
-                                      className="img-thumbnail"
+                                      className="img-thumbnail pump-graph"
                                       style={{
                                         border: "0px solid #dee2e6",
                                         padding: "0px",
@@ -809,7 +809,7 @@ const ProjectSummary = ({ match }) => {
                                 {pupm[0]?.diameter_file?
                                   <img
                                     src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/diameter/${pupm[0]?.diameter_file}`}
-                                    className="img-thumbnail"
+                                    className="img-thumbnail pump-diameter"
                                     style={{
                                       border: "0px solid #dee2e6",
                                       padding: "0px",
@@ -886,7 +886,7 @@ const ProjectSummary = ({ match }) => {
                                       <td colSpan="2">
                                         <img
                                           src="/images/Voltage.png"
-                                          className="img-thumbnail"
+                                          className="img-thumbnail solar-voltage"
                                           style={{
                                             border: "0px solid #dee2e6",
                                             padding: "0px",
@@ -903,7 +903,7 @@ const ProjectSummary = ({ match }) => {
                               {solarList?.solar_list_with_cable?.image?
                                 <img
                                   src={`${axios.defaults.baseURL}brand/solar/solar_list/${solarList?.solar_list_with_cable?.image}`}
-                                  className="img-thumbnail"
+                                  className="img-thumbnail solar-image"
                                   style={{
                                     border: "0px solid #dee2e6",
                                     padding: "0px", float: 'right',
@@ -918,7 +918,7 @@ const ProjectSummary = ({ match }) => {
                               {solarList?.solar_list_with_cable?.diameter?
                                 <img
                                   src={`${axios.defaults.baseURL}brand/solar/solar_list/diameter/${solarList?.solar_list_with_cable?.diameter}`}
-                                  className="img-thumbnail"
+                                  className="img-thumbnail solar-diamention"
                                   style={{
                                     border: "0px solid #dee2e6",
                                     padding: "0px",
@@ -942,16 +942,6 @@ const ProjectSummary = ({ match }) => {
                             <td style={{width: '70%'}}>
                               <div className="table-responsive-material ">
                                 <Table className="default-table table-unbordered table table-sm table-hover">
-                                  {/* <thead className="table-head-sm th-border-b">
-                                    <tr className={classes.headSolarS}>
-                                      <th>
-                                        <strong>
-                                          Controller specification:
-                                        </strong>
-                                      </th>
-                                      <th></th>
-                                    </tr>
-                                  </thead> */}
                                   <tbody>
                                     <tr>
                                       <td style={{ width: "32%" }}>Brand:</td>
@@ -1007,7 +997,7 @@ const ProjectSummary = ({ match }) => {
                               {inverter?.image?
                                 <img
                                   src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${inverter?.image}`}
-                                  className="img-thumbnail"
+                                  className="img-thumbnail invertor-image"
                                   style={{
                                     border: "0px solid #dee2e6",
                                     padding: "0px",
@@ -1021,10 +1011,10 @@ const ProjectSummary = ({ match }) => {
                             <td colSpan='2' style={{textAlign: 'center'}}>
                             {inverter?.diameter?  <img
                                 src={`${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`}
-                                className="img-thumbnail"
+                                className="img-thumbnail invertor-diamention"
                                 style={{
                                   border: "0px solid #dee2e6",
-                                  padding: "0px", width: '80%'
+                                  padding: "0px",
                                 }}
                                 alt="Responsive"
                               />
@@ -1068,7 +1058,7 @@ const ProjectSummary = ({ match }) => {
                                           ? "/images/structure.png"
                                           : "/images/ground.jpg"
                                       }
-                                      className="img-thumbnail"
+                                      className={`img-thumbnail ${projectDetails?.solar_base==='Manual Tracker'? 'manual':'structure'}-img`}
                                       style={{ border: "0px solid #dee2e6" }}
                                       alt="Responsive"
                                 />
@@ -1093,7 +1083,7 @@ const ProjectSummary = ({ match }) => {
                                 {solarList?.image?
                                   <img
                                     src={`${axios.defaults.baseURL}brand/solar/solar_list/config/${solarList?.image}`}
-                                    className="img-thumbnail "
+                                    className="img-thumbnail wiring-img"
                                     alt="Responsive"
                                     style={{ border: "none" }}
                                   />

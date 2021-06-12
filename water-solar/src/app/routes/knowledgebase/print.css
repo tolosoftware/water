@@ -69,28 +69,36 @@ tfoot.report-footer {
 .header-info button{
   color: #000;
 }
-
-
-  /* ... the rest of the rules ... */
-
- 
- /* tfoot.report-footer #page-number:after {
-    content: "Page " counter(page) " of " counter(pages);
+@media print {
+  .page {
+    page-break-after: always;
+  }  
+  .structure-img{
+    margin-top: 350px;
+    margin-bottom: 350px;
+  }
+  .manual-img{
+    margin-top: 100px;
+    margin-bottom: 320px;
+  }
+  .invertor-diamention{
+    max-height: 850px;
+  }
+  .invertor-image{
+    max-height: 490px;
+  }
+  .wiring-img{
+    max-height: 1200px;
+  }
+  tfoot.report-footer #page-number:after {
+    content: " Page " counter(page, decimal) ". ";
+    counter-increment: page;  
+  }
 }
-thead.report-header{
-  display: table-header-group;
+@page {
+  counter-increment: page;
+  counter-reset: page 1;
+  @top-right {
+      content: "Page " counter(page) " of " counter(pages);
+  }
 }
-tfoot.report-footer {
-  display: table-footer-group;
-}
-.page {
-  margin: 0;
-  border: initial;
-  border-radius: initial;
-  width: initial;
-  min-height: initial;
-  box-shadow: initial;
-  background: initial; 
-  height: 100%;
-  page-break-after: always;
-} */
