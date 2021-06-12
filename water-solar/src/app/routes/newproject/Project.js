@@ -485,10 +485,12 @@ export default function Project() {
     'Vertical height from the dynamic water level to the highest point of delivery', 
     'Enter the length of the electrical cable between the solar panels and pump controller/inverter',
     'The electrical cable between controller/inverter and submersible pump',
-    'Pipe line from the submersible pump outlet to the delivery point. Note: up to 100meter pipe length please add manually 4 meter on each 100meter in (Dynamic head) box.',
-    'Enter your hourly water requirement in average method.',
+    'Pipe line from the submersible pump outlet to the delivery point.',
+    'Enter your water requirement in average method.',
     'Select your solar panels mounting type. Note: Manual is more efficient than fix/ground mounting structures.',
-
+    'Please Enter your Latitude if you do not know you can pick up from google map',
+    'Please Enter your Longtitude if you do not know you can pick up from google map',
+    'Please Enter your Pipe Friction Losses',
   ];
   // start code for mouse poppur
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -699,25 +701,25 @@ export default function Project() {
     if (wichInput === "MT" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/structure.png");
+      setImagepath("/Layouts/structure.png");
     }
 
     if (wichInput === "MT" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/structure.png");
+        setImagepath("/Layouts/structure.png");
       }
     }
     if (wichInput === "GS" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/images/ground.jpg");
+      setImagepath("/Layouts/ground.jpg");
     }
 
     if (wichInput === "GS" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/images/ground.jpg");
+        setImagepath("/Layouts/ground.jpg");
       }
     }
     if (wichInput === "dirt" && wichfunction === "focus") {
@@ -1477,6 +1479,7 @@ export default function Project() {
                                 }}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
+                                onMouseOver={e=>handlePopoverOpen(e, textData[7])}
                                 InputLabelProps={{ shrink: true, }}
                                 value={gps.lati}
                                 onChange={(event) => setGps({...gps, lati: event.target.value})}
@@ -1498,6 +1501,7 @@ export default function Project() {
                                 InputLabelProps={{ shrink: true, }}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
+                                onMouseOver={e=>handlePopoverOpen(e, textData[8])}
                                 value={gps.long}
                                 onChange={(event) => setGps({...gps, long: event.target.value})}
                             />
@@ -1731,6 +1735,7 @@ export default function Project() {
                               }
                               aria-owns={open ? 'mouse-over-popover' : undefined}
                               aria-haspopup="true"
+                              onMouseOver={e=>handlePopoverOpen(e, textData[9])}
                               // onMouseLeave={() => dirtlossMouseLeave("xy")}
                               onFocus={() => dirtlossMouseOver("dirt", "focus")}
                               // onBlur={() => dirtlossMouseLeave("fout")}
