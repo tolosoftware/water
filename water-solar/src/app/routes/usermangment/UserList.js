@@ -133,10 +133,7 @@ export const UserList = () => {
                   title: "Exp Date",
                   render: (projects) => {
                     var y = projects.expiration * 30;
-                    var x = moment(projects.created_at, "DD-MM-YYYY").add(
-                      y,
-                      "days"
-                    );
+                    var x = moment(projects.created_at).add(y,"days");
                     return <Moment format="YYYY/MM/DD">{x}</Moment>;
                   },
                 },

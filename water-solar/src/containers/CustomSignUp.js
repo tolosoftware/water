@@ -273,7 +273,7 @@ export default function CustomSignUp(props) {
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                                        <TextField id="email" className={`form-control ${errors.email && 'mb-2'}`} label="Email" name="email" size="small" type="email" placeholder='Enter your company email' variant="outlined" inputRef={register({ required: true })} error={errors.email && true} helperText={errors.email && '*required'} />
+                                        <TextField id="email" className={`form-control ${errors.email && 'mb-2'}`} label="Official Email" name="email" size="small" type="email" placeholder='Enter your official email' variant="outlined" inputRef={register({ required: true })} error={errors.email && true} helperText={errors.email && '*required'} />
                                     </div>
                                     <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                                         <TextField name="phone" className={`form-control ${errors.phone && 'mb-2'}`} label="Phone" size="small" variant="outlined" inputRef={register({ required: true })} error={errors.phone && true} helperText={errors.phone && '*required'} />
