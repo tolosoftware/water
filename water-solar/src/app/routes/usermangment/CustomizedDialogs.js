@@ -271,7 +271,7 @@ export default function CustomizedDialogs(props) {
 
               <div className="row mb-5">
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
-                 <TextField id="email" className="form-control" label="Email" autoComplete="off" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
+                 <TextField id="email" className="form-control" label="Official Email" autoComplete="off" name="email" defaultValue={userDataOject?.email} size="small" type="email" variant="outlined" inputRef={register({required: true})} error={errors.email && true} helperText={errors.email && '*required'}/>   
                 </div>
                 
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">

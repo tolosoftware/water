@@ -106,3 +106,6 @@
         padding: 0.68rem !important;
     }
 }
+.rounded {
+    max-height: inherit;
+}

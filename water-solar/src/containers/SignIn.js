@@ -80,7 +80,7 @@ class SignIn extends React.Component {
           );
         }else{
           NotificationManager.error(
-            <IntlMessages id="User Expired !" />,
+            <IntlMessages id="User Expired, You can contact with administration of system!" />,
             <IntlMessages id="notification.titleHere" />
           );
         }

@@ -569,6 +569,9 @@ export default function Project() {
       if(id === i.id) {
         i['item'] = value;
         i['uomAc'] = value? value.uom?.acronym :'m';
+        setLoadImg(true);
+        setAccImgPath(value?.image);
+        setLoadImg(false);
       }
       return i;
     });
@@ -655,18 +658,18 @@ export default function Project() {
 
   const [imagepath, setImagepath] = useState("/Layouts/1-system layout.jpg");
   const [myImage, setMyImage] = useState(
-    "img-thumbnail rounded mx-auto d-block"
+    "img-thumbnail rounded d-block"
   );
   const [foucus, setFoucus] = useState(false);
   const [loadImg, setLoadImg] = useState(false);
-  const [accImgPath, SetAccImgPath] = useState();
+  const [accImgPath, setAccImgPath] = useState();
   const accessoryMouseOver = (image, wichfunction) => {
     // console.log('input value', image);
     // setEvaluation(false);
     if (wichfunction === "focus") {
       setFoucus(true);
       setLoadImg(true);
-      SetAccImgPath(image);
+      setAccImgPath(image);
       setLoadImg(false);
     }
 
@@ -674,7 +677,7 @@ export default function Project() {
       if (!foucus) {
         // console.log('input value', image);
         setLoadImg(true);
-        SetAccImgPath(image);
+        setAccImgPath(image);
         setLoadImg(false);
       }
     }
@@ -685,13 +688,13 @@ export default function Project() {
     if (wichfunction === "fout") {
       setFoucus(false);
       setLoadImg(true);
-      SetAccImgPath();
+      setAccImgPath();
       setLoadImg(false);
     }
 
     if (!foucus) {
       setLoadImg(true);
-      SetAccImgPath();
+      setAccImgPath();
       setLoadImg(false);
     }
   };
@@ -1340,6 +1343,7 @@ export default function Project() {
                               variant="outlined"
                               placeholder="Project name!"
                               margin="normal"
+                              autoFocus={projectname?false:true}
                               size="small"
                               name="projectname"
                               value={projectname}
@@ -1356,11 +1360,12 @@ export default function Project() {
                                   : false
                               }
                               aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
+                              aria-haspopup="false"
                               onMouseOver={e=>handlePopoverOpen(e, textData[0])}
                               // onMouseLeave={handlePopoverClose}
-                              // onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
+                              onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
                               // onBlur={handlePopoverClose}
+                              
                             />
                             
                         </div>
@@ -1469,7 +1474,7 @@ export default function Project() {
                                 id="outlined-basic-1_lati" className="form-control"
                                 label='Latitude'
                                 variant="outlined" placeholder="Latitude" margin="normal" name="latitude"
-                                type="number" size="small" 
+                                size="small" 
                                 InputProps={{
                                   endAdornment: (
                                     <InputAdornment position="end">
@@ -1480,6 +1485,7 @@ export default function Project() {
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
                                 onMouseOver={e=>handlePopoverOpen(e, textData[7])}
+                                onFocus={(e) => {handlePopoverOpen(e, textData[7]);}}
                                 InputLabelProps={{ shrink: true, }}
                                 value={gps.lati}
                                 onChange={(event) => setGps({...gps, lati: event.target.value})}
@@ -1490,7 +1496,7 @@ export default function Project() {
                                 id="outlined-basic-1_long" className="form-control"
                                 label='Longtitude'
                                 variant="outlined" placeholder="Longtitude" margin="normal" name="longtitude"
-                                type="number" size="small" 
+                                size="small" 
                                 InputProps={{
                                   endAdornment: (
                                     <InputAdornment position="end">
@@ -1502,6 +1508,7 @@ export default function Project() {
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
                                 onMouseOver={e=>handlePopoverOpen(e, textData[8])}
+                                onFocus={(e) => {handlePopoverOpen(e, textData[8]);}}
                                 value={gps.long}
                                 onChange={(event) => setGps({...gps, long: event.target.value})}
                             />
@@ -1536,7 +1543,7 @@ export default function Project() {
                                 onChange={(event) => setDaynomichead(event.target.value) }
                                 onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handlePopoverOpen(e, textData[1])}}
                                 // onMouseLeave={() => {handlePopoverClose()}}
-                                onFocus={(e) => {dirtlossMouseOver("head", "focus");}}
+                                onFocus={(e) => {dirtlossMouseOver("head", "focus"); handlePopoverOpen(e, textData[1]);}}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
                                 // onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
@@ -1574,7 +1581,7 @@ export default function Project() {
                                 }
                                 // onMouseLeave={() => { handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("solarCable", "focus"); }
+                                  {dirtlossMouseOver("solarCable", "focus"); handlePopoverOpen(e, textData[2]);}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
@@ -1614,7 +1621,7 @@ export default function Project() {
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("motor", "focus");}
+                                  {dirtlossMouseOver("motor", "focus"); handlePopoverOpen(e, textData[3]);}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
@@ -1651,7 +1658,7 @@ export default function Project() {
                                   {dirtlossMouseOver("pip", "hover"); handlePopoverOpen(e, textData[4]);}
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
-                                onFocus={(e) => {dirtlossMouseOver("pip", "focus");}}
+                                onFocus={(e) => {dirtlossMouseOver("pip", "focus"); handlePopoverOpen(e, textData[4]);}}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
                                 // onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
@@ -1691,7 +1698,7 @@ export default function Project() {
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("waterDeman", "focus");}
+                                  {dirtlossMouseOver("waterDeman", "focus"); handlePopoverOpen(e, textData[5]);}
                                 }
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
@@ -1730,14 +1737,11 @@ export default function Project() {
                               onChange={(event) =>
                                 setDirtloss(Number(event.target.value)>=0 && Number(event.target.value)<=10?event.target.value:5)
                               }
-                              onMouseOver={() =>
-                                dirtlossMouseOver("dirt", "hover")
-                              }
                               aria-owns={open ? 'mouse-over-popover' : undefined}
                               aria-haspopup="true"
-                              onMouseOver={e=>handlePopoverOpen(e, textData[9])}
+                              onMouseOver={e=>{dirtlossMouseOver("dirt", "hover"); handlePopoverOpen(e, textData[9]);}}
                               // onMouseLeave={() => dirtlossMouseLeave("xy")}
-                              onFocus={() => dirtlossMouseOver("dirt", "focus")}
+                              onFocus={(e) => {dirtlossMouseOver("dirt", "focus"); handlePopoverOpen(e, textData[9]);}}
                               // onBlur={() => dirtlossMouseLeave("fout")}
                             />
                           </div>
@@ -1756,7 +1760,7 @@ export default function Project() {
                                 checked={bas === "Manual Tracker"}
                                 value="Manual Tracker"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={(e) => {dirtlossMouseOver("MT", "focus");}}
+                                onFocus={(e) => {dirtlossMouseOver("MT", "focus"); handlePopoverOpen(e, textData[6]);}}
                                 // onBlur={handlePopoverClose}
                               />
                               <label
@@ -1782,7 +1786,7 @@ export default function Project() {
                                 checked={bas === "Ground Structure"}
                                 value="Ground Structure"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={(e) => {dirtlossMouseOver("GS", "focus");}}
+                                onFocus={(e) => {dirtlossMouseOver("GS", "focus"); handlePopoverOpen(e, textData[6]);}}
                                 // onBlur={handlePopoverClose}
                               />
                               <label
@@ -1933,6 +1937,8 @@ export default function Project() {
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
+                                // error={false}
+                                // helperText={'asdf'}
                               />
                             </FormControl>
                           </div>
@@ -1997,7 +2003,8 @@ export default function Project() {
                     </div>
                     
                     <div className="col-md-7">
-                      {loadImg ? (
+                      {accImgPath? 
+                      loadImg ? (
                         <>
                           <span className="row justify-content-center">
                             <Spinner
@@ -2018,7 +2025,12 @@ export default function Project() {
                           className=" img-thumbnail rounded mx-auto d-block"
                           alt="Responsive"
                         />
-                      )}
+                      )
+                      :<img
+                      src={`/Layouts/system layout with details.jpg`}
+                      className=" img-thumbnail rounded mx-auto d-block"
+                      alt="Responsive"
+                    />}
                     </div>
                   </div>
                 ) : (
@@ -2147,7 +2159,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
-                      disabled={filled?false:true}
+                      // disabled={filled?false:true}
                     >
                       Next
                     </Button>
