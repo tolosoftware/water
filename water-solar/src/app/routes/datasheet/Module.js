@@ -35,6 +35,8 @@ const Module=() => {
                       { title: 'Pruduct', field: 'solar_brand.name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Power', field: 'power'},
+                      { title: 'Currnet', field: 'current'},
+                      { title: 'Voltage', field: 'voltage'},
                       { title: 'Download',  
                           render:  (solar) =>{
                               return solar.data_sheet?
@@ -54,6 +56,15 @@ const Module=() => {
                  }
 
               data={solar}
+              localization={{
+                body: {
+                    emptyDataSourceMessage: (
+                        <p color="primary" >
+                           <strong>Loading...</strong>
+                        </p>
+                    ),
+                },
+              }}
           />
     </>  
 

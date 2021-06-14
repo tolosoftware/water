@@ -4,9 +4,12 @@ import TestimonialItem from "./TestimonialItem";
 
 const options = {
   dots: true,
-  infinite: true,
   arrows: true,
-  speed: 500,
+  pauseOnHover: true,
+  infinite: true,
+  speed: 1000,
+  autoplay: true,
+  fade: false,
   slidesToShow: 1,
   marginRight: 10,
   slidesToScroll: 1,

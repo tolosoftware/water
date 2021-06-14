@@ -33,6 +33,8 @@ const Controller=() => {
                       { title: 'Pruduct', field: 'invertor_brand.name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Power', field: 'power'},
+                      { title: 'Voltage (V)', field: 'voltage'},
+                      { title: 'Current (A)', field: 'current'},
                       { title: 'Download',  
                       render:  (controller) =>{
                         return   controller.data_sheet?
@@ -50,6 +52,18 @@ const Controller=() => {
                  }
 
               data={controller}
+              options={{
+                loadingType: 'linear'
+              }}
+              localization={{
+                body: {
+                    emptyDataSourceMessage: (
+                        <p color="primary" >
+                          <strong>Loading...</strong>
+                        </p>
+                    ),
+                },
+              }}
           />
     </>  
 

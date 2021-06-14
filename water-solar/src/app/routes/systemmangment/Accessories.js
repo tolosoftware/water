@@ -190,7 +190,7 @@ const deletAccessory=(id) => {
                 ]}
                 options={{
                     actionsColumnIndex: -1,
-                    search: false,
+                    search: true,
                 }}
           />
       </TabPanel>
