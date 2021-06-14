@@ -43,35 +43,35 @@ const testimonials = [
   {
     content:
       "All the Lorem Ipsum generators on the Internet tend to repeat, making this the first true generator on the Internet.",
-    avatar: "/images/slider/1.jpeg",
+    avatar: "/images/slider/1.png",
     name: "Alex Dolgove",
     title: "BDM G-axon",
   },
   {
     content:
       "Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)",
-    avatar: "/images/slider/2.jpeg",
+    avatar: "/images/slider/2.png",
     name: "Domnic Brown",
     title: "Product Head",
   },
   {
     content:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, ",
-    avatar: "/images/slider/3.jpeg",
+    avatar: "/images/slider/3.png",
     name: "John Smith",
     title: "Chief Engineer",
   },
   {
     content:
       "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
-    avatar: "/images/slider/4.jpeg",
+    avatar: "/images/slider/4.png",
     name: "Min Chan",
     title: "Director, Abc LLC",
   },
   {
     content:
       "It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures",
-    avatar: "/images/slider/3.jpeg",
+    avatar: "/images/slider/3.png",
     name: "Stella Johnson",
     title: "Engineer Lead",
   },
@@ -114,9 +114,12 @@ const Home = ({ match }) => {
 
   const options = {
     dots: true,
-    infinite: false,
     arrows: false,
-    speed: 500,
+    pauseOnHover: true,
+    infinite: true,
+    speed: 1000,
+    autoplay: true,
+    fade: false,
     slidesToShow: 2,
     marginRight: 10,
     slidesToScroll: 1,

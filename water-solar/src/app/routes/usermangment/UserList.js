@@ -95,7 +95,7 @@ export const UserList = () => {
       />
       <BrandManagement open={openB} setOpen={setOpenB} userId={userID} />
 
-      <Button color="primary" onClick={() => setOpen(true)}>
+      <Button color="primary" onClick={() => setOpen(true)} className='mb-4'>
         <AddCircleOutlineIcon className="mr-2" />
         Add New User
       </Button>
@@ -118,6 +118,7 @@ export const UserList = () => {
                 { title: "Name", field: "name" },
                 { title: "Compnay Name", field: "companyname" },
                 { title: "City", field: "geolocation.city" },
+                { title: "Username", field: "username" },
                 { title: "Email", field: "email" },
                 { title: "Phone", field: "phone" },
                 {

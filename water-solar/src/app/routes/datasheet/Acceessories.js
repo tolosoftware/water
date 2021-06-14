@@ -51,6 +51,15 @@ const Acceessories=() => {
                  }
 
               data={accessories}
+              localization={{
+                body: {
+                    emptyDataSourceMessage: (
+                        <p color="primary" >
+                            <strong>Loading...</strong>
+                        </p>
+                    ),
+                },
+              }}
           />
     </>  
 

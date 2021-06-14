@@ -53,7 +53,7 @@
     overflow-y: auto;
 }
 .dashboard-slide .slick-slider img {
-    height: 260px;
+    /* height: 260px; */
     margin-bottom: 0 !important;
 }
 .admin-dashboard-slide .slick-slider img {

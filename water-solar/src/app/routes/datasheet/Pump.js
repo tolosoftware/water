@@ -33,6 +33,8 @@ const Pump=() => {
                       { title: 'Pruduct', field: 'pump_brand.name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Current', field: 'ampeier'},
+                      { title: 'Power (KW)', field: 'power'},
+                      { title: 'HP', field: 'hp'},
                       { title: 'Download',  
                       render:  (pump) =>{
                         return  pump.data_sheet?
@@ -50,6 +52,15 @@ const Pump=() => {
                  }
 
               data={pump}
+              localization={{
+                body: {
+                    emptyDataSourceMessage: (
+                        <p color="primary" >
+                            <strong>Loading...</strong>
+                        </p>
+                    ),
+                },
+              }}
           />
     </>  
 
