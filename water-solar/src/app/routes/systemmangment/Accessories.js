@@ -192,6 +192,15 @@ const deletAccessory=(id) => {
                     actionsColumnIndex: -1,
                     search: true,
                 }}
+                localization={{
+                  body: {
+                      emptyDataSourceMessage: (
+                          <p color="primary" >
+                            <strong>Loading...</strong>
+                          </p>
+                      ),
+                  },
+                }}
           />
       </TabPanel>
       <TabPanel value={value} index={1}>

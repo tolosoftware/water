@@ -94,6 +94,19 @@ tfoot.report-footer {
     content: " Page " counter(page, decimal) ". ";
     counter-increment: page;  
   }
+  .accessory-sect{
+    min-height: 400px;
+    max-height: 400px;
+  }
+  .pump-diameter{
+    min-height: 780px;
+    max-height: 780px;
+  }
+  .solar-diameter{
+    min-height: 510px;
+    max-height: 510px;
+  }
+  
 }
 @page {
   counter-increment: page;

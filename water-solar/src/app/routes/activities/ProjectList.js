@@ -150,6 +150,15 @@ export const ProjectList=(props) => {
                 options={{
                     actionsColumnIndex: -1
                 }}
+                localization={{
+                    body: {
+                        emptyDataSourceMessage: (
+                            <p color="primary" >
+                              <strong>Loading...</strong>
+                            </p>
+                        ),
+                    },
+                  }}
              
           />
 
