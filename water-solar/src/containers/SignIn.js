@@ -150,6 +150,9 @@ class SignIn extends React.Component {
                           Request for Sign up
                       </Button>
                       </div>
+                      <div>
+                        <p>Note: Contact us for more information: <a href='mailto:info@awm.solar'>info@awm.solar</a>, <a href='tel:+93790303132'>+93 790303132</a></p>
+                      </div>
                     </fieldset>
                   </form>
                 </div>

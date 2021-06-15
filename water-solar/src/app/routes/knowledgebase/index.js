@@ -103,6 +103,9 @@ const ProjectSummary = ({ match }) => {
   };
   const classes = useStyles();
   useEffect(() => {
+    // document.addEventListener('contextmenu', (e) => {
+    //   e.preventDefault();
+    // });
     if (match.params?.id !== 0) {
       setOpenbackdrop(true);
       axios
@@ -454,7 +457,7 @@ const ProjectSummary = ({ match }) => {
                             </Table>
                           </div>
 
-                          <div className="table-responsive-material mb-5">
+                          <div className="table-responsive-material mb-5 accessory-sect">
                             <Table className="default-table table-unbordered table table-sm table-hover">
                               <thead className="table-head-sm th-border-b">
                                 <tr className={classes.headTr}>
@@ -806,6 +809,7 @@ const ProjectSummary = ({ match }) => {
                             </tr>
                             <tr>
                               <td colSpan="3">
+                                <div className='pump-diameter'>
                                 {pupm[0]?.diameter_file?
                                   <img
                                     src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/diameter/${pupm[0]?.diameter_file}`}
@@ -819,6 +823,7 @@ const ProjectSummary = ({ match }) => {
                                     alt="Responsive"
                                   />
                                 :''}
+                                </div>
                               </td>
                             </tr>
                           </table>
@@ -915,17 +920,19 @@ const ProjectSummary = ({ match }) => {
                           </tr>
                           <tr>
                             <td colSpan='2'>
-                              {solarList?.solar_list_with_cable?.diameter?
-                                <img
-                                  src={`${axios.defaults.baseURL}brand/solar/solar_list/diameter/${solarList?.solar_list_with_cable?.diameter}`}
-                                  className="img-thumbnail solar-diamention"
-                                  style={{
-                                    border: "0px solid #dee2e6",
-                                    padding: "0px",
-                                  }}
-                                  alt="Responsive"
-                                />
-                              :''}
+                              <div className='solar-diameter'>
+                                {solarList?.solar_list_with_cable?.diameter?
+                                  <img
+                                    src={`${axios.defaults.baseURL}brand/solar/solar_list/diameter/${solarList?.solar_list_with_cable?.diameter}`}
+                                    className="img-thumbnail solar-diamention"
+                                    style={{
+                                      border: "0px solid #dee2e6",
+                                      padding: "0px",
+                                    }}
+                                    alt="Responsive"
+                                  />
+                                :''}
+                              </div>
                             </td>
                           </tr>
                         

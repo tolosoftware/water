@@ -19,30 +19,30 @@ import BrandManagement from "./BrandManagement";
 export const UserList = () => {
   const [visibility, setVisibility] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [getData, setGetData] = React.useState(false);
   const [openB, setOpenB] = React.useState(false);
   const [userdata, setUserdata] = useState([]);
   const [userID, setUserID] = useState("");
   useEffect(() => {
-    const getUserdata = async () => {
-      setVisibility(true);
-      axios
-        .get("api/user")
-        .then((res) => {
-          setVisibility(false);
-          setUserdata(res.data);
-        })
-        .catch((err) => {
-          setVisibility(false);
-          console.log(err);
-          NotificationManager.error(
-            <IntlMessages id="notification.errorMessage" />,
-            <IntlMessages id="notification.titleHere" />
-          );
-        });
-    };
-    getUserdata();
-  }, [open]);
-
+    if(!open && !getData){getUserdata();}
+  }, [open, getData]);
+  const getUserdata = async () => {
+    setVisibility(true);
+    axios
+      .get("api/user")
+      .then((res) => {
+        setVisibility(false);
+        setUserdata(res.data);
+      })
+      .catch((err) => {
+        setVisibility(false);
+        console.log(err);
+        NotificationManager.error(
+          <IntlMessages id="notification.errorMessage" />,
+          <IntlMessages id="notification.titleHere" />
+        );
+      });
+  };
   const deletUser = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -90,6 +90,8 @@ export const UserList = () => {
       <CustomizedDialogs
         open={open}
         setOpen={setOpen}
+        getData={getData}
+        setGetData={setGetData}
         userDataOject={userDataOject}
         setUserDataObject={setUserDataObject}
       />

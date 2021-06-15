@@ -119,7 +119,7 @@ const DialogActions = withStyles((theme) => ({
 
 export default function CustomizedDialogs(props) {
   const {register, handleSubmit, errors }=useForm(); // initialize the hook
-  const {open,setOpen} = props;
+  const {open,setOpen, getData, setGetData} = props;
   const {userDataOject, setUserDataObject} = props;
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -127,6 +127,7 @@ export default function CustomizedDialogs(props) {
   const handleClose = () => {
     setUserDataObject(null);
     setFiles([]);
+    setGetData(true);
     setOpen(false);
   };
    //drop down
@@ -207,6 +208,7 @@ export default function CustomizedDialogs(props) {
           .then( res => {
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
                 id="notification.titleHere" />);
+                setGetData(false);
                 setOpen(false)
               }
           ).catch( err =>{
@@ -223,6 +225,7 @@ export default function CustomizedDialogs(props) {
           .then( res => {
                 NotificationManager.success(<IntlMessages id="notification.successMessage"/>, <IntlMessages
                 id="notification.titleHere" />);
+                setGetData(false);
                 setOpen(false)
               }
           ).catch( err =>{
@@ -287,12 +290,12 @@ export default function CustomizedDialogs(props) {
                 </div>
                 <div className="col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12">
                   <FormControl variant="outlined" className="form-control" size="small">
-                    <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}  >City</InputLabel>
+                    <InputLabel htmlFor="outlined-city-native-simple" error={errors.city && true}>City</InputLabel>
                     <Select  native
-                      defaultValue={userDataOject?.geolocation_id}
+                      defaultValue={Number(userDataOject?.geolocation_id)}
                       inputRef={register({required: true})}
-                      error={errors.expiration && true}
-                      // helperText={errors.expiration && '*required'}
+                      error={errors.city && true}
+                      // helperText={errors.city && '*required'}
                       // value={city}
                       onChange={e=> setCity(e.target.value)}
                       label="city"
@@ -301,18 +304,19 @@ export default function CustomizedDialogs(props) {
                         name: 'city',
                         id: 'outlined-city-native-simple',
                       }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                     >
-                      <option aria-label="None" value="" ></option>
-                      
                       {cities.map(data => 
-                         <option value={data.id}>{data.city}</option>
+                         <option value={data.id} selected={Number(data.id)===Number(userDataOject?.geolocation_id)?true:false}>{data.city}</option>
                       )}
                     </Select>
                     {errors.city && <FormHelperText error={errors.city && true}>*required</FormHelperText>}
                   </FormControl>
                 </div> 
-                {userDataOject?.system == 1? '':
-                  <div className={`${userDataOject?.system == 1? 'col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12':"col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12"}`}>
+                {Number(userDataOject?.system) == 1? '':
+                  <div className={`${Number(userDataOject?.system) == 1? 'col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12':"col-xl-3 col-gl-3 col-md-3 col-sm-12 col-12"}`}>
                   <FormControl variant="outlined" className="form-control" size="small">
                     <InputLabel htmlFor="outlined-age-native-simple" error={errors.expiration && true}  >Expiration</InputLabel>
                     <Select  native
@@ -320,7 +324,7 @@ export default function CustomizedDialogs(props) {
                       inputRef={register({required: true})}
                       error={errors.expiration && true}
                       // helperText={errors.expiration && '*required'}
-                      value={state.age}
+                      // value={state.age}
                       onChange={handleChange}
                       label="expiration"
                       
@@ -346,9 +350,9 @@ export default function CustomizedDialogs(props) {
                     {/* <FormLabel component="legend" size="small">Status</FormLabel> */}
                   <RadioGroup size="small" className="d-flex flex-row" aria-label="status"
                       name="status" defaultValue={(userDataOject?.status)? userDataOject?.status : 'pending'} >
-                    <FormControlLabel value="pending" disabled={userDataOject?.system == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Pending"/>
+                    <FormControlLabel value="pending" disabled={Number(userDataOject?.system) == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Pending"/>
                     <FormControlLabel value="active"  inputRef={register} control={<Radio color="primary"/>} label="Active"/>
-                    <FormControlLabel value="inactive" disabled={userDataOject?.system == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
+                    <FormControlLabel value="inactive" disabled={Number(userDataOject?.system) == 1? true: false} inputRef={register} control={<Radio color="primary"/>} label="Inactive"/>
                   </RadioGroup>
                  </FormControl>               
                 </div>  
@@ -365,10 +369,10 @@ export default function CustomizedDialogs(props) {
                 </div>  
               </div>
               <div className="row">
-              {userDataOject?.system != 1? 
+              {Number(userDataOject?.system) != 1? 
                   <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12 pr-0">
                     <RadioGroup size="small" className="d-flex flex-row " aria-label="type" 
-                        name="type" defaultValue={userDataOject?.system == 0 ? '0': '2'}>
+                        name="type" defaultValue={Number(userDataOject?.system) == 0 ? '0': '2'}>
                       <FormControlLabel value="0"  inputRef={register} control={<Radio color="primary"/>} label="Normal User" />
                       <FormControlLabel value="2"  inputRef={register} control={<Radio color="primary"/>} label="Moderator" />
                     </RadioGroup>

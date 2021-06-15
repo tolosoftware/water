@@ -518,6 +518,7 @@ export default function Project() {
   const [pump, setPump] = useState([]);
   const [invertor, setInvertor] = useState([]);
   const [accessories, setAccessories] = useState([]);
+  const [accessoriesCopy, setAccessoriesCopy] = useState([]);
   const [dbcity, setDbcity] = useState([]);
   //pump and solar
   const [solarstate, setSolarstate] = useState("");
@@ -622,6 +623,7 @@ export default function Project() {
         setPump(res.data.pumpbrand);
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
+        setAccessoriesCopy(res.data.accessories);
         setOpen(true);
       })
       .catch((err) => {
@@ -872,6 +874,33 @@ export default function Project() {
           <IntlMessages id="notification.titleHere" />
         );
       });
+  };
+  
+  const newSizing = ()=>{
+    setProjectname('');
+    setCity('');
+    setDaynomichead('');
+    setSolarCable('');
+    setMotorcable('');
+    setPiplenght('');
+    setDischarge('');
+    setDirtloss(5);
+    setBas('Manual Tracker');
+    setInputFields([
+      { id: uuidv4(), item: "", quantity: "", uomAc: "" },
+    ]);
+    setPumpvalue('');
+    setPumpstate('');
+    setSolarvalue('');
+    setSolarstate('');
+    setSolarSelectWatt('');
+    setInvertorvalue(''); 
+    setInvertorstate(''); 
+    setAccessories(accessoriesCopy); 
+    setGps( { lati: '', long: ''});
+    setActiveStep(0);
+    setActiveStepBrand(0);
+    setOpen(true);
   };
 
   const [evaluationdata, setEvaluationdata] = React.useState("");
@@ -2168,6 +2197,7 @@ export default function Project() {
                   )}
 
                   {activeStep === steps.length - 1 ? (
+                    <>
                     <Button
                       variant="contained"
                       color="primary"
@@ -2194,6 +2224,14 @@ export default function Project() {
                     >
                       Submit
                     </Button>
+                    <Button className='ml-2'
+                      variant="contained"
+                      color="primary"
+                      onClick={newSizing}
+                    >
+                      New Sizing
+                    </Button>
+                    </>
                   ) : (
                     ""
                   )}
