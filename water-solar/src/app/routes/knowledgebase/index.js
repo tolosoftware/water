@@ -373,7 +373,7 @@ const ProjectSummary = ({ match }) => {
                                       "A"
                                       : ""}
                                   </td>
-                                  <td style={{ width: "10%" }}>png</td>
+                                  <td style={{ width: "10%" }}>panel</td>
                                   <td style={{ width: "10%" }}>
                                     {solarList ? solarList?.solar_quantity : ""}
                                   </td>
@@ -424,7 +424,7 @@ const ProjectSummary = ({ match }) => {
                                   <td>m</td>
                                   <td>
                                     {projectDetails
-                                      ? projectDetails?.motor_cable
+                                      ? Math.ceil(Number(projectDetails?.motor_cable))
                                       : ""}
                                   </td>
                                 </tr>
@@ -1059,12 +1059,7 @@ const ProjectSummary = ({ match }) => {
                             </tr>
                             <tr>
                               <td colSpan='2' style={{textAlign: 'center'}}>
-                                <img src={
-                                        projectDetails?.solar_base ===
-                                        "Ground Structure"
-                                          ? "/images/structure.png"
-                                          : "/images/ground.jpg"
-                                      }
+                                <img src={(projectDetails?.solar_base==="Manual Tracker")?"/images/manual_tracker.png":"/images/ground_stucture.jpg"}
                                       className={`img-thumbnail ${projectDetails?.solar_base==='Manual Tracker'? 'manual':'structure'}-img`}
                                       style={{ border: "0px solid #dee2e6" }}
                                       alt="Responsive"

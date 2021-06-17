@@ -33,7 +33,7 @@ const ProvenceUsers = () => {
     </ComposedChart>
   </ResponsiveContainer>
    <Divider className="mb-3" />
-   <h3 className="pl-5 ml-5">All User of this Application (Around Afghanistan)</h3>
+   <h3 className="center">All User of this Application (Around Afghanistan)</h3>
    </>
 );}
 

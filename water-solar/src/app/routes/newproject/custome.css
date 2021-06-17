@@ -109,3 +109,7 @@
 .rounded {
     max-height: inherit;
 }
+.accessory-wrapper{
+    max-height: 390px;
+    overflow-y: auto;
+}

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->string('website');
             $table->enum('status', ['pending', 'active', 'inactive']);
-            $table->enum('belongto', ['Rana Solar', 'Drokhshan Solar'])->default('Rana Solar');
+            $table->enum('belongto', ['Rana Solar', 'Dorokhshan Solar'])->default('Rana Solar');
             $table->integer('expiration');
             $table->string('userimage');
             $table->unsignedBigInteger('geolocation_id');

@@ -265,7 +265,7 @@ export default function CustomizedDialogs(props) {
                 </div>
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   {userDataOject?.id ? (
-                  <TextField name="new_password" className="form-control" autoComplete="off" label='New Password' size="small" type="password" variant="outlined" inputRef={register({minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
+                  <TextField name="new_password" className="form-control" autoComplete="off" label='New Password' size="small" type="password" variant="outlined" inputRef={register({required: (userDataOject?.username!=''?true:false), minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
                   ):  (
                   <TextField name="password" className="form-control" label='Password' size="small" type="password" variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
                   )}
@@ -362,7 +362,7 @@ export default function CustomizedDialogs(props) {
                     <RadioGroup size="small" className="d-flex flex-row" aria-label="belongto"
                         name="belongto" defaultValue={userDataOject?.belongto} >
                       <FormControlLabel value="Rana Solar"  inputRef={register} control={<Radio color="primary"/>} label="Rana"/>
-                      <FormControlLabel value="Drokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Drokhshan"/>
+                      <FormControlLabel value="Dorokhshan Solar"  inputRef={register} control={<Radio color="primary"/>} label="Dorokhshan"/>
                       <FormControlLabel value="None"  inputRef={register} control={<Radio color="primary"/>} label="None"/>
                     </RadioGroup>
                   </FormControl>               

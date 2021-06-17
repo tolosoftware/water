@@ -80,8 +80,8 @@ const styles = (theme) => ({
 //slider
 const options = {
   // dots: true,
-  infinite: false,
   arrows: false,
+  infinite: false,
   speed: 300,
   slidesToShow: 3,
   marginRight: 5,
@@ -210,6 +210,12 @@ function getFlag(countryname) {
 const initialState = {
   formData: {
     projectname: "",
+    city: {},
+    head: "",
+    solarCable: "",
+    motorCable: "",
+    piplenght: "",
+    discharge: "",
   },
   error: {},
   touched: {},
@@ -232,6 +238,12 @@ function reducer(state, action) {
 const schema = type.object().shape({
   // country: type.object().required("Required"),
   projectname: type.string().required("Required"),
+  city: type.object().required("Required"),
+  head: type.string().required("Required"),
+  solarCable: type.string().required("Required"),
+  motorCable: type.string().required("Required"),
+  piplenght: type.string().required("Required"),
+  discharge: type.string().required("Required"),
 });
 //end validation
 // start code of brand stepper
@@ -365,7 +377,39 @@ export default function Project() {
 
   const handcahngeCity = async (event, value) => {
     setCity(value);
-    let name = "city";
+    
+    const schemaErrors = await runValidation(schema, {
+      ...formData,
+      ['city']: value,
+    });
+    dispatch({
+      type: setState,
+      payload: {
+        error: schemaErrors,
+        formData: { ...formData, ['city']: value },
+        touched: { ...touched, ['city']: true },
+        isValid: checkValidation(schemaErrors),
+      },
+    });
+  };
+  
+  const handcahngeInputNumber = async (name, value) => {
+    if (name === "head") {
+      setDaynomichead(value);
+    }
+    else if (name === "solarCable") {
+      setSolarCable(value);
+    }
+    else if (name === "motorCable") {
+      setMotorcable(value);
+    }
+    else if (name === "piplenght") {
+      setPiplenght(value);
+    }
+    else if (name === "discharge") {
+      setDischarge(value);
+    }
+    
     const schemaErrors = await runValidation(schema, {
       ...formData,
       [name]: value,
@@ -543,11 +587,11 @@ export default function Project() {
     { lati: '', long: ''}
   );
   const [daynomichead, setDaynomichead] = useState();
-  const [motorcable, setMotorcable] = React.useState("");
+  const [motorcable, setMotorcable] = React.useState();
   const [solarCable, setSolarCable] = React.useState();
   const [piplenght, setPiplenght] = React.useState();
   const [dirtloss, setDirtloss] = React.useState(5);
-  const [discharge, setDischarge] = React.useState("");
+  const [discharge, setDischarge] = React.useState();
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
   ]);
@@ -906,7 +950,7 @@ export default function Project() {
   const [evaluationdata, setEvaluationdata] = React.useState("");
   const evaluationfunction = () => {
     let dynamicHead =
-      Number(daynomichead) + Math.ceil(Number((dirtloss * piplenght) / 100));
+      (Number(daynomichead) + Math.ceil(Number((dirtloss * piplenght) / 100)));
 
     let evalData = {
       projectname,
@@ -1464,11 +1508,7 @@ export default function Project() {
                                 option: classes.option,
                               }}
                               defaultValue={city}
-                              error={
-                                touched && touched.city && error && error.city
-                                  ? true
-                                  : false
-                              }
+                              name="city"
                               autoHighlight
                               getOptionLabel={(option) =>
                                 option ? option.city : ""
@@ -1484,6 +1524,11 @@ export default function Project() {
                                   variant="outlined"
                                   placeholder="pick the City !"
                                   margin="normal"
+                                  error={
+                                    touched && touched.city && error && error.city
+                                      ? true
+                                      : false
+                                  }
                                   name="city"
                                   InputLabelProps={{
                                     shrink: true,
@@ -1492,6 +1537,7 @@ export default function Project() {
                                     ...params.inputProps,
                                     // autoComplete: "new-password",
                                   }}
+                                  
                                 />
                               )}
                             />
@@ -1505,11 +1551,11 @@ export default function Project() {
                                 variant="outlined" placeholder="Latitude" margin="normal" name="latitude"
                                 size="small" 
                                 InputProps={{
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      °
-                                    </InputAdornment>
-                                  ),
+                                  // endAdornment: (
+                                  //   <InputAdornment position="end">
+                                  //     °
+                                  //   </InputAdornment>
+                                  // ),
                                 }}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
                                 aria-haspopup="true"
@@ -1527,11 +1573,11 @@ export default function Project() {
                                 variant="outlined" placeholder="Longtitude" margin="normal" name="longtitude"
                                 size="small" 
                                 InputProps={{
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      °
-                                    </InputAdornment>
-                                  ),
+                                  // endAdornment: (
+                                  //   <InputAdornment position="end">
+                                  //     °
+                                  //   </InputAdornment>
+                                  // ),
                                 }}
                                 InputLabelProps={{ shrink: true, }}
                                 aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -1567,9 +1613,11 @@ export default function Project() {
                                     </InputAdornment>
                                   ),
                                 }}
+                                
                                 InputLabelProps={{ shrink: true, }}
                                 value={daynomichead}
-                                onChange={(event) => setDaynomichead(event.target.value) }
+                                onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
+                                error={touched && touched.head && error && error.head ? true:false}
                                 onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handlePopoverOpen(e, textData[1])}}
                                 // onMouseLeave={() => {handlePopoverClose()}}
                                 onFocus={(e) => {dirtlossMouseOver("head", "focus"); handlePopoverOpen(e, textData[1]);}}
@@ -1587,7 +1635,7 @@ export default function Project() {
                                 variant="outlined"
                                 placeholder="Solar cable!"
                                 margin="normal"
-                                name="solar_cable"
+                                name="solarCable"
                                 type="number"
                                 size="small"
                                 InputLabelProps={{
@@ -1601,9 +1649,8 @@ export default function Project() {
                                   ),
                                 }}
                                 value={solarCable}
-                                onChange={(event) =>
-                                  setSolarCable(event.target.value)
-                                }
+                                onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
+                                error={touched && touched.solarCable && error && error.solarCable ? true:false}
                                 onMouseOver={(e) =>
                                   {handlePopoverOpen(e, textData[2]);
                                   dirtlossMouseOver("solarCable", "hover");}
@@ -1628,7 +1675,7 @@ export default function Project() {
                                 variant="outlined"
                                 placeholder="Motor cable!"
                                 margin="normal"
-                                name="motor_cable"
+                                name="motorCable"
                                 type="number"
                                 size="small"
                                 InputLabelProps={{
@@ -1642,9 +1689,8 @@ export default function Project() {
                                   ),
                                 }}
                                 value={motorcable}
-                                onChange={(event) =>
-                                  setMotorcable(event.target.value)
-                                }
+                                onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
+                                error={touched && touched.motorCable && error && error.motorCable ? true:false}
                                 onMouseOver={(e) =>
                                   {dirtlossMouseOver("motor", "hover"); handlePopoverOpen(e, textData[3]);}
                                 }
@@ -1666,7 +1712,7 @@ export default function Project() {
                                 variant="outlined"
                                 placeholder="Pipe lenght!"
                                 margin="normal"
-                                name="motor_cable"
+                                name="piplenght"
                                 type="number"
                                 size="small"
                                 InputLabelProps={{
@@ -1680,8 +1726,9 @@ export default function Project() {
                                   ),
                                 }}
                                 value={piplenght}
+                                error={touched && touched.piplenght && error && error.piplenght ? true:false}
                                 onChange={(event) =>
-                                  {setPiplenght(event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
+                                  {handcahngeInputNumber(event.target.name, event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
                                 }
                                 onMouseOver={(e) =>
                                   {dirtlossMouseOver("pip", "hover"); handlePopoverOpen(e, textData[4]);}
@@ -1719,9 +1766,8 @@ export default function Project() {
                                   shrink: true,
                                 }}
                                 value={discharge}
-                                onChange={(event) =>
-                                  setDischarge(event.target.value)
-                                }
+                                onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
+                                error={touched && touched.discharge && error && error.discharge ? true:false}
                                 onMouseOver={(e) =>
                                   {dirtlossMouseOver("waterDeman", "hover"); handlePopoverOpen(e, textData[5]);}
                                 }
@@ -1879,133 +1925,133 @@ export default function Project() {
                 {activeStep === 1 ? (
                   <div className="row">
                     <div className="col-md-5">
-                    <div onMouseLeave={() =>accessoryMouseLeave("fout")}>
                       <h3>Project Accessories</h3>
-                      {inputFields.map((inputField, index) => (
-                        <div className="row">
-                          <div className="col-md-7">
-                            <FormControl fullWidth>
-                              <Autocomplete
-                                size="small"
-                                id="country-select-demo3"
-                                defaultValue={inputField.item}
-                                onChange={(event, newValue) =>{
-                                  handlseelctitem(event, newValue, inputField.id, index);}
-                                }
-                                onMouseOver={() =>
-                                  accessoryMouseOver(inputField.item?.image, "hover")
-                                }
-                               
-                                onFocus={() =>
-                                  accessoryMouseOver(inputField.item?.image, "focus")
-                                }
+                      <div className='accessory-wrapper' onMouseLeave={() =>accessoryMouseLeave("fout")}>
+                        {inputFields.map((inputField, index) => (
+                            <div className="row mr-0">
+                            <div className="col-md-7">
+                              <FormControl fullWidth>
+                                <Autocomplete
+                                  size="small"
+                                  id="country-select-demo3"
+                                  defaultValue={inputField.item}
+                                  onChange={(event, newValue) =>{
+                                    handlseelctitem(event, newValue, inputField.id, index);}
+                                  }
+                                  onMouseOver={() =>
+                                    accessoryMouseOver(inputField.item?.image, "hover")
+                                  }
                                 
-                                style={{ width: 300 }}
-                                options={accessories}
-                                classes={{
-                                  option: classes.option,
-                                }}
-                                autoHighlight
-                                getOptionLabel={(option) =>
-                                  option ? option.name : ""
-                                }
-                                renderOption={(option) => (
-                                  <React.Fragment>{option.name}</React.Fragment>
-                                )}
-                                renderInput={(params) => (
-                                  <TextField
-                                    size="small"
-                                    {...params}
-                                    label="Item"
-                                    variant="outlined"
-                                    placeholder="pick item !"
-                                    margin="normal"
-                                    name="item"
-                                    InputLabelProps={{
-                                      shrink: true,
-                                    }}
-                                    inputProps={{
-                                      ...params.inputProps,
-                                    }}
-                                  />
-                                )}
-                              />
-                            </FormControl>
-                          </div>
-                          <div className="col-md-3">
-                            <FormControl fullWidth>
-                              <TextField
-                                id="outlined-basic7"
-                                label="Quantity"
-                                variant="outlined"
-                                size="small"
-                                placeholder="Quantity"
-                                margin="normal"
-                                name="Quantity"
-                                type="number"
-                                onChange={(event) =>
-                                  handlchangquantity(
-                                    event.target.value,
-                                    inputField.id, inputField.item
-                                  )
-                                }
-                                value={inputField.quantity}
-                                InputProps={{
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      {inputField.uomAc
-                                        ? inputField.uomAc
-                                        : "m"}
-                                    </InputAdornment>
-                                  ),
-                                  inputProps: {
-                                    min: inputField?.item?.min_quantity,
-                                    max: inputField?.item?.max_quantity,
-                                  },
-                                }}
-                                InputLabelProps={{
-                                  shrink: true,
-                                }}
-                                // error={false}
-                                // helperText={'asdf'}
-                              />
-                            </FormControl>
-                          </div>
-
-                          <div
-                            className="col-md-2"
-                            style={{
-                              paddingRight: "10px",
-                              paddingLeft: "10px",
-                            }}
-                          >
-                            <FormControl fullWidth style={{marginTop: '20px'}}>
-                              {inputField?.item?.data_sheet?
-                                <BootstrapTooltip title="Download Data Sheet">
-                                  <a
-                                    href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}
-                                    target="_blank"
-                                  >
-                                    
-                                    <Button
-                                      style={{
-                                        padding: "6px 6px",
+                                  onFocus={() =>
+                                    accessoryMouseOver(inputField.item?.image, "focus")
+                                  }
+                                  
+                                  style={{ width: 300 }}
+                                  options={accessories}
+                                  classes={{
+                                    option: classes.option,
+                                  }}
+                                  autoHighlight
+                                  getOptionLabel={(option) =>
+                                    option ? option.name : ""
+                                  }
+                                  renderOption={(option) => (
+                                    <React.Fragment>{option.name}</React.Fragment>
+                                  )}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      size="small"
+                                      {...params}
+                                      label="Item"
+                                      variant="outlined"
+                                      placeholder="pick item !"
+                                      margin="normal"
+                                      name="item"
+                                      InputLabelProps={{
+                                        shrink: true,
                                       }}
-                                      variant="contained"
-                                      color="default"
-                                      className={classes.button}
-                                      startIcon={<CloudDownloadIcon />}
-                                    >
-                                    </Button>
-                                  </a>
-                                </BootstrapTooltip>
-                              :''}
-                              
-                            </FormControl>
-                          </div>
-                        </div>
-                      ))}
+                                      inputProps={{
+                                        ...params.inputProps,
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </FormControl>
+                            </div>
+                            <div className="col-md-3">
+                              <FormControl fullWidth>
+                                <TextField
+                                  id="outlined-basic7"
+                                  label="Quantity"
+                                  variant="outlined"
+                                  size="small"
+                                  placeholder="Quantity"
+                                  margin="normal"
+                                  name="Quantity"
+                                  type="number"
+                                  onChange={(event) =>
+                                    handlchangquantity(
+                                      event.target.value,
+                                      inputField.id, inputField.item
+                                    )
+                                  }
+                                  value={inputField.quantity}
+                                  InputProps={{
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        {inputField.uomAc
+                                          ? inputField.uomAc
+                                          : "m"}
+                                      </InputAdornment>
+                                    ),
+                                    inputProps: {
+                                      min: inputField?.item?.min_quantity,
+                                      max: inputField?.item?.max_quantity,
+                                    },
+                                  }}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                  // error={false}
+                                  // helperText={'asdf'}
+                                />
+                              </FormControl>
+                            </div>
 
+                            <div
+                              className="col-md-2"
+                              style={{
+                                paddingRight: "10px",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <FormControl fullWidth style={{marginTop: '20px'}}>
+                                {inputField?.item?.data_sheet?
+                                  <BootstrapTooltip title="Download Data Sheet">
+                                    <a
+                                      href={`${axios.defaults.baseURL}accessories/data_sheet/${inputField?.item?.data_sheet}`}
+                                      target="_blank"
+                                    >
+                                      
+                                      <Button
+                                        style={{
+                                          padding: "6px 6px",
+                                        }}
+                                        variant="contained"
+                                        color="default"
+                                        className={classes.button}
+                                        startIcon={<CloudDownloadIcon />}
+                                      >
+                                      </Button>
+                                    </a>
+                                  </BootstrapTooltip>
+                                :''}
+                                
+                              </FormControl>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                       <IconButton
                         disabled={inputFields[inputFields.length-1]?.quantity?false:true}
                         color="primary"
@@ -2028,7 +2074,6 @@ export default function Project() {
                           remove_circle_outline{" "}
                         </span>
                       </IconButton>
-                      </div>
                     </div>
                     
                     <div className="col-md-7">

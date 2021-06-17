@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
+import Avatar from '@material-ui/core/Avatar';
 
 import BlockIcon from "@material-ui/icons/Block";
 //classes
@@ -103,7 +104,7 @@ export const UserList = () => {
       </Button>
 
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-12 userTable">
           {visibility ? (
             <span className="row justify-content-center">
               <Spinner
@@ -115,14 +116,28 @@ export const UserList = () => {
             </span>
           ) : (
             <MaterialTable
-              title="User List"
+              title="User List" 
+              
               columns={[
-                { title: "Name", field: "name" },
+                { title: "Name", 
+                  render: (users) => {
+                    return (
+                      <div className="d-flex align-items-center">
+                        {(users.userimage === '' || users.userimage === 'null') ? <Avatar className="user-avatar size-30" src={`${axios.defaults.baseURL}'user/img/'${users.userimage}`}/> :
+                          <img className="user-avatar border-0 size-40 rounded-circle" src={`${axios.defaults.baseURL}user/img/${users.userimage}`}/>}
+                        <div className="user-detail">
+                          <h5 className="user-name">{users.name}</h5>
+                        </div>
+                      </div>
+                    );
+                  },
+                },
                 { title: "Compnay Name", field: "companyname" },
                 { title: "City", field: "geolocation.city" },
                 { title: "Username", field: "username" },
                 { title: "Email", field: "email" },
                 { title: "Phone", field: "phone" },
+                { title: "Projects", field: "projects" },
                 {
                   title: "Reg Date",
                   render: (projects) => {
