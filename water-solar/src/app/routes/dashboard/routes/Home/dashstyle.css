@@ -10,7 +10,15 @@
 .displaystyle {
     display: none;
 }
-
+.center{
+    text-align: center;
+}
+.slick-slider .slick-prev{
+    z-index: 1;
+}
+.white-space-90{
+    height: 75px;
+}
 .linkstyle{
     text-decoration: none;
 }

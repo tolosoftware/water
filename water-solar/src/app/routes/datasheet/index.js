@@ -126,7 +126,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(4)}>
           <Widget styleName={toggelactivestyleinvertor(4)}  >
               <div className="d-flex flex-row justify-content-center">
-                <ViewComfyIcon fontSize="large"/>
+                <ViewComfyIcon className="lDrinkIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
@@ -137,7 +137,7 @@ const Datasheet = () => {
        <div className="col-md-2" onClick={() => selectedTabe(5)}>
           <Widget styleName={toggelactivestyleinvertor(5)}  >
               <div className="d-flex flex-row justify-content-center">
-                <SettingsInputComponentIcon fontSize="large"/>
+                <SettingsInputComponentIcon className="lDrinkIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Accessories</h4>

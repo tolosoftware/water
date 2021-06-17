@@ -1,4 +1,7 @@
 .dropzone1:focus {
     border-color: #2196f3;
 }
+.userTable .MuiTableCell-root{
+    padding: 5px;
+}
 

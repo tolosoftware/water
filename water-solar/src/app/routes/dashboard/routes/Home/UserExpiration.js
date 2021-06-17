@@ -37,19 +37,19 @@ const UserExpiration = () =>{
         borderColor={['#28a745', '#28a745']}
         hoverBorderColor={['#28a745', '#28a745']}
         hoverBorderWidth={[1, 1]}
-        rotation={350}
+        rotation={360}
         />
         </div>
         <div className="mt-3">
           <div className="greenbox"></div>
-          <strong>Remining Days</strong>
+          <strong>Remaining Days</strong>
 
           <div className="whitebox"></div>
           <strong>Used Days</strong>
         </div>
-
+        <div className='white-space-90'></div>
         <Divider className="mt-3 mb-4"/>
-        <strong style={{marginLeft: '110px'}}>User Expiration Date:  {expir.endDate}</strong>
+        <div className='center'><strong>User Expiration Date:  {expir.endDate}</strong></div>
       </>
       
     )};

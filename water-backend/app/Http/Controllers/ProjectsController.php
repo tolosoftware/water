@@ -185,28 +185,53 @@ class ProjectsController extends Controller
     public function analyze(Request $request){
         //    return $request;
        $selectedpump = array();
+       $errors = [
+           'head'=>false,
+           'discharge'=>false,
+           'motorcable'=>false,
+           'pumpvalue'=>false,
+           'solarvalue'=>false,
+           'invertorvalue'=>false,
+        ];
        $avaDischarge;
-       $pumps = Pump_list::where('pump_brand_id', $request['pumpvalue'])->with(['pump_config','pump_brand'])->get();
+        $pumps = Pump_list::where('pump_brand_id', $request['pumpvalue'])->with(['pump_config','pump_brand'])->get();
+       if(!empty($pumps[0])){
+            $errors['pumpvalue']=true;
+       }
         // return $pumps;
         foreach($pumps as $eachpump){
              foreach($eachpump['pump_config'] as $pumconfig){
                 
-                if($request['dynamicHead'] > $pumconfig['min_head'] &&  $request['dynamicHead'] <= $pumconfig['max_head']){
-                    if($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']){
-                        $avaDischarge = ($pumconfig['min_discharge'] + $pumconfig['max_discharge'])/2;
-                        if($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length']){
-                            array_push($selectedpump, $eachpump);
-                            array_push($selectedpump, $pumconfig);
-                            break;
-                        }
+                if(($request['dynamicHead'] > $pumconfig['min_head'] &&  $request['dynamicHead'] <= $pumconfig['max_head']) &&
+                  ($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']) &&
+                  ($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length'])){
+                    $errors['motorcable']=true;  
+                    $errors['discharge']=true;
+                    $errors['head']=true;
+                    $avaDischarge = ($pumconfig['min_discharge'] + $pumconfig['max_discharge'])/2;
+                    array_push($selectedpump, $eachpump);
+                    array_push($selectedpump, $pumconfig);
+                    break;
+                }else{
+                    if($request['dynamicHead'] > $pumconfig['min_head'] &&  $request['dynamicHead'] <= $pumconfig['max_head']){
+                        $errors['head']=true;
                     }
+                    if($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']){
+                        $errors['discharge']=true;
+                    }
+                    if($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length']){
+                        $errors['motorcable']=true;
+                    }
+                    
                 }
              }
         }
         // return $selectedpump;
         $cable = [];
-        if($selectedpump[1]->cable_type_id != null){
-            $cable = Cable_type::where('id',$selectedpump[1]->cable_type_id)->get()->first();
+        if(!empty($selectedpump[1])){
+            if($selectedpump[1]->cable_type_id != null){
+                $cable = Cable_type::where('id',$selectedpump[1]->cable_type_id)->get()->first();
+            }
         }
         $solar = [];
         $inverter = [];
@@ -214,33 +239,44 @@ class ProjectsController extends Controller
         $energy = [];
         $hrOutputP = [];
         $monthlyHrOutput = [];
-        if($selectedpump[0]->power != null){
-            $inverter = InvertorList::where('invertor_brand_id',$request['invertorvalue'])->with(['inverter_config', 'invertor_brand'])
-            ->whereHas('inverter_config', function($query) use ($selectedpump){
-                return $query->where('power', $selectedpump[0]->power);
-            })
-            ->get()->first();
+        if(!empty($selectedpump[0])){
+            if($selectedpump[0]->power != null){
+                $inverter = InvertorList::where('invertor_brand_id',$request['invertorvalue'])->with(['inverter_config', 'invertor_brand'])
+                ->whereHas('inverter_config', function($query) use ($selectedpump){
+                    return $query->where('power', $selectedpump[0]->power);
+                })
+                ->get()->first();
+                if(!empty($inverter)){
+                    $errors['invertorvalue']=true;
+                }
 
-            $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])
-            ->whereHas('solar_list', function($query) use ($request){
-                return $query->where('id', $request['solarSelectWatt'])
-                ->where('solar_brand_id', $request['solarvalue']);
-            })
-            ->get()->first();
-            // return  $solar;
-            if($solar && $request['citylocation'] != null){
-                $energyData = $this->getEnergy($request['citylocation'], $solar['solar_list']['power'], $avaDischarge, $request['dirtloss']);
-                $hrOutputP = $energyData['hrOutputP'];  $monthlyHrOutput = $energyData['monthlyHrOutput']; $hrEnergy = $energyData['hrEnergy']; $energy = $energyData['energyForEachMonth'];
+                $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])
+                ->whereHas('solar_list', function($query) use ($request){
+                    return $query->where('id', $request['solarSelectWatt'])
+                    ->where('solar_brand_id', $request['solarvalue']);
+                })
+                ->get()->first();
+
+                if(!empty($solar)){
+                    $errors['solarvalue']=true;
+                }
+                // return  $solar;
+                if($solar && $request['citylocation'] != null){
+                    $energyData = $this->getEnergy($request['citylocation'], $solar['solar_list']['power'], $avaDischarge, $request['dirtloss']);
+                    $hrOutputP = $energyData['hrOutputP'];  $monthlyHrOutput = $energyData['monthlyHrOutput']; $hrEnergy = $energyData['hrEnergy']; $energy = $energyData['energyForEachMonth'];
+                }
             }
         }
         // return $selectedpump[0]->power;
         $solarbrand = [];
-        if($solar['solar_list']->solar_brand_id != null){
-            $solarbrand = Solar_brands::where('id',$solar['solar_list']->solar_brand_id)->get()->first();
+        if(!empty($solar['solar_list'])){
+            if($solar['solar_list']->solar_brand_id != null){
+                $solarbrand = Solar_brands::where('id',$solar['solar_list']->solar_brand_id)->get()->first();
+            }
         }
 
          return response()->json([
-            'pupm'=> $selectedpump , 'solar'=>$solar, 'inverter'=>$inverter, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput
+            'pupm'=> $selectedpump , 'solar'=>$solar, 'inverter'=>$inverter, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput, 'errors'=> $errors
         ]);
     }
 

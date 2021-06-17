@@ -6,7 +6,7 @@ const Footer = () => {
     return (
       <footer className="app-footer">
         <div>
-        <span className="d-inline-block">{`Copyright Amu Water Management System © 2021.`}</span> 
+        <span className="d-inline-block">{`Copyright AMO Water Management System © 2021.`}</span> 
         {JSON.parse(localStorage.getItem("UserData")).belongto=='None'? '':
           <>
             <br/>

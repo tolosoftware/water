@@ -126,7 +126,7 @@ class UserController extends Controller
         $currenTyear = Carbon::now()->year;
 
         $user = User::findOrFail($id);
-        if($user->system === 1){
+        if((int)$user->system == 1){
             for($i=1 ; $i<=12; $i++){
                 $permonth = Projects::whereYear('created_at',$currenTyear)
                 ->whereMonth('created_at', '=', $i)->get();
@@ -249,7 +249,11 @@ class UserController extends Controller
     }
     public function index()
     {
-        return User::with('geolocation')->get();
+        $users=User::with('geolocation')->get();
+        foreach ($users as $key => $user) {
+            $user['projects'] = Projects::where('user_id',$user->id)->get()->count();
+        }
+        return $users;
     }
 
     /**
@@ -272,7 +276,7 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-            $photoname = 0;
+            $photoname = null;
             $id = $request['id'];
             if($request['userimage'] != 'oldImage'){
                 $photoname = time().'.' . explode('/', explode(':', substr($request->userimage, 0, strpos($request->userimage, ';')))[1])[1];
@@ -288,7 +292,7 @@ class UserController extends Controller
                 $user->phone = $request['phone'];
                 $user->expiration =$request['expiration'];
                 $user->status = $request['status'];
-                if($request['type']){
+                if($user->system !=1){
                     $user->system = $request['type'];
                 }
                 $user->belongto = $request['belongto'];

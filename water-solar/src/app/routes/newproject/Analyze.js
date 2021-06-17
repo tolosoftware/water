@@ -120,6 +120,7 @@ export default function Analyze(props) {
   const [hrOutputP, setHrOutputP] = useState([]);
   const [monthlyHrOutput, setMonthlyHrOutput] = useState([]);
   const [dataError, setDataError] = useState(false);
+  const [inputError, setInputError] = useState({});
   
   const {filled, setFilled} = props;
 
@@ -131,21 +132,36 @@ export default function Analyze(props) {
       .then((res) => {
         // console.log(res.data);
         setOpenbackdrop(false);
-        setSugestedpump(res.data.pupm);
-        setCable(res.data.cable);
-        setSolar(res.data.solar);
-        setInverter(res.data.inverter);
-        setSolarbrand(res.data.solarbrand);
-        setHrEnergy(res.data.hrEnergy);
-        setEnergy(res.data.energy);
-        setHrOutputP(res.data.hrOutputP);
-        setMonthlyHrOutput(res.data.monthlyHrOutput);
-        setDataError(false);
-        setFilled(true);
-        NotificationManager.success(
-          <IntlMessages id="notification.successMessage" />,
-          <IntlMessages id="notification.titleHere" />
-        );
+        
+        
+        if(!res.data.errors.head || !res.data.errors.discharge || !res.data.errors.motorcable || !res.data.errors.pumpvalue || !res.data.errors.solarvalue || !res.data.errors.invertorvalue){
+          setInputError(res.data.errors);
+          console.log('res data errors', inputError);
+          console.log('res data errors 1', res.data.errors);
+          setOpenbackdrop(false);
+          setDataError(true);
+          NotificationManager.error(
+            <IntlMessages id="notification.errorMessage" />,
+            <IntlMessages id="notification.titleHere" />
+          );
+        }else{
+          setSugestedpump(res.data.pupm);
+          setCable(res.data.cable);
+          setSolar(res.data.solar);
+          setInverter(res.data.inverter);
+          setSolarbrand(res.data.solarbrand);
+          setHrEnergy(res.data.hrEnergy);
+          setEnergy(res.data.energy);
+          setHrOutputP(res.data.hrOutputP);
+          setMonthlyHrOutput(res.data.monthlyHrOutput);
+          setDataError(false);
+          setFilled(true);
+          NotificationManager.success(
+            <IntlMessages id="notification.successMessage" />,
+            <IntlMessages id="notification.titleHere" />
+          );
+        }
+        
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -155,6 +171,7 @@ export default function Analyze(props) {
           <IntlMessages id="notification.titleHere" />
         );
       });
+      // console.log('res data errors AFTER', inputError);
   };
   const [irdationAvregePerHour, setirdationAvregePerHour] = useState([]);
   const [irdformont, setIrdformont] = useState([]);
