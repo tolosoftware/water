@@ -203,8 +203,8 @@ class ProjectsController extends Controller
              foreach($eachpump['pump_config'] as $pumconfig){
                 
                 if(($request['dynamicHead'] > $pumconfig['min_head'] &&  $request['dynamicHead'] <= $pumconfig['max_head']) &&
-                ($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']) &&
-                 ($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length'])){
+                  ($request['discharge'] > $pumconfig['min_discharge'] &&  $request['discharge'] <= $pumconfig['max_discharge']) &&
+                  ($request['motorcable'] > $pumconfig['min_cable_length'] &&  $request['motorcable'] <= $pumconfig['max_cable_length'])){
                     $errors['motorcable']=true;  
                     $errors['discharge']=true;
                     $errors['head']=true;

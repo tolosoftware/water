@@ -171,7 +171,7 @@ export default function Analyze(props) {
           <IntlMessages id="notification.titleHere" />
         );
       });
-      console.log('res data errors AFTER', inputError);
+      // console.log('res data errors AFTER', inputError);
   };
   const [irdationAvregePerHour, setirdationAvregePerHour] = useState([]);
   const [irdformont, setIrdformont] = useState([]);
