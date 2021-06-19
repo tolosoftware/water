@@ -374,177 +374,179 @@ export default function Analyze(props) {
             </AccordionDetails>
           </Accordion>
           <div className="mt-4"></div>
+          <div>
+            <h2>Water Pump</h2>
+            {sugestedpump?.length !== 0 ? (
+              <>
+                <strong className="mb-2" style={{ marginBottom: "2px" }}>
+                  {" "}
+                </strong>
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Made in {sugestedpump[0].pump_brand.country} </strong>
+                    {getFlag(sugestedpump[0].pump_brand.country)}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Brand: {sugestedpump[0].pump_brand.name}</strong>
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Model: {sugestedpump[0].model}</strong>
+                  </div>
+                  <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                      <FormControl fullWidth>
+                      <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${sugestedpump[0]?.data_sheet}`} target="_blank">
+                      <Button
+                          style={{padding: '6px 6px'}}
+                          variant="contained"
+                          color="default"
+                          className={classes.button}
+                          startIcon={<CloudDownloadIcon />}
+                        >
+                          Data Sheet
+                        </Button>
+                      </a>
+                        
+                      </FormControl>
+                  </div>
+                </div>
 
-          <h2>Water Pump</h2>
-          {sugestedpump?.length !== 0 ? (
-            <>
-              <strong className="mb-2" style={{ marginBottom: "2px" }}>
-                {" "}
-              </strong>
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Made in {sugestedpump[0].pump_brand.country} </strong>
-                  {getFlag(sugestedpump[0].pump_brand.country)}{" "}
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Power: {sugestedpump[0].power} KW</strong>
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Current: {sugestedpump[0].ampeier} A</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Cable: {cable.name}</strong>{" "}
+                  </div>
                 </div>
-                <div className="col-md-3">
-                  <strong>Brand: {sugestedpump[0].pump_brand.name}</strong>
-                </div>
-                <div className="col-md-3">
-                  <strong>Model: {sugestedpump[0].model}</strong>
-                </div>
-                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
-                    <FormControl fullWidth>
-                    <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${sugestedpump[0]?.data_sheet}`} target="_blank">
-                    <Button
-                        style={{marginTop: '16px', padding: '6px 6px'}}
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<CloudDownloadIcon />}
-                      >
-                        Data Sheet
-                      </Button>
-                    </a>
-                      
-                    </FormControl>
-                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            {sugestedpump?.length === 0 ? (
+              <div className={classes.rootalert}>
+                <Alert severity="error">Water Pump Not found !</Alert>
               </div>
+            ) : (
+              ""
+            )}
 
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Power: {sugestedpump[0].power}</strong>
+            <Divider className="mb-3 mt-3" />
+            <h2>Solar</h2>
+            {solar?.length !== 0 ? (
+              <>
+                <strong className="mb-2" style={{ marginBottom: "2px" }}>
+                  {" "}
+                </strong>
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Made in {solarbrand.country} </strong>{" "}
+                    {getFlag(solarbrand.country)}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Brand: {solarbrand.name}</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Model: {solar.solar_list.model}</strong>{" "}
+                  </div>
+                  <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                      <FormControl fullWidth>
+                      <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.solar_list?.data_sheet}`} target="_blank">
+                      <Button
+                          style={{padding: '6px 6px'}}
+                          variant="contained"
+                          color="default"
+                          className={classes.button}
+                          startIcon={<CloudDownloadIcon />}
+                        >
+                          Data Sheet
+                        </Button>
+                      </a>
+                        
+                      </FormControl>
+                  </div>
                 </div>
-                <div className="col-md-3">
-                  <strong>Current: {sugestedpump[0].ampeier} </strong>{" "}
+
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Power: {solar?.solar_list?.power} W</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Current: {solar.current} A</strong>
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Quantity: {solar.solar_quantity} panel</strong>{" "}
+                  </div>
                 </div>
-                <div className="col-md-3">
-                  <strong>Cable: {cable.name}</strong>{" "}
+              </>
+            ) : (
+              ""
+            )}
+            <Divider className="mb-3 mt-3" />
+            <h2>Inverter</h2>
+            {inverter?.length !== 0 ? (
+              <>
+                <strong className="mb-2" style={{ marginBottom: "2px" }}>
+                  {" "}
+                </strong>
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Made in {inverter?.invertor_brand?.country} </strong>{" "}
+                    {getFlag(inverter?.invertor_brand?.country)}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Brand: {inverter?.invertor_brand?.name}</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Model: {inverter?.model}</strong>{" "}
+                  </div>
+                  <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                      <FormControl fullWidth>
+                      <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                      <Button
+                          style={{ padding: '6px 6px'}}
+                          variant="contained"
+                          color="default"
+                          className={classes.button}
+                          startIcon={<CloudDownloadIcon />}
+                        >
+                          Data Sheet
+                        </Button>
+                      </a>
+                        
+                      </FormControl>
+                  </div>
                 </div>
+
+                <div className="row">
+                  <div className="col-md-3">
+                    <strong>Power: {inverter?.power} KW</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Current: {inverter?.current} A</strong>
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Voltage: {inverter?.voltage} V</strong>{" "}
+                  </div>
+                </div>
+              </>
+            ) : (
+              ""
+            )}
+
+            {inverter?.length === 0 ? (
+              <div className={classes.rootalert}>
+                <Alert severity="error">Inverter Not found !</Alert>
               </div>
-            </>
-          ) : (
-            ""
-          )}
-
-          {sugestedpump?.length === 0 ? (
-            <div className={classes.rootalert}>
-              <Alert severity="error">Water Pump Not found !</Alert>
-            </div>
-          ) : (
-            ""
-          )}
-
-          <Divider className="mb-3 mt-3" />
-          <h2>Solar</h2>
-          {solar?.length !== 0 ? (
-            <>
-              <strong className="mb-2" style={{ marginBottom: "2px" }}>
-                {" "}
-              </strong>
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Made in {solarbrand.country} </strong>{" "}
-                  {getFlag(solarbrand.country)}{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Brand: {solarbrand.name}</strong>{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Model: {solar.solar_list.model}</strong>{" "}
-                </div>
-                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
-                    <FormControl fullWidth>
-                    <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.solar_list?.data_sheet}`} target="_blank">
-                    <Button
-                        style={{marginTop: '16px', padding: '6px 6px'}}
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<CloudDownloadIcon />}
-                      >
-                        Data Sheet
-                      </Button>
-                    </a>
-                      
-                    </FormControl>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Power: {solar.power}</strong>{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Structure: {solar.base}</strong>
-                </div>
-                <div className="col-md-3">
-                  <strong>Quantity: {solar.solar_quantity}</strong>{" "}
-                </div>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-          <Divider className="mb-3 mt-3" />
-          <h2>Inverter</h2>
-          {inverter?.length !== 0 ? (
-            <>
-              <strong className="mb-2" style={{ marginBottom: "2px" }}>
-                {" "}
-              </strong>
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Made in {inverter?.invertor_brand?.country} </strong>{" "}
-                  {getFlag(inverter?.invertor_brand?.country)}{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Brand: {inverter?.invertor_brand?.name}</strong>{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Model: {inverter?.model}</strong>{" "}
-                </div>
-                <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
-                    <FormControl fullWidth>
-                    <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
-                    <Button
-                        style={{marginTop: '16px', padding: '6px 6px'}}
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<CloudDownloadIcon />}
-                      >
-                        Data Sheet
-                      </Button>
-                    </a>
-                      
-                    </FormControl>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-3">
-                  <strong>Power: {inverter?.power}</strong>{" "}
-                </div>
-                <div className="col-md-3">
-                  <strong>Current: {inverter?.current}</strong>
-                </div>
-                <div className="col-md-3">
-                  <strong>Voltage: {inverter?.voltage}</strong>{" "}
-                </div>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-
-          {inverter?.length === 0 ? (
-            <div className={classes.rootalert}>
-              <Alert severity="error">Inverter Not found !</Alert>
-            </div>
-          ) : (
-            ""
-          )}
+            ) : (
+              ""
+            )}
+          </div>
         </div>
+            
       ) : (
         ""
       )}

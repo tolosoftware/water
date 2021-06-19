@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import {Button} from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import TextField from '@material-ui/core/TextField';
 import {useForm} from 'react-hook-form';
 import './style.css'
@@ -92,15 +94,11 @@ const Uom=() => {
       <div className="d-flex flex-row mb-2">
            <IconButton color="primary" aria-label="upload picture" component="span"
             onClick={() => setAddvisibility(true)} hidden={addvisibility===true}>
-                 <span class="material-icons">
-                          add_circle_outline
-                  </span>
+                 <AddCircleOutlineIcon />
           </IconButton>  
           <IconButton color="primary" aria-label="upload picture" component="span"
             hidden={addvisibility===false} onClick={() => setAddvisibility(false)}>
-                <span class="material-icons">
-                  remove_circle_outline
-                </span>
+                <RemoveCircleOutlineIcon />
             </IconButton>    
           { 
             addvisibility?  
@@ -128,9 +126,7 @@ const Uom=() => {
             </div>
             <div className="col-md-3 pl-0">
                 <Button color="primary"   variant="contained" size="medium" type="submit">
-                  <span className="material-icons">
-                    add_circle_outline
-                  </span>
+                  <AddCircleOutlineIcon />
                 </Button>
               </div>
           </form>

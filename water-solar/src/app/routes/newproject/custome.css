@@ -113,3 +113,9 @@
     max-height: 390px;
     overflow-y: auto;
 }
+.truerSPrSection1{
+    background-color: #f7f7f7;
+}
+.accessory-item-sect{
+    min-height: 477px;
+}

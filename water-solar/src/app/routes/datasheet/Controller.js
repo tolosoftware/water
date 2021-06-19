@@ -14,7 +14,8 @@ const Controller=() => {
       },[])
       
     const getController=async () => {
-    axios.get('api/controller')
+      var id = JSON.parse(localStorage.getItem("UserData")).id;
+    axios.get('api/controller/'+id)
         .then( res => {
          setController(res.data)
         }
@@ -30,7 +31,7 @@ const Controller=() => {
                 title="Controller"
                 columns={
                   [
-                      { title: 'Pruduct', field: 'invertor_brand.name' },
+                      { title: 'Pruduct', field: 'brand_name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Power', field: 'power'},
                       { title: 'Voltage (V)', field: 'voltage'},

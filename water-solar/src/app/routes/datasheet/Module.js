@@ -15,7 +15,8 @@ const Module=() => {
       },[])
       
     const getSolar=async () => {
-    axios.get('api/solar')
+    var id = JSON.parse(localStorage.getItem("UserData")).id;
+    axios.get('api/solar/'+id)
         .then( res => {
           setSolar(res.data)
         }
@@ -32,7 +33,7 @@ const Module=() => {
                 columns={
             
                   [
-                      { title: 'Pruduct', field: 'solar_brand.name' },
+                      { title: 'Pruduct', field: 'brand_name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Power', field: 'power'},
                       { title: 'Currnet', field: 'current'},

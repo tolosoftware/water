@@ -1,6 +1,9 @@
+.single-slide .slick-list>.slick-track>div:nth-child(2){
+    display: none;
+}
+
 .page-heading, .dashboard {
     padding: 16px !important;
-   
 }
 
 .page-heading, .sizing {
