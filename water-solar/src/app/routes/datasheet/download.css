@@ -26,3 +26,6 @@
     color:  #f04c4c;
   
 }
+.box-mouse-over>.card {
+    cursor: pointer;
+}

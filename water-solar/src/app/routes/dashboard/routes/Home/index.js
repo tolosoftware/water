@@ -222,7 +222,7 @@ const Home = ({ match }) => {
       >
         <div className="row">
           <div className="col-md-4">
-            <Slider className="slick-app-frame" {...options}>
+            <Slider className={`slick-app-frame ${pump.length===1? 'single-slide':''}`} {...options}>
               {pump.map((data, index) => {
                 return (
                   <div class="slick-slide-item">
@@ -247,7 +247,7 @@ const Home = ({ match }) => {
             <h3 className="mt-3">Pump Brands</h3>
           </div>
           <div className="col-md-4">
-            <Slider className="slick-app-frame" {...options}>
+            <Slider className={`slick-app-frame ${solar.length===1? 'single-slide':''}`} {...options}>
               {solar.map((data, index) => {
                 return (
                   <div class="slick-slide-item">
@@ -271,7 +271,7 @@ const Home = ({ match }) => {
             <h3 className="mt-3">Solar Brands</h3>
           </div>
           <div className="col-md-4">
-            <Slider className="slick-app-frame" {...options}>
+            <Slider className={`slick-app-frame ${invertorBrand.length===1? 'single-slide':''}`} {...options}>
               {invertorBrand.map((data, index) => {
                 return (
                   <div class="slick-slide-item">

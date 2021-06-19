@@ -205,7 +205,7 @@ export default function DialogInvertor(props) {
       });
     }
     setPowerKW(invertorListObject.power ? invertorListObject.power : 15);
-    setVoltage(invertorListObject.voltage_ac ? invertorListObject.voltage_ac : 220);
+    setVoltage(invertorListObject.voltage ? invertorListObject.voltage : 220);
     setDescription(invertorListObject.discription?invertorListObject.discription:'');
     setImage({ ...image, oldImage: invertorListObject.image?invertorListObject.image:''});
     setDataSheet({ ...dataSheet, oldImage: invertorListObject.data_sheet ? invertorListObject.data_sheet : '' });

@@ -14,7 +14,8 @@ const Pump=() => {
       },[])
       
     const getPump=async () => {
-    axios.get('api/pump')
+      var id = JSON.parse(localStorage.getItem("UserData")).id;
+    axios.get('api/pump/'+id)
         .then( res => {
         setPump(res.data)
         }
@@ -30,7 +31,7 @@ const Pump=() => {
                 title="Pump Brand"
                 columns={
                   [
-                      { title: 'Pruduct', field: 'pump_brand.name' },
+                      { title: 'Pruduct', field: 'brand_name' },
                       { title: 'Model', field: 'model'},
                       { title: 'Current', field: 'ampeier'},
                       { title: 'Power (KW)', field: 'power'},

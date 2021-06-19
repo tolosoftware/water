@@ -17,6 +17,8 @@ import Alert from "@material-ui/lab/Alert";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "react-spinner-material";
 import {useForm} from 'react-hook-form';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 //css
 import "./custome.css";
@@ -1612,6 +1614,9 @@ export default function Project() {
                                       m
                                     </InputAdornment>
                                   ),
+                                  inputProps: {
+                                    min: 0,
+                                  },
                                 }}
                                 
                                 InputLabelProps={{ shrink: true, }}
@@ -1647,6 +1652,9 @@ export default function Project() {
                                       m
                                     </InputAdornment>
                                   ),
+                                  inputProps: {
+                                    min: 0,
+                                  },
                                 }}
                                 value={solarCable}
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
@@ -1687,6 +1695,9 @@ export default function Project() {
                                       m
                                     </InputAdornment>
                                   ),
+                                  inputProps: {
+                                    min: 0,
+                                  },
                                 }}
                                 value={motorcable}
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
@@ -1724,6 +1735,9 @@ export default function Project() {
                                       m
                                     </InputAdornment>
                                   ),
+                                  inputProps: {
+                                    min: 0,
+                                  },
                                 }}
                                 value={piplenght}
                                 error={touched && touched.piplenght && error && error.piplenght ? true:false}
@@ -1761,6 +1775,9 @@ export default function Project() {
                                       m³/h
                                     </InputAdornment>
                                   ),
+                                  inputProps: {
+                                    min: 0,
+                                  },
                                 }}
                                 InputLabelProps={{
                                   shrink: true,
@@ -1895,7 +1912,7 @@ export default function Project() {
                         Evaluation
                       </Button>
                     </div>
-                    <div className="col-md-8 rSPrSection">
+                    <div className={`col-md-8 rSPrSection ${filled}rSPrSection1`}>
                       {evaluation === true ? (
                         <>
                           <div>
@@ -1926,7 +1943,7 @@ export default function Project() {
                   <div className="row">
                     <div className="col-md-5">
                       <h3>Project Accessories</h3>
-                      <div className='accessory-wrapper' onMouseLeave={() =>accessoryMouseLeave("fout")}>
+                      <div className='accessory-wrapper'>
                         {inputFields.map((inputField, index) => (
                             <div className="row mr-0">
                             <div className="col-md-7">
@@ -2059,7 +2076,7 @@ export default function Project() {
                         component="span"
                         onClick={handleAddFields}
                       >
-                        <span class="material-icons"> add_circle_outline </span>
+                        <AddCircleOutlineIcon />
                       </IconButton>
 
                       <IconButton
@@ -2069,14 +2086,11 @@ export default function Project() {
                         onClick={handleRemoveFields}
                         disabled={inputFields.length <= 1}
                       >
-                        <span class="material-icons">
-                          {" "}
-                          remove_circle_outline{" "}
-                        </span>
+                        <RemoveCircleOutlineIcon />
                       </IconButton>
                     </div>
                     
-                    <div className="col-md-7">
+                    <div className="col-md-7 accessory-item-sect" >
                       {accImgPath? 
                       loadImg ? (
                         <>

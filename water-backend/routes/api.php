@@ -80,10 +80,10 @@ Route::get('irridation', [IrradiationController::class,'irridation']);
 //datasheet
 
 Route::get('pv-module', [DatasheetController::class,'pvModule']);
-Route::get('pump', [DatasheetController::class,'pump']);
-Route::get('controller', [DatasheetController::class,'controller']);
+Route::get('pump/{id}', [DatasheetController::class,'pump']);
+Route::get('controller/{id}', [DatasheetController::class,'controller']);
 Route::get('accessoriesdownload', [DatasheetController::class,'accessoriesdownload']);
-Route::get('solar', [DatasheetController::class,'solar']);
+Route::get('solar/{id}', [DatasheetController::class,'solar']);
 
 
 

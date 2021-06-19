@@ -383,13 +383,13 @@ const ProjectSummary = ({ match }) => {
                                   <td>
                                     {pupm
                                       ? pupm[0]?.pump_brand?.name +
-                                      " " +
+                                      " " + pupm[0]?.model +  " " +
                                       pupm[0]?.hp +
                                       "HP " +
                                       pupm[0]?.power +
                                       "Kw " +
                                       pupm[0]?.voltage +
-                                      "V"
+                                      "V" 
                                       : ""}
                                   </td>
                                   <td>pc</td>
@@ -887,7 +887,7 @@ const ProjectSummary = ({ match }) => {
                                       <td>Weight:</td>
                                       <td>18kg</td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td colSpan="2">
                                         <img
                                           src="/images/Voltage.png"
@@ -899,7 +899,7 @@ const ProjectSummary = ({ match }) => {
                                           alt="Responsive"
                                         />
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                   </tbody>
                                 </Table>
                               </div>

@@ -90,7 +90,7 @@ const Datasheet = () => {
     <div  className="row custom-margin d-flex justify-content-center">
 
     
-        <div className="col-md-2" onClick={() => selectedTabe(1)}>
+        <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(1)}>
           <Widget styleName={toggelactivestyleinvertor(1)} >
               <div className="d-flex flex-row justify-content-center">
                 <WbSunnyIcon className="sunnyIcon"/>
@@ -101,7 +101,7 @@ const Datasheet = () => {
             </Widget>
        </div>
 
-       <div className="col-md-2" onClick={() => selectedTabe(2)}>
+       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(2)}>
           <Widget styleName={toggelactivestyleinvertor(2)} >
               <div className="d-flex flex-row justify-content-center">
               <LocalDrinkIcon className="lDrinkIcon" />
@@ -112,7 +112,7 @@ const Datasheet = () => {
             </Widget>
        </div>
 
-       <div className="col-md-2" onClick={() => selectedTabe(3)}>
+       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(3)}>
           <Widget styleName={toggelactivestyleinvertor(3)}  >
               <div className="d-flex flex-row justify-content-center">
                 <FlashAutoIcon className="lDrinkIcon"/>
@@ -123,26 +123,26 @@ const Datasheet = () => {
             </Widget>
        </div>
 
-       <div className="col-md-2" onClick={() => selectedTabe(4)}>
-          <Widget styleName={toggelactivestyleinvertor(4)}  >
-              <div className="d-flex flex-row justify-content-center">
-                <ViewComfyIcon className="lDrinkIcon" />
-              </div>
-              <div className="text-center">
-                <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
-              </div>
-            </Widget>
+       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(4)}>
+          <Widget styleName={toggelactivestyleinvertor(4)} >
+            <div className="d-flex flex-row justify-content-center">
+              <ViewComfyIcon className="lDrinkIcon" />
+            </div>
+            <div className="text-center">
+              <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
+            </div>
+          </Widget>
        </div>
 
-       <div className="col-md-2" onClick={() => selectedTabe(5)}>
+       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(5)}>
           <Widget styleName={toggelactivestyleinvertor(5)}  >
-              <div className="d-flex flex-row justify-content-center">
-                <SettingsInputComponentIcon className="lDrinkIcon" />
-              </div>
-              <div className="text-center">
-                <h4 className="jr-font-weight-medium mb-3">Accessories</h4>
-              </div>
-            </Widget>
+            <div className="d-flex flex-row justify-content-center">
+              <SettingsInputComponentIcon className="lDrinkIcon" />
+            </div>
+            <div className="text-center">
+              <h4 className="jr-font-weight-medium mb-3">Accessories</h4>
+            </div>
+          </Widget>
        </div>
        
         </div>

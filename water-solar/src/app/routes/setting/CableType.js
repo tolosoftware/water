@@ -8,6 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import {useForm} from 'react-hook-form';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 // import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import Swal from 'sweetalert2';
@@ -101,16 +103,11 @@ const [visibility,setVisibility]= useState(false);
         <div className="d-flex flex-row mb-2">
            <IconButton color="primary" aria-label="upload picture" component="span"
             onClick={() => setAddvisibility(true)} hidden={addvisibility===true}>
-                 <span class="material-icons">
-                          add_circle_outline
-                          </span>
+              <AddCircleOutlineIcon />
           </IconButton>  
           
-          <IconButton color="primary" aria-label="upload picture" component="span"
-            hidden={addvisibility===false} onClick={() => setAddvisibility(false)}>
-                <span class="material-icons">
-                        remove_circle_outline
-                        </span>
+            <IconButton color="primary" aria-label="upload picture" component="span" hidden={addvisibility===false} onClick={() => setAddvisibility(false)}>
+              <RemoveCircleOutlineIcon />
             </IconButton>    
           { 
             addvisibility?
@@ -129,11 +126,8 @@ const [visibility,setVisibility]= useState(false);
 
             <div className="col-md-3 col-sm-3 col-lg-3 col-xs-12 pl-0">
               <Button color="primary"   variant="contained" size="medium" type="submit">
-              <span className="material-icons">
-                      add_circle_outline
-              </span>
-                </Button>
-              
+                <AddCircleOutlineIcon />
+              </Button>
             </div>
           </form>
             :null  
