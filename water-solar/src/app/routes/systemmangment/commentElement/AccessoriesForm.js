@@ -13,6 +13,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import {NotificationContainer,NotificationManager} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import {useForm} from 'react-hook-form';
 
 // end code for country selection 
@@ -41,7 +42,7 @@ export default function AccessoriesForm(props) {
   const [description, setDescription] = useState("");
   const [uomList, setUomList] = useState([]);
   const accessoryObject = props.accessoryObject;
-  const [image, setImage] = useState({ oldImage: '', filePath: 'accessories/', btnText: 'Accessory Image' });
+  const [image, setImage] = useState({ oldImage: '', filePath: 'accessories/', btnText: 'Image' });
   let imageFile = '';
   const [dataSheet, setDataSheet] = useState({ oldImage: '', filePath: 'accessories/data_sheet/', btnText: 'Data Sheet' });
   let dataSheetFile = '';
@@ -179,7 +180,7 @@ export default function AccessoriesForm(props) {
                         error={errors.model && true} helperText={errors.model ? '*required' : ''}
                         />
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
                         
                         <Autocomplete  size="small"
                           id="country-select-demo" value={uom}  onChange={(event, newValue) => setUom(newValue)}
@@ -214,17 +215,30 @@ export default function AccessoriesForm(props) {
                             />  
                     </div>
                     
-                    <div className="col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic-min" size="small" type="number" className="fullWidthInput" label="MinQ" name='min_quantity' variant="outlined"
                         defaultValue={accessoryObject?.min_quantity} inputRef={register({required: true})} 
                         error={errors.min_quantity && true} helperText={errors.min_quantity ? '*required' : ''}
                         />
                     </div>
 
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 insideFormBP">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 insideFormBP">
                         <TextField id="outlined-basic-max" size="small" type="number" className="fullWidthInput" label="MaxQ" name='max_quantity' variant="outlined" 
                         defaultValue={accessoryObject?.max_quantity} inputRef={register({required: true})} 
                         error={errors.max_quantity && true} helperText={errors.max_quantity ? '*required' : ''}
+                        />
+                    </div>
+                        
+                    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 insideFormBP">
+                        <TextField id="outlined-basic-price" size="small" className="fullWidthInput" label="Price" name='price' variant="outlined" 
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        defaultValue={accessoryObject?.price} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                        error={errors.price && true} helperText={errors.price ? '*Please enter valid number.' : ''}
                         />
                     </div>
                         
@@ -233,13 +247,13 @@ export default function AccessoriesForm(props) {
                         <textarea class={`form-control form-control-lg`} id='description' name='description' value={description} onChange={e => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                         </div>
                     </div>
-                    <div className="col-xl-3 col-lg-3 col-md-3 col-12 waterPumFile waterPumpListFile">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-12 waterPumFile waterPumpListFile">
                         <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)}/>
                     </div>
                     <div className="col-xl-2 col-lg-2 col-md-2 col-12 waterPumFile waterPumpListFile accessory-row">
                       <DataSheetFile formData={dataSheet} onChange={eventhandlerDaSh.bind(this)}/>
                     </div>
-                    <div className="col-xl-1 col-lg-1 col-md-2 col-sm-12 col-12 btnAccessory">
+                    <div className="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12 btnAccessory">
                      <Button variant="contained" type="submit" color="primary" className="jr-btn jr-btn-lg accessBtn">Submit</Button>
                     </div>
                     </div>

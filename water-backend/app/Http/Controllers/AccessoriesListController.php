@@ -80,6 +80,7 @@ class AccessoriesListController extends Controller
                     $accessories_list->data_sheet = $dataSheetName;
                 }
                 $accessories_list->discription = $request['description'];
+                $accessories_list->price = $request['price'];
                 $accessories_list->save();
                
             }else{
@@ -92,6 +93,7 @@ class AccessoriesListController extends Controller
                     'uom_name' => $request['uom_name'],
                     'min_quantity' =>$request['min_quantity'],
                     'max_quantity' =>$request['max_quantity'],
+                    'price' =>$request['price'],
                     'discription' => $request['description'],
                     'image' => $photoname,
                     'data_sheet' => $dataSheetName,

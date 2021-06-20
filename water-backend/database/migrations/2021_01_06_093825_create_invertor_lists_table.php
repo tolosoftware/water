@@ -21,6 +21,7 @@ class CreateInvertorListsTable extends Migration
             $table->string('power');
             $table->string('voltage');
             $table->string('current')->nullable();
+            $table->string('price')->nullable();
             $table->string('voltage_dc_min');
             $table->string('voltage_dc_max');
             $table->string('voltage_ac_min')->nullable();

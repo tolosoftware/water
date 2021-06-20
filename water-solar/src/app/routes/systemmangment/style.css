@@ -253,7 +253,7 @@ padding: 0px 15px 10px;
     left: 9% !important;
 }
 .insideFormPadding1.powerW-solarL span[data-index="0"].MuiSlider-markLabel {
-    left: 4% !important;
+    left: 9% !important;
 }
 .insideFormPadding2.ivertor-vol{
     padding: 0px 21px 15px 15px;
@@ -283,7 +283,7 @@ padding: 0px 15px 10px;
     left: 91% !important;
 }
 .insideFormPadding1.powerW-solarL span[data-index="1"].MuiSlider-markLabel {
-    left: 96% !important;
+    left: 91% !important;
 }
 .insideFormPadding1.inverPower span[data-index="1"].MuiSlider-markLabel {
     left: 91% !important;
@@ -359,10 +359,10 @@ padding: 0px 15px 10px;
     left: 93% !important;
 }
 .powerHP span[data-index="0"].MuiSlider-markLabel {
-    left: 2% !important;
+    left: 6% !important;
 }
 .powerHP span[data-index="19"].MuiSlider-markLabel {
-    left: 96% !important;
+    left: 91% !important;
 }
 .powerHP{
     margin-bottom: 5px;
@@ -543,10 +543,10 @@ padding: 0px 15px 10px;
 .powerW-solarL{
     padding: 0px 22px 15px 10px;
 }
-.accessory-row .dropzone-content span>a{
+/* .accessory-row .dropzone-content span>a{
     background-color: transparent;
     border: 2px dashed #3f51b5;
-}
+} */
 .system-section thead tr th{
     background: white;
     opacity: 1;

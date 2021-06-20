@@ -95,6 +95,7 @@ function getFlag(countryname) {
 export default function Analyze(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState("panel1");
+  const {setDeviceCost}= props;
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -108,7 +109,7 @@ export default function Analyze(props) {
       getIrredation();
     }
   }, [props.evaluationdata, props.citylocation]);
-
+ 
   const [openbackdrop, setOpenbackdrop] = React.useState(false);
   const [sugestedpump, setSugestedpump] = React.useState([]);
   const [cable, setCable] = React.useState([]);
@@ -121,7 +122,11 @@ export default function Analyze(props) {
   const [monthlyHrOutput, setMonthlyHrOutput] = useState([]);
   const [dataError, setDataError] = useState(false);
   const [inputError, setInputError] = useState({});
-  
+  useEffect(() => {
+    var totalPrice = Number(sugestedpump[0]?.price)+(Number(solar?.solar_list?.price)*Number(solar.solar_quantity))+Number(inverter?.price);
+    setDeviceCost(totalPrice);
+
+   }, [sugestedpump[0]?.price, solar?.solar_list?.price, inverter?.price]);
   const {filled, setFilled} = props;
 
   const docalculculation = async() => {

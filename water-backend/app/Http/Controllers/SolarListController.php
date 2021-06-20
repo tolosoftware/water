@@ -70,6 +70,7 @@ class SolarListController extends Controller
                 $solar_list->power = $request['powerW'];
                 $solar_list->voltage = $request['voltage'];
                 $solar_list->current = $request['current'];
+                $solar_list->price = $request['price'];
                 $solar_list->cable_type_id = $request['cableType'];
                 if($request['imageFile']){
                     File::delete('brand/solar/solar_list/'.$solar_list->image);
@@ -94,6 +95,7 @@ class SolarListController extends Controller
                     'power' => $request['powerW'], 
                     'voltage' => $request['voltage'], 
                     'current' => $request['current'], 
+                    'price' => $request['price'], 
                     'cable_type_id' => $request['cableType'], 
                     'discription' => 'null', 
                     'image' => $photoname,

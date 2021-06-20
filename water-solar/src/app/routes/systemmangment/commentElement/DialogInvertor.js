@@ -405,10 +405,22 @@ export default function DialogInvertor(props) {
                   />
                 </div>
 
-                <div className="col-xl-12 col-lg-12 col-md-12 col-12 descriptInvertor">
+                <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 descriptInvertor">
                   <div class="form-group">
                     <textarea class={`form-control form-control-lg`} id='description' name='description' value={description} onChange={e => setDescription(e.target.value)} rows="2" spellcheck="false" placeholder="Short Description"></textarea>
                   </div>
+                </div>
+                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 p-3">
+                  <TextField id="outlined-basic-price" size="small" className="fullWidthInput" label="Price" name='price' variant="outlined" 
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={invertorListObject?.price} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                  error={errors.price && true} helperText={errors.price ? '*Please enter valid number.' : ''}
+                  />
                 </div>
                 <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
                   <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)} />

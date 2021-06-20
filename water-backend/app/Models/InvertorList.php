@@ -11,7 +11,7 @@ class InvertorList extends Model
     protected $table = 'invertor_lists';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'invertor_brand_id', 'model', 'power', 'voltage', 'current', 'voltage_dc_min', 'voltage_dc_max', 'voltage_ac_min', 'voltage_ac_max', 'discription', 'image', 'data_sheet', 'diameter'
+        'invertor_brand_id', 'model', 'power', 'price', 'voltage', 'current', 'voltage_dc_min', 'voltage_dc_max', 'voltage_ac_min', 'voltage_ac_max', 'discription', 'image', 'data_sheet', 'diameter'
     ];
 
     public function invertor_brand()

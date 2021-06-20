@@ -201,10 +201,10 @@ const marksHP = [
   { value: 20 /*label: '20hp',*/ },
   { value: 25 /*label: '25hp',*/ },
   { value: 30 /*label: '30hp',*/ },
-  { value: 40, label: "40hp" },
+  { value: 40 /*, label: "40hp"*/ },
   { value: 50 /*label: '50hp',*/ },
   { value: 60 /*label: '60hp',*/ },
-  { value: 70, label: "70hp" },
+  { value: 70 /*, label: "70hp"*/ },
   { value: 75 /*label: '75hp',*/ },
   { value: 80 /*label: '80hp',*/ },
   { value: 90 /*label: '90hp',*/ },
@@ -635,7 +635,7 @@ export default function DialogWaterP(props) {
                     valueLabelDisplay="auto"
                   />
                 </div>
-                <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP group_radio_phase insideFormPaddingWPS">
+                <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP group_radio_phase insideFormPaddingWPS p-3">
                   <div
                     class="btn-group"
                     role="group"
@@ -677,7 +677,7 @@ export default function DialogWaterP(props) {
                     </label>
                   </div>
                 </div>
-                <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormBP powerHP inputAdornmentWrap">
+                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 insideFormBP powerHP inputAdornmentWrap">
                   <Typography id="discrete-slider-small-steps" gutterBottom>
                     Power to HP
                   </Typography>
@@ -694,7 +694,19 @@ export default function DialogWaterP(props) {
                     valueLabelDisplay="auto"
                   />
                 </div>
-                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 insideFormBP inputAdornmentWrap">
+                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 p-3">
+                  <TextField id="outlined-basic-price" size="small" className="fullWidthInput" label="Price" name='price' variant="outlined" 
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  defaultValue={waterListObject?.price} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                  error={errors.price && true} helperText={errors.price ? '*Please enter valid number.' : ''}
+                  />
+                </div>
+                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 p-3">
                   <FormControl fullWidth>
                     <TextField
                       size="small"

@@ -23,6 +23,7 @@ class CreateSolarListsTable extends Migration
             $table->string('power');
             $table->string('voltage');
             $table->string('current');
+            $table->string('price')->nullable();
             $table->unsignedBigInteger('cable_type_id');
             $table->foreign('cable_type_id')->references('id')->on('cable_types')->onDelete('cascade');
             $table->string('discription');

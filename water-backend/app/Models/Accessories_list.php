@@ -11,7 +11,7 @@ class Accessories_list extends Model
     protected $table = 'accessories_lists';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'accessories_type_id','name','model','uom_id', 'uom_name','min_quantity', 'max_quantity', 'discription','image', 'data_sheet'
+        'accessories_type_id','name','model','uom_id', 'uom_name','min_quantity', 'max_quantity', 'price', 'discription','image', 'data_sheet'
     ];
 
     public function uom()
