@@ -340,7 +340,7 @@ const getCabletype=async () => {
                               </div>
                                
                             </div>
-                            <div className="col-xl-8 col-lg-8 col-md-8 col-12 insideFormPadding1 inputAdornmentWrap powerW-solarL">
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormPadding1 inputAdornmentWrap powerW-solarL">
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     Power
                                     </Typography>
@@ -355,7 +355,18 @@ const getCabletype=async () => {
                                         valueLabelDisplay="auto"
                                     />
                             </div>
-                            
+                            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 p-3">
+                              <TextField id="outlined-basic-price" size="small" className="fullWidthInput" label="Price" name='price' variant="outlined" 
+                              InputProps={{
+                                endAdornment: <InputAdornment position="end">$</InputAdornment>,
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              defaultValue={solarListObject?.price} inputRef={register({required: true, pattern: /^[+-]?([0-9]*[.])?[0-9]+$/,})} 
+                              error={errors.price && true} helperText={errors.price ? '*Please enter valid number.' : ''}
+                              />
+                            </div>
                             <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBPCable">
                                 <FormControl fullWidth >  
                                   <TextField size="small" id="outlined-basic3-voltage" label="Voltage" variant="outlined"

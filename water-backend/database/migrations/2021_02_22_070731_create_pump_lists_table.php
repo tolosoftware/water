@@ -24,6 +24,7 @@ class CreatePumpListsTable extends Migration
             $table->string('diameter');
             $table->string('power');
             $table->string('hp')->nullable();
+            $table->string('price')->nullable();
             $table->string('weight')->nullable();
             $table->string('voltage')->nullable();
             $table->enum('phase', ['1Phase', '3Phase'])->default('1Phase');

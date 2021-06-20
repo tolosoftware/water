@@ -696,11 +696,12 @@ const handleSubmit = (e) => {
               <tr>
                 <th>ID</th>
                 <th>Model</th>
-                <th>Power (KW)</th>
-                <th>Voltage (V)</th>
-                <th>Current (A)</th>
-                <th>Voltage (AC)</th>
-                <th>Voltage (DC)</th>
+                <th>Price</th>
+                <th>Power</th>
+                <th>Voltage</th>
+                <th>Current</th>
+                <th>Voltage</th>
+                <th>Voltage</th>
                 {/* <th>Image</th> */}
                 <th>Action</th>
               </tr>
@@ -728,7 +729,7 @@ const handleSubmit = (e) => {
             {invertorLists.filter((val)=>
                   {if(search==''){
                     return val
-                  }else if((val.model.includes(search) || val.voltage.includes(search) || val.current.includes(search) || val.power.includes(search))){
+                  }else if((val.model.includes(search) || val.voltage.includes(search) || val.price.includes(search) || val.current.includes(search) || val.power.includes(search))){
                      return val 
                   }}
               ).map((invertor, index) => {
@@ -741,11 +742,12 @@ const handleSubmit = (e) => {
                     </div>
                   </div>
                 </td>
-                <td>{invertor.power}</td>
-                <td>{invertor.voltage}</td>
-                <td>{invertor.current}</td>
-                <td>{invertor.voltage_ac_min} - {invertor.voltage_ac_max}</td>
-                <td>{invertor.voltage_dc_min} - {invertor.voltage_dc_max}</td>
+                <td>{invertor.price? invertor.price +' $': ''}</td>
+                <td>{invertor.power? invertor.power +' KW': ''}</td>
+                <td>{invertor.voltage? invertor.voltage +' V': ''}</td>
+                <td>{invertor.current? invertor.current +' A': ''}</td>
+                <td>{(invertor.voltage_ac_min && invertor.voltage_ac_max)? invertor.voltage_ac_min + '-' + invertor.voltage_ac_max +' AC': ''}</td>
+                <td>{(invertor.voltage_dc_min && invertor.voltage_dc_max)? invertor.voltage_dc_min + '-' + invertor.voltage_dc_max +' DC': ''}</td>
                 {/* <td>
                   <div className="d-flex align-items-center">
                     <img src={`${axios.defaults.baseURL}brand/invertor/invertor_list/${invertor.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />

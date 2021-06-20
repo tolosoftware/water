@@ -829,10 +829,11 @@ const WaterPump = () => {
                 <tr>
                   <th>ID</th>
                   <th>Name/Model</th>
-                  <th>Outlet (Inch)</th>
-                  <th>Current (A)</th>
-                  <th>Diameter (Inch)</th>
-                  <th>Power (KW)</th>
+                  <th>Price</th>
+                  <th>Outlet</th>
+                  <th>Current</th>
+                  <th>Diameter</th>
+                  <th>Power</th>
                   {/* <th>Image</th> */}
                   <th>Action</th>
                 </tr>
@@ -871,6 +872,7 @@ const WaterPump = () => {
                         return val;
                       } else if (
                         val.model.includes(search) ||
+                        val.price.includes(search) ||
                         val.outlet.includes(search) ||
                         val.ampeier.includes(search) ||
                         val.diameter.includes(search) ||
@@ -890,10 +892,11 @@ const WaterPump = () => {
                               </div>
                             </div>
                           </td>
-                          <td>{waterList.outlet}</td>
-                          <td>{waterList.ampeier}</td>
-                          <td>{waterList.diameter}</td>
-                          <td>{waterList.power}</td>
+                          <td>{waterList.price? waterList.price +' $': ''}</td>
+                          <td>{waterList.outlet? waterList.outlet +' Inch': ''}</td>
+                          <td>{waterList.ampeier? waterList.ampeier +' A': ''}</td>
+                          <td>{waterList.diameter? waterList.diameter +' Inch': ''}</td>
+                          <td>{waterList.power? waterList.power +' KW': ''}</td>
                           {/* <td>
                   <div className="d-flex align-items-center">
                       <img src={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/${waterList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />

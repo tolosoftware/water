@@ -167,6 +167,7 @@ const deletAccessory=(id) => {
                     { title: 'Name', field: 'name' },
                     { title: 'Model', field: 'model' },
                     { title: 'Uom', field: 'uom_name' },
+                    { title: 'Price', render:  (accessory) =>{return accessory.price? accessory.price+' $':''} },
                     { title: 'Min Quantity', field: 'min_quantity'},
                     {title: 'Max Quantity', field: 'max_quantity'},
                     // {title: 'Image', field: 'img', render: item => <img src={`${axios.defaults.baseURL}accessories/${item.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />},

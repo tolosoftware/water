@@ -81,6 +81,7 @@ class PumpListController extends Controller
                 $pump_list->diameter = $request['diameter'];
                 $pump_list->power = $request['powerKW'];
                 $pump_list->hp = $request['powerHP'];
+                $pump_list->price = $request['price'];
                 $pump_list->weight = $request['weight'];
                 $pump_list->voltage= $request['voltage'];
                 $pump_list->phase= $request['phase'];
@@ -115,6 +116,7 @@ class PumpListController extends Controller
                     'voltage' => $request['voltage'], 
                     'phase' => $request['phase'], 
                     'hp' => $request['powerHP'], 
+                    'price' => $request['price'], 
                     'weight' => $request['weight'], 
                     'image' => $photoname, 
                     'diameter_file' => $diameterName,  

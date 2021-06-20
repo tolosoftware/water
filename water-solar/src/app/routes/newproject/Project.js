@@ -731,21 +731,20 @@ export default function Project() {
     }
    
   };
-  const accessoryMouseLeave = (wichfunction) => {
-    // setEvaluation(true);
-    if (wichfunction === "fout") {
-      setFoucus(false);
-      setLoadImg(true);
-      setAccImgPath();
-      setLoadImg(false);
-    }
+  // const accessoryMouseLeave = (wichfunction) => {
+  //   if (wichfunction === "fout") {
+  //     setFoucus(false);
+  //     setLoadImg(true);
+  //     setAccImgPath();
+  //     setLoadImg(false);
+  //   }
 
-    if (!foucus) {
-      setLoadImg(true);
-      setAccImgPath();
-      setLoadImg(false);
-    }
-  };
+  //   if (!foucus) {
+  //     setLoadImg(true);
+  //     setAccImgPath();
+  //     setLoadImg(false);
+  //   }
+  // };
 
   const dirtlossMouseOver = (wichInput, wichfunction) => {
     // setEvaluation(false);
@@ -877,6 +876,18 @@ export default function Project() {
   };
 
   const [projectID, setProjectID] = useState(0);
+  const [deviceCost, setDeviceCost] = useState(0);
+  const [accessoryCost, setAccessoryCost] = useState(0);
+
+  const calculateDeviceCost = ()=>{
+    var inputCost = 0;
+    inputFields.forEach(input => {
+      inputCost = Number(inputCost) + Number(input?.item?.price)*Number(input?.quantity);
+      console.log('input cost', inputCost);
+    });
+    setAccessoryCost(inputCost);
+  };
+
   const [evaluation, setEvaluation] = useState(false);
   const [submited, setSubmited] = useState(false);
   const onSubmit = (data) => {
@@ -1918,6 +1929,7 @@ export default function Project() {
                           <div>
                             <Analyze
                               evaluationdata={evaluationdata}
+                              setDeviceCost={setDeviceCost}
                               citylocation={citylocation}
                               projectname={projectname}
                               filled={filled}
@@ -2155,6 +2167,8 @@ export default function Project() {
                           solarSelectWatt &&
                           invertorvalue ? (
                             <div className="col-md-12">
+                              <h2 className='mt-1 p-0 center'>Estimated Cost (±): {Number(deviceCost)+Number(accessoryCost)} $</h2>
+
                               <p className="mt-3 p-4" style={{textAlign:'center'}}>
                                 Your Project Is Ready To Save it!, You can preview
                                 your Project before submit it.
@@ -2166,6 +2180,7 @@ export default function Project() {
                         
                           
                           <div className="row justify-content-center ">
+                           
                             <Button
                               variant="contained"
                               color="primary"
@@ -2233,7 +2248,7 @@ export default function Project() {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={handleNext}
+                      onClick={e=>{handleNext(); calculateDeviceCost();}}
                       
                     >
                       Next

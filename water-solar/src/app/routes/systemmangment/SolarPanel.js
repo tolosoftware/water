@@ -697,6 +697,7 @@ const handleChangeField = async ({ target: { name, value } }) => {
               <tr>
                 <th>ID</th>
                 <th>Type/Model</th>
+                <th>Price</th>
                 <th>Power</th>
                 <th>Voltage</th>
                 <th>Current</th>
@@ -731,9 +732,10 @@ const handleChangeField = async ({ target: { name, value } }) => {
                     </div>
                   </div>
                 </td>
-                <td>{solarList.power}</td>
-                <td>{solarList.voltage}</td>
-                <td>{solarList.current}</td>
+                <td>{solarList.price? solarList.price + ' $':''}</td>
+                <td>{solarList.power? solarList.power+' W':''}</td>
+                <td>{solarList.voltage?solarList.voltage+' V': ''}</td>
+                <td>{solarList.current?solarList.current+' A':''}</td>
                 {/* <td>
                   <div className="d-flex align-items-center">
                   <img src={`${axios.defaults.baseURL}brand/solar/solar_list/${solarList.image}`}  class="img-thumbnail rounded acc_img_width"  alt="Responsive" />

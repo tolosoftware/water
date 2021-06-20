@@ -70,6 +70,7 @@ class InvertorListController extends Controller
                 $invertorList->power = $request['powerKW'];
                 $invertorList->voltage = $request['voltage'];
                 $invertorList->current = $request['current'];
+                $invertorList->price = $request['price'];
                 $invertorList->voltage_dc_min = $request['voltageDC'][0];
                 $invertorList->voltage_dc_max = $request['voltageDC'][1];
                 $invertorList->voltage_ac_min = $request['voltageAC'][0];
@@ -95,6 +96,7 @@ class InvertorListController extends Controller
                     'power' => $request['powerKW'], 
                     'voltage' => $request['voltage'], 
                     'current' => $request['current'], 
+                    'price' => $request['price'], 
                     'voltage_dc_min' => $request['voltageDC'][0], 
                     'voltage_dc_max' => $request['voltageDC'][1], 
                     'voltage_ac_min' => $request['voltageAC'][0], 

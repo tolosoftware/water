@@ -25,6 +25,7 @@ class CreateAccessoriesListsTable extends Migration
             $table->string('uom_name');
             $table->Integer('min_quantity');
             $table->Integer('max_quantity');
+            $table->string('price')->nullable();
             $table->string('discription');
             $table->string('image')->nullable();
             $table->string('data_sheet')->nullable();
