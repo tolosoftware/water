@@ -125,7 +125,6 @@ export default function Analyze(props) {
   useEffect(() => {
     var totalPrice = Number(sugestedpump[0]?.price)+(Number(solar?.solar_list?.price)*Number(solar.solar_quantity))+Number(inverter?.price);
     setDeviceCost(totalPrice);
-
    }, [sugestedpump[0]?.price, solar?.solar_list?.price, inverter?.price]);
   const {filled, setFilled} = props;
 
