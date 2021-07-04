@@ -119,3 +119,18 @@
 .accessory-item-sect{
     min-height: 477px;
 }
+.inputAdornment .MuiOutlinedInput-adornedEnd {
+    padding-right: 2px;
+}
+.inputAdornment .MuiInputAdornment-positionEnd{
+    margin-left: 2px ;
+    color: rgba(0, 0, 0, 0.54);
+}
+.inputAdornment .cursorPointer .MuiSvgIcon-root{
+    width: 20px;
+}
+.MuiSnackbarContent-root {
+    color: black !important;
+    background-color: rgb(244 244 247) !important;
+    max-width: 500px !important;
+}

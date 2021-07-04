@@ -463,9 +463,7 @@ export default function DialogWaterP(props) {
                     id="outlined-read-only-input"
                     label="ID"
                     defaultValue={1}
-                    InputProps={{
-                      readOnly: true,
-                    }}
+                    InputProps={{readOnly: true,}}
                     variant="outlined"
                   />
                 </div>

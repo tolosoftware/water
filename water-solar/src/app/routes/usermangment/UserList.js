@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MaterialTable from "material-table";
-import { NotificationManager } from "react-notifications";
+import { NotificationManager, NotificationContainer } from "react-notifications";
 import IntlMessages from "util/IntlMessages";
 import Swal from "sweetalert2";
 import Spinner from "react-spinner-material";
 import Moment from "react-moment";
 import * as moment from "moment";
 import Button from "@material-ui/core/Button";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
 import Avatar from '@material-ui/core/Avatar';
 
@@ -29,11 +29,18 @@ export const UserList = () => {
   }, [open, getData]);
   const getUserdata = async () => {
     setVisibility(true);
+    var id = JSON.parse(localStorage.getItem("UserData")).id;
     axios
-      .get("api/user")
+      .get("api/user/"+id)
       .then((res) => {
+        if (res.data.auth == "unauthenticated") {
+          localStorage.removeItem("token");
+          this.props.history.push("/signin");
+        } else {
         setVisibility(false);
-        setUserdata(res.data);
+        setUserdata(res.data.users);
+        }
+        
       })
       .catch((err) => {
         setVisibility(false);
@@ -183,7 +190,7 @@ export const UserList = () => {
                       ? true
                       : false,
                   icon: "manage_accounts",
-                  tooltip: "Manage Brand",
+                  tooltip: "Manage Role",
                   onClick: (event, rowData) => editBrand(rowData.id),
                 }),
                 (rowData) => ({
@@ -216,6 +223,7 @@ export const UserList = () => {
           )}
         </div>
       </div>
+      <NotificationContainer />
     </>
   );
 };

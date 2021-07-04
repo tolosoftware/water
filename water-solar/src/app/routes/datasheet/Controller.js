@@ -3,7 +3,7 @@ import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {NotificationManager} from 'react-notifications';
+import {NotificationManager, NotificationContainer} from 'react-notifications';
 import IntlMessages from 'util/IntlMessages';
 import './download.css';
 
@@ -17,9 +17,13 @@ const Controller=() => {
       var id = JSON.parse(localStorage.getItem("UserData")).id;
     axios.get('api/controller/'+id)
         .then( res => {
-         setController(res.data)
-        }
-        ).catch( err =>{
+          if (res.data.auth == "unauthenticated") {
+            localStorage.removeItem("token");
+            this.props.history.push("/signin");
+          } else {
+            setController(res.data.inveter_lists);
+          }
+        }).catch( err =>{
         NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages
         id="notification.titleHere"/>);
        })
@@ -66,6 +70,7 @@ const Controller=() => {
                 },
               }}
           />
+          <NotificationContainer />
     </>  
 
   );

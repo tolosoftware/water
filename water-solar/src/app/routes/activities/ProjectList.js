@@ -34,9 +34,14 @@ export const ProjectList=(props) => {
          setOpen(true);
      axios.get('api/userprojecttt/'+JSON.parse(localStorage.getItem("UserData")).id)
          .then(res => {
+            if(res.data.auth=='unauthenticated'){
+                localStorage.removeItem("token");
+                this.props.history.push("/signin");
+            }else{
              setOpen(false);
-             setProjects(res.data)
+             setProjects(res.data.projects);
             }
+        }
      ).catch(err => {
              setOpen(false);
              NotificationManager.error(<IntlMessages id="notification.errorMessage"/>, <IntlMessages

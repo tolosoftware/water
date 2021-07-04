@@ -1,3 +1,25 @@
 .logcolor{
     color: #fff;
 }
+@media screen and (max-width: 955px) and (min-width: 768px){
+    .navbar-nav li.nav-item {
+        padding: 0 7px;
+    }
+    .second-text-menu{
+        display: none;
+    }
+}
+@media screen and (min-width: 1200px){
+    .mobile-width, .devider-sect{
+        display: none;
+    }
+}
+@media screen and (max-width: 1199px){
+    .desktop-width{
+        display: none;
+    }
+    .devider-sect{
+        width: 100%;
+        margin-top: 10px;
+    }
+}

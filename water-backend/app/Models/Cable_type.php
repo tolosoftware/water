@@ -10,7 +10,7 @@ class Cable_type extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name', 'price',
     ];
 
     public function solar_list()

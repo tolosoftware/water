@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('website');
+            $table->enum('estimated_cost', ['true', 'false'])->default('true');
             $table->enum('status', ['pending', 'active', 'inactive']);
             $table->enum('belongto', ['Rana Solar', 'Dorokhshan Solar'])->default('Rana Solar');
             $table->integer('expiration');

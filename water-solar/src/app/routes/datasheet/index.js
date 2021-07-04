@@ -1,21 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import CardBox from 'components/CardBox';
+import React, { useEffect, useState } from "react";
+import CardBox from "components/CardBox";
 import Widget from "components/Widget/index";
-import './download.css';
+import "./download.css";
 // import ListAltIcon from '@material-ui/icons/ListAlt';
 import LocalDrinkIcon from "@material-ui/icons/LocalDrink";
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import FlashAutoIcon from '@material-ui/icons/FlashAuto';
-import ViewComfyIcon from '@material-ui/icons/ViewComfy';
-import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import FlashAutoIcon from "@material-ui/icons/FlashAuto";
+import ViewComfyIcon from "@material-ui/icons/ViewComfy";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 
-import Module from './Module';
-import Pump from './Pump';
-import Controller from './Controller';
-import Acceessories from './Acceessories';
-import Structure from './Structure';
+import Module from "./Module";
+import Pump from "./Pump";
+import Controller from "./Controller";
+import Acceessories from "./Acceessories";
+import Structure from "./Structure";
 const Datasheet = () => {
-
   const [module, setModule] = useState(false);
   const [pump, setPump] = useState(false);
   const [controller, setController] = useState(false);
@@ -25,46 +24,45 @@ const Datasheet = () => {
 
   useEffect(() => {
     selectedTabe(1);
-  },[])
-  const selectedTabe=async (id) => {
-   
-    if(id == 1){
+  }, []);
+
+  const selectedTabe = async (id) => {
+    if (id == 1) {
       setActive(1);
       setModule(true);
       setPump(false);
       setController(false);
       setStructure(false);
       setAccessories(false);
-    }else if(id == 2){
+    } else if (id == 2) {
       setActive(2);
       setModule(false);
       setPump(true);
       setController(false);
       setStructure(false);
       setAccessories(false);
-    }else if(id == 3){
+    } else if (id == 3) {
       setActive(3);
       setModule(false);
       setPump(false);
       setController(true);
       setStructure(false);
       setAccessories(false);
-    }else if(id == 4){
+    } else if (id == 4) {
       setActive(4);
       setModule(false);
       setPump(false);
       setController(false);
       setStructure(true);
       setAccessories(false);
-    }
-    else if(id == 5){
+    } else if (id == 5) {
       setActive(5);
       setModule(false);
       setPump(false);
       setController(false);
       setStructure(false);
       setAccessories(true);
-    }else{
+    } else {
       setActive(1);
       setModule(true);
       setPump(false);
@@ -74,7 +72,6 @@ const Datasheet = () => {
     }
   };
 
-
   function toggelactivestyleinvertor(index) {
     if (active === index) {
       return "activetab bg-info text-white";
@@ -83,121 +80,133 @@ const Datasheet = () => {
     }
   }
 
-  return(
-  <>
-
-  <div className="app-wrapper">
-    <div  className="row custom-margin d-flex justify-content-center">
-
-    
-        <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(1)}>
-          <Widget styleName={toggelactivestyleinvertor(1)} >
+  return (
+    <>
+      <div className="app-wrapper">
+        <div className="row custom-margin d-flex justify-content-center">
+          <div
+            className="col-xl-2 col-lg-3 col-md-4 col-12 box-mouse-over"
+            onClick={() => selectedTabe(1)}
+          >
+            <Widget styleName={toggelactivestyleinvertor(1)}>
               <div className="d-flex flex-row justify-content-center">
-                <WbSunnyIcon className="sunnyIcon"/>
+                <WbSunnyIcon className="sunnyIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">PV Module</h4>
               </div>
             </Widget>
-       </div>
+          </div>
 
-       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(2)}>
-          <Widget styleName={toggelactivestyleinvertor(2)} >
+          <div
+            className="col-xl-2 col-lg-3 col-md-4 col-12 box-mouse-over"
+            onClick={() => selectedTabe(2)}
+          >
+            <Widget styleName={toggelactivestyleinvertor(2)}>
               <div className="d-flex flex-row justify-content-center">
-              <LocalDrinkIcon className="lDrinkIcon" />
+                <LocalDrinkIcon className="lDrinkIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Water Pump</h4>
               </div>
             </Widget>
-       </div>
+          </div>
 
-       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(3)}>
-          <Widget styleName={toggelactivestyleinvertor(3)}  >
+          <div
+            className="col-xl-2 col-lg-3 col-md-4 col-12 box-mouse-over"
+            onClick={() => selectedTabe(3)}
+          >
+            <Widget styleName={toggelactivestyleinvertor(3)}>
               <div className="d-flex flex-row justify-content-center">
-                <FlashAutoIcon className="lDrinkIcon"/>
+                <FlashAutoIcon className="lDrinkIcon" />
               </div>
               <div className="text-center">
                 <h4 className="jr-font-weight-medium mb-3">Controller</h4>
               </div>
             </Widget>
-       </div>
+          </div>
 
-       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(4)}>
-          <Widget styleName={toggelactivestyleinvertor(4)} >
-            <div className="d-flex flex-row justify-content-center">
-              <ViewComfyIcon className="lDrinkIcon" />
-            </div>
-            <div className="text-center">
-              <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
-            </div>
-          </Widget>
-       </div>
+          <div
+            className="col-xl-2 col-lg-3 col-md-4 col-12 box-mouse-over"
+            onClick={() => selectedTabe(4)}
+          >
+            <Widget styleName={toggelactivestyleinvertor(4)}>
+              <div className="d-flex flex-row justify-content-center">
+                <ViewComfyIcon className="lDrinkIcon" />
+              </div>
+              <div className="text-center">
+                <h4 className="jr-font-weight-medium mb-3">PV Structure</h4>
+              </div>
+            </Widget>
+          </div>
 
-       <div className="col-md-2 box-mouse-over" onClick={() => selectedTabe(5)}>
-          <Widget styleName={toggelactivestyleinvertor(5)}  >
-            <div className="d-flex flex-row justify-content-center">
-              <SettingsInputComponentIcon className="lDrinkIcon" />
-            </div>
-            <div className="text-center">
-              <h4 className="jr-font-weight-medium mb-3">Accessories</h4>
-            </div>
-          </Widget>
-       </div>
-       
+          <div
+            className="col-xl-2 col-lg-3 col-md-4 col-12 box-mouse-over"
+            onClick={() => selectedTabe(5)}
+          >
+            <Widget styleName={toggelactivestyleinvertor(5)}>
+              <div className="d-flex flex-row justify-content-center">
+                <SettingsInputComponentIcon className="lDrinkIcon" />
+              </div>
+              <div className="text-center">
+                <h4 className="jr-font-weight-medium mb-3">Accessories</h4>
+              </div>
+            </Widget>
+          </div>
         </div>
 
-   
-
-    {module== true?(
-          <div className="row">
-              <div className="col-md-12 pl-3 pr-3">
-              <Module/>
-              </div>
-          </div>
-    ):''}
-
-      {pump== true?(
-          <div className="row">
-              <div className="col-md-12 pl-3 pr-3">
-                 <Pump/>
-              </div>
-          </div>
-    ):''}
-
-  
-
-     {controller== true?(
+        {module == true ? (
           <div className="row">
             <div className="col-md-12 pl-3 pr-3">
-               <Controller/>
+              <Module />
             </div>
           </div>
-    ):''}
-   
+        ) : (
+          ""
+        )}
 
-    {accessories== true?(
+        {pump == true ? (
           <div className="row">
-              <div className="col-md-12 pl-3 pr-3">
-                 <Acceessories/>
-              </div>
+            <div className="col-md-12 pl-3 pr-3">
+              <Pump />
+            </div>
           </div>
-    ):''}
+        ) : (
+          ""
+        )}
 
-  {structure== true?(
+        {controller == true ? (
+          <div className="row">
+            <div className="col-md-12 pl-3 pr-3">
+              <Controller />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {accessories == true ? (
+          <div className="row">
+            <div className="col-md-12 pl-3 pr-3">
+              <Acceessories />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {structure == true ? (
           <div className="row custom-row-card pl-3 pr-3">
-          <CardBox >
-          <Structure/>
-          </CardBox>
+            <CardBox>
+              <Structure />
+            </CardBox>
           </div>
-      ):''}
- 
-
-    </div>
-   
-
-</>
-
-)};
+        ) : (
+          ""
+        )}
+      </div>
+    </>
+  );
+};
 
 export default Datasheet;

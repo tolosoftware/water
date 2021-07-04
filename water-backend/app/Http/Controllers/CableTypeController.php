@@ -35,7 +35,16 @@ class CableTypeController extends Controller
      */
     public function store(Request $request)
     {
-        return Cable_type::create($request->all());
+        if (!empty($request['cableTypeID'])) {
+            $cable_type = Cable_type::findOrFail($request['cableTypeID']);
+            $cable_type->name = $request['name'];
+            $cable_type->price = $request['price'];
+            $cable_type->save();
+        }else{
+            Cable_type::create($request->all());
+        }
+        $cable_type = $this->index();
+        return $cable_type;
     }
 
     /**

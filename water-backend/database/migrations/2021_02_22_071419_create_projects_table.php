@@ -26,6 +26,8 @@ class CreateProjectsTable extends Migration
             $table->string('pip_length');
             $table->enum('solar_base', ['Manual Tracker', 'Ground Structure']);
             $table->string('daily_output');
+            $table->string('daily_output_changed')->nullable();
+            $table->string('daily_output_lable')->nullable();
             $table->string('dirt_loss');
             $table->string('solar_watt')->nullable();
             $table->string('latitude')->nullable();

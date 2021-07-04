@@ -26,6 +26,7 @@ Route::get('userproject/{id}',[UserController::class,'getUserProject']);
 Route::get('provenceUser',[UserController::class,'provenceUser']);
 Route::get('expir/{id}',[UserController::class,'getexpiration']);
 Route::get('userBrand/{id}',[UserController::class,'getUserBrand']);
+Route::get('checkToken/{id}',[UserController::class,'checkToken']);
 Route::post('postUserBrand',[UserController::class,'postUserBrand']);
 
 // Dashboard Route
@@ -36,6 +37,7 @@ Route::get('userCity',[UserController::class,'userCity']);
 Route::post('signupRequest',[UserController::class,'signupRequest']);
 
 //setting
+Route::resource('structure', StructureController::class);
 Route::resource('uom', UomController::class);
 Route::resource('cabletype', CableTypeController::class);
 Route::resource('accessoriestype', AccessoriesTypeController::class);
@@ -61,6 +63,9 @@ Route::get('getSolarWatt/{id}',[ProjectsController::class,'getSolarWatt']);
 Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
 Route::post('project-analyze',[ProjectsController::class,'analyze']);
 Route::get('getIrredation/{id}',[ProjectsController::class,'getIrredation']);
+Route::get('/createPdf/{id}', [ProjectsController::class, 'createPDF']);
+
+
 
 Route::resource('post', PostController::class);
 
@@ -82,7 +87,7 @@ Route::get('irridation', [IrradiationController::class,'irridation']);
 Route::get('pv-module', [DatasheetController::class,'pvModule']);
 Route::get('pump/{id}', [DatasheetController::class,'pump']);
 Route::get('controller/{id}', [DatasheetController::class,'controller']);
-Route::get('accessoriesdownload', [DatasheetController::class,'accessoriesdownload']);
+Route::get('accessoriesdownload/{id}', [DatasheetController::class,'accessoriesdownload']);
 Route::get('solar/{id}', [DatasheetController::class,'solar']);
 
 

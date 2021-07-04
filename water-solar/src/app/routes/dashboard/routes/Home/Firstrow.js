@@ -12,7 +12,7 @@ const Firstrow = () => {
   const [open, setOpen] = React.useState(false);
   return (
     <>
-      <div className="col-md-3">
+      <div className="col-xl-3 col-lg-3 col-md-6 col-12">
         <NavLink
           className="prepend-icon linkstyle"
           to="/app/newproject"
@@ -29,7 +29,7 @@ const Firstrow = () => {
         </NavLink>
       </div>
 
-      <div className="col-md-3">
+      <div className="col-xl-3 col-lg-3 col-md-6 col-12">
         <NavLink
           className="prepend-icon linkstyle"
           to="/app/activities"
@@ -46,7 +46,7 @@ const Firstrow = () => {
         </NavLink>
       </div>
 
-      <div className="col-md-3">
+      <div className="col-xl-3 col-lg-3 col-md-6 col-12">
         <NavLink
           className="prepend-icon linkstyle"
           to="/app/datasheet"
@@ -63,7 +63,7 @@ const Firstrow = () => {
         </NavLink>
       </div>
 
-      <div className="col-md-3" onClick={() => setOpen(true)}>
+      <div className="col-xl-3 col-lg-3 col-md-6 col-12" onClick={() => setOpen(true)}>
         <Widget styleName={`bg-info text-white dashboard`}>
           <div className="d-flex flex-row justify-content-center">
             <InfoIcon fontSize="large" />

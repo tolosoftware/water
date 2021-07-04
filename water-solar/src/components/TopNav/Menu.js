@@ -116,7 +116,7 @@ class Menu extends Component {
           {JSON.parse(localStorage.getItem('UserData')).system == 1 ? (
             <li className="nav-item">
                 <NavLink className="prepend-icon" to="/app/systemmangment">
-                  <span className="nav-text">System Management</span>
+                  <span className="nav-text">System <span className='second-text-menu'>Management</span></span>
                 </NavLink>
           
             </li>
@@ -126,7 +126,7 @@ class Menu extends Component {
             <li className="nav-item">
               
                 <NavLink className="prepend-icon" to="/app/usermangment">
-                  <span className="nav-text">User Management</span>
+                  <span className="nav-text">User <span className='second-text-menu'>Management</span></span>
                 </NavLink>
             </li>
            ) : ''}

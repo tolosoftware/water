@@ -1,5 +1,6 @@
 <?php
-
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/showProject/{id}', [ProjectsController::class, 'showPDF']);
+Route::get('/createPdf/{id}', [ProjectsController::class, 'createPDF']);

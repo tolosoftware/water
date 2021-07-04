@@ -116,6 +116,7 @@ export default function Analyze(props) {
   const [solar, setSolar] = React.useState([]);
   const [solarbrand, setSolarbrand] = React.useState([]);
   const [inverter, setInverter] = React.useState([]);
+  const [structure, setStructure] = React.useState([]);
   const [hrEnergy, setHrEnergy] = useState([]);
   const [energy, setEnergy] = useState([]);
   const [hrOutputP, setHrOutputP] = useState([]);
@@ -123,9 +124,17 @@ export default function Analyze(props) {
   const [dataError, setDataError] = useState(false);
   const [inputError, setInputError] = useState({});
   useEffect(() => {
-    var totalPrice = Number(sugestedpump[0]?.price)+(Number(solar?.solar_list?.price)*Number(solar.solar_quantity))+Number(inverter?.price);
-    setDeviceCost(totalPrice);
-   }, [sugestedpump[0]?.price, solar?.solar_list?.price, inverter?.price]);
+    var pumpCost = sugestedpump[0]?.price?sugestedpump[0]?.price:0;
+    var solarCost = solar?.solar_list?.price?Number(solar?.solar_list?.price)*Number(solar.solar_quantity):0;
+    var inverterCost = inverter?.price?inverter?.price:0;
+    var structureCost = structure?.price?structure?.price:0;
+    var cablePrice = cable?.price?Number(cable?.price)*Number(props.evaluationdata?.motorcable):0;
+
+    var totalPrice = Number(pumpCost)+(Number(solarCost))+Number(inverterCost)+Number(structureCost);
+    setDeviceCost(Number(totalPrice)+Number(structureCost));
+    // console.log('deviceCost', Number(totalPrice)+Number(structureCost))
+    
+   }, [sugestedpump[0]?.price, solar?.solar_list?.price, inverter?.price, structure?.price]);
   const {filled, setFilled} = props;
 
   const docalculculation = async() => {
@@ -153,6 +162,7 @@ export default function Analyze(props) {
           setCable(res.data.cable);
           setSolar(res.data.solar);
           setInverter(res.data.inverter);
+          setStructure(res.data.structure[0]);
           setSolarbrand(res.data.solarbrand);
           setHrEnergy(res.data.hrEnergy);
           setEnergy(res.data.energy);
@@ -170,6 +180,16 @@ export default function Analyze(props) {
       .catch((err) => {
         setOpenbackdrop(false);
         setDataError(true);
+        setSugestedpump([]);
+          setCable([]);
+          setSolar([]);
+          setInverter([]);
+          setStructure([]);
+          setSolarbrand([]);
+          setHrEnergy([]);
+          setEnergy([]);
+          setHrOutputP([]);
+          setMonthlyHrOutput([]);
         NotificationManager.error(
           <IntlMessages id="notification.errorMessage" />,
           <IntlMessages id="notification.titleHere" />
@@ -193,6 +213,9 @@ export default function Analyze(props) {
       })
       .catch((err) => {
         setOpenbackdrop(false);
+        setirdationAvregePerHour([]);
+        setIrdformont([]);
+        setAvgmonth('');
         NotificationManager.error(
           <IntlMessages id="notification.errorMessage" />,
           <IntlMessages id="notification.titleHere" />
@@ -210,7 +233,7 @@ export default function Analyze(props) {
             </span>
 
             <h2 className="d-inline-block">
-              Please Change the Brand, your input values and try again!
+              Please Change the Brand, or your sizing input values then try again!
             </h2>
           </UncontrolledAlert>
         </div>
@@ -425,6 +448,7 @@ export default function Analyze(props) {
                     <strong>Cable: {cable.name}</strong>{" "}
                   </div>
                 </div>
+              
               </>
             ) : (
               ""
@@ -479,7 +503,7 @@ export default function Analyze(props) {
                     <strong>Power: {solar?.solar_list?.power} W</strong>{" "}
                   </div>
                   <div className="col-md-3">
-                    <strong>Current: {solar.current} A</strong>
+                    <strong>Current: {solar?.solar_list?.current} A</strong>
                   </div>
                   <div className="col-md-3">
                     <strong>Quantity: {solar.solar_quantity} panel</strong>{" "}
@@ -545,6 +569,46 @@ export default function Analyze(props) {
               <div className={classes.rootalert}>
                 <Alert severity="error">Inverter Not found !</Alert>
               </div>
+            ) : (
+              ""
+            )}
+
+            <Divider className="mb-3 mt-3" />
+            <h2>Structure</h2>
+            {structure? (
+              <>
+                <strong className="mb-2" style={{ marginBottom: "2px" }}>
+                  {" "}
+                </strong>
+                <div className="row">
+                   
+                  <div className="col-md-3">
+                    <strong>Name: {structure?.name}</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Model: {structure?.model}</strong>{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <strong>Quantity: {structure?.quantity} stand</strong>{" "}
+                  </div>
+                  <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
+                      <FormControl fullWidth>
+                      <a href={`${axios.defaults.baseURL}structure/data_sheet/${structure?.datasheet}`} target="_blank">
+                      <Button
+                          style={{ padding: '6px 6px'}}
+                          variant="contained"
+                          color="default"
+                          className={classes.button}
+                          startIcon={<CloudDownloadIcon />}
+                        >
+                          Data Sheet
+                        </Button>
+                      </a>
+                        
+                      </FormControl>
+                  </div>
+                </div>
+              </>
             ) : (
               ""
             )}

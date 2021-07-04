@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// import {NavLink} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
@@ -6,7 +7,6 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Popover from '@material-ui/core/Popover';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,6 +19,13 @@ import Spinner from "react-spinner-material";
 import {useForm} from 'react-hook-form';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import Menu from '@material-ui/core/Menu';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import {Snackbar} from '@material-ui/core';
 
 //css
 import "./custome.css";
@@ -53,6 +60,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import CloseIcon from "@material-ui/icons/Close";
 //analize project
+import Map from "./Map";
 import Analyze from "./Analyze";
 import Preview from "./Preview";
 import PropTypes from "prop-types";
@@ -148,6 +156,12 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     maxWidth: '480px',
     padding: theme.spacing(1),
+  },
+  rootCh: {
+    display: 'flex',
+  },
+  formControl: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -353,6 +367,15 @@ export default function Project() {
     initialState
   );
 
+  const [stateNote, setStateNote] = React.useState(false);
+  const handleClickNote = (text) => {
+    setTextContent(text);
+    setStateNote(true);
+  };
+  const handleCloseNote = () => {
+    setStateNote(false);
+  };
+
   const handlchangfild = async ({ target: { name, value } }) => {
     if (name === "projectname") {
       setProjectname(value);
@@ -409,7 +432,20 @@ export default function Project() {
       setPiplenght(value);
     }
     else if (name === "discharge") {
-      setDischarge(value);
+      if(waterDeLable=='m³/h'){
+        setDischargeChanged(value);
+        setDischarge(value);
+      }else if(waterDeLable=='L/s'){
+        // 1L/s=(3600/1000)m³/h
+        var changedValue = Number(value)*(3.6);
+        setDischargeChanged(value);
+        setDischarge(changedValue);
+      }else{
+        // m³/d=(1/6)m³/h
+        var changedValue = Number(value)*(0.1667);
+        setDischargeChanged(value);
+        setDischarge(changedValue);
+      }
     }
     
     const schemaErrors = await runValidation(schema, {
@@ -501,7 +537,11 @@ export default function Project() {
   //end solar and brand
   //Dialog
   const [open, setOpen] = React.useState(false);
+  const [openMap, setOpenMap] = React.useState(false);
 
+  const handleClickOpenMap = () => {
+    setOpenMap(true);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -539,20 +579,7 @@ export default function Project() {
     'Please Enter your Pipe Friction Losses',
   ];
   // start code for mouse poppur
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [textContent, setTextContent] = useState('');
-
-  const handlePopoverOpen = (event, text) => {
-    setTextContent(text);
-    setAnchorEl(event.currentTarget);
-
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openEl = Boolean(anchorEl);
   
   // end mouse poppur
 
@@ -594,12 +621,52 @@ export default function Project() {
   const [piplenght, setPiplenght] = React.useState();
   const [dirtloss, setDirtloss] = React.useState(5);
   const [discharge, setDischarge] = React.useState();
+  const [dischargeChanged, setDischargeChanged] = React.useState();
+  const [estimatedCost,setEstimatedCost]= useState(true);
+  
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
   ]);
   const [itemChange, setItemChange] = useState(
     { item: '', flag: false}
   );
+
+
+// start code of water demand
+const [anchorElM, setAnchorElM] = React.useState(null);
+  const handleClickCA = (event) => {
+    setAnchorElM(event.currentTarget);
+  };
+
+  const handleClickAway = () => {
+    setAnchorElM(null);
+  };
+  const [waterDemandLable,setWaterDemandLable]= useState([
+    {id: 1, checked:true, name: 'm³/h'},
+    {id: 2, checked:false, name: 'L/s'},
+    {id: 3, checked:false, name: 'm³/d'},
+  ]);
+  const [waterDeLable,setWaterDeLable]= useState('m³/h');
+  
+
+  const handleChangeWaterDeLab = (id, value) => {
+    // console.log('pumpBrand', value);
+    const newValue = waterDemandLable.map(i => {
+      if(i.id === id){
+        if(value){
+          i['checked'] = value;
+          setWaterDeLable(i.name);
+        }
+      }else{
+        i['checked'] = false
+      }
+      return i;
+    })
+    setWaterDemandLable(newValue);
+    handleClickAway();
+  };
+
+// end code of water demand
   useEffect(()=>{
     if(itemChange.flag){
       setAccessories([...accessories, itemChange.item]);
@@ -662,6 +729,10 @@ export default function Project() {
       .get("api/gitprojectdata/" + id)
       .then((res) => {
         // console.log(res.data);
+        if(res.data.auth=='unauthenticated'){
+          localStorage.removeItem("token");
+          this.props.history.push("/signin");
+        }else{
         setOpenbackdrop(false);
         setLocation(res.data.countrylist);
         setDbcity(res.data.city);
@@ -670,7 +741,10 @@ export default function Project() {
         setInvertor(res.data.invertorbrand);
         setAccessories(res.data.accessories);
         setAccessoriesCopy(res.data.accessories);
+        var esCoValue = (res.data.estimatedCost)=='true'?true:false;
+        setEstimatedCost(esCoValue);
         setOpen(true);
+      }
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -751,25 +825,25 @@ export default function Project() {
     if (wichInput === "MT" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/Layouts/structure.png");
+      setImagepath("/Layouts/structure.jpg");
     }
 
     if (wichInput === "MT" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/Layouts/structure.png");
+        setImagepath("/Layouts/structure.jpg");
       }
     }
     if (wichInput === "GS" && wichfunction === "focus") {
       setFoucus(true);
       setMyImage("img-thumbnail rounded mx-auto d-block");
-      setImagepath("/Layouts/ground.jpg");
+      setImagepath("/Layouts/ground1.jpg");
     }
 
     if (wichInput === "GS" && wichfunction === "hover") {
       if (!foucus) {
         setMyImage("img-thumbnail rounded mx-auto d-block");
-        setImagepath("/Layouts/ground.jpg");
+        setImagepath("/Layouts/ground1.jpg");
       }
     }
     if (wichInput === "dirt" && wichfunction === "focus") {
@@ -878,12 +952,13 @@ export default function Project() {
   const [projectID, setProjectID] = useState(0);
   const [deviceCost, setDeviceCost] = useState(0);
   const [accessoryCost, setAccessoryCost] = useState(0);
-
+  // useEffect(() => {
+  //  }, [deviceCost, accessoryCost]);
   const calculateDeviceCost = ()=>{
     var inputCost = 0;
     inputFields.forEach(input => {
       inputCost = Number(inputCost) + Number(input?.item?.price)*Number(input?.quantity);
-      console.log('input cost', inputCost);
+      // console.log('input cost', inputCost);
     });
     setAccessoryCost(inputCost);
   };
@@ -908,8 +983,9 @@ export default function Project() {
       pumpvalue,
       solarvalue,
       solarSelectWatt,
-      invertorvalue, gps
+      invertorvalue, gps, dischargeChanged, waterDeLable,
     };
+
     alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
     axios
@@ -932,33 +1008,36 @@ export default function Project() {
         );
       });
   };
-  
-  const newSizing = ()=>{
-    setProjectname('');
-    setCity('');
-    setDaynomichead('');
-    setSolarCable('');
-    setMotorcable('');
-    setPiplenght('');
-    setDischarge('');
-    setDirtloss(5);
-    setBas('Manual Tracker');
-    setInputFields([
-      { id: uuidv4(), item: "", quantity: "", uomAc: "" },
-    ]);
-    setPumpvalue('');
-    setPumpstate('');
-    setSolarvalue('');
-    setSolarstate('');
-    setSolarSelectWatt('');
-    setInvertorvalue(''); 
-    setInvertorstate(''); 
-    setAccessories(accessoriesCopy); 
-    setGps( { lati: '', long: ''});
-    setActiveStep(0);
-    setActiveStepBrand(0);
-    setOpen(true);
+  const refreshPage = ()=> {
+    window.location.reload(false);
   };
+  // const newSizing = ()=>{
+  //   setProjectname('');
+  //   setCity('');
+  //   setDaynomichead('');
+  //   setSolarCable('');
+  //   setMotorcable('');
+  //   setPiplenght('');
+  //   setDischarge('');
+  //   setDirtloss(5);
+  //   setBas('Manual Tracker');
+  //   setInputFields([
+  //     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
+  //   ]);
+  //   setPumpvalue('');
+  //   setPumpstate('');
+  //   setSolarvalue('');
+  //   setSolarstate('');
+  //   setSolarSelectWatt('');
+  //   setInvertorvalue(''); 
+  //   setInvertorstate(''); 
+  //   setAccessories(accessoriesCopy); 
+  //   setGps( { lati: '', long: ''});
+  //   setActiveStep(0);
+  //   setActiveStepBrand(0);
+  //   setEvaluationdata([]);
+  //   setOpen(true);
+  // };
 
   const [evaluationdata, setEvaluationdata] = React.useState("");
   const evaluationfunction = () => {
@@ -980,6 +1059,7 @@ export default function Project() {
       dirtloss,
       bas,
     };
+    
     // console.log('dynamicHead', dynamicHead);
     // console.log('evalData', evalData);
     setEvaluation(true);
@@ -992,7 +1072,7 @@ export default function Project() {
     setOpenbackdrop(true);
     let alldata = {projectname,country,city,daynomichead,solarCable,
       motorcable,piplenght,discharge,dirtloss,bas,inputFields,pumpvalue,solarvalue,
-      solarSelectWatt,invertorvalue,gps,
+      solarSelectWatt,invertorvalue,gps, dischargeChanged, waterDeLable,
     };
     alldata["user_id"] = JSON.parse(localStorage.getItem("UserData")).id;
     // console.log('all Data ', alldata);
@@ -1395,31 +1475,14 @@ export default function Project() {
                       </Dialog>
                       {/* end dialog */}
                       <Divider className="mb-3 mt-3" />
-                      <Popover
-                          anchorReference="anchorPosition"
-                          anchorPosition={{ top: 990, left: 1440 }}
-                          id="mouse-over-popover"
-                          className={classes.popover}
-                          classes={{
-                            paper: classes.paper,
-                          }}
-                          open={openEl}
-                          anchorEl={anchorEl}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                          }}
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                          }}
-                          onClose={handlePopoverClose}
-                          disableAutoFocus={true}
-                          disableEnforceFocus={true}
-                          disableFocus={true}
-                        >
-                        <Typography>{textContent}</Typography>
-                      </Popover>
+                      <Map setOpenMap={setOpenMap} openMap={openMap} setGps={setGps}/>
+                      <Snackbar
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        open={stateNote} autoHideDuration={30000}
+                        onClose={handleCloseNote}
+                        message={textContent}
+                        key={'bottom' + 'right'}
+                      />
                       <div onMouseOver={()=>dirtlossMouseLeave("fout")}>
                         <div className="col-md-12 p-0">
                             <TextField
@@ -1445,11 +1508,10 @@ export default function Project() {
                                   ? true
                                   : false
                               }
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="false"
-                              onMouseOver={e=>handlePopoverOpen(e, textData[0])}
+                              
+                              onMouseOver={()=>handleClickNote(textData[0])}
                               // onMouseLeave={handlePopoverClose}
-                              onFocus={(e) => {handlePopoverOpen(e, textData[0]);}}
+                              onFocus={()=>handleClickNote(textData[0])}
                               // onBlur={handlePopoverClose}
                               
                             />
@@ -1570,10 +1632,8 @@ export default function Project() {
                                   //   </InputAdornment>
                                   // ),
                                 }}
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                onMouseOver={e=>handlePopoverOpen(e, textData[7])}
-                                onFocus={(e) => {handlePopoverOpen(e, textData[7]);}}
+                                onMouseOver={e=>handleClickNote(textData[7])}
+                                onFocus={(e) => {handleClickNote(textData[7]);}}
                                 InputLabelProps={{ shrink: true, }}
                                 value={gps.lati}
                                 onChange={(event) => setGps({...gps, lati: event.target.value})}
@@ -1593,14 +1653,24 @@ export default function Project() {
                                   // ),
                                 }}
                                 InputLabelProps={{ shrink: true, }}
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                onMouseOver={e=>handlePopoverOpen(e, textData[8])}
-                                onFocus={(e) => {handlePopoverOpen(e, textData[8]);}}
+                                onMouseOver={e=>handleClickNote(textData[8])}
+                                onFocus={(e) => {handleClickNote(textData[8]);}}
                                 value={gps.long}
                                 onChange={(event) => setGps({...gps, long: event.target.value})}
                             />
                           </div>
+                          <div className="col-md-12 mt-3">
+                            <Button
+                              size="large"
+                              color="primary"
+                              variant="outlined"
+                              className="form-control"
+                              onClick={handleClickOpenMap}
+                            >
+                              Pickup your GPS From Google Map
+                            </Button>
+                          </div>
+                                
                         </div>
                       </div>
                       <Divider className="mb-3 mt-3" />
@@ -1634,12 +1704,10 @@ export default function Project() {
                                 value={daynomichead}
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
                                 error={touched && touched.head && error && error.head ? true:false}
-                                onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handlePopoverOpen(e, textData[1])}}
+                                onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handleClickNote(textData[1])}}
                                 // onMouseLeave={() => {handlePopoverClose()}}
-                                onFocus={(e) => {dirtlossMouseOver("head", "focus"); handlePopoverOpen(e, textData[1]);}}
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[1])}
+                                onFocus={(e) => {dirtlossMouseOver("head", "focus"); handleClickNote(textData[1]);}}
+                                // onMouseEnter={e=>handleClickNote(textData[1])}
                                 // onBlur={handlePopoverClose}
                               />
                           </div>
@@ -1671,16 +1739,14 @@ export default function Project() {
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
                                 error={touched && touched.solarCable && error && error.solarCable ? true:false}
                                 onMouseOver={(e) =>
-                                  {handlePopoverOpen(e, textData[2]);
+                                  {handleClickNote(textData[2]);
                                   dirtlossMouseOver("solarCable", "hover");}
                                 }
                                 // onMouseLeave={() => { handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("solarCable", "focus"); handlePopoverOpen(e, textData[2]);}
+                                  {dirtlossMouseOver("solarCable", "focus"); handleClickNote(textData[2]);}
                                 }
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[2])}
+                                // onMouseEnter={e=>handleClickNote(textData[2])}
                                 // onBlur={handlePopoverClose}
                               />
                           </div>
@@ -1714,15 +1780,13 @@ export default function Project() {
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
                                 error={touched && touched.motorCable && error && error.motorCable ? true:false}
                                 onMouseOver={(e) =>
-                                  {dirtlossMouseOver("motor", "hover"); handlePopoverOpen(e, textData[3]);}
+                                  {dirtlossMouseOver("motor", "hover"); handleClickNote(textData[3]);}
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("motor", "focus"); handlePopoverOpen(e, textData[3]);}
+                                  {dirtlossMouseOver("motor", "focus"); handleClickNote(textData[3]);}
                                 }
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[3])}
+                                // onMouseEnter={e=>handleClickNote(textData[3])}
                                 // onBlur={handlePopoverClose}
                               />
                           </div>
@@ -1756,21 +1820,20 @@ export default function Project() {
                                   {handcahngeInputNumber(event.target.name, event.target.value); event.target.value>=500?setDirtloss(10):setDirtloss(5)}
                                 }
                                 onMouseOver={(e) =>
-                                  {dirtlossMouseOver("pip", "hover"); handlePopoverOpen(e, textData[4]);}
+                                  {dirtlossMouseOver("pip", "hover"); handleClickNote(textData[4]);}
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
-                                onFocus={(e) => {dirtlossMouseOver("pip", "focus"); handlePopoverOpen(e, textData[4]);}}
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[4])}
+                                onFocus={(e) => {dirtlossMouseOver("pip", "focus"); handleClickNote(textData[4]);}}
+                                // onMouseEnter={e=>handleClickNote(textData[4])}
                                 // onBlur={handlePopoverClose}
                               />
                           </div>
                         </div>
 
                         <div className="row">
-                          <div className="col-md-6">
-                              <TextField
+                          <div className="col-md-6 inputAdornment">
+                         
+                            <TextField
                                 fullWidth={true}
                                 id="outlined-basic-5"
                                 label="Water Demand"
@@ -1782,8 +1845,10 @@ export default function Project() {
                                 type="number"
                                 InputProps={{
                                   endAdornment: (
-                                    <InputAdornment position="end">
-                                      m³/h
+                                    <InputAdornment position="end" className='cursorPointer' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickCA}>
+                                      {/* m³/h  */}
+                                      {waterDeLable}
+                                      {Boolean(anchorElM) ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
                                     </InputAdornment>
                                   ),
                                   inputProps: {
@@ -1793,21 +1858,47 @@ export default function Project() {
                                 InputLabelProps={{
                                   shrink: true,
                                 }}
-                                value={discharge}
+                                value={dischargeChanged}
                                 onChange={(event) => handcahngeInputNumber(event.target.name, event.target.value)}
                                 error={touched && touched.discharge && error && error.discharge ? true:false}
                                 onMouseOver={(e) =>
-                                  {dirtlossMouseOver("waterDeman", "hover"); handlePopoverOpen(e, textData[5]);}
+                                  {dirtlossMouseOver("waterDeman", "hover"); handleClickNote(textData[5]);}
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
                                 onFocus={(e) =>
-                                  {dirtlossMouseOver("waterDeman", "focus"); handlePopoverOpen(e, textData[5]);}
+                                  {dirtlossMouseOver("waterDeman", "focus"); handleClickNote(textData[5]);}
                                 }
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[5])}
+                                // onMouseEnter={e=>handleClickNote(textData[5])}
                                 // onBlur={handlePopoverClose}
                               />
+                               
+                             
+                        <Menu
+                          id="simple-menu"
+                          anchorEl={anchorElM}
+                          keepMounted
+                          open={Boolean(anchorElM)}
+                          onClose={handleClickAway}
+                        >
+                          <div className={classes.rootCh}>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                              {/* <FormLabel component="legend" className='center'>Unit</FormLabel> */}
+                              <FormGroup>
+                              {waterDemandLable?.map((waterDeLable, index) => 
+                              // <MenuItem key={index}>
+                                  <FormControlLabel key={index}
+                                    control={<Checkbox checked={waterDeLable?.checked} onChange={event => handleChangeWaterDeLab(waterDeLable?.id, event.target.checked)} name={waterDeLable?.name} />}
+                                    label={waterDeLable?.name}
+                                  />
+                                // </MenuItem>
+                              )}
+                              </FormGroup>
+                              {/* <FormHelperText>Be careful</FormHelperText> */}
+                            </FormControl>
+                          </div>
+                          
+                        </Menu>
+                              
                           </div>
                           <div className="col-md-6">
                             <TextField
@@ -1840,11 +1931,10 @@ export default function Project() {
                               onChange={(event) =>
                                 setDirtloss(Number(event.target.value)>=0 && Number(event.target.value)<=10?event.target.value:5)
                               }
-                              aria-owns={open ? 'mouse-over-popover' : undefined}
-                              aria-haspopup="true"
-                              onMouseOver={e=>{dirtlossMouseOver("dirt", "hover"); handlePopoverOpen(e, textData[9]);}}
+                              
+                              onMouseOver={e=>{dirtlossMouseOver("dirt", "hover"); handleClickNote(textData[9]);}}
                               // onMouseLeave={() => dirtlossMouseLeave("xy")}
-                              onFocus={(e) => {dirtlossMouseOver("dirt", "focus"); handlePopoverOpen(e, textData[9]);}}
+                              onFocus={(e) => {dirtlossMouseOver("dirt", "focus"); handleClickNote(textData[9]);}}
                               // onBlur={() => dirtlossMouseLeave("fout")}
                             />
                           </div>
@@ -1863,18 +1953,16 @@ export default function Project() {
                                 checked={bas === "Manual Tracker"}
                                 value="Manual Tracker"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={(e) => {dirtlossMouseOver("MT", "focus"); handlePopoverOpen(e, textData[6]);}}
+                                onFocus={(e) => {dirtlossMouseOver("MT", "focus"); handleClickNote(textData[6]);}}
                                 // onBlur={handlePopoverClose}
                               />
                               <label
                                 class="btn btn-outline-primary"
                                 for={"btnradio1"}
                                 onMouseOver={(e) =>
-                                  {dirtlossMouseOver("MT", "hover"); handlePopoverOpen(e, textData[6]);}
+                                  {dirtlossMouseOver("MT", "hover"); handleClickNote(textData[6]);}
                                 }
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
+                                // onMouseEnter={e=>handleClickNote(textData[6])}  
                                 // onMouseLeave={handlePopoverClose}
                               >
                                 Manual Tracker
@@ -1889,19 +1977,17 @@ export default function Project() {
                                 checked={bas === "Ground Structure"}
                                 value="Ground Structure"
                                 onChange={(event) => setBas(event.target.value)}
-                                onFocus={(e) => {dirtlossMouseOver("GS", "focus"); handlePopoverOpen(e, textData[6]);}}
+                                onFocus={(e) => {dirtlossMouseOver("GS", "focus"); handleClickNote(textData[6]);}}
                                 // onBlur={handlePopoverClose}
                               />
                               <label
                                 class="btn btn-outline-primary"
                                 for={"btnradio2"}
                                 onMouseOver={(e) =>
-                                  {dirtlossMouseOver("GS", "hover"); handlePopoverOpen(e, textData[6]);}
+                                  {dirtlossMouseOver("GS", "hover"); handleClickNote(textData[6]);}
                                 }
-                                aria-owns={open ? 'mouse-over-popover' : undefined}
-                                aria-haspopup="true"
-                                // onMouseEnter={e=>handlePopoverOpen(e, textData[6])}  
-                                onMouseLeave={handlePopoverClose}
+                                // onMouseEnter={e=>handleClickNote(textData[6])}  
+                                // onMouseLeave={handlePopoverClose}
                               >
                                 Ground Structure
                               </label>
@@ -1918,7 +2004,7 @@ export default function Project() {
                         fullWidth={true}
                         className="mb-3 p-2"
                         onClick={() => evaluationfunction()}
-                        disabled={!isValid}
+                        disabled={!isValid?true:citylocation?false:true}
                       >
                         Evaluation
                       </Button>
@@ -1955,9 +2041,9 @@ export default function Project() {
                   <div className="row">
                     <div className="col-md-5">
                       <h3>Project Accessories</h3>
-                      <div className='accessory-wrapper'>
+                      <div className='accessory-wrapper' id="accessoryBody">
                         {inputFields.map((inputField, index) => (
-                            <div className="row mr-0">
+                          <div className="row mr-0">
                             <div className="col-md-7">
                               <FormControl fullWidth>
                                 <Autocomplete
@@ -1993,6 +2079,7 @@ export default function Project() {
                                       {...params}
                                       label="Item"
                                       variant="outlined"
+                                      autoFocus={inputField.item?false:true}
                                       placeholder="pick item !"
                                       margin="normal"
                                       name="item"
@@ -2167,7 +2254,9 @@ export default function Project() {
                           solarSelectWatt &&
                           invertorvalue ? (
                             <div className="col-md-12">
-                              <h2 className='mt-1 p-0 center'>Estimated Cost (±): {Number(deviceCost)+Number(accessoryCost)} $</h2>
+                              {estimatedCost? 
+                              <h2 className='mt-1 p-0 center'>Estimated Cost (±): {Number(deviceCost)+Number(accessoryCost?accessoryCost:0)} $</h2>
+                              :''}
 
                               <p className="mt-3 p-4" style={{textAlign:'center'}}>
                                 Your Project Is Ready To Save it!, You can preview
@@ -2262,7 +2351,7 @@ export default function Project() {
                       variant="contained"
                       color="primary"
                       onClick={handleNext}
-                      // disabled={filled?false:true}
+                      disabled={filled?false:true}
                     >
                       Next
                     </Button>
@@ -2298,10 +2387,18 @@ export default function Project() {
                     >
                       Submit
                     </Button>
+                    {/* <NavLink  to="/app/newproject">
+                        <Button className='ml-2'
+                          variant="contained"
+                          color="primary"
+                        >
+                          New Sizing
+                        </Button>
+                    </NavLink> */}
                     <Button className='ml-2'
                       variant="contained"
                       color="primary"
-                      onClick={newSizing}
+                      onClick={refreshPage}
                     >
                       New Sizing
                     </Button>
