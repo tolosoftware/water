@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import {PDFViewer, PDFDownloadLink} from '@react-pdf/renderer';
+import PdfDocument from './PdfDocument';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -13,12 +15,13 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
 import { Table, ButtonGroup } from "reactstrap";
 //pdf
+
 import axios from "axios";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import Pdf from "react-to-pdf";
+
 import ReactToPrint from "react-to-print";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -89,9 +92,10 @@ const ProjectSummary = ({ match }) => {
   const [solarBrand, setSolarBrand] = useState([]);
   const [solarList, setSolarList] = useState([]);
   const [inverter, setInverter] = useState([]);
+  const [structure, setStructure] = useState([]);
   const [cable, setCable] = useState([]);
   const [visibleSect,setVisibleSect]= useState({
-    structure: false, wiring: false, layout: false, sizing: false,
+    structure: true, wiring: true, layout: true, sizing: true,
   });
   const [expanded, setExpanded] = React.useState(false);
 
@@ -111,7 +115,7 @@ const ProjectSummary = ({ match }) => {
       axios
         .get("api/project/" + match.params?.id)
         .then((res) => {
-          console.log("res", res.data);
+          // console.log("res", res.data);
           setProjectDetails(res.data.project[0]);
           setProjectAccessories(res.data.projectAccessories);
           setIrradiation(res.data.irradiation);
@@ -120,6 +124,7 @@ const ProjectSummary = ({ match }) => {
           setSolarBrand(res.data.solarbrand);
           setSolarList(res.data.solarList);
           setInverter(res.data.inverter);
+          setStructure(res.data.structure);
           setCable(res.data.cable);
 
           setOpenbackdrop(false);
@@ -134,6 +139,36 @@ const ProjectSummary = ({ match }) => {
     }
     // console.log('match ',match);
   }, [match.params?.id]);
+  const pdf = <PdfDocument projectDetails={projectDetails} projectAccessories={projectAccessories}  irradiation={irradiation} energyWithOutPut={energyWithOutPut} pupm={pupm} solarBrand={solarBrand} solarList={solarList} inverter={inverter} structure={structure} cable={cable} />;
+
+  const createPdf = ()=>{
+    // setOpenbackdrop(true);
+    axios
+        .get("api/createPdf/" + match.params?.id)
+        .then((res) => {
+          // console.log("res", res.data);
+          // setProjectDetails(res.data.project[0]);
+          // setProjectAccessories(res.data.projectAccessories);
+          // setIrradiation(res.data.irradiation);
+          // setEnergyWithOutPut(res.data.energyWithOutPut);
+          // setPupm(res.data.pupm);
+          // setSolarBrand(res.data.solarbrand);
+          // setSolarList(res.data.solarList);
+          // setInverter(res.data.inverter);
+          // setStructure(res.data.structure);
+          // setCable(res.data.cable);
+
+          // setOpenbackdrop(false);
+        })
+        .catch((err) => {
+          // setOpenbackdrop(false);
+          NotificationManager.error(
+            <IntlMessages id="notification.errorMessage" />,
+            <IntlMessages id="notification.titleHere" />
+          );
+        });
+  }; 
+  
   return (
     <>
       <Backdrop className={classes.backdrop} open={openbackdrop}>
@@ -141,8 +176,9 @@ const ProjectSummary = ({ match }) => {
       </Backdrop>
       <div className="app-wrapper">
         <div className="row">
-          <div className="col-md-9 ">
+          <div className="col-md-9">
             <div ref={ref}>
+              <section>
               <Paper
                 elevation={0}
                 className="mb-3 p-4 project-summary customcolorindarkmode"
@@ -232,10 +268,11 @@ const ProjectSummary = ({ match }) => {
                           </div>
                           <Divider className="mb-3 mt-3" />
                         </div>
+                      
                       </th>
                     </tr>
                   </thead>
-                  <tfoot class="report-footer">
+                  <tfoot class="report-footer"  style={{pageBreakAfter: 'always'}}>
                     <tr>
                       <td class="report-footer-cell">
                         <div
@@ -246,7 +283,7 @@ const ProjectSummary = ({ match }) => {
                           <div
                             style={{ float: "left", display: "inline-block" }}
                           >
-                            Created by: AWM (Solar AW water pump planner)
+                            Created by: AWM Solar Water Pumping System Planner
                           </div>
                           <div
                             id="page-number"
@@ -255,12 +292,13 @@ const ProjectSummary = ({ match }) => {
                             Water Is Life
                           </div>
                         </div>
+                      
                       </td>
                     </tr>
                     <span></span>
                   </tfoot>
                   <tbody class="report-content">
-                    <tr className="page" style={{}}>
+                    <tr className="page">
                       <td class="report-content-cell">
                         <div className={`main`}>
                           <div className="table-responsive-material mb-5">
@@ -307,9 +345,9 @@ const ProjectSummary = ({ match }) => {
                                   <td>Avg. Hourly water:</td>
                                   <td>
                                     {projectDetails
-                                      ? projectDetails?.daily_output
+                                      ? projectDetails?.daily_output + '(m³/h) '
                                       : ""}
-                                    (m³/h)
+                                    {projectDetails?.daily_output_lable != 'm³/h' && projectDetails?.daily_output_lable !=null? projectDetails?.daily_output_changed + '('+ projectDetails?.daily_output_lable+')':''}
                                   </td>
                                 </tr>
                                 <tr>
@@ -500,9 +538,10 @@ const ProjectSummary = ({ match }) => {
                             </Table>
                           </div>
                         </div>
+                     
                       </td>
                     </tr>
-
+                    <p class="pageNo"></p>
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
                         <div className={`main`}>
@@ -517,7 +556,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={245}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.monthlyHrOutput}
@@ -551,7 +590,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={245}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrOutputP}
@@ -586,7 +625,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={240}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={irradiation?.monthIrrs}
@@ -615,7 +654,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={240}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={irradiation?.dailyIrrs}
@@ -646,7 +685,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={240}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={
@@ -677,7 +716,7 @@ const ProjectSummary = ({ match }) => {
                                     </h4>
                                     <ResponsiveContainer
                                       width="100%"
-                                      height={240}
+                                      height={260}
                                     >
                                       <BarChart
                                         data={energyWithOutPut?.hrEnergy}
@@ -702,9 +741,10 @@ const ProjectSummary = ({ match }) => {
                             </div>
                           </div>
                         </div>
+                      
                       </td>
                     </tr>
-
+                    <p class="pageNo"></p>
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
                         <table style={{width:'100%'}}  className="inside-table-pump" >
@@ -817,7 +857,6 @@ const ProjectSummary = ({ match }) => {
                                     style={{
                                       border: "0px solid #dee2e6",
                                       padding: "0px",
-                                      maxHeight: "150px",
                                       paddingTop: "30px",
                                     }}
                                     alt="Responsive"
@@ -827,9 +866,10 @@ const ProjectSummary = ({ match }) => {
                               </td>
                             </tr>
                           </table>
+                      
                       </td>
                     </tr>
-
+                    <p class="pageNo"></p>
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
                         <table style={{width:'100%'}}  className="inside-table-pump" >
@@ -887,19 +927,6 @@ const ProjectSummary = ({ match }) => {
                                       <td>Weight:</td>
                                       <td>18kg</td>
                                     </tr>
-                                    {/* <tr>
-                                      <td colSpan="2">
-                                        <img
-                                          src="/images/Voltage.png"
-                                          className="img-thumbnail solar-voltage"
-                                          style={{
-                                            border: "0px solid #dee2e6",
-                                            padding: "0px",
-                                          }}
-                                          alt="Responsive"
-                                        />
-                                      </td>
-                                    </tr> */}
                                   </tbody>
                                 </Table>
                               </div>
@@ -940,7 +967,7 @@ const ProjectSummary = ({ match }) => {
                       
                       </td>
                     </tr>
-
+                    <p class="pageNo"></p>
                     <tr className="page" style={{}}>
                       <td class="report-content-cell">
                         <table style={{width:'100%'}}  className="inside-table-pump" >
@@ -1015,7 +1042,7 @@ const ProjectSummary = ({ match }) => {
                             </td>
                           </tr>
                           <tr>
-                            <td colSpan='2' style={{textAlign: 'center'}}>
+                            <td colSpan='2' style={{textAlign: 'center'}} className='controller-diameter'>
                             {inverter?.diameter?  <img
                                 src={`${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`}
                                 className="img-thumbnail invertor-diamention"
@@ -1032,7 +1059,9 @@ const ProjectSummary = ({ match }) => {
                       
                       </td>
                     </tr>
-                    {visibleSect.structure?'':
+                    <p class="pageNo"></p>
+                    {visibleSect.structure?
+                    <>
                       <tr className="page" style={{}}>
                         <td class="report-content-cell">
                           <table style={{width:'100%'}}  className="inside-table-pump" >
@@ -1059,8 +1088,13 @@ const ProjectSummary = ({ match }) => {
                             </tr>
                             <tr>
                               <td colSpan='2' style={{textAlign: 'center'}}>
-                                <img src={(projectDetails?.solar_base==="Manual Tracker")?"/images/manual_tracker.png":"/images/ground_stucture.jpg"}
+                                {/* <img src={(projectDetails?.solar_base==="Manual Tracker")?"/images/manual_tracker.png":"/images/ground_stucture.jpg"}
                                       className={`img-thumbnail ${projectDetails?.solar_base==='Manual Tracker'? 'manual':'structure'}-img`}
+                                      style={{ border: "0px solid #dee2e6" }}
+                                      alt="Responsive"
+                                /> */}
+                                <img src={`${axios.defaults.baseURL}structure/${structure?.image}`}
+                                      className={`img-thumbnail structure-img`}
                                       style={{ border: "0px solid #dee2e6" }}
                                       alt="Responsive"
                                 />
@@ -1074,8 +1108,11 @@ const ProjectSummary = ({ match }) => {
                           </table>
                         </td>
                       </tr>
-                    }
-                    {visibleSect.wiring?'':
+                      <p class="pageNo"></p>
+                    </>
+                    :''}
+
+                    {visibleSect.wiring? <>
                       <tr className="page" style={{}}>
                         <td class="report-content-cell ">
                           <table style={{width:'100%'}}  className="inside-table-pump" >
@@ -1096,9 +1133,11 @@ const ProjectSummary = ({ match }) => {
                           </table>
                         </td>
                       </tr>
+                     <p class="pageNo"></p> </>
+                    :''
                     }
-                    {visibleSect.layout?'':
-                      <tr >
+                    {visibleSect.layout? <>
+                      <tr className="page">
                         <td class="report-content-cell">
                           <table style={{width:'100%'}}  className="inside-table-pump" >
                             <caption>System General layout</caption>
@@ -1106,7 +1145,7 @@ const ProjectSummary = ({ match }) => {
                               <td colSpan='2'>
                                 <img
                                   src="/Layouts/system layout with details1.jpg"
-                                  className="img-thumbnail "
+                                  className="img-thumbnail genral-layout-img"
                                   alt="Responsive"
                                   style={{ border: "none" }}
                                 />
@@ -1178,9 +1217,11 @@ const ProjectSummary = ({ match }) => {
                           </table>
                         </td>
                       </tr>
+                     <p class="pageNo"></p> </>
+                    :''
                     }
-                    {visibleSect.sizing?'':
-                      <tr>
+                    {visibleSect.sizing? <>
+                      <tr >
                         <td class="report-content-cell">
                           <table style={{width:'100%'}}  className="inside-table-pump" >
                             <caption>Sizing layout</caption>
@@ -1188,7 +1229,7 @@ const ProjectSummary = ({ match }) => {
                               <td>
                                 <img
                                   src="/Layouts/layout details1.jpg"
-                                  className="img-thumbnail "
+                                  className="img-thumbnail sizing-img"
                                   alt="Responsive"
                                   style={{ border: "none" }}
                                 />
@@ -1197,11 +1238,13 @@ const ProjectSummary = ({ match }) => {
                           </table>
                         </td>
                       </tr>
-                    }
+                     <p class="pageNo"></p> </>
+                    :''}
                    
                   </tbody>
                 </table>
               </Paper>
+              </section>
             </div>
           </div>
           <div className="col-md-3">
@@ -1210,25 +1253,26 @@ const ProjectSummary = ({ match }) => {
                 <div className="col-md-12 d-flex justify-content-center p-1">
                   <h5>Project Summary</h5>
                 </div>
-                <div className="col-md-6 d-flex justify-content-center p-1">
-                  
-                  <Pdf
-                    targetRef={ref}
-                    filename="Project summary.pdf" /*options={options}*/
-                  >
-                    {({ toPdf }) => (
+              <div className="col-md-6 d-flex justify-content-center p-1">
+                {/* <PDFDownloadLink
+                document={pdf}
+                fileName={"Quote" + new Date().getTime() + ".pdf"}
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? "Loading . . ." : "Download"
+                }
+              </PDFDownloadLink> */}
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={toPdf}
+                        onClick={createPdf}
                         startIcon={<CloudDownloadIcon />}
                         className="float-right"
+
                       >
                         {" "}
                         Download{" "}
                       </Button>
-                    )}
-                  </Pdf>
                 </div>
                 
 
@@ -1252,7 +1296,7 @@ const ProjectSummary = ({ match }) => {
               <Divider className="mb-3 mt-3" />
               <div className="row ">
                 <div className="col-md-12 d-flex justify-content-center">
-                  <Accordion className={classes.root} expanded={expanded === 'panel1'} onChange={handleChangeExp('panel1')} >
+                  <Accordion className={classes.root} defaultExpanded={expanded !== 'panel1'} expanded={expanded === 'panel1'} onChange={handleChangeExp('panel1')} >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1a-content"
@@ -1262,7 +1306,7 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                      <a disabled={pupm[0]?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} target="_blank">
+                      <a disabled={pupm[0]?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} >
                         <Button disabled={pupm[0]?.data_sheet?false:true} 
                           variant="contained"
                           color="primary"
@@ -1274,13 +1318,15 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button disabled={pupm[0]?.data_sheet?false:true} 
-                          variant="contained"
-                          color="primary"
-                          startIcon={<PrintIcon />}
-                          className="float-right ps-btn"
-                          >
-                        </Button>
+                        <a disabled={pupm[0]?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${pupm[0]?.data_sheet}`} target="_blank">
+                          <Button disabled={pupm[0]?.data_sheet?false:true} 
+                            variant="contained"
+                            color="primary"
+                            startIcon={<PrintIcon />}
+                            className="float-right ps-btn"
+                            >
+                          </Button>
+                        </a>
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
@@ -1297,7 +1343,7 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                        <a disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}  href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`} target="_blank">
+                        <a disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}  href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`}>
                           <Button disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}
                             variant="contained"
                             color="primary"
@@ -1310,15 +1356,17 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}
-                          variant="contained"
-                          color="primary"
-                          startIcon={<PrintIcon />}
-                          className="float-right ps-btn"
+                        <a disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}  href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solarList?.solar_list_with_cable?.data_sheet}`} target="_blank">
+                          <Button disabled={solarList?.solar_list_with_cable?.data_sheet?false:true}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<PrintIcon />}
+                            className="float-right ps-btn"
                           >
-                          
-                          {/* Print */}
-                        </Button>
+                            
+                            {/* Print */}
+                          </Button>
+                        </a>
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
@@ -1335,7 +1383,7 @@ const ProjectSummary = ({ match }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography>
-                      <a disabled={inverter?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                      <a disabled={inverter?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`}>
                           <Button disabled={inverter?.data_sheet?false:true}
                             variant="contained"
                             color="primary"
@@ -1347,15 +1395,55 @@ const ProjectSummary = ({ match }) => {
                       </Typography>
 
                       <Typography className={classes.secondBtn}>
-                        <Button disabled={inverter?.data_sheet?false:true}
+                        <a disabled={inverter?.data_sheet?false:true} href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
+                          <Button disabled={inverter?.data_sheet?false:true}
                           variant="contained"
                           color="primary"
                           startIcon={<PrintIcon />}
                           className="float-right ps-btn"
                           >
-                          
-                          {/* Print */}
-                        </Button>
+                            
+                            {/* Print */}
+                          </Button>
+                        </a>
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+                <div className="col-md-12 d-flex justify-content-center">
+                  <Accordion className={classes.root} expanded={expanded === 'panel4'} onChange={handleChangeExp('panel4')} >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel3a-content"
+                      id="panel3a-header"
+                    >
+                      <Typography className={classes.heading}>Structure Data Sheet</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        <a disabled={structure?.datasheet?false:true} href={`${axios.defaults.baseURL}structure/data_sheet/${structure?.datasheet}`}>
+                          <Button disabled={structure?.datasheet?false:true}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<CloudDownloadIcon />}
+                            className="float-right ps-btn"
+                          >
+                          </Button>
+                        </a>
+                      </Typography>
+
+                      <Typography className={classes.secondBtn}>
+                        <a disabled={structure?.datasheet?false:true} href={`${axios.defaults.baseURL}structure/data_sheet/${structure?.datasheet}`} target="_blank">
+                          <Button disabled={structure?.datasheet?false:true}
+                          variant="contained"
+                          color="primary"
+                          startIcon={<PrintIcon />}
+                          className="float-right ps-btn"
+                          >
+                            
+                            {/* Print */}
+                          </Button>
+                        </a>
                       </Typography>
                     </AccordionDetails>
                   </Accordion>

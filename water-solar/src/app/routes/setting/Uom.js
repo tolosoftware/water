@@ -105,7 +105,7 @@ const Uom=() => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
               <div className="col-md-12 mb-2">
-                <TextField id="outlined-basic" label="Uom Name" variant="outlined"
+                <TextField id="outlined-basic1" label="Uom Name" variant="outlined"
                   placeholder="Uom Name"
                   name="name"
                   size="small"

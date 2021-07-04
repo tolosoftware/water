@@ -8,13 +8,14 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
+// import FormHelperText from '@material-ui/core/FormHelperText';
 import Spinner from 'react-spinner-material';
 
 import "./stayle.css";
@@ -89,6 +90,7 @@ export default function BrandManagement(props) {
   const [pumpBrand,setPumpBrand]= useState([]);
   const [solarBrand,setSolarBrand]= useState([]);
   const [inverterBrand,setInverterBrand]= useState([]);
+  const [estimatedCost,setEstimatedCost]= useState(true);
 
   const handleClose = () => {
     setOpen(false);
@@ -98,7 +100,7 @@ export default function BrandManagement(props) {
    
  
   const handleChangeP = (id, value) => {
-    console.log('pumpBrand', value);
+    // console.log('pumpBrand', value);
     const newPumpBrand = pumpBrand.map(i => {
       if(i.id === id){
         i['user_brand_role'][0]['checked'] = value? "true":"false"
@@ -108,7 +110,7 @@ export default function BrandManagement(props) {
     setPumpBrand(newPumpBrand);
   };
   const handleChangeS = (id, value) => {
-    console.log('solarBrand', value);
+    // console.log('solarBrand', value);
     const newBrand = solarBrand.map(i => {
       if(i.id === id){
         i['user_brand_role'][0]['checked'] = value? "true":"false"
@@ -118,7 +120,7 @@ export default function BrandManagement(props) {
     setSolarBrand(newBrand);
   };
   const handleChangeI = (id, value) => {
-    console.log('inverterBrand', value);
+    // console.log('inverterBrand', value);
     const newBrand = inverterBrand.map(i => {
       if(i.id === id){
         i['user_brand_role'][0]['checked'] = value? "true":"false"
@@ -138,6 +140,8 @@ export default function BrandManagement(props) {
               setPumpBrand(res.data.pumpBrand);
               setSolarBrand(res.data.solarBrand);
               setInverterBrand(res.data.inverterBrand);
+              var esCoValue = (res.data.estimatedCost)=='true'?true:false;
+              setEstimatedCost(esCoValue);
             }
         ).catch(err =>{
               setVisibility(false);
@@ -154,10 +158,11 @@ export default function BrandManagement(props) {
   }, [open, userId])
 
   const onSubmit = () => {
+    var id = JSON.parse(localStorage.getItem("UserData")).id;
     let data ={
-      'pumpBrand': pumpBrand, 'solarBrand': solarBrand, 'inverterBrand': inverterBrand,
+      'pumpBrand': pumpBrand, 'solarBrand': solarBrand, 'inverterBrand': inverterBrand, 'estimatedCost': estimatedCost?'true':'false', 'id': id,
     }
-    console.log('data in post form', data);
+    // console.log('data in post form', data);
     axios
       .post("api/postUserBrand", data)
       .then((res) => {
@@ -185,7 +190,7 @@ export default function BrandManagement(props) {
         fullWidth="md"
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          User Brand Management Form
+          User Role Management Form
         </DialogTitle>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent dividers>
@@ -250,6 +255,23 @@ export default function BrandManagement(props) {
                     </FormControl>
                   </div>
                 </div>
+                <Divider className="mb-3 mt-3" />
+                
+                <div className="col-xl-4 col-lg-4 col-md-4 col-4">
+                  <div className={classes.root}>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      <FormLabel component="legend">Estimated Cost</FormLabel>
+                      <FormGroup>
+                          <FormControlLabel 
+                            control={<Checkbox checked={estimatedCost} onChange={event => setEstimatedCost(event.target.checked)} name='Estimated Cost'  />}
+                            label='Estimated Cost'
+                          />
+                      </FormGroup>
+                      {/* <FormHelperText>Be careful</FormHelperText> */}
+                    </FormControl>
+                  </div>
+                </div>
+            
               </>
               }
               

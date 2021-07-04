@@ -16,6 +16,7 @@ class CreateCableTypesTable extends Migration
         Schema::create('cable_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('price')->nullable();
             $table->timestamps();
         });
     }

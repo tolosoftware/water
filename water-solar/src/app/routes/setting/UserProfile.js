@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 // import { Table } from "reactstrap";
-// import IconButton from "@material-ui/core/IconButton";
 import axios from "axios";
 // import GetAppIcon from "@material-ui/icons/GetApp";
 import IntlMessages from "util/IntlMessages";
 import { Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import { useForm } from "react-hook-form";
 // import Divider from "@material-ui/core/Divider";
 import "./style.css";
 import { useDropzone } from "react-dropzone";
 import {NotificationContainer,NotificationManager} from 'react-notifications';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 
 const styles = (theme) => ({
   root: {
@@ -152,10 +156,16 @@ const UserProfile = () => {
   const [ppassword, setPpassword] = useState("");
   const [npassword, setNpassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-
+  const [values, setValues] = React.useState({
+    showPPassword: false,
+    showNPassword: false,
+    showCPassword: false,
+  });
   const [cpconfirm, setCpconfirm] = useState(false);
   const [cppassword, setcPpassword] = useState(false);
-
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const changePassword = () => {
     const data = {
       password: ppassword,
@@ -194,7 +204,7 @@ const UserProfile = () => {
       setCpconfirm(true);
     }
   };
-
+   
   return (
     <>
       <div className="row">
@@ -389,6 +399,22 @@ const UserProfile = () => {
             name="ppassword"
             size="small"
             fullWidth
+            type={values.showPPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">
+               <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={e=>setValues({ ...values, showPPassword: !values.showPPassword })}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showPPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>,
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
             onChange={(event) => setPpassword(event.target.value)}
           />
           {cppassword === true ? (
@@ -406,6 +432,19 @@ const UserProfile = () => {
             placeholder="New Password"
             className="m-3"
             name="npassword"
+            type={values.showNPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">
+               <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={e=>setValues({ ...values, showNPassword: !values.showNPassword })}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showNPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>,
+            }}
             size="small"
             fullWidth
             onChange={(event) => setNpassword(event.target.value)}
@@ -418,6 +457,19 @@ const UserProfile = () => {
             placeholder="Confirm Password"
             className="m-3"
             name="cpassword"
+            type={values.showCPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">
+               <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={e=>setValues({ ...values, showCPassword: !values.showCPassword })}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showCPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>,
+            }}
             size="small"
             fullWidth
             onChange={(event) => setCpassword(event.target.value)}

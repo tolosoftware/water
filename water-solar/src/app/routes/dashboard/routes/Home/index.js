@@ -165,11 +165,17 @@ const Home = ({ match }) => {
     axios
       .get("api/adminDashboard/" + id)
       .then((res) => {
-        setOpenbackdrop(false);
-        setSolar(res.data.solarbrand);
-        setPump(res.data.pumpbrand);
-        setInvertorBrand(res.data.invertorBrand);
-        setUsers(res.data.users);
+        if(res.data.auth=='unauthenticated'){
+          localStorage.removeItem("token");
+          this.props.history.push("/signin");
+        }else{
+          setOpenbackdrop(false);
+          setSolar(res.data.solarbrand);
+          setPump(res.data.pumpbrand);
+          setInvertorBrand(res.data.invertorBrand);
+          setUsers(res.data.users);
+        }
+        
       })
       .catch((err) => {
         setOpenbackdrop(false);
@@ -201,7 +207,7 @@ const Home = ({ match }) => {
       </div>
 
       <div className="row">
-        <div className="col-xl-5 col-lg-5 col-md-7 col-12 user-list-sect">
+        <div className="col-xl-5 col-lg-5 col-md-12 col-12 user-list-sect">
           <SendMoney usersData={users} />
         </div>
         <CardBox styleName="col-xl-7 col-lg-7 col-md-12 col-12">
@@ -221,7 +227,8 @@ const Home = ({ match }) => {
         heading={"All Brands"}
       >
         <div className="row">
-          <div className="col-md-4">
+          
+          <div className="col-xl-4 col-lg-4 col-md-12 col-12">
             <Slider className={`slick-app-frame ${pump.length===1? 'single-slide':''}`} {...options}>
               {pump.map((data, index) => {
                 return (
@@ -246,7 +253,7 @@ const Home = ({ match }) => {
             <Divider className="mb-3 mt-1" />
             <h3 className="mt-3">Pump Brands</h3>
           </div>
-          <div className="col-md-4">
+          <div className="col-xl-4 col-lg-4 col-md-12 col-12">
             <Slider className={`slick-app-frame ${solar.length===1? 'single-slide':''}`} {...options}>
               {solar.map((data, index) => {
                 return (
@@ -270,7 +277,7 @@ const Home = ({ match }) => {
             <Divider className="mb-3 mt-1" />
             <h3 className="mt-3">Solar Brands</h3>
           </div>
-          <div className="col-md-4">
+          <div className="col-xl-4 col-lg-4 col-md-12 col-12">
             <Slider className={`slick-app-frame ${invertorBrand.length===1? 'single-slide':''}`} {...options}>
               {invertorBrand.map((data, index) => {
                 return (
@@ -306,14 +313,14 @@ const Home = ({ match }) => {
         
 
         <CardBox
-          styleName={`col-xl-7 col-lg-7 col-md-12 col-12 dashboard-slide  sliderstylepadding`}
+          styleName={`col-xl-7 col-lg-12 col-md-12 col-12 dashboard-slide  sliderstylepadding`}
           cardStyle="text-center"
           heading
         >
           <TestimonialCarousel testimonials={testimonials} />
         </CardBox>
 
-        <CardBox styleName={`${JSON.parse(localStorage.getItem("UserData")).system!=1?'col-xl-12 col-lg-12 col-md-12 col-12':'col-xl-5 col-lg-5 col-md-12 col-12'}`}>
+        <CardBox styleName={`${JSON.parse(localStorage.getItem("UserData")).system!=1?'col-xl-12 col-lg-12 col-md-12 col-12':'col-xl-5 col-lg-12 col-md-12 col-12'}`}>
           <>
             <h2>
               <span>Todays Post</span>

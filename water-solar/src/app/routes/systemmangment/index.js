@@ -8,6 +8,7 @@ import GeoLocation from "./GeoLocation";
 import WaterPump from "./WaterPump";
 import SolarPanel from "./SolarPanel";
 import Accessories from "./Accessories";
+import Structure from './Structure';
 import Invertor from "./Invertor";
 import Divider from '@material-ui/core/Divider';
 
@@ -44,6 +45,13 @@ const Systemmangment = ({match}) => (
                   headerOutside>
           <Accessories/>
         </CardBox>
+
+      </div>
+      <Divider  className='diver-sys' /><br/>
+      <div className="row mb-md-3">
+        <div className="col-xl-4 col-lg-6 col-md-6 col-12 structure-table">
+          <Structure />
+        </div>
       </div>
   </div>
 );

@@ -8,6 +8,9 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 // form dependency
 import {TextField,InputLabel,Select} from '@material-ui/core';
@@ -121,6 +124,14 @@ export default function CustomizedDialogs(props) {
   const {register, handleSubmit, errors }=useForm(); // initialize the hook
   const {open,setOpen, getData, setGetData} = props;
   const {userDataOject, setUserDataObject} = props;
+  const [values, setValues] = React.useState({
+    showPPassword: false,
+    showNPassword: false,
+  });
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
@@ -265,9 +276,37 @@ export default function CustomizedDialogs(props) {
                 </div>
                 <div className="col-xl-6 col-gl-6 col-md-6 col-sm-12 col-12">
                   {userDataOject?.id ? (
-                  <TextField name="new_password" className="form-control" autoComplete="off" label='New Password' size="small" type="password" variant="outlined" inputRef={register({required: (userDataOject?.username!=''?true:false), minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
+                  <TextField name="new_password" className="form-control" autoComplete="off" label='New Password' size="small" 
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">
+                     <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={e=>setValues({ ...values, showNPassword: !values.showNPassword })}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showNPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>,
+                  }}
+                  type={values.showNPassword ? 'text' : 'password'} 
+                  variant="outlined" inputRef={register({required: (userDataOject?.username!=''?true:false), minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
                   ):  (
-                  <TextField name="password" className="form-control" label='Password' size="small" type="password" variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
+                  <TextField name="password" className="form-control" label='Password' size="small"
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">
+                     <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={e=>setValues({ ...values, showPPassword: !values.showPPassword })}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>,
+                  }}
+                  type={values.showPPassword ? 'text' : 'password'} 
+                  variant="outlined" inputRef={register({required: true, minLength: 6})} error={errors.password && true} helperText={(errors.password?.type === "required") && '*required'+ (errors.password?.type === "minLength") && "At least be 6 Characters" }/>
                   )}
                 </div>
               </div>

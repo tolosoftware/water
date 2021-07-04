@@ -15,10 +15,12 @@ use App\Models\Cable_type;
 use App\Models\InvertorList;
 use App\Models\Irradiation;
 use App\Models\Uom;
+use App\Models\Structure;
 use App\Models\User;
 use App\Models\Accessories_list;
 use Illuminate\Http\Request;
 use DB;
+use PDF;
 
 
 
@@ -274,9 +276,10 @@ class ProjectsController extends Controller
                 $solarbrand = Solar_brands::where('id',$solar['solar_list']->solar_brand_id)->get()->first();
             }
         }
+        $structure = Structure::where('model', $request['bas'])->get();
 
          return response()->json([
-            'pupm'=> $selectedpump , 'solar'=>$solar, 'inverter'=>$inverter, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput, 'errors'=> $errors
+            'pupm'=> $selectedpump , 'solar'=>$solar, 'inverter'=>$inverter, 'structure'=>$structure, 'cable'=>$cable, 'solarbrand'=> $solarbrand, 'hrEnergy'=> $hrEnergy, 'energy'=> $energy, 'hrOutputP'=> $hrOutputP, 'monthlyHrOutput'=> $monthlyHrOutput, 'errors'=> $errors
         ]);
     }
 
@@ -353,7 +356,13 @@ class ProjectsController extends Controller
         ]);
       
     }
-
+    public function authUser($id){
+        $user = User::findOrFail($id);
+        if($user->status=='inactive' || $user->status=='pending'){
+            return 'unauthenticated';
+        }
+        
+    }
     public function gitprojectdata($id){
         
         $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
@@ -377,8 +386,9 @@ class ProjectsController extends Controller
             ->groupBy('country')
             ->get();
         $city = $this->getcity('Afghanistan');
-        return response()->json([
-            'city'=> $city , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand
+        $estimatedCost = User::where('id',$id)->value('estimated_cost');
+        return response()->json([ 'auth'=> $this->authUser($id),
+            'city'=> $city , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand, 'estimatedCost' => $estimatedCost,
         ]);
     }
 
@@ -410,9 +420,11 @@ class ProjectsController extends Controller
         $user = User::findOrFail($id);
         if($user){
             if((int)$user->system === 1){
-                return Projects::with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+                $projects = Projects::with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+                return ['projects'=> $projects, 'auth'=> $this->authUser($id)];
             }else{
-                return Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();    
+                $projects = Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+                return ['projects'=> $projects, 'auth'=> $this->authUser($id)];     
             }
         }
         
@@ -447,6 +459,8 @@ class ProjectsController extends Controller
             'solar_cable' => $request['solarCable'],
             'motor_cable' =>$request['motorcable'],
             'daily_output' => $request['discharge'],
+            'daily_output_changed' => $request['dischargeChanged'],
+            'daily_output_lable' => $request['waterDeLable'],
             'dirt_loss' => $request['dirtloss'],
             'solar_base' => $request['bas'],
             'solar_watt' => $request['solarSelectWatt'],
@@ -548,10 +562,97 @@ class ProjectsController extends Controller
         }
         $projectDate= $project[0]->created_at->format('l\\, j\\,F\\,Y');
         $project[0]['projectDate']= $projectDate;
+        $structure = Structure::where('model', $project[0]->solar_base)->first();
         return response()->json([
-            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
+            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'structure'=>$structure, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ]);
     }
+    public function getProjectData($id){
+        $project = Projects::where('id', $id)->with(['geolocation', 'user'])->get();
+        $projectAccessories = Project_accessories::where('project_id', $id)->with('accessoriesListWithUom')->get();
+        $irradiation = $this->getIrrWithAva($project[0]->city_id);
+        $dynamicHead = ($project[0]->daynomic_head + ceil(($project[0]->dirt_loss * $project[0]->pip_length) / 100));
+        $discharge =$project[0]->daily_output;
+        $motorcable =$project[0]->motor_cable;
+
+        $selectedpump = array();
+        $avaDischarge;
+        $pumps = Pump_list::where('pump_brand_id', $project[0]->pump_brand_id)->with(['pump_config','pump_brand'])->get();
+         // return $pumps;
+         foreach($pumps as $eachpump){
+              foreach($eachpump['pump_config'] as $pumconfig){
+                 
+                 if($dynamicHead > $pumconfig['min_head'] &&  $dynamicHead <= $pumconfig['max_head']){
+                     if($discharge > $pumconfig['min_discharge'] &&  $discharge <= $pumconfig['max_discharge']){
+                         $avaDischarge = ($pumconfig['min_discharge'] + $pumconfig['max_discharge'])/2;
+                         if($motorcable > $pumconfig['min_cable_length'] &&  $motorcable <= $pumconfig['max_cable_length']){
+                             array_push($selectedpump, $eachpump);
+                             array_push($selectedpump, $pumconfig);
+                             break;
+                         }
+                     }
+                 }
+              }
+         }
+         // return $selectedpump;
+         $cable = [];
+         if($selectedpump[1]->cable_type_id != null){
+             $cable = Cable_type::where('id',$selectedpump[1]->cable_type_id)->get()->first();
+         }
+        $solar = [];
+        $inverter = [];
+        $energyWithOutPut = [];
+        if($selectedpump[0]->power != null){
+            $inverter = InvertorList::where('invertor_brand_id',$project[0]->invertor_brand_id)->with(['inverter_config', 'invertor_brand'])
+            ->whereHas('inverter_config', function($query) use ($selectedpump){
+                return $query->where('power', $selectedpump[0]->power);
+            })
+            ->get()->first();
+
+            $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base', $project[0]->solar_base)->with(['solarListWithCable'])
+            ->whereHas('solarListWithCable', function($query) use ($project){
+                return $query->where('id', $project[0]->solar_watt)
+                ->where('solar_brand_id', $project[0]->solar_brand_id);
+            })
+            ->get()->first();
+            // return  $solar;
+            if($solar){
+            $energyWithOutPut = $this->getEnergy($project[0]->city_id, $solar['solarListWithCable']['power'], $avaDischarge, $project[0]->dirt_loss);
+            
+        }
+        }
+        // return $selectedpump[0]->power;
+        $solarbrand = [];
+        if($solar['solarListWithCable']->solar_brand_id != null){
+            $solarbrand = Solar_brands::where('id',$solar['solarListWithCable']->solar_brand_id)->get()->first();
+        }
+        $projectDate= $project[0]->created_at->format('l\\, j\\,F\\,Y');
+        $project[0]['projectDate']= $projectDate;
+        $structure = Structure::where('model', $project[0]->solar_base)->first();
+        return [
+            'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'structure'=>$structure, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
+        ];
+    }
+    public function createPdf($id){
+        $data = $this->getProjectData($id);
+        // share data$data to view
+        view()->share($data);
+        $pdf = PDF::loadView('pdf')->setOptions(['enable_php' => true]);
+        
+        // dd($pdf);
+         
+        // return $pdf;
+
+        // download PDF file with download method
+        return $pdf->download('project summary.pdf');
+    }
+    public function showPDF($id){
+        $data = $this->getProjectData($id);
+        // dd($data);
+        // share data to view
+       return view('pdf')->with($data);
+    }
+    
     public function getIrrWithAva($city_id){
         $eachmonthfinaltotal = array();
         $t6am=0;  $t7am=0;  $t8am=0;  $t9am=0;  $t10am=0;  $t11am=0;  $t12am=0;  $t1pm=0;  $t2pm=0;  $t3pm=0;  $t4pm=0;  $t5pm=0; $t6pm=0;

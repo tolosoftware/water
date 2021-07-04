@@ -32,7 +32,7 @@ const Secondrow = () => {
 
   return (
     <>
-          <div className="col-md-3">
+        <div className="col-xl-3 col-lg-6 col-md-6 col-12">
              
                     <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={kabul}
@@ -49,42 +49,41 @@ const Secondrow = () => {
                     <h3 style={{textAlign:'center',}}>Kabul Irradiation</h3>
             </div>
 
-            <div className="col-md-3">
-             
-                    <ResponsiveContainer width="100%" height={250}>
-                        <BarChart data={herat}
-                        margin={{top: 10, right: 0, left: -25, bottom: 0}}>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Bar dataKey="value" fill="#ffc658"/> 
-                    </BarChart>
-                    </ResponsiveContainer>
-                    <Divider className="mb-3 mt-1" />
-                    <h3 style={{textAlign:'center',}}>Herat Irradiation</h3>
-            </div>
-      
-            <div className="col-md-3">
-             
-                    <ResponsiveContainer width="100%" height={250}>
-                        <BarChart data={balkh}
-                        margin={{top: 10, right: 0, left: -25, bottom: 0}}>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Bar dataKey="value" fill="#ffc658"/> 
-                    </BarChart>
-                    </ResponsiveContainer>
-                    <Divider className="mb-3 mt-1" />
-                    <h3 style={{textAlign:'center',}}>Balkh Irradiation</h3>
-            </div>
-      
-
-            <div className="col-md-3">
+        <div className="col-xl-3 col-lg-6 col-md-6 col-12">
+            
+                <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={herat}
+                    margin={{top: 10, right: 0, left: -25, bottom: 0}}>
+                    <XAxis dataKey="name"/>
+                    <YAxis/>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <Tooltip/>
+                    <Legend/>
+                    <Bar dataKey="value" fill="#ffc658"/> 
+                </BarChart>
+                </ResponsiveContainer>
+                <Divider className="mb-3 mt-1" />
+                <h3 style={{textAlign:'center',}}>Herat Irradiation</h3>
+        </div>
+    
+        <div className="col-xl-3 col-lg-6 col-md-6 col-12">
+            
+                <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={balkh}
+                    margin={{top: 10, right: 0, left: -25, bottom: 0}}>
+                    <XAxis dataKey="name"/>
+                    <YAxis/>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <Tooltip/>
+                    <Legend/>
+                    <Bar dataKey="value" fill="#ffc658"/> 
+                </BarChart>
+                </ResponsiveContainer>
+                <Divider className="mb-3 mt-1" />
+                <h3 style={{textAlign:'center',}}>Balkh Irradiation</h3>
+        </div>
+    
+        <div className="col-xl-3 col-lg-6 col-md-6 col-12">
              
                     <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={kandahar}
@@ -101,10 +100,8 @@ const Secondrow = () => {
                     <Divider className="mb-3 mt-1" />
                     <h3 style={{textAlign:'center',}}>Kandahar Irradiation</h3>
             </div>
-      
-      
+
     </>    
-    
   );
 };
 

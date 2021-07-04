@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Pump_brands;
 use App\Models\InvertorBrand;
 use App\Models\Accessories_list;
+use App\Models\Structure;
 use App\Models\Solar_brands;
+use App\Models\User;
 
 
 class DatasheetController extends Controller
@@ -14,7 +16,13 @@ class DatasheetController extends Controller
     public function pvModule(){
 
     }
-
+    public function authUser($id){
+        $user = User::findOrFail($id);
+        if($user->status=='inactive' || $user->status=='pending'){
+            return 'unauthenticated';
+        }
+        
+    }
     public function pump($id){
         $pump_brands = Pump_brands::where('status', 'enable')->with(['userBrandRole', 'pumplist'])
         ->whereHas('userBrandRole', function($query) use ($id){
@@ -28,7 +36,7 @@ class DatasheetController extends Controller
                 array_push($pump_lists, $list);
             }
         }
-        return $pump_lists;
+        return response()->json(['auth'=> $this->authUser($id), 'pump_lists'=>$pump_lists]);
         // return Pump_list::with('pump_brand')->get();
     }
 
@@ -45,7 +53,7 @@ class DatasheetController extends Controller
                 array_push($solar_list, $list);
             }
         }
-        return $solar_list;
+        return response()->json(['auth'=> $this->authUser($id), 'solar_list'=>$solar_list]);
         // return Solar_list::with('solar_brand')->get();
     }
 
@@ -62,11 +70,17 @@ class DatasheetController extends Controller
                 array_push($inveter_lists, $list);
             }
         }
-        return $inveter_lists;
+        return response()->json(['auth'=> $this->authUser($id), 'inveter_lists'=>$inveter_lists]);
         // return InvertorList::with('invertor_brand')->get();
     }
 
-    public function accessoriesdownload(){
-        return Accessories_list::all();
+    public function accessoriesdownload($id){
+        $accessories = Accessories_list::all();
+        return response()->json(['auth'=> $this->authUser($id), 'accessories'=>$accessories]);
+    }
+
+    public function structureDownload($id){
+        $structures = Structure::all();
+        return response()->json(['auth'=> $this->authUser($id), 'structures'=>$structures]);
     }
 }

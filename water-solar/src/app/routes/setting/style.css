@@ -10,6 +10,10 @@
     min-height: 310px;
     max-height: 310px;
 }
+.seeting-table-style .structure-table .table-responsive-material{
+    min-height: fit-content;
+    max-height: fit-content;
+}
 .seeting-table-style .table-responsive-material thead tr th{
     background: white;
     opacity: 1;

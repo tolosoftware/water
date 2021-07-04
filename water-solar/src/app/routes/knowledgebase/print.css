@@ -55,63 +55,90 @@ tfoot.report-footer #page-number:after {
   margin: 20mm;
 } */
 
-
-thead.report-header{
+thead.report-header {
   display: table-header-group;
 }
 tfoot.report-footer {
   display: table-footer-group;
 }
 
-.customcolorindarkmode{
+.customcolorindarkmode {
   background-color: #fff;
 }
-.header-info button{
+.header-info button {
   color: #000;
 }
+.invertor-diamention {
+  width: 80%;
+} 
+
+.pageNo{
+  float: right;
+  bottom: 0;
+  margin-bottom: 0;
+}
+
 @media print {
-  .page {
-    page-break-after: always;
-  }  
-  .structure-img{
-    margin-top: 350px;
-    margin-bottom: 350px;
+  .accessory-sect {
+    min-height: 755px;
+    max-height: 755px;
   }
-  .manual-img{
-    margin-top: 100px;
-    margin-bottom: 320px;
+  .report-content {
+    counter-reset: page;
   }
-  .invertor-diamention{
-    max-height: 860px;
+   
+  .pageNo::after{
+    counter-increment: page;
+    content: "Page " counter(page) " of 9";
   }
-  .invertor-image{
-    max-height: 490px;
+    
+    .structure-img {
+      margin-top: 150px;
+      margin-bottom: 260px;
+    }
+    .manual-img {
+      margin-top: 200px;
+      margin-bottom: 450px;
+    }
+    .invertor-diamention {
+      width: 100%;
+      min-height: 750px;
+      max-height: 750px;
+      margin-bottom: 20px;
+    }
+    .invertor-image {
+      max-height: 490px;
+    }
+    .wiring-img {
+      max-height: 1240px;
+      margin-bottom: 20px;
+    }
+    .genral-layout-img{
+      margin-bottom: 30px;
+    }    
+    /* .sizing-img{
+      margin-bottom: 5px;
+    } */
+    .pump-diameter {
+      min-height: 780px;
+      max-height: 780px;
+      margin-bottom: 20px;
+    }
+    .solar-image{
+      max-height: 500px;
+    }
+    .solar-diameter {
+      min-height: 760px;
+      max-height: 760px;
+    }
+    /* .solar-diamention{
+      min-height: 600px;
+      max-height: 600px;
+    } */
+    
+   
   }
-  .wiring-img{
-    max-height: 1200px;
+
+  .report-header .btn-group-vertical button{
+    cursor: default;
   }
-  tfoot.report-footer #page-number:after {
-    content: " Page " counter(page, decimal) ". ";
-    counter-increment: page;  
-  }
-  .accessory-sect{
-    min-height: 400px;
-    max-height: 400px;
-  }
-  .pump-diameter{
-    min-height: 780px;
-    max-height: 780px;
-  }
-  .solar-diameter{
-    min-height: 510px;
-    max-height: 510px;
-  }
-  
-}
-@page {
-  counter-increment: page;
-  counter-reset: page 1;
-  @top-right {
-      content: "Page " counter(page) " of " counter(pages);
-  }
-}

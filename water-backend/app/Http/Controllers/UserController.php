@@ -26,6 +26,19 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function authUser($id){
+        $user = User::findOrFail($id);
+        if($user->status=='inactive' || $user->status=='pending'){
+            return 'unauthenticated';
+        }
+        
+    }
+    public function checkToken($id){
+        $user = User::findOrFail($id);
+        if($user->status=='inactive' || $user->status=='pending'){
+            return 'unauthenticated';
+        }
+    }
     public function getUserBrand($id){
         $pumpBrand = Pump_brands::all();
         foreach ($pumpBrand as $key => $value) {
@@ -65,10 +78,12 @@ class UserController extends Controller
             }
             $value['user_brand_role'] = $userBrandRole;
         }
+        $estimatedCost = User::where('id',$id)->value('estimated_cost');
         $data = [
             'pumpBrand' => $pumpBrand,
             'solarBrand' => $solarBrand,
             'inverterBrand' => $inverterBrand,
+            'estimatedCost' => $estimatedCost,
         ];
 
         return $data;
@@ -83,6 +98,7 @@ class UserController extends Controller
         foreach ($request['inverterBrand'] as $key => $value) {
             UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('invertor_id', $value['user_brand_role'][0]['invertor_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
         }
+        User::where('id', $request['id'])->update(['estimated_cost'=>$request['estimatedCost']]);
         // return $request;
     }
 
@@ -243,7 +259,8 @@ class UserController extends Controller
                 ++$proOfThMonth;
             }
         }
-        return response()->json([
+
+        return response()->json(['auth'=> $this->authUser($id),
             'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'invertorBrand'=>$invertorBrand, 'users'=>$users, 'pumpLists'=>$pumpLists, 'solarLists'=>$solarLists, 'invertorLists'=>$invertorLists, 'projects'=>$projects, 'proOfThMonth'=>$proOfThMonth
         ]);
     }
@@ -339,7 +356,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $users=User::with('geolocation')->get();
+        foreach ($users as $key => $user) {
+            $user['projects'] = Projects::where('user_id',$user->id)->get()->count();
+        }
+        return response()->json(['auth'=> $this->authUser($id),'users'=>$users]);
     }
 
     /**

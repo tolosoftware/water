@@ -559,3 +559,6 @@ padding: 0px 15px 10px;
     min-height: 142px;
     overflow-y: auto;
 }
+.cursorPointer{
+    cursor: pointer;
+}
