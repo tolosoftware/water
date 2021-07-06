@@ -174,11 +174,11 @@ export default function StructureForm(props) {
                                     error={errors.price && true} helperText={errors.price ? '*Please enter valid number.' : ''}
                                     />
                                 </div>
-                                <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
+                                {/* <div className="col-xl-4 col-lg-4 col-md-4 col-12 insideFormBP">
                                     <TextField id="outlined-basic-quantity" size="small" variant="outlined" name="quantity" className="fullWidthInput" label="Quantity" defaultValue={structureObj?.quantity} inputRef={register({ required: true })}
                                         error={errors.quantity && true} helperText={errors.quantity ? '*required' : ''}
                                     />
-                                </div>
+                                </div> */}
 
                                 <div className="col-xl-4 col-lg-4 col-md-4 col-12 waterPumFile waterPumpListFile">
                                     <CustomDropzone formData={image} onChange={eventhandlerIm.bind(this)} />

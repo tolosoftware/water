@@ -63,7 +63,7 @@ class StructureController extends Controller
                 $structure->name = $request['name'];
                 $structure->model = $request['model'];
                 $structure->price = $request['price'];
-                $structure->quantity = $request['quantity'];
+                // $structure->quantity = $request['quantity'];
                 if($request['imageFile']){
                     File::delete('structure/'.$structure->image);
                     $structure->image = $photoname;
@@ -78,7 +78,7 @@ class StructureController extends Controller
                     'name' => $request['name'], 
                     'model' => $request['model'], 
                     'price' => $request['price'], 
-                    'quantity' => $request['quantity'], 
+                    // 'quantity' => $request['quantity'], 
                     'image' => $photoname, 
                     'datasheet' => $dataSheetName,  
                 ]);

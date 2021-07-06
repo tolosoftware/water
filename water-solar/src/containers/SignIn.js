@@ -2,7 +2,7 @@ import React from "react";
 // import {Link} from 'react-router-dom'
 // import {connect} from 'react-redux';
 import TextField from "@material-ui/core/TextField";
-// import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import Button from "@material-ui/core/Button";
 import {
   NotificationContainer,
@@ -17,6 +17,9 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/styles";
 import CustomSignUp from './CustomSignUp';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const styles = (theme) => ({
   backdrop: {
@@ -36,8 +39,12 @@ class SignIn extends React.Component {
     this.state = {
       open: false,
       signFlag: false,
+      showPPassword: false,
     };
   }
+  handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   signUp = (e) => {
     console.log("sign up clicked");
     this.setState({ signFlag: true });
@@ -137,6 +144,19 @@ class SignIn extends React.Component {
                         type="password"
                         label={<IntlMessages id="appModule.password" />}
                         fullWidth
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">
+                           <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={e=>this.setState({showPPassword: !this.state.showPPassword })}
+                              onMouseDown={this.handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {this.state.showPPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>,
+                        }}
+                        type={this.state.showPPassword ? 'text' : 'password'} 
                         onChange={(e) => (this.password = e.target.value)}
                         margin="normal"
                         className="mt-1 my-sm-3"

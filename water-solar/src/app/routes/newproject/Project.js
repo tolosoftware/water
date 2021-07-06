@@ -655,6 +655,23 @@ const [anchorElM, setAnchorElM] = React.useState(null);
       if(i.id === id){
         if(value){
           i['checked'] = value;
+          if(i.name=='L/s'){
+              // 1L/s=(3600/1000)m³/h
+              var changedValue = Number(dischargeChanged)*(3.6);
+              setDischargeChanged(dischargeChanged);
+              setDischarge(changedValue);
+          }
+          if(i.name=='m³/d'){
+              // m³/d=(1/6)m³/h
+            var changedValue = Number(dischargeChanged)*(0.1667);
+            setDischargeChanged(dischargeChanged);
+            setDischarge(changedValue);
+          }
+          if(i.name=='m³/h'){
+          setDischargeChanged(dischargeChanged);
+          setDischarge(dischargeChanged);
+          }
+           
           setWaterDeLable(i.name);
         }
       }else{
@@ -1011,33 +1028,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
   const refreshPage = ()=> {
     window.location.reload(false);
   };
-  // const newSizing = ()=>{
-  //   setProjectname('');
-  //   setCity('');
-  //   setDaynomichead('');
-  //   setSolarCable('');
-  //   setMotorcable('');
-  //   setPiplenght('');
-  //   setDischarge('');
-  //   setDirtloss(5);
-  //   setBas('Manual Tracker');
-  //   setInputFields([
-  //     { id: uuidv4(), item: "", quantity: "", uomAc: "" },
-  //   ]);
-  //   setPumpvalue('');
-  //   setPumpstate('');
-  //   setSolarvalue('');
-  //   setSolarstate('');
-  //   setSolarSelectWatt('');
-  //   setInvertorvalue(''); 
-  //   setInvertorstate(''); 
-  //   setAccessories(accessoriesCopy); 
-  //   setGps( { lati: '', long: ''});
-  //   setActiveStep(0);
-  //   setActiveStepBrand(0);
-  //   setEvaluationdata([]);
-  //   setOpen(true);
-  // };
+   
 
   const [evaluationdata, setEvaluationdata] = React.useState("");
   const evaluationfunction = () => {
@@ -1104,7 +1095,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
       <div className={classes.root}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
-            <Step key={`${label}${index}`}>
+            <Step key={`${label}${index}`} className={`main-sptem${index}`}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}
@@ -1122,7 +1113,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
               <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 {activeStep === 0 ? (
                   <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-xl-4 col-lg-5 col-md-12 col-sm-12 col-12">
                       <Button
                         size="large"
                         color="primary"
@@ -1478,7 +1469,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                       <Map setOpenMap={setOpenMap} openMap={openMap} setGps={setGps}/>
                       <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                        open={stateNote} autoHideDuration={30000}
+                        open={stateNote} autoHideDuration={3000}
                         onClose={handleCloseNote}
                         message={textContent}
                         key={'bottom' + 'right'}
@@ -1510,6 +1501,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                               }
                               
                               onMouseOver={()=>handleClickNote(textData[0])}
+                              onClick={()=>handleClickNote(textData[0])}
                               // onMouseLeave={handlePopoverClose}
                               onFocus={()=>handleClickNote(textData[0])}
                               // onBlur={handlePopoverClose}
@@ -1633,6 +1625,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                   // ),
                                 }}
                                 onMouseOver={e=>handleClickNote(textData[7])}
+                                onClick={e=>handleClickNote(textData[7])}
                                 onFocus={(e) => {handleClickNote(textData[7]);}}
                                 InputLabelProps={{ shrink: true, }}
                                 value={gps.lati}
@@ -1654,6 +1647,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 }}
                                 InputLabelProps={{ shrink: true, }}
                                 onMouseOver={e=>handleClickNote(textData[8])}
+                                onClick={e=>handleClickNote(textData[8])}
                                 onFocus={(e) => {handleClickNote(textData[8]);}}
                                 value={gps.long}
                                 onChange={(event) => setGps({...gps, long: event.target.value})}
@@ -1667,7 +1661,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                               className="form-control"
                               onClick={handleClickOpenMap}
                             >
-                              Pickup your GPS From Google Map
+                              Pick the Project Location
                             </Button>
                           </div>
                                 
@@ -1707,6 +1701,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 onMouseOver={(e) => {dirtlossMouseOver("head", "hover"); handleClickNote(textData[1])}}
                                 // onMouseLeave={() => {handlePopoverClose()}}
                                 onFocus={(e) => {dirtlossMouseOver("head", "focus"); handleClickNote(textData[1]);}}
+                                onClick={() => handleClickNote(textData[1])}
                                 // onMouseEnter={e=>handleClickNote(textData[1])}
                                 // onBlur={handlePopoverClose}
                               />
@@ -1745,6 +1740,9 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 // onMouseLeave={() => { handlePopoverClose();}}
                                 onFocus={(e) =>
                                   {dirtlossMouseOver("solarCable", "focus"); handleClickNote(textData[2]);}
+                                }
+                                onClick={(e) =>
+                                  {handleClickNote(textData[2]);}
                                 }
                                 // onMouseEnter={e=>handleClickNote(textData[2])}
                                 // onBlur={handlePopoverClose}
@@ -1786,6 +1784,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 onFocus={(e) =>
                                   {dirtlossMouseOver("motor", "focus"); handleClickNote(textData[3]);}
                                 }
+                                onClick={() =>handleClickNote(textData[3])}
                                 // onMouseEnter={e=>handleClickNote(textData[3])}
                                 // onBlur={handlePopoverClose}
                               />
@@ -1824,6 +1823,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 }
                                 // onMouseLeave={() => {handlePopoverClose();}}
                                 onFocus={(e) => {dirtlossMouseOver("pip", "focus"); handleClickNote(textData[4]);}}
+                                onClick={() =>handleClickNote(textData[4])}
                                 // onMouseEnter={e=>handleClickNote(textData[4])}
                                 // onBlur={handlePopoverClose}
                               />
@@ -1868,6 +1868,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 onFocus={(e) =>
                                   {dirtlossMouseOver("waterDeman", "focus"); handleClickNote(textData[5]);}
                                 }
+                                onClick={() =>handleClickNote(textData[5])}
                                 // onMouseEnter={e=>handleClickNote(textData[5])}
                                 // onBlur={handlePopoverClose}
                               />
@@ -1935,6 +1936,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                               onMouseOver={e=>{dirtlossMouseOver("dirt", "hover"); handleClickNote(textData[9]);}}
                               // onMouseLeave={() => dirtlossMouseLeave("xy")}
                               onFocus={(e) => {dirtlossMouseOver("dirt", "focus"); handleClickNote(textData[9]);}}
+                              onClick={() =>handleClickNote(textData[9])}
                               // onBlur={() => dirtlossMouseLeave("fout")}
                             />
                           </div>
@@ -1962,6 +1964,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 onMouseOver={(e) =>
                                   {dirtlossMouseOver("MT", "hover"); handleClickNote(textData[6]);}
                                 }
+                                onClick={() =>handleClickNote(textData[6])}
                                 // onMouseEnter={e=>handleClickNote(textData[6])}  
                                 // onMouseLeave={handlePopoverClose}
                               >
@@ -1986,6 +1989,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                                 onMouseOver={(e) =>
                                   {dirtlossMouseOver("GS", "hover"); handleClickNote(textData[6]);}
                                 }
+                                onClick={() =>handleClickNote(textData[6])}
                                 // onMouseEnter={e=>handleClickNote(textData[6])}  
                                 // onMouseLeave={handlePopoverClose}
                               >
@@ -2009,7 +2013,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                         Evaluation
                       </Button>
                     </div>
-                    <div className={`col-md-8 rSPrSection ${filled}rSPrSection1`}>
+                    <div className={`col-xl-8 col-lg-7 col-md-12 col-sm-12 col-12 rSPrSection ${filled}rSPrSection1`}>
                       {evaluation === true ? (
                         <>
                           <div>
@@ -2039,7 +2043,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
 
                 {activeStep === 1 ? (
                   <div className="row">
-                    <div className="col-md-5">
+                    <div className="col-xl-5 col-lg-7 col-md-12 col-sm-12 col-12">
                       <h3>Project Accessories</h3>
                       <div className='accessory-wrapper' id="accessoryBody">
                         {inputFields.map((inputField, index) => (
@@ -2189,7 +2193,7 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                       </IconButton>
                     </div>
                     
-                    <div className="col-md-7 accessory-item-sect" >
+                    <div className="col-xl-7 col-lg-5 col-md-12 col-sm-12 col-12 accessory-item-sect" >
                       {accImgPath? 
                       loadImg ? (
                         <>
@@ -2225,9 +2229,8 @@ const [anchorElM, setAnchorElM] = React.useState(null);
                 )}
 
                 {activeStep === 2 ? (
-                  <div className="row">
-                    <div className="col-md-3"></div>
-                    <div className="col-md-12 mb-5">
+                  <div className="row step3-hieght">
+                    <div className="col-md-12">
                       <div className="row justify-content-center ">
                         {submited ? (
                           <Alert severity="success" color="info">

@@ -18,7 +18,7 @@ class CreateStructuresTable extends Migration
             $table->string('name');
             $table->string('model')->nullable();
             $table->string('price')->nullable();
-            $table->string('quantity')->nullable();
+            // $table->string('quantity')->nullable();
             $table->string('image')->nullable();
             $table->string('datasheet')->nullable();
             $table->timestamps();

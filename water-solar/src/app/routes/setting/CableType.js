@@ -97,8 +97,8 @@ const CableType = () => {
       }
     });
   };
-    
-  const editCabletype = (data)=>{
+
+  const editCabletype = (data) => {
     setAddvisibility(true);
     setCabletypeObj(data);
   };
@@ -195,8 +195,6 @@ const CableType = () => {
                 </Button>
               </div>
             </form>
-            
-
           ) : null}
         </div>
 
@@ -224,7 +222,9 @@ const CableType = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{data.name}</td>
-                    <td>{data.price} {data.price?'$':''}</td>
+                    <td>
+                      {data.price} {data.price ? "$" : ""}
+                    </td>
                     <td>
                       <IconButton
                         size="small"

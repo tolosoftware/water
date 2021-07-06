@@ -290,7 +290,7 @@ export default function CustomizedDialogs(props) {
                     </InputAdornment>,
                   }}
                   type={values.showNPassword ? 'text' : 'password'} 
-                  variant="outlined" inputRef={register({required: (userDataOject?.username!=''?true:false), minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
+                  variant="outlined" inputRef={register({required: (userDataOject?.status=='pending'?true:false), minLength: {value: 6, message: "At least be 6 Characters"}})} error={errors.new_password && true} helperText={errors.new_password && errors.new_password?.message}/>
                   ):  (
                   <TextField name="password" className="form-control" label='Password' size="small"
                   InputProps={{
