@@ -128,9 +128,10 @@ export default function Analyze(props) {
     var solarCost = solar?.solar_list?.price?Number(solar?.solar_list?.price)*Number(solar.solar_quantity):0;
     var inverterCost = inverter?.price?inverter?.price:0;
     var structureCost = structure?.price?structure?.price:0;
-    var cablePrice = cable?.price?Number(cable?.price)*Number(props.evaluationdata?.motorcable):0;
+    var motorCablePrice = cable?.price?Number(cable?.price)*Number(props.evaluationdata?.motorcable):0;
+    var solarCablePrice = solar?.solar_list?.cable?.price?Number(solar?.solar_list?.cable?.price)*Number(props.evaluationdata?.solarCable):0;
 
-    var totalPrice = Number(pumpCost)+(Number(solarCost))+Number(inverterCost)+Number(structureCost);
+    var totalPrice = Number(pumpCost)+(Number(solarCost))+Number(inverterCost)+Number(structureCost)+Number(motorCablePrice)+Number(solarCablePrice);
     setDeviceCost(Number(totalPrice)+Number(structureCost));
     // console.log('deviceCost', Number(totalPrice)+Number(structureCost))
     
@@ -153,6 +154,7 @@ export default function Analyze(props) {
           console.log('res data errors 1', res.data.errors);
           setOpenbackdrop(false);
           setDataError(true);
+          setFilled(false);
           NotificationManager.error(
             <IntlMessages id="notification.errorMessage" />,
             <IntlMessages id="notification.titleHere" />
@@ -423,7 +425,7 @@ export default function Analyze(props) {
                       <FormControl fullWidth>
                       <a href={`${axios.defaults.baseURL}brand/pumpbrand/pump_list/data_sheet/${sugestedpump[0]?.data_sheet}`} target="_blank">
                       <Button
-                          style={{padding: '6px 6px'}}
+                          style={{padding: '0px 6px'}}
                           variant="contained"
                           color="default"
                           className={classes.button}
@@ -484,7 +486,7 @@ export default function Analyze(props) {
                       <FormControl fullWidth>
                       <a href={`${axios.defaults.baseURL}brand/solar/solar_list/data_sheet/${solar.solar_list?.data_sheet}`} target="_blank">
                       <Button
-                          style={{padding: '6px 6px'}}
+                          style={{padding: '0px 6px'}}
                           variant="contained"
                           color="default"
                           className={classes.button}
@@ -535,7 +537,7 @@ export default function Analyze(props) {
                       <FormControl fullWidth>
                       <a href={`${axios.defaults.baseURL}brand/invertor/invertor_list/data_sheet/${inverter?.data_sheet}`} target="_blank">
                       <Button
-                          style={{ padding: '6px 6px'}}
+                          style={{ padding: '0px 6px'}}
                           variant="contained"
                           color="default"
                           className={classes.button}
@@ -589,13 +591,13 @@ export default function Analyze(props) {
                     <strong>Model: {structure?.model}</strong>{" "}
                   </div>
                   <div className="col-md-3">
-                    <strong>Quantity: {structure?.quantity} stand</strong>{" "}
+                    <strong>Quantity: {solar.panal_quantity} stand</strong>{" "}
                   </div>
                   <div className="col-md-3" style={{paddingRight: '10px', paddingLeft: '10px'}}>
                       <FormControl fullWidth>
                       <a href={`${axios.defaults.baseURL}structure/data_sheet/${structure?.datasheet}`} target="_blank">
                       <Button
-                          style={{ padding: '6px 6px'}}
+                          style={{ padding: '0px 6px'}}
                           variant="contained"
                           color="default"
                           className={classes.button}

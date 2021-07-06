@@ -99,7 +99,6 @@ class UserController extends Controller
             UserBrandRole::where('user_id', $value['user_brand_role'][0]['user_id'])->where('invertor_id', $value['user_brand_role'][0]['invertor_id'])->update(['checked'=>$value['user_brand_role'][0]['checked']]);
         }
         User::where('id', $request['id'])->update(['estimated_cost'=>$request['estimatedCost']]);
-        // return $request;
     }
 
     public function getexpiration($id){

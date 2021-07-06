@@ -107,9 +107,7 @@ const ProjectSummary = ({ match }) => {
   };
   const classes = useStyles();
   useEffect(() => {
-    // document.addEventListener('contextmenu', (e) => {
-    //   e.preventDefault();
-    // });
+    
     if (match.params?.id !== 0) {
       setOpenbackdrop(true);
       axios

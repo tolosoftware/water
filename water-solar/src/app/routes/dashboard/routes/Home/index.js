@@ -110,6 +110,8 @@ const Home = ({ match }) => {
   useEffect(() => {
     getDashboardData();
     getPost();
+    // window.addEventListener("beforeunload", () => localStorage.removeItem('token'));
+    document.addEventListener('contextmenu', (e) => {e.preventDefault();});
   }, []);
 
   const options = {

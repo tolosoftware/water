@@ -255,7 +255,7 @@ class ProjectsController extends Controller
                 $solar = Config_solar::where('power',$selectedpump[0]->power)->where('base',$request['bas'])->with(['solar_list'])
                 ->whereHas('solar_list', function($query) use ($request){
                     return $query->where('id', $request['solarSelectWatt'])
-                    ->where('solar_brand_id', $request['solarvalue']);
+                    ->where('solar_brand_id', $request['solarvalue'])->with(['cable']);
                 })
                 ->get()->first();
 
@@ -274,6 +274,9 @@ class ProjectsController extends Controller
         if(!empty($solar['solar_list'])){
             if($solar['solar_list']->solar_brand_id != null){
                 $solarbrand = Solar_brands::where('id',$solar['solar_list']->solar_brand_id)->get()->first();
+            }
+            if($solar['solar_list']->cable_type_id != null){
+                $solar['solar_list']['cable']= Cable_type::where('id',$solar['solar_list']->cable_type_id)->get()->first();
             }
         }
         $structure = Structure::where('model', $request['bas'])->get();
@@ -636,15 +639,28 @@ class ProjectsController extends Controller
     public function createPdf($id){
         $data = $this->getProjectData($id);
         // share data$data to view
-        view()->share($data);
-        $pdf = PDF::loadView('pdf')->setOptions(['enable_php' => true]);
-        
-        // dd($pdf);
-         
-        // return $pdf;
+        // $project = $data['project'];
+        // $projectAccessories = $data['projectAccessories'];
+        // $inverter = $data['inverter'];
+        // $structure = $data['structure'];
+        // $pupm = $data['pupm'];
+        // $solarbrand = $data['solarbrand'];
+        // $solarList = $data['solarList'];
+        // $cable = $data['cable'];
+        // $energyWithOutPut = $data['energyWithOutPut'];
 
-        // download PDF file with download method
-        return $pdf->download('project summary.pdf');
+        // $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
+
+        // dd($newdata);
+
+        // $pdf = PDF::loadView('pdf', compact('project', 'projectAccessories', 'inverter', 'structure', 'pupm', 'solarbrand', 'solarList', 'cable', 'energyWithOutPut'), [], [
+        //     'title' => 'project summary'
+        // ]);
+        $pdf = PDF::loadView('pdf', compact('data'),  [], [
+            'title' => 'Another Title',
+            'margin_top' => 0
+          ])->save($pdfFilePath);
+		return $pdf->stream('project-summary.pdf');
     }
     public function showPDF($id){
         $data = $this->getProjectData($id);

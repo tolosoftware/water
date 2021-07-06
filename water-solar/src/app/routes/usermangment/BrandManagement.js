@@ -158,10 +158,10 @@ export default function BrandManagement(props) {
   }, [open, userId])
 
   const onSubmit = () => {
-    var id = JSON.parse(localStorage.getItem("UserData")).id;
     let data ={
-      'pumpBrand': pumpBrand, 'solarBrand': solarBrand, 'inverterBrand': inverterBrand, 'estimatedCost': estimatedCost?'true':'false', 'id': id,
-    }
+      'pumpBrand': pumpBrand, 'solarBrand': solarBrand, 'inverterBrand': inverterBrand, 'id': userId,
+    };
+    data['estimatedCost']=estimatedCost?'true':'false';
     // console.log('data in post form', data);
     axios
       .post("api/postUserBrand", data)

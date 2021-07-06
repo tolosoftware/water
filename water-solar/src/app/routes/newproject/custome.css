@@ -114,10 +114,24 @@
     overflow-y: auto;
 }
 .truerSPrSection1{
+    max-height: 690px;
     background-color: #f7f7f7;
 }
 .accessory-item-sect{
     min-height: 477px;
+}
+.step3-hieght{
+    min-height: 477px;
+}
+
+.step3-hieght>div{
+    margin: auto;
+}
+.main-sptem1 .MuiStepIcon-root.MuiStepIcon-active, .main-sptem1 .MuiStepIcon-root.MuiStepIcon-completed {
+    color: #ec5144;
+}
+.main-sptem2 .MuiStepIcon-root.MuiStepIcon-active, .main-sptem2 .MuiStepIcon-root.MuiStepIcon-completed {
+    color: #47ab47;
 }
 .inputAdornment .MuiOutlinedInput-adornedEnd {
     padding-right: 2px;

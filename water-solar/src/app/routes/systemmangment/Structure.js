@@ -60,7 +60,7 @@ const Structure = () => {
                 <th>Name</th>
                 <th>Model</th>
                 <th>Price</th>
-                <th>Quantity</th>
+                {/* <th>Quantity</th> */}
                 <th>Edit</th>
               </tr>
             </thead>
@@ -79,9 +79,9 @@ const Structure = () => {
                   <td>
                     {data.price}$
                   </td>
-                  <td>
+                  {/* <td>
                     {data.quantity}
-                  </td>
+                  </td> */}
                   <td>
                     <IconButton size="small" aria-label="Edit" color="secondary" onClick={() => {
                       setStructureObj(data); setOpen(true);
