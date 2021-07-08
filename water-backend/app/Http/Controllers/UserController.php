@@ -26,16 +26,16 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function authUser($id){
+    public function authUser($id, $system){
         $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending'){
+        if($user->status=='inactive' || $user->status=='pending' || $user->system != $system){
             return 'unauthenticated';
         }
         
     }
-    public function checkToken($id){
-        $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending'){
+    public function checkToken(Request $request){
+        $user = User::findOrFail($request[0]);
+        if($user->status=='inactive' || $user->status=='pending' || $user->system != $request[1]){
             return 'unauthenticated';
         }
     }
@@ -228,21 +228,22 @@ class UserController extends Controller
         return Geolocation::all()->unique('city');
     }
     
-    public function adminDashboard($id)
+    public function adminDashboard(Request $request)
     {   
+        // return $request;
         $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $solarbrand = Solar_brands::where('status', 'enable')->with('userBrandRole')
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $invertorBrand = InvertorBrand::where('status', 'enable')->with('userBrandRole')
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $pumpLists = Pump_list::all();
@@ -259,7 +260,7 @@ class UserController extends Controller
             }
         }
 
-        return response()->json(['auth'=> $this->authUser($id),
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]),
             'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'invertorBrand'=>$invertorBrand, 'users'=>$users, 'pumpLists'=>$pumpLists, 'solarLists'=>$solarLists, 'invertorLists'=>$invertorLists, 'projects'=>$projects, 'proOfThMonth'=>$proOfThMonth
         ]);
     }
@@ -353,13 +354,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $users=User::with('geolocation')->get();
+        $users=User::with('geolocation')->orderBy('id', 'DESC')->get();
         foreach ($users as $key => $user) {
             $user['projects'] = Projects::where('user_id',$user->id)->get()->count();
         }
-        return response()->json(['auth'=> $this->authUser($id),'users'=>$users]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]),'users'=>$users]);
     }
 
     /**

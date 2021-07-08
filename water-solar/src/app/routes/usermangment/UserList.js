@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MaterialTable from "material-table";
-import { NotificationManager, NotificationContainer } from "react-notifications";
+import {
+  NotificationManager,
+  NotificationContainer,
+} from "react-notifications";
 import IntlMessages from "util/IntlMessages";
 import Swal from "sweetalert2";
 import Spinner from "react-spinner-material";
@@ -11,7 +14,7 @@ import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ReportProblemIcon from "@material-ui/icons/ReportProblem";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 
 import BlockIcon from "@material-ui/icons/Block";
 //classes
@@ -25,22 +28,25 @@ export const UserList = () => {
   const [userdata, setUserdata] = useState([]);
   const [userID, setUserID] = useState("");
   useEffect(() => {
-    if(!open && !getData){getUserdata();}
+    if (!open && !getData) {
+      getUserdata();
+    }
   }, [open, getData]);
   const getUserdata = async () => {
     setVisibility(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/user/"+id)
+      .post("api/getUsersList", data)
       .then((res) => {
         if (res.data.auth == "unauthenticated") {
           localStorage.removeItem("token");
           this.props.history.push("/signin");
         } else {
-        setVisibility(false);
-        setUserdata(res.data.users);
+          setVisibility(false);
+          setUserdata(res.data.users);
         }
-        
       })
       .catch((err) => {
         setVisibility(false);
@@ -87,7 +93,7 @@ export const UserList = () => {
   const editBrand = (id) => {
     setUserID(id);
     setOpenB(true);
-    console.log("Manage brand ", id);
+    // console.log("Manage brand ", id);
   };
   const editUser = (data) => {
     setUserDataObject(data);
@@ -105,7 +111,7 @@ export const UserList = () => {
       />
       <BrandManagement open={openB} setOpen={setOpenB} userId={userID} />
 
-      <Button color="primary" onClick={() => setOpen(true)} className='mb-4'>
+      <Button color="primary" onClick={() => setOpen(true)} className="mb-4">
         <AddCircleOutlineIcon className="mr-2" />
         Add New User
       </Button>
@@ -123,15 +129,25 @@ export const UserList = () => {
             </span>
           ) : (
             <MaterialTable
-              title="User List" 
-              
+              title="User List"
               columns={[
-                { title: "Name", 
+                {
+                  title: "Name",
                   render: (users) => {
                     return (
                       <div className="d-flex align-items-center">
-                        {(users.userimage === '' || users.userimage === 'null') ? <Avatar className="user-avatar size-30" src={`${axios.defaults.baseURL}'user/img/'${users.userimage}`}/> :
-                          <img className="user-avatar border-0 size-40 rounded-circle" src={`${axios.defaults.baseURL}user/img/${users.userimage}`}/>}
+                        {users.userimage === "" ||
+                        users.userimage === "null" ? (
+                          <Avatar
+                            className="user-avatar size-30"
+                            src={`${axios.defaults.baseURL}'user/img/'${users.userimage}`}
+                          />
+                        ) : (
+                          <img
+                            className="user-avatar border-0 size-40 rounded-circle"
+                            src={`${axios.defaults.baseURL}user/img/${users.userimage}`}
+                          />
+                        )}
                         <div className="user-detail">
                           <h5 className="user-name">{users.name}</h5>
                         </div>
@@ -158,7 +174,7 @@ export const UserList = () => {
                   title: "Exp Date",
                   render: (projects) => {
                     var y = projects.expiration * 30;
-                    var x = moment(projects.created_at).add(y,"days");
+                    var x = moment(projects.created_at).add(y, "days");
                     return <Moment format="YYYY/MM/DD">{x}</Moment>;
                   },
                 },
@@ -206,8 +222,7 @@ export const UserList = () => {
                   disabled:
                     rowData["system"] == 1
                       ? true
-                      : JSON.parse(localStorage.getItem("UserData")).system ==
-                        0
+                      : JSON.parse(localStorage.getItem("UserData")).system == 0
                       ? true
                       : false,
                   icon: "delete",
@@ -218,6 +233,14 @@ export const UserList = () => {
               ]}
               options={{
                 actionsColumnIndex: -1,
+                rowStyle: (rowData) => {
+                  if (rowData.status == "pending") {
+                    return { backgroundColor: "rgb(255 178 117)" };
+                  }
+                  if (rowData.status == "inactive") {
+                    return { backgroundColor: "rgb(187 180 182)" };
+                  }
+                },
               }}
             />
           )}

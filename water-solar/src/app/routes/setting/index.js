@@ -19,8 +19,10 @@ const Setting = ({match}) => {
   }, []);
   const checkToken = async () => {
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/checkToken/" + id)
+      .post("api/checkToken", data)
       .then((res) => {
         if (res.data == "unauthenticated") {
           localStorage.removeItem("token");

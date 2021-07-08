@@ -21,8 +21,10 @@ const Acceessories = () => {
   const getAcceessories = async () => {
     setVisibility(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/accessoriesdownload/" + id)
+      .post("api/accessoriesdownload", data)
       .then((res) => {
         if (res.data.auth == "unauthenticated") {
           setVisibility(false);

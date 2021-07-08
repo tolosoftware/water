@@ -23,14 +23,15 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/loginUser', [AuthController::class, 'loginUser'])->middleware('auth:api');
 Route::resource('user', UserController::class);
 Route::get('userproject/{id}',[UserController::class,'getUserProject']);
+Route::post('getUsersList',[UserController::class,'show']);
 Route::get('provenceUser',[UserController::class,'provenceUser']);
 Route::get('expir/{id}',[UserController::class,'getexpiration']);
 Route::get('userBrand/{id}',[UserController::class,'getUserBrand']);
-Route::get('checkToken/{id}',[UserController::class,'checkToken']);
+Route::post('checkToken',[UserController::class,'checkToken']);
 Route::post('postUserBrand',[UserController::class,'postUserBrand']);
 
 // Dashboard Route
-Route::get('adminDashboard/{id}',[UserController::class,'adminDashboard']);
+Route::post('adminDashboard',[UserController::class,'adminDashboard']);
 Route::get('userCity',[UserController::class,'userCity']);
 
 // Registration Request from Users
@@ -57,7 +58,7 @@ Route::resource('invertorListSetting', ConfigInvertorController::class);
 //accessories
 Route::resource('accessories', AccessoriesListController::class);
 //project 
-Route::get('gitprojectdata/{id}', [ProjectsController::class,'gitprojectdata']);
+Route::post('gitprojectdata', [ProjectsController::class,'gitprojectdata']);
 Route::resource('project', ProjectsController::class);
 Route::get('getSolarWatt/{id}',[ProjectsController::class,'getSolarWatt']);
 Route::get('getcity/{id}',[ProjectsController::class,'getcity']);
@@ -70,7 +71,7 @@ Route::get('/createPdf/{id}', [ProjectsController::class, 'createPDF']);
 Route::resource('post', PostController::class);
 
 
-Route::get('userprojecttt/{id}',[ProjectsController::class,'projectbyuser']);
+Route::post('userprojecttt',[ProjectsController::class,'projectbyuser']);
 
 
 
@@ -85,10 +86,11 @@ Route::get('irridation', [IrradiationController::class,'irridation']);
 //datasheet
 
 Route::get('pv-module', [DatasheetController::class,'pvModule']);
-Route::get('pump/{id}', [DatasheetController::class,'pump']);
-Route::get('controller/{id}', [DatasheetController::class,'controller']);
-Route::get('accessoriesdownload/{id}', [DatasheetController::class,'accessoriesdownload']);
-Route::get('solar/{id}', [DatasheetController::class,'solar']);
+Route::post('pump', [DatasheetController::class,'pump']);
+Route::post('controller', [DatasheetController::class,'controller']);
+Route::post('accessoriesdownload', [DatasheetController::class,'accessoriesdownload']);
+Route::post('solar', [DatasheetController::class,'solar']);
+Route::post('getStructure', [DatasheetController::class,'structureDownload']);
 
 
 

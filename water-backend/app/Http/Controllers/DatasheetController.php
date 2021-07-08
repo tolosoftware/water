@@ -16,17 +16,17 @@ class DatasheetController extends Controller
     public function pvModule(){
 
     }
-    public function authUser($id){
+    public function authUser($id, $system){
         $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending'){
+        if($user->status=='inactive' || $user->status=='pending' || $user->system != $system){
             return 'unauthenticated';
         }
         
     }
-    public function pump($id){
+    public function pump(Request $request){
         $pump_brands = Pump_brands::where('status', 'enable')->with(['userBrandRole', 'pumplist'])
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $pump_lists = array();
@@ -36,14 +36,14 @@ class DatasheetController extends Controller
                 array_push($pump_lists, $list);
             }
         }
-        return response()->json(['auth'=> $this->authUser($id), 'pump_lists'=>$pump_lists]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]), 'pump_lists'=>$pump_lists]);
         // return Pump_list::with('pump_brand')->get();
     }
 
-    public function solar($id){
+    public function solar(Request $request){
         $solar_brands = Solar_brands::where('status', 'enable')->with(['userBrandRole', 'solar_lists'])
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $solar_list = array();
@@ -53,14 +53,14 @@ class DatasheetController extends Controller
                 array_push($solar_list, $list);
             }
         }
-        return response()->json(['auth'=> $this->authUser($id), 'solar_list'=>$solar_list]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]), 'solar_list'=>$solar_list]);
         // return Solar_list::with('solar_brand')->get();
     }
 
-    public function controller($id){
+    public function controller(Request $request){
         $invertorBrands = InvertorBrand::where('status', 'enable')->with(['userBrandRole', 'invertorlist'])
-        ->whereHas('userBrandRole', function($query) use ($id){
-            return $query->where('user_id', $id)->where('checked', "true");
+        ->whereHas('userBrandRole', function($query) use ($request){
+            return $query->where('user_id', $request[0])->where('checked', "true");
         })
         ->get();
         $inveter_lists = array();
@@ -70,17 +70,17 @@ class DatasheetController extends Controller
                 array_push($inveter_lists, $list);
             }
         }
-        return response()->json(['auth'=> $this->authUser($id), 'inveter_lists'=>$inveter_lists]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]), 'inveter_lists'=>$inveter_lists]);
         // return InvertorList::with('invertor_brand')->get();
     }
 
-    public function accessoriesdownload($id){
+    public function accessoriesdownload(Request $request){
         $accessories = Accessories_list::all();
-        return response()->json(['auth'=> $this->authUser($id), 'accessories'=>$accessories]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]), 'accessories'=>$accessories]);
     }
 
-    public function structureDownload($id){
+    public function structureDownload(Request $request){
         $structures = Structure::all();
-        return response()->json(['auth'=> $this->authUser($id), 'structures'=>$structures]);
+        return response()->json(['auth'=> $this->authUser($request[0], $request[1]), 'structures'=>$structures]);
     }
 }
