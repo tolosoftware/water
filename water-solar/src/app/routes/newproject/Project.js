@@ -742,8 +742,10 @@ const [anchorElM, setAnchorElM] = React.useState(null);
     setOpenbackdrop(true);
     handleResetBrand();
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/gitprojectdata/" + id)
+      .post("api/gitprojectdata", data)
       .then((res) => {
         // console.log(res.data);
         if(res.data.auth=='unauthenticated'){

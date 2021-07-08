@@ -21,7 +21,7 @@ use App\Models\Accessories_list;
 use Illuminate\Http\Request;
 use DB;
 use PDF;
-
+use Illuminate\Support\Facades\View;
 
 
 class ProjectsController extends Controller
@@ -88,10 +88,11 @@ class ProjectsController extends Controller
                 $totalMonthlyOutput =0;
                 foreach ($eachMonthlyHrOutputP as $eaMoHrOutputP)
                 {
-                    $totalMonthlyOutput += (($eaMoHrOutputP['hrOutput'])-(($eaMoHrOutputP['hrOutput']*$dirtloss)/100));
+                    // (($eaMoHrOutputP['hrOutput'])-(($eaMoHrOutputP['hrOutput']*$dirtloss)/100))
+                    $totalMonthlyOutput += (($eaMoHrOutputP['hrOutput'])-(($eaMoHrOutputP['hrOutput']*10)/100));
                 }
                 array_push($monthlyHrOutputData, round($totalMonthlyOutput, 2));
-
+                
                 $eachmonthtotal = $eachmonth['t6am'] + $eachmonth['t7am'] + $eachmonth['t8am'] + $eachmonth['t9am'] + $eachmonth['t10am'] + $eachmonth['t11am'] + $eachmonth['t12am'] + $eachmonth['t1pm'] + $eachmonth['t2pm']+ $eachmonth['t3pm'] + $eachmonth['t4pm'] + $eachmonth['t5pm'] + $eachmonth['t6pm'];
                 array_push($eachMonthFinalTotalEngery, round($eachmonthtotal,1));
             }
@@ -126,9 +127,14 @@ class ProjectsController extends Controller
                 ['name'=>'Nov', 'energy'=>round($solar_power*($eachMonthFinalTotalEngery[10]/1030),2)],
                 ['name'=>'Dec', 'energy'=>round($solar_power*($eachMonthFinalTotalEngery[11]/1030),2)],  
             ];
+            $maxValueMonthlyEnergy = 0;
             $monthlyAvaOfEn = 0;
             foreach ($energyForEachMonth as $value) {
                 $monthlyAvaOfEn = $monthlyAvaOfEn + $value['energy'];
+                if ($value['energy']> $maxValueMonthlyEnergy)
+                {
+                    $maxValueMonthlyEnergy = $value['energy'];
+                }
             }
             array_push($energyForEachMonth, ['name'=>'Ava', 'energy'=>round($monthlyAvaOfEn/12, 2)]);
 
@@ -159,7 +165,8 @@ class ProjectsController extends Controller
             foreach ($hrOutputP as $value) {
                 $hrAvaOfOut = $hrAvaOfOut + $value['hrOutput'];
             }
-
+             
+            
             $monthlyHrOutput =  [
                 ['name'=>'Jan', 'MonthlyOutput'=>$monthlyHrOutputData[0]],
                 ['name'=>'Feb', 'MonthlyOutput'=>$monthlyHrOutputData[1]],
@@ -359,28 +366,28 @@ class ProjectsController extends Controller
         ]);
       
     }
-    public function authUser($id){
+    public function authUser($id, $system){
         $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending'){
+        if($user->status=='inactive' || $user->status=='pending' || $user->system!=$system){
             return 'unauthenticated';
         }
         
     }
-    public function gitprojectdata($id){
+    public function gitprojectdata(Request $request){
         
         $pumpbrand = Pump_brands::where('status', 'enable')->with('userBrandRole')
-            ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', "true");
+            ->whereHas('userBrandRole', function($query) use ($request){
+                return $query->where('user_id', $request[0])->where('checked', "true");
             })
             ->get();
         $solarbrand = Solar_brands::where('status', 'enable')->with('userBrandRole')
-            ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', "true");
+            ->whereHas('userBrandRole', function($query) use ($request){
+                return $query->where('user_id', $request[0])->where('checked', "true");
             })
             ->get();
         $invertorbrand = InvertorBrand::where('status', 'enable')->with('userBrandRole')
-            ->whereHas('userBrandRole', function($query) use ($id){
-                return $query->where('user_id', $id)->where('checked', "true");
+            ->whereHas('userBrandRole', function($query) use ($request){
+                return $query->where('user_id', $request[0])->where('checked', "true");
             })
             ->get();
         $accessories = Accessories_list::with('uom')->get();
@@ -389,8 +396,8 @@ class ProjectsController extends Controller
             ->groupBy('country')
             ->get();
         $city = $this->getcity('Afghanistan');
-        $estimatedCost = User::where('id',$id)->value('estimated_cost');
-        return response()->json([ 'auth'=> $this->authUser($id),
+        $estimatedCost = User::where('id',$request[0])->value('estimated_cost');
+        return response()->json([ 'auth'=> $this->authUser($request[0], $request[1]),
             'city'=> $city , 'pumpbrand'=>$pumpbrand, 'solarbrand'=>$solarbrand, 'accessories'=>$accessories,'countrylist' => $country, 'invertorbrand'=>$invertorbrand, 'estimatedCost' => $estimatedCost,
         ]);
     }
@@ -419,15 +426,15 @@ class ProjectsController extends Controller
         return Projects::with(['geolocation','user'])->get();
     }
 
-    public function projectbyuser($id){
-        $user = User::findOrFail($id);
+    public function projectbyuser(Request $request){
+        $user = User::findOrFail($request[0]);
         if($user){
             if((int)$user->system === 1){
                 $projects = Projects::with(['geolocation','user'])->orderBy('id', 'DESC')->get();
-                return ['projects'=> $projects, 'auth'=> $this->authUser($id)];
+                return ['projects'=> $projects, 'auth'=> $this->authUser($request[0], $request[1])];
             }else{
-                $projects = Projects::where('user_id',$id)->with(['geolocation','user'])->orderBy('id', 'DESC')->get();
-                return ['projects'=> $projects, 'auth'=> $this->authUser($id)];     
+                $projects = Projects::where('user_id',$request[0])->with(['geolocation','user'])->orderBy('id', 'DESC')->get();
+                return ['projects'=> $projects, 'auth'=> $this->authUser($request[0], $request[1])];     
             }
         }
         
@@ -636,37 +643,166 @@ class ProjectsController extends Controller
             'project'=> $project, 'projectAccessories'=> $projectAccessories, 'irradiation'=>$irradiation, 'inverter'=>$inverter, 'structure'=>$structure, 'pupm'=> $selectedpump, 'solarbrand'=> $solarbrand, 'solarList'=> $solar, 'cable'=> $cable, 'energyWithOutPut'=>$energyWithOutPut
         ];
     }
+
     public function createPdf($id){
         $data = $this->getProjectData($id);
-        // share data$data to view
-        // $project = $data['project'];
-        // $projectAccessories = $data['projectAccessories'];
-        // $inverter = $data['inverter'];
-        // $structure = $data['structure'];
-        // $pupm = $data['pupm'];
-        // $solarbrand = $data['solarbrand'];
-        // $solarList = $data['solarList'];
-        // $cable = $data['cable'];
-        // $energyWithOutPut = $data['energyWithOutPut'];
 
-        // $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
-
-        // dd($newdata);
-
-        // $pdf = PDF::loadView('pdf', compact('project', 'projectAccessories', 'inverter', 'structure', 'pupm', 'solarbrand', 'solarList', 'cable', 'energyWithOutPut'), [], [
-        //     'title' => 'project summary'
+        $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
+         // $pdf=PDF::loadView('pdf', compact( 'name'), [], [
+        //     'format' => 'A4',
+        //     'custom_font_data' => ['Arial'],
+        //     'display_mode' => 'fullpage',
+        //     // 'title' => trans('general.scoresheet_report'),
         // ]);
-        $pdf = PDF::loadView('pdf', compact('data'),  [], [
-            'title' => 'Another Title',
-            'margin_top' => 0
-          ])->save($pdfFilePath);
-		return $pdf->stream('project-summary.pdf');
+        // return $pdf->stream('document.pdf');
+        set_time_limit(300);
+        return PDF::loadView('pdf', ['data'=>$data], [], [
+             'title' => 'Another Title',
+             'margin_top' => 0,
+             'format' => 'A4',
+             'custom_font_data' => ['Arial'],
+             'display_mode' => 'fullpage',
+           ])->stream('document.pdf');
+ 
+         $pageHeading = "<div class='header-info'>
+         <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px;'>
+             <div class='col-md-12 mb-2' style='padding-bottom: 10px;'>
+                 <img src='URL::asset('layouts/System_logo1.png')' class='img-thumbnail' style='border: 0px solid #dee2e6;
+         padding: 0px;
+         height: 80px;' alt='Responsive' />
+     
+                 <div style='float: right; display: inline-block;'><span>
+                         <div role='group' class='btn-group-vertical'><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                 tabindex='0' type='button'><span class='MuiButton-label'><i
+                                         class='zmdi zmdi-email zmdi-hc-fw '></i></span><span
+                                     class='MuiTouchRipple-root'></span></button><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                 tabindex='0' type='button'><span class='MuiButton-label'><i
+                                         class='zmdi zmdi-phone zmdi-hc-fw '></i></span><span
+                                     class='MuiTouchRipple-root'></span></button><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                 tabindex='0' type='button'><span class='MuiButton-label'><i
+                                         class='zmdi zmdi-pin zmdi-hc-fw'></i></span><span
+                                     class='MuiTouchRipple-root'></span></button></div>
+                     </span><span>
+                         <div role='group' class='header-info btn-group-vertical'><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                 tabindex='0' type='button'><span
+                                     class='MuiButton-label'>info@awm.solar</span><span
+                                     class='MuiTouchRipple-root'></span></button><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                 tabindex='0' type='button'><span class='MuiButton-label'>+93
+                                     790303132</span><span
+                                     class='MuiTouchRipple-root'></span></button><button
+                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                 tabindex='0' type='button'><span
+                                     class='MuiButton-label'>Kabul-Afghanistan</span><span
+                                     class='MuiTouchRipple-root'></span></button></div>
+                     </span></div>
+             </div>
+         </div>
+         <div style='width: 20%; display: inline-block;'>
+             Project Name:
+         </div>";
+     $content = "<div class='header-info'>
+        <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px;'>
+            <div class='col-md-12 mb-2' style='padding-bottom: 10px;'>
+                <img src='layouts/System_logo1.png'class='img-thumbnail' style='border: 0px solid #dee2e6;
+        padding: 0px;
+        height: 80px;' alt='Responsive' />
+    
+                <div style='float: right; display: inline-block;'><span>
+                        <div role='group' class='btn-group-vertical'><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                tabindex='0' type='button'><span class='MuiButton-label'><i
+                                        class='zmdi zmdi-email zmdi-hc-fw '></i></span><span
+                                    class='MuiTouchRipple-root'></span></button><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                tabindex='0' type='button'><span class='MuiButton-label'><i
+                                        class='zmdi zmdi-phone zmdi-hc-fw '></i></span><span
+                                    class='MuiTouchRipple-root'></span></button><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                                tabindex='0' type='button'><span class='MuiButton-label'><i
+                                        class='zmdi zmdi-pin zmdi-hc-fw'></i></span><span
+                                    class='MuiTouchRipple-root'></span></button></div>
+                    </span><span>
+                        <div role='group' class='header-info btn-group-vertical'><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                tabindex='0' type='button'><span
+                                    class='MuiButton-label'>info@awm.solar</span><span
+                                    class='MuiTouchRipple-root'></span></button><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                tabindex='0' type='button'><span class='MuiButton-label'>+93
+                                    790303132</span><span
+                                    class='MuiTouchRipple-root'></span></button><button
+                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
+                                tabindex='0' type='button'><span
+                                    class='MuiButton-label'>Kabul-Afghanistan</span><span
+                                    class='MuiTouchRipple-root'></span></button></div>
+                    </span></div>
+            </div>
+        </div>
+        <div style='width: 20%; display: inline-block;'>
+            Project Name:
+        </div>
+        <div style='display: inline-block;'>
+        </div>
+        <div style='display: inline-block;'>
+        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
+        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
+        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
+        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
+        
+        </div>
+        <Divider class='mb-3 mt-3' />
+        </div>";
+         // $this->printPdf($contents, 'report', ['format' => 'A4', 'custom_font_data' => ['Arial'], $pageHeading]);
+ 
     }
+    public function printPdf($content=null,$title='',$config=array(), $pageHeading=null)
+    {
+        
+        $title=($title)?$title:'report';
+        $title=($title)?__('lang.'.$title):'';
+
+        $orientation=isset($config['orientation'])?$config['orientation']:'P';
+
+        $format=isset($config['format'])?$config['format']:'A4';
+        $mpdf = new \Mpdf\Mpdf([
+            'default_font'=>'xbriyaz',
+            'mode' => 'utf-8',
+            'orientation' => $orientation,
+            'format' => $format,
+            // 'margin-top'=>60,
+            'margin-header'=>10,
+            'margin-bottom'=>10,
+            'margin-footer'=>10,
+
+        ]);
+
+        
+        $mpdf->SetTitle($title);
+
+        $mpdf->Bookmark('Start of the document');
+
+        $mpdf->enableImports = true;
+        ini_set("pcre.backtrack_limit", "5000000");
+        
+        $mpdf->SetHTMLHeader($pageHeading);
+        $mpdf->WriteHTML($content, \Mpdf\HTMLParserMode::DEFAULT_MODE);
+
+        $mpdf->Output($title.' '.date('Y-m-d H:i:s').'.pdf','I');
+        
+
+    //     $mpdf->Output();
+    }
+
     public function showPDF($id){
         $data = $this->getProjectData($id);
         // dd($data);
         // share data to view
-       return view('pdf')->with($data);
+       return view('pdf')->with(['data'=>$data]);
     }
     
     public function getIrrWithAva($city_id){

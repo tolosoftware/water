@@ -21,8 +21,10 @@ const Pump = () => {
   const getPump = async () => {
     setVisibility(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/pump/" + id)
+      .post("api/pump", data)
       .then((res) => {
         if (res.data.auth == "unauthenticated") {
           localStorage.removeItem("token");

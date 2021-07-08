@@ -22,8 +22,10 @@ const Module = () => {
   const getSolar = async () => {
     setVisibility(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/solar/" + id)
+      .post("api/solar", data)
       .then((res) => {
         if (res.data.auth == "unauthenticated") {
           setVisibility(false);

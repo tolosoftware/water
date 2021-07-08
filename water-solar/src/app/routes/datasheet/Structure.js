@@ -19,8 +19,10 @@ const Structure = () => {
   const getStructure = async () => {
     setVisibility(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/structure/" + id)
+      .post("api/getStructure", data)
       .then((res) => {
         if (res.data.auth == "unauthenticated") {
           localStorage.removeItem("token");
@@ -55,7 +57,6 @@ const Structure = () => {
               <th>Id</th>
               <th>Name</th>
               <th>Model</th>
-              <th>Quantity</th>
               <th>Download</th>
             </tr>
           </thead>
@@ -66,7 +67,6 @@ const Structure = () => {
                   <td>{index + 1}</td>
                   <td>{data.name}</td>
                   <td>{data.model}</td>
-                  <td>{data.quantity}</td>
                   <td>
                     <div className="pointer text-primary">
                       {/* <IconButton size="small" aria-label="download"  color="secondary"  >

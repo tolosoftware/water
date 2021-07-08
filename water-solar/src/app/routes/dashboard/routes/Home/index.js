@@ -164,8 +164,10 @@ const Home = ({ match }) => {
   const getDashboardData = async () => {
     setOpenbackdrop(true);
     var id = JSON.parse(localStorage.getItem("UserData")).id;
+    var system = JSON.parse(localStorage.getItem("UserData")).system;
+    var data = [id, system];
     axios
-      .get("api/adminDashboard/" + id)
+      .post("api/adminDashboard", data)
       .then((res) => {
         if(res.data.auth=='unauthenticated'){
           localStorage.removeItem("token");

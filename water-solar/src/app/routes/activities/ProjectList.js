@@ -33,10 +33,11 @@ export const ProjectList = (props) => {
   useEffect(() => {
     const getUserdata = async () => {
       setOpen(true);
+      var id = JSON.parse(localStorage.getItem("UserData")).id;
+      var system = JSON.parse(localStorage.getItem("UserData")).system;
+      var data = [id, system];
       axios
-        .get(
-          "api/userprojecttt/" + JSON.parse(localStorage.getItem("UserData")).id
-        )
+        .post("api/userprojecttt", data)
         .then((res) => {
           if (res.data.auth == "unauthenticated") {
             localStorage.removeItem("token");
