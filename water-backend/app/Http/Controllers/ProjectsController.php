@@ -648,21 +648,24 @@ class ProjectsController extends Controller
         $data = $this->getProjectData($id);
 
         $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
-         // $pdf=PDF::loadView('pdf', compact( 'name'), [], [
+        //  $pdf=PDF::loadView('welcome', compact( 'data'), [], [
         //     'format' => 'A4',
         //     'custom_font_data' => ['Arial'],
         //     'display_mode' => 'fullpage',
         //     // 'title' => trans('general.scoresheet_report'),
         // ]);
         // return $pdf->stream('document.pdf');
-        set_time_limit(300);
-        return PDF::loadView('pdf', ['data'=>$data], [], [
-             'title' => 'Another Title',
-             'margin_top' => 0,
-             'format' => 'A4',
-             'custom_font_data' => ['Arial'],
-             'display_mode' => 'fullpage',
-           ])->stream('document.pdf');
+        // $pdf = PDF::loadView('pdf', $data);
+		// return $pdf->stream('document.pdf');
+
+        // set_time_limit(300);
+        // return PDF::loadView('pdf', ['data'=>$data], [], [
+        //      'title' => 'Another Title',
+        //      'margin_top' => 0,
+        //      'format' => 'A4',
+        //      'custom_font_data' => ['Arial'],
+        //      'display_mode' => 'fullpage',
+        //    ])->download('document.pdf');
  
          $pageHeading = "<div class='header-info'>
          <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px;'>
@@ -757,9 +760,10 @@ class ProjectsController extends Controller
         </div>
         <Divider class='mb-3 mt-3' />
         </div>";
-         // $this->printPdf($contents, 'report', ['format' => 'A4', 'custom_font_data' => ['Arial'], $pageHeading]);
+        // $view=view('welcome')->render();
+         $this->printPdf(view('welcome')->render(), 'report', ['format' => 'A4', 'custom_font_data' => ['Arial'], $pageHeading]);
  
-    }
+}
     public function printPdf($content=null,$title='',$config=array(), $pageHeading=null)
     {
         
