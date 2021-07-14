@@ -368,7 +368,7 @@ class ProjectsController extends Controller
     }
     public function authUser($id, $system){
         $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending' || $user->system!=$system){
+        if($user->status=='inactive' || $user->status=='pending' || (int)$user->system!=(int)$system){
             return 'unauthenticated';
         }
         
@@ -647,36 +647,22 @@ class ProjectsController extends Controller
     public function createPdf($id){
         $data = $this->getProjectData($id);
 
-        $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
-        //  $pdf=PDF::loadView('welcome', compact( 'data'), [], [
-        //     'format' => 'A4',
-        //     'custom_font_data' => ['Arial'],
-        //     'display_mode' => 'fullpage',
-        //     // 'title' => trans('general.scoresheet_report'),
-        // ]);
-        // return $pdf->stream('document.pdf');
-        // $pdf = PDF::loadView('pdf', $data);
-		// return $pdf->stream('document.pdf');
-
-        // set_time_limit(300);
-        // return PDF::loadView('pdf', ['data'=>$data], [], [
-        //      'title' => 'Another Title',
-        //      'margin_top' => 0,
-        //      'format' => 'A4',
-        //      'custom_font_data' => ['Arial'],
-        //      'display_mode' => 'fullpage',
-        //    ])->download('document.pdf');
+        // $newdata = ['project'=>$data['project'], 'projectAccessories'=>$data['projectAccessories'], 'irradiation'=>$data['irradiation'], 'inverter' =>$data['inverter'], 'structure' =>$data['structure'], 'pupm' =>$data['pupm'],'solarbrand' =>$data['solarbrand'],'solarList' =>$data['solarList'], 'cable' =>$data['cable'], 'energyWithOutPut' =>$data['energyWithOutPut'],];
  
-         $pageHeading = "<div class='header-info'>
-         <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px;'>
-             <div class='col-md-12 mb-2' style='padding-bottom: 10px;'>
-                 <img src='URL::asset('layouts/System_logo1.png')' class='img-thumbnail' style='border: 0px solid #dee2e6;
-         padding: 0px;
-         height: 80px;' alt='Responsive' />
+         $pageHeading = "<div style='width: 100%'>
+         <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px; margin-bottom: 1rem !important; display: flex;
+                flex-wrap: wrap;
+                margin-right: -15px;
+                margin-left: -15px;'>
+            <div class='col-md-12 mb-2' style='padding-bottom: 10px; flex: 0 0 100%;
+                max-width: 100%; margin-bottom: 0.5rem !important; position: relative;
+                width: 100%;  padding-right: 15px; padding-left: 15px;'>
+                <img src='URL::asset('layouts/System_logo1.png')' class='img-thumbnail' style='border: 0px solid #dee2e6;
+                    padding: 0px; height: 80px; background-color: #fff;border-radius: 0.25rem;
+                    max-width: 100%; vertical-align: middle;' alt='Responsive' />
      
                  <div style='float: right; display: inline-block;'><span>
-                         <div role='group' class='btn-group-vertical'><button
-                                 class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
+                    <div role='group' class='btn-group-vertical'><button  class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
                                  tabindex='0' type='button'><span class='MuiButton-label'><i
                                          class='zmdi zmdi-email zmdi-hc-fw '></i></span><span
                                      class='MuiTouchRipple-root'></span></button><button
@@ -708,61 +694,14 @@ class ProjectsController extends Controller
          <div style='width: 20%; display: inline-block;'>
              Project Name:
          </div>";
-     $content = "<div class='header-info'>
-        <div class='row mb-3' style='border-bottom: 1px solid; padding-top: 20px;'>
-            <div class='col-md-12 mb-2' style='padding-bottom: 10px;'>
-                <img src='layouts/System_logo1.png'class='img-thumbnail' style='border: 0px solid #dee2e6;
-        padding: 0px;
-        height: 80px;' alt='Responsive' />
-    
-                <div style='float: right; display: inline-block;'><span>
-                        <div role='group' class='btn-group-vertical'><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
-                                tabindex='0' type='button'><span class='MuiButton-label'><i
-                                        class='zmdi zmdi-email zmdi-hc-fw '></i></span><span
-                                    class='MuiTouchRipple-root'></span></button><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
-                                tabindex='0' type='button'><span class='MuiButton-label'><i
-                                        class='zmdi zmdi-phone zmdi-hc-fw '></i></span><span
-                                    class='MuiTouchRipple-root'></span></button><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn'
-                                tabindex='0' type='button'><span class='MuiButton-label'><i
-                                        class='zmdi zmdi-pin zmdi-hc-fw'></i></span><span
-                                    class='MuiTouchRipple-root'></span></button></div>
-                    </span><span>
-                        <div role='group' class='header-info btn-group-vertical'><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
-                                tabindex='0' type='button'><span
-                                    class='MuiButton-label'>info@awm.solar</span><span
-                                    class='MuiTouchRipple-root'></span></button><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
-                                tabindex='0' type='button'><span class='MuiButton-label'>+93
-                                    790303132</span><span
-                                    class='MuiTouchRipple-root'></span></button><button
-                                class='MuiButtonBase-root MuiButton-root MuiButton-text jr-btn makeStyles-btnJr-47'
-                                tabindex='0' type='button'><span
-                                    class='MuiButton-label'>Kabul-Afghanistan</span><span
-                                    class='MuiTouchRipple-root'></span></button></div>
-                    </span></div>
-            </div>
-        </div>
-        <div style='width: 20%; display: inline-block;'>
-            Project Name:
-        </div>
-        <div style='display: inline-block;'>
-        </div>
-        <div style='display: inline-block;'>
-        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
-        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
-        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
-        Well, wkhtmltopdf is a command line program that accepts an html file as parameter, so you just have to install it and you are ready to go. It has package for Linux and Windows.
-        
-        </div>
-        <Divider class='mb-3 mt-3' />
-        </div>";
-        // $view=view('welcome')->render();
-         $this->printPdf(view('welcome')->render(), 'report', ['format' => 'A4', 'custom_font_data' => ['Arial'], $pageHeading]);
- 
+        // $path = asset('layouts/System_logo1.png');
+        // $type = pathinfo($path, PATHINFO_EXTENSION);
+        // $data = file_get_contents($path);
+        // $logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        // $view=view('pdf', compact('data', 'logo'))->render();
+        $view = '<img src="'.public_path('/layouts/System_logo1.png').'" class="img-thumbnail" style="border: 0px solid #dee2e6;
+        padding: 0px; height: 80px;" alt="Responsive" />';
+        $this->printPdf($view, 'report', ['format' => 'A4', 'custom_font_data' => ['Arial']], $pageHeading);
 }
     public function printPdf($content=null,$title='',$config=array(), $pageHeading=null)
     {
@@ -784,8 +723,8 @@ class ProjectsController extends Controller
             'margin-footer'=>10,
 
         ]);
-
-        
+        $mpdf->img_dpi = 96;
+        $mpdf->showImageErrors = true;
         $mpdf->SetTitle($title);
 
         $mpdf->Bookmark('Start of the document');
@@ -793,7 +732,8 @@ class ProjectsController extends Controller
         $mpdf->enableImports = true;
         ini_set("pcre.backtrack_limit", "5000000");
         
-        $mpdf->SetHTMLHeader($pageHeading);
+        // $mpdf->SetHTMLHeader($pageHeading);
+        // $mpdf->SetHTMLFooter($pageHeading);
         $mpdf->WriteHTML($content, \Mpdf\HTMLParserMode::DEFAULT_MODE);
 
         $mpdf->Output($title.' '.date('Y-m-d H:i:s').'.pdf','I');
@@ -806,7 +746,8 @@ class ProjectsController extends Controller
         $data = $this->getProjectData($id);
         // dd($data);
         // share data to view
-       return view('pdf')->with(['data'=>$data]);
+        $logo = asset('layouts/System_logo1.png');
+       return view('pdf')->with(['data'=>$data, 'logo'=>$logo]);
     }
     
     public function getIrrWithAva($city_id){

@@ -299,7 +299,7 @@ const ProjectSummary = ({ match }) => {
                     <tr className="page">
                       <td class="report-content-cell">
                         <div className={`main`}>
-                          <div className="table-responsive-material mb-5">
+                          <div className="table-responsive-material mb-5 project-table">
                             <Table className="default-table table-unbordered table table-sm table-hover">
                               <thead className="table-head-sm th-border-b">
                                 <tr className={classes.headTr}>
@@ -972,7 +972,7 @@ const ProjectSummary = ({ match }) => {
                           <caption>Controller specification:</caption>
                           <tr>
                             <td style={{width: '70%'}}>
-                              <div className="table-responsive-material ">
+                              <div className="table-responsive-material controller-table">
                                 <Table className="default-table table-unbordered table table-sm table-hover">
                                   <tbody>
                                     <tr>
@@ -1040,17 +1040,19 @@ const ProjectSummary = ({ match }) => {
                             </td>
                           </tr>
                           <tr>
-                            <td colSpan='2' style={{textAlign: 'center'}} className='controller-diameter'>
-                            {inverter?.diameter?  <img
-                                src={`${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`}
-                                className="img-thumbnail invertor-diamention"
-                                style={{
-                                  border: "0px solid #dee2e6",
-                                  padding: "0px",
-                                }}
-                                alt="Responsive"
-                              />
-                            :''}
+                            <td colSpan='2' style={{textAlign: 'center'}} >
+                              <div className='controller-diameter'>
+                              {inverter?.diameter?   <img
+                                  src={`${axios.defaults.baseURL}brand/invertor/invertor_list/diameter/${inverter?.diameter}`}
+                                  className="img-thumbnail invertor-diamention"
+                                  style={{
+                                    border: "0px solid #dee2e6",
+                                    padding: "0px",
+                                  }}
+                                  alt="Responsive"
+                                />
+                              :''}
+                              </div>
                             </td>
                           </tr>
                         </table>
@@ -1260,7 +1262,7 @@ const ProjectSummary = ({ match }) => {
                   loading ? "Loading . . ." : "Download"
                 }
               </PDFDownloadLink> */}
-                      <Button
+                      {/* <Button
                         variant="contained"
                         color="primary"
                         onClick={createPdf}
@@ -1270,11 +1272,11 @@ const ProjectSummary = ({ match }) => {
                       >
                         {" "}
                         Download{" "}
-                      </Button>
+                      </Button> */}
                 </div>
                 
 
-                <div className="col-md-6 d-flex justify-content-center p-1">
+                <div className="col-md-12 d-flex justify-content-center p-1">
                   <ReactToPrint
                     trigger={() => (
                       <Button
@@ -1283,8 +1285,7 @@ const ProjectSummary = ({ match }) => {
                         startIcon={<PrintIcon />}
                         className="float-right"
                       >
-                        {" "}
-                        Print{" "}
+                        Print or Save as PDF
                       </Button>
                     )}
                     content={() => ref.current}

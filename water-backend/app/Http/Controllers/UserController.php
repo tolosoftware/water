@@ -28,7 +28,7 @@ class UserController extends Controller
 {
     public function authUser($id, $system){
         $user = User::findOrFail($id);
-        if($user->status=='inactive' || $user->status=='pending' || $user->system != $system){
+        if($user->status=='inactive' || $user->status=='pending' || (int)$user->system != (int)$system){
             return 'unauthenticated';
         }
         

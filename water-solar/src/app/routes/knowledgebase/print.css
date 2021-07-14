@@ -79,10 +79,7 @@ tfoot.report-footer {
 }
 
 @media print {
-  .accessory-sect {
-    min-height: 755px;
-    max-height: 755px;
-  }
+  
   .report-content {
     counter-reset: page;
   }
@@ -91,7 +88,14 @@ tfoot.report-footer {
     counter-increment: page;
     content: "Page " counter(page) " of 9";
   }
-    
+  .project-table{
+    min-height: 210px;
+    max-height: 210px;
+  }
+  .accessory-sect {
+    min-height: 730px;
+    max-height: 730px;
+  }
     .structure-img {
       margin-top: 150px;
       margin-bottom: 260px;
@@ -100,14 +104,22 @@ tfoot.report-footer {
       margin-top: 200px;
       margin-bottom: 450px;
     }
+    .controller-diameter{
+      min-height: 800px;
+      max-height: 800px;
+      margin-bottom: 10px;
+    }
     .invertor-diamention {
       width: 100%;
-      min-height: 750px;
-      max-height: 750px;
-      margin-bottom: 20px;
+      max-height: 800px;
+     
+    }
+    .controller-table{
+      min-height: 450px;
+      max-height: 450px;
     }
     .invertor-image {
-      max-height: 490px;
+      max-height: 450px;
     }
     .wiring-img {
       max-height: 1240px;

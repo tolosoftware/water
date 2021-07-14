@@ -90,9 +90,10 @@ export default function Map(props) {
             style={{height:'350px'}}
             onChangeLocation={handleChangeLocation} 
             onChangeZoom={handleChangeZoom}
-            // AIzaSyD07E1VvpsN_0FvsmKAj4nK9GnLq-9jtj8
             apiKey='AIzaSyAHpzdpdb9uKz4ZqYpXB4TT3JfZxQXo_so'/>
-
+    {/* AIzaSyAHpzdpdb9uKz4ZqYpXB4TT3JfZxQXo_so 
+AIzaSyD07E1VvpsN_0FvsmKAj4nK9GnLq-9jtj8
+    */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

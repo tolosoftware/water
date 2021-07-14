@@ -7,18 +7,18 @@ const Footer = () => {
       <footer className="app-footer">
         <div>
         <span className="d-inline-block">{`Copyright AMO Water Management System © 2021.`}</span> 
-        {JSON.parse(localStorage.getItem("UserData")).belongto=='None'? '':
+        {JSON.parse(localStorage.getItem("UserData"))?.belongto=='None'? '':
           <>
             <br/>
-            <span className="d-block">{`A Property of ${JSON.parse(localStorage.getItem("UserData")).belongto}.`}</span>
+            <span className="d-block">{`A Property of ${JSON.parse(localStorage.getItem("UserData"))?.belongto}.`}</span>
           </>
         }
         
         </div>
         
         <Button
-          href={JSON.parse(localStorage.getItem("UserData")).belongto=='None'? '#':
-            JSON.parse(localStorage.getItem("UserData")).belongto==="Rana Solar"?'http://ranasolarenergy.com/':'http://dorokhshansolar.com/'}
+          href={JSON.parse(localStorage.getItem("UserData"))?.belongto=='None'? '#':
+            JSON.parse(localStorage.getItem("UserData"))?.belongto==="Rana Solar"?'http://ranasolarenergy.com/':'http://dorokhshansolar.com/'}
           target="_blank"
           size="small"
           color="primary"
